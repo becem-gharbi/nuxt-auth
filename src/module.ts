@@ -17,11 +17,16 @@ export interface ModuleOptions {
   accessTokenExpiresIn: string;
   refreshTokenMaxAge: number;
 
-  oauthClientId: string;
-  oauthClientSecret: string;
-  oauthAuthorizeUrl: string;
-  oauthGetTokenUrl: string;
-  oauthGetUserUrl: string;
+  oauth?: Record<
+    string,
+    {
+      clientId: string;
+      clientSecret: string;
+      authorizeUrl: string;
+      getTokenUrl: string;
+      getUserUrl: string;
+    }
+  >;
 
   smtpHost: string;
   smtpPort: number;
@@ -54,11 +59,15 @@ export default defineNuxtModule<ModuleOptions>({
     accessTokenExpiresIn: "7s",
     refreshTokenMaxAge: 3600,
 
-    oauthClientId: "",
-    oauthClientSecret: "",
-    oauthAuthorizeUrl: "",
-    oauthGetTokenUrl: "",
-    oauthGetUserUrl: "",
+    oauth: {
+      google: {
+        clientId: "",
+        clientSecret: "",
+        authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
+        getTokenUrl: "https://accounts.google.com/o/oauth2/token",
+        getUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
+      },
+    },
 
     smtpHost: "",
     smtpPort: 587,
@@ -142,11 +151,7 @@ export default defineNuxtModule<ModuleOptions>({
         accessTokenExpiresIn: options.accessTokenExpiresIn,
         refreshTokenMaxAge: options.refreshTokenMaxAge,
 
-        oauthClientId: options.oauthClientId,
-        oauthClientSecret: options.oauthClientSecret,
-        oauthAuthorizeUrl: options.oauthAuthorizeUrl,
-        oauthGetTokenUrl: options.oauthGetTokenUrl,
-        oauthGetUserUrl: options.oauthGetUserUrl,
+        oauth: options.oauth,
 
         smtpHost: options.smtpHost,
         smtpPort: options.smtpPort,

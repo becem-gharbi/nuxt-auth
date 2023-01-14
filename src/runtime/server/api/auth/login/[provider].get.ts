@@ -4,18 +4,19 @@ import { useRuntimeConfig } from "#imports";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
+  const provider = event.context.params.provider;
 
   try {
     const authorizationUrl =
-      config.auth.oauthAuthorizeUrl +
+      config.auth.oauth[provider].authorizeUrl +
       "?" +
       "response_type=code" +
       "&" +
       "scope=email profile" +
       "&" +
-      `redirect_uri=${config.public.auth.baseUrl}/api/auth/login/google/callback` +
+      `redirect_uri=${config.public.auth.baseUrl}/api/auth/login/${provider}/callback` +
       "&" +
-      `client_id=${config.auth.oauthClientId}`;
+      `client_id=${config.auth.oauth[provider].clientId}`;
 
     await sendRedirect(event, authorizationUrl);
   } catch (error) {

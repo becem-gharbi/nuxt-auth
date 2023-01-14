@@ -21,23 +21,26 @@ export default defineEventHandler(async (event) => {
     const formData = new FormData();
     formData.append("grant_type", "authorization_code");
     formData.append("code", code);
-    formData.append("client_id", config.auth.oauthClientId);
-    formData.append("client_secret", config.auth.oauthClientSecret);
+    formData.append("client_id", config.auth.oauth[provider].clientId);
+    formData.append("client_secret", config.auth.oauth[provider].clientSecret);
     formData.append(
       "redirect_uri",
-      `${config.public.auth.baseUrl}/api/auth/login/google/callback`
+      `${config.public.auth.baseUrl}/api/auth/login/${provider}/callback`
     );
 
-    const { access_token } = await ofetch(config.auth.oauthGetTokenUrl, {
-      method: "POST",
-      body: formData,
-    });
+    const { access_token } = await ofetch(
+      config.auth.oauth[provider].getTokenUrl,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const userInfo = await ofetch<{
       email: string;
       name: string;
       picture: string;
-    }>(config.auth.oauthGetUserUrl, {
+    }>(config.auth.oauth[provider].getUserUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
       },

@@ -9,11 +9,15 @@ export default defineNuxtConfig({
     accessTokenSecret: process.env.AUTH_ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.AUTH_REFRESH_TOKEN_SECRET,
 
-    oauthClientId: process.env.AUTH_PROVIDER_CLIENT_ID,
-    oauthClientSecret: process.env.AUTH_PROVIDER_CLIENT_SECRET,
-    oauthAuthorizeUrl: "https://accounts.google.com/o/oauth2/auth",
-    oauthGetTokenUrl: "https://accounts.google.com/o/oauth2/token",
-    oauthGetUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
+    oauth: {
+      google: {
+        clientId: process.env.AUTH_OAUTH_GOOGLE_CLIENT_ID || "",
+        clientSecret: process.env.AUTH_OAUTH_GOOGLE_CLIENT_SECRET || "",
+        authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
+        getTokenUrl: "https://accounts.google.com/o/oauth2/token",
+        getUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
+      },
+    },
 
     smtpHost: process.env.AUTH_SMTP_HOST,
     smtpPort: parseInt(process.env.AUTH_SMTP_PORT!),
