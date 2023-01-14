@@ -1,4 +1,4 @@
-import prisma from "../../utils/prisma";
+import prisma from "../../../utils/prisma";
 import jwt from "jsonwebtoken";
 import { defineEventHandler, readBody, createError, setCookie } from "h3";
 import bcrypt from "bcrypt";

@@ -12,17 +12,21 @@ import { defu } from "defu";
 
 export interface ModuleOptions {
   jwtSecret: string;
-  googleClientId: string;
-  googleClientSecret: string;
-  smtpHost: string;
-  smtpPort: string;
-  smtpUser: string;
-  smtpPass: string;
-  smtpFrom: string;
   accessTokenSecret: string;
   refreshTokenSecret: string;
   accessTokenExpiresIn: string;
   refreshTokenMaxAge: number;
+
+  providerClientId: string;
+  providerClientSecret: string;
+  providerScope: string;
+  providerIssuerUrl: string;
+
+  smtpHost: string;
+  smtpPort: number;
+  smtpUser: string;
+  smtpPass: string;
+  smtpFrom: string;
 
   baseUrl: string;
   enableGlobalAuthMiddleware: boolean;
@@ -44,17 +48,21 @@ export default defineNuxtModule<ModuleOptions>({
 
   defaults: {
     jwtSecret: "",
-    googleClientId: "",
-    googleClientSecret: "",
-    smtpHost: "",
-    smtpPort: "",
-    smtpUser: "",
-    smtpPass: "",
-    smtpFrom: "",
     accessTokenSecret: "",
     refreshTokenSecret: "",
     accessTokenExpiresIn: "7s",
     refreshTokenMaxAge: 3600,
+
+    providerClientId: "",
+    providerClientSecret: "",
+    providerScope: "openid profile email",
+    providerIssuerUrl: "",
+
+    smtpHost: "",
+    smtpPort: 587,
+    smtpUser: "",
+    smtpPass: "",
+    smtpFrom: "",
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
@@ -87,7 +95,20 @@ export default defineNuxtModule<ModuleOptions>({
     //Add server routes
     addServerHandler({
       route: "/api/auth/login",
-      handler: resolve(runtimeDir, "server/api/auth/login.post"),
+      handler: resolve(runtimeDir, "server/api/auth/login/index.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/login/:provider",
+      handler: resolve(runtimeDir, "server/api/auth/login/[provider].get"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/login/:provider/callback",
+      handler: resolve(
+        runtimeDir,
+        "server/api/auth/login/[provider]/callback.get"
+      ),
     });
 
     addServerHandler({
@@ -114,17 +135,21 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {
         jwtSecret: options.jwtSecret,
-        googleClientId: options.googleClientId,
-        googleClientSecret: options.googleClientSecret,
+        accessTokenSecret: options.accessTokenSecret,
+        refreshTokenSecret: options.refreshTokenSecret,
+        accessTokenExpiresIn: options.accessTokenExpiresIn,
+        refreshTokenMaxAge: options.refreshTokenMaxAge,
+
+        providerClientId: options.providerClientId,
+        providerClientSecret: options.providerClientSecret,
+        providerScope: options.providerScope,
+        providerIssuerUrl: options.providerIssuerUrl,
+
         smtpHost: options.smtpHost,
         smtpPort: options.smtpPort,
         smtpUser: options.smtpUser,
         smtpPass: options.smtpPass,
         smtpFrom: options.smtpFrom,
-        accessTokenSecret: options.accessTokenSecret,
-        refreshTokenSecret: options.refreshTokenSecret,
-        accessTokenExpiresIn: options.accessTokenExpiresIn,
-        refreshTokenMaxAge: options.refreshTokenMaxAge,
       },
       public: {
         auth: {

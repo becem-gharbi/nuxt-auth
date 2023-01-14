@@ -61,12 +61,8 @@ export default function () {
   }
 
   async function loginWithProvider(provider: AuthProvider) {
-    const redirectUrl = getRedirectUrl(config.public.auth.redirect.callback);
-
     if (process.client) {
-      window.location.replace(
-        `/auth/login/${provider}?redirect=${redirectUrl}`
-      );
+      window.location.replace(`/api/auth/login/${provider}`);
     }
   }
 
