@@ -1,26 +1,26 @@
 import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
-import useDirectusAuth from "../composables/useDirectusAuth";
+import useAuth from "../composables/useAuth";
 
 export default defineNuxtRouteMiddleware((to) => {
-  const { directusAuth } = useRuntimeConfig().public;
+  const config = useRuntimeConfig();
 
   if (
-    to.path === directusAuth.redirect.login ||
-    to.path === directusAuth.redirect.callback
+    to.path === config.public.auth.redirect.login ||
+    to.path === config.public.auth.redirect.callback
   ) {
     return;
   }
 
-  if (directusAuth.enableGlobalAuthMiddleware === true) {
+  if (config.public.auth.enableGlobalAuthMiddleware === true) {
     if (to.meta.auth === false) {
       return;
     }
   }
 
-  const { useUser } = useDirectusAuth();
+  const { useUser } = useAuth();
   const user = useUser();
 
   if (!user.value) {
-    return navigateTo(directusAuth.redirect.login);
+    return navigateTo(config.public.auth.redirect.login);
   }
 });

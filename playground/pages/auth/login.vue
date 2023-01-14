@@ -11,12 +11,10 @@
 
 definePageMeta({ middleware: "guest" })
 
-const { login, requestPasswordReset, loginWithProvider} = useDirectusAuth()
+const { login, requestPasswordReset, loginWithProvider } = useAuth()
 
 async function handleLogin() {
     const { data, error } = await login({ email: "becem.gharbi96@gmail.com", password: "123456" })
-
-    console.log({ data: data.value?.data.access_token, error: error.value?.data.errors[0].message })
 }
 
 async function handleRequestPasswordReset() {

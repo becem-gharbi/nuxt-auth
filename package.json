@@ -6,7 +6,6 @@
   "author": "Becem Gharbi",
   "keywords": [
     "nuxt",
-    "directus",
     "authentication"
   ],
   "release": {
@@ -34,7 +33,10 @@
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
     "semantic-release": "semantic-release",
-    "commit": "cz"
+    "commit": "cz",
+    "prisma:init": "cd playground && prisma init",
+    "prisma:generate": "cd playground && prisma generate",
+    "prisma:migrate": "cd playground && prisma migrate dev"
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0",

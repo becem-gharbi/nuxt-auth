@@ -9,7 +9,6 @@ import type {
   AuthProvider,
   ResponseRefresh,
   User,
-  UseDirectusFetchReturn,
 } from "../types";
 
 import {
@@ -21,10 +20,8 @@ import {
   useRequestHeaders,
 } from "#app";
 
-import useDirectusFetch from "./useDirectusFetch";
-
 export default function () {
-  const { directusAuth } = useRuntimeConfig().public;
+  const config = useRuntimeConfig();
   const useInitialized: () => Ref<boolean> = () =>
     useState("directus_auth_initialized", () => false);
   const useUser: () => Ref<User | null> = () =>
@@ -44,31 +41,27 @@ export default function () {
     return true;
   }
 
-  async function login(credentials: {
-    email: string;
-    password: string;
-  }): UseDirectusFetchReturn<ResponseLogin> {
+  async function login(credentials: { email: string; password: string }) {
     const accessToken = useAccessToken();
-    return useDirectusFetch<ResponseLogin>("/auth/login", {
+    return useFetch("/api/auth/login", {
       method: "POST",
       credentials: "include",
       body: {
         email: credentials.email,
         password: credentials.password,
-        mode: "cookie",
       },
     }).then(async (res) => {
       if (res.data.value) {
-        accessToken.value = res.data.value.data.access_token;
+        accessToken.value = res.data.value.accessToken;
         await fetchUser();
-        await navigateTo(directusAuth.redirect.home);
+        await navigateTo(config.public.auth.redirect.home);
       }
       return res;
     });
   }
 
   async function loginWithProvider(provider: AuthProvider) {
-    const redirectUrl = getRedirectUrl(directusAuth.redirect.callback);
+    const redirectUrl = getRedirectUrl(config.public.auth.redirect.callback);
 
     if (process.client) {
       window.location.replace(
@@ -86,24 +79,30 @@ export default function () {
         const headers = useRequestHeaders(["Cookie"]);
         cookie = headers.cookie;
 
-        if (!cookie || !cookie.includes(directusAuth.refreshTokenCookieName)) {
+        if (
+          !cookie ||
+          !cookie.includes(config.public.auth.refreshTokenCookieName)
+        ) {
           accessToken.value = null;
           return;
         }
       }
 
-      const res = await $fetch.raw<ResponseRefresh>("/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-        headers: cookie ? { cookie } : {},
-      });
+      const res = await $fetch.raw<{ accessToken: string }>(
+        "/api/auth/refresh",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: cookie ? { cookie } : {},
+        }
+      );
 
       if (process.server) {
         const cookie = res.headers.get("set-cookie") || "";
         appendHeader(event, "set-cookie", cookie);
       }
 
-      accessToken.value = res._data?.data.access_token || null;
+      accessToken.value = res._data?.accessToken || null;
     } catch (error) {
       accessToken.value = null;
     }
@@ -127,13 +126,13 @@ export default function () {
     }
 
     try {
-      const res = await $fetch<{ data: User }>("/users/me", {
+      const res = await $fetch<any>("/api/auth/me", {
         headers: {
           Authorization: "Bearer " + accessToken.value,
         },
       });
 
-      user.value = res.data;
+      user.value = res;
     } catch (error) {
       user.value = null;
     }
@@ -144,7 +143,7 @@ export default function () {
     const user = useUser();
 
     if (accessToken.value) {
-      await $fetch("/auth/logout", {
+      await $fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -153,36 +152,32 @@ export default function () {
     }
 
     user.value = null;
-    await navigateTo(directusAuth.redirect.logout);
+    await navigateTo(config.public.auth.redirect.logout);
   }
 
-  function register(user: User): UseDirectusFetchReturn<User> {
-    user.role = directusAuth.defaultRoleId;
-
-    return useDirectusFetch<User>("/users", {
+  function register(user: User) {
+    return useFetch("/api/auth/register", {
       method: "POST",
       body: user,
     });
   }
 
   function getRedirectUrl(path: string) {
-    return directusAuth.nuxtBaseUrl + path;
+    return config.public.auth.baseUrl + path;
   }
 
-  async function requestPasswordReset(
-    email: string
-  ): UseDirectusFetchReturn<void> {
-    return useDirectusFetch<void>("/auth/password/request", {
+  async function requestPasswordReset(email: string) {
+    return useFetch<void>("/auth/password/request", {
       method: "POST",
       body: {
         email,
-        reset_url: getRedirectUrl(directusAuth.redirect.resetPassword),
+        reset_url: getRedirectUrl(config.public.auth.redirect.resetPassword),
       },
     });
   }
 
-  async function resetPassword(password: string): UseDirectusFetchReturn<void> {
-    return useDirectusFetch<void>("/auth/password/reset", {
+  async function resetPassword(password: string) {
+    return useFetch<void>("/auth/password/reset", {
       method: "POST",
       body: {
         password,

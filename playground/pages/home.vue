@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>Home</h1>
-        {{ user }}
         <button @click="fetchUser">Fetch user</button>
         <button @click="handleLogout">Logout</button>
     </div>
@@ -10,7 +9,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" })
 
-const { logout, fetchUser, user } = useDirectusAuth()
+const { logout, fetchUser } = useAuth()
 
 async function handleLogout() {
     await logout()

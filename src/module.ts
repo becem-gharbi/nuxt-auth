@@ -11,7 +11,20 @@ import {
 import { defu } from "defu";
 
 export interface ModuleOptions {
-  nuxtBaseUrl: string;
+  jwtSecret: string;
+  googleClientId: string;
+  googleClientSecret: string;
+  smtpHost: string;
+  smtpPort: string;
+  smtpUser: string;
+  smtpPass: string;
+  smtpFrom: string;
+  accessTokenSecret: string;
+  refreshTokenSecret: string;
+  accessTokenExpiresIn: string;
+  refreshTokenMaxAge: number;
+
+  baseUrl: string;
   enableGlobalAuthMiddleware: boolean;
   refreshTokenCookieName: string;
   redirect: {
@@ -26,10 +39,24 @@ export interface ModuleOptions {
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "@bg-dev/nuxt-auth",
-    configKey: "directusAuth",
+    configKey: "auth",
   },
+
   defaults: {
-    nuxtBaseUrl: "http://localhost:3000",
+    jwtSecret: "",
+    googleClientId: "",
+    googleClientSecret: "",
+    smtpHost: "",
+    smtpPort: "",
+    smtpUser: "",
+    smtpPass: "",
+    smtpFrom: "",
+    accessTokenSecret: "",
+    refreshTokenSecret: "",
+    accessTokenExpiresIn: "7s",
+    refreshTokenMaxAge: 3600,
+
+    baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
     refreshTokenCookieName: "directus_refresh_token",
     redirect: {
@@ -40,6 +67,7 @@ export default defineNuxtModule<ModuleOptions>({
       resetPassword: "/auth/reset-password",
     },
   },
+
   setup(options, nuxt) {
     //Get the runtime directory
     const { resolve } = createResolver(import.meta.url);
@@ -58,14 +86,60 @@ export default defineNuxtModule<ModuleOptions>({
 
     //Add server routes
     addServerHandler({
-      route: "/api/login",
-      handler: resolve(runtimeDir, "server/login.post"),
+      route: "/api/auth/login",
+      handler: resolve(runtimeDir, "server/api/auth/login.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/refresh",
+      handler: resolve(runtimeDir, "server/api/auth/refresh.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/register",
+      handler: resolve(runtimeDir, "server/api/auth/register.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/me",
+      handler: resolve(runtimeDir, "server/api/auth/me.get"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/logout",
+      handler: resolve(runtimeDir, "server/api/auth/logout.post"),
     });
 
     //Initialize the module options
-    nuxt.options.runtimeConfig.public.directusAuth = defu(
-      nuxt.options.runtimeConfig.public.directusAuth,
-      { ...options }
-    );
+    nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
+      auth: {
+        jwtSecret: options.jwtSecret,
+        googleClientId: options.googleClientId,
+        googleClientSecret: options.googleClientSecret,
+        smtpHost: options.smtpHost,
+        smtpPort: options.smtpPort,
+        smtpUser: options.smtpUser,
+        smtpPass: options.smtpPass,
+        smtpFrom: options.smtpFrom,
+        accessTokenSecret: options.accessTokenSecret,
+        refreshTokenSecret: options.refreshTokenSecret,
+        accessTokenExpiresIn: options.accessTokenExpiresIn,
+        refreshTokenMaxAge: options.refreshTokenMaxAge,
+      },
+      public: {
+        auth: {
+          baseUrl: options.baseUrl,
+          enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
+          refreshTokenCookieName: options.refreshTokenCookieName,
+          redirect: {
+            login: options.redirect.login,
+            logout: options.redirect.logout,
+            home: options.redirect.home,
+            callback: options.redirect.callback,
+            resetPassword: options.redirect.resetPassword,
+          },
+        },
+      },
+    });
   },
 });

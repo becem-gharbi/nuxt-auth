@@ -15,8 +15,7 @@ export type AuthProvider =
 
 export type User = {
   id?: string;
-  first_name?: string;
-  last_name?: string;
+  name: string;
   email: string;
   password?: string;
   location?: string;

@@ -8,7 +8,7 @@
 <script setup>
 definePageMeta({ middleware: "guest" })
 
-const { resetPassword } = useDirectusAuth()
+const { resetPassword } = useAuth()
 
 async function handleResetPassword() {
     await resetPassword("123456")

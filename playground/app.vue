@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>{{ data?.data[0].flag }}</h2>
     <NuxtPage></NuxtPage>
   </div>
 </template>
@@ -13,5 +12,4 @@ interface Country {
   name: string;
   flag: string
 }
-const { data } = await useDirectusFetch<Country[]>("items/country")
 </script>
