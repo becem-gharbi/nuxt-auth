@@ -11,16 +11,25 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  photoUrl      String?
-  password      String?
-  blocked       Boolean   @default(false)
-  role          Role      @default(User)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id            Int      @id @default(autoincrement())
+  firstName     String?
+  lastName      String?
+  picture       String?
+  email         String?  @unique
+  emailVerified Boolean?
+  gender        String?
+  birthdate     String?
+  locale        String?
+  phoneNumber   String?
+  role          Role     @default(User)
+  provider      String
+
+  photoUrl String?
+  password String?
+  blocked  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {

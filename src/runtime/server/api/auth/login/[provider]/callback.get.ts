@@ -7,45 +7,43 @@ import {
   sendRedirect,
 } from "h3";
 //@ts-ignore
-import { useRuntimeConfig } from "#imports";
-import { Issuer } from "openid-client";
+import { useRuntimeConfig, useFetch } from "#imports";
 import prisma from "../../../../utils/prisma";
 import jwt from "jsonwebtoken";
+import { ofetch } from "ofetch";
 
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig();
     const provider = event.context.params.provider;
-    const code = getQuery(event).code?.toString();
+    const code = getQuery(event).code?.toString() || "";
 
-    const issuer = await Issuer.discover(config.auth.providerIssuerUrl);
-
-    const client = new issuer.Client({
-      client_id: config.auth.providerClientId,
-      client_secret: config.auth.providerClientSecret,
-      redirect_uris: [
-        `${config.public.auth.baseUrl}/api/auth/login/${provider}/callback`,
-      ],
-      response_types: ["code"],
-      // id_token_signed_response_alg (default "RS256")
-      // token_endpoint_auth_method (default "client_secret_basic")
-    }); // => Client
-
-    const code_verifier = getCookie(event, "code_verifier");
-
-    const tokenSet = await client.callback(
-      `${config.public.auth.baseUrl}/api/auth/login/${provider}/callback`,
-      {
-        code,
-      },
-      {
-        code_verifier,
-      }
+    const formData = new FormData();
+    formData.append("grant_type", "authorization_code");
+    formData.append("code", code);
+    formData.append("client_id", config.auth.oauthClientId);
+    formData.append("client_secret", config.auth.oauthClientSecret);
+    formData.append(
+      "redirect_uri",
+      `${config.public.auth.baseUrl}/api/auth/login/google/callback`
     );
 
-    if (tokenSet.access_token) {
-      const userInfo = await client.userinfo(tokenSet.access_token);
+    const { access_token } = await ofetch(config.auth.oauthGetTokenUrl, {
+      method: "POST",
+      body: formData,
+    });
 
+    const userInfo = await ofetch<{
+      email: string;
+      name: string;
+      picture: string;
+    }>(config.auth.oauthGetUserUrl, {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+
+    if (userInfo.email) {
       let user = await prisma.user.findUnique({
         where: {
           email: userInfo.email,

@@ -9,10 +9,11 @@ export default defineNuxtConfig({
     accessTokenSecret: process.env.AUTH_ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.AUTH_REFRESH_TOKEN_SECRET,
 
-    providerIssuerUrl: process.env.AUTH_PROVIDER_ISSUER_URL,
-    providerClientId: process.env.AUTH_PROVIDER_CLIENT_ID,
-    providerClientSecret: process.env.AUTH_PROVIDER_CLIENT_SECRET,
-    providerScope: process.env.AUTH_PROVIDER_SCOPE,
+    oauthClientId: process.env.AUTH_PROVIDER_CLIENT_ID,
+    oauthClientSecret: process.env.AUTH_PROVIDER_CLIENT_SECRET,
+    oauthAuthorizeUrl: "https://accounts.google.com/o/oauth2/auth",
+    oauthGetTokenUrl: "https://accounts.google.com/o/oauth2/token",
+    oauthGetUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
 
     smtpHost: process.env.AUTH_SMTP_HOST,
     smtpPort: parseInt(process.env.AUTH_SMTP_PORT!),

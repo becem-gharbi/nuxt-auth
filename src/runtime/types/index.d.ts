@@ -67,3 +67,20 @@ export type UseFetchErrorT = {
 export type UseDirectusFetchReturn<T> = Promise<
   AsyncData<UseFetchDataT<T>, UseFetchErrorT>
 >;
+
+
+export type User {
+  given_name?: string;
+  family_name?: string;
+  middle_name?: string;
+  picture?: string;
+  website?: string;
+  email?: string;
+  email_verified?: boolean;
+  gender?: string;
+  birthdate?: string;
+  locale?: string;
+  phone_number?: string;
+  updated_at?: number;
+  created_at?: number;
+}

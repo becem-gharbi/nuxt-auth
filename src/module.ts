@@ -17,10 +17,11 @@ export interface ModuleOptions {
   accessTokenExpiresIn: string;
   refreshTokenMaxAge: number;
 
-  providerClientId: string;
-  providerClientSecret: string;
-  providerScope: string;
-  providerIssuerUrl: string;
+  oauthClientId: string;
+  oauthClientSecret: string;
+  oauthAuthorizeUrl: string;
+  oauthGetTokenUrl: string;
+  oauthGetUserUrl: string;
 
   smtpHost: string;
   smtpPort: number;
@@ -53,10 +54,11 @@ export default defineNuxtModule<ModuleOptions>({
     accessTokenExpiresIn: "7s",
     refreshTokenMaxAge: 3600,
 
-    providerClientId: "",
-    providerClientSecret: "",
-    providerScope: "openid profile email",
-    providerIssuerUrl: "",
+    oauthClientId: "",
+    oauthClientSecret: "",
+    oauthAuthorizeUrl: "",
+    oauthGetTokenUrl: "",
+    oauthGetUserUrl: "",
 
     smtpHost: "",
     smtpPort: 587,
@@ -140,10 +142,11 @@ export default defineNuxtModule<ModuleOptions>({
         accessTokenExpiresIn: options.accessTokenExpiresIn,
         refreshTokenMaxAge: options.refreshTokenMaxAge,
 
-        providerClientId: options.providerClientId,
-        providerClientSecret: options.providerClientSecret,
-        providerScope: options.providerScope,
-        providerIssuerUrl: options.providerIssuerUrl,
+        oauthClientId: options.oauthClientId,
+        oauthClientSecret: options.oauthClientSecret,
+        oauthAuthorizeUrl: options.oauthAuthorizeUrl,
+        oauthGetTokenUrl: options.oauthGetTokenUrl,
+        oauthGetUserUrl: options.oauthGetUserUrl,
 
         smtpHost: options.smtpHost,
         smtpPort: options.smtpPort,
