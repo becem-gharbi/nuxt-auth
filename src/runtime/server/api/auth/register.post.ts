@@ -1,6 +1,6 @@
 import { prisma } from "../../utils/prisma";
-import bcrypt from "bcrypt";
 import { defineEventHandler, readBody, createError } from "h3";
+import { createUser } from "../../utils/user";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -16,14 +16,10 @@ export default defineEventHandler(async (event) => {
       throw new Error("email-already-used");
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 12);
-
-    await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-      },
+    await createUser({
+      email,
+      password,
+      name,
     });
 
     return {};

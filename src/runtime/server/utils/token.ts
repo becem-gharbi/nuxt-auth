@@ -13,6 +13,10 @@ import { prisma } from "./prisma";
 
 const config = useRuntimeConfig();
 
+type ResetPasswordPayload = {
+  userId: number;
+};
+
 type AccessTokenPayload = {
   userId: number;
 };
@@ -115,3 +119,26 @@ export async function deleteRefreshToken(refreshTokenId: number) {
 export function deleteRefreshTokenCookie(event: H3Event) {
   deleteCookie(event, config.public.auth.refreshTokenCookieName);
 }
+
+/*************** Reset Password token ***************/
+
+export function createResetPasswordToken(payload: ResetPasswordPayload) {
+  const resetPasswordToken = jwt.sign(
+    payload,
+    config.auth.accessTokenSecret + "reset-password",
+    {
+      expiresIn: "5m",
+    }
+  );
+  return resetPasswordToken;
+}
+
+export function verifyResetPasswordToken(resetPasswordToken: string) {
+  const payload = jwt.verify(
+    resetPasswordToken,
+    config.auth.accessTokenSecret + "reset-password"
+  ) as ResetPasswordPayload;
+  return payload;
+}
+
+/*************** Email Verify token ***************/

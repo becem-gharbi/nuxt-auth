@@ -163,18 +163,18 @@ export default function () {
   }
 
   async function requestPasswordReset(input: requestPasswordResetRequest) {
-    return useFetch<void>("/auth/password/request", {
+    return useFetch<void>("/api/auth/password/request", {
       method: "POST",
       body: {
         email: input.email,
-        reset_url: getRedirectUrl(config.public.auth.redirect.resetPassword),
+        resetUrl: getRedirectUrl(config.public.auth.redirect.resetPassword),
       },
     });
   }
 
   async function resetPassword(input: resetPasswordRequest) {
-    return useFetch<void>("/auth/password/reset", {
-      method: "POST",
+    return useFetch<void>("/api/auth/password/reset", {
+      method: "PATCH",
       body: {
         password: input.password,
         token: route.query.token,

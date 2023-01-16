@@ -1,6 +1,6 @@
 //@ts-ignore
 import { useRuntimeConfig } from "#imports";
-import { defineEventHandler, createError, getQuery, sendRedirect } from "h3";
+import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { ofetch } from "ofetch";
 import { createUser, findUser } from "../../../../utils/user";
 import {

@@ -144,6 +144,16 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/logout.post"),
     });
 
+    addServerHandler({
+      route: "/api/auth/password/request",
+      handler: resolve(runtimeDir, "server/api/auth/password/request.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/password/reset",
+      handler: resolve(runtimeDir, "server/api/auth/password/reset.patch"),
+    });
+
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {
