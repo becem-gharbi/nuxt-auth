@@ -25,6 +25,14 @@ export default defineEventHandler(async (event) => {
       throw new Error("wrong-credentials");
     }
 
+    if (!user.verified) {
+      throw new Error("user-not-verified");
+    }
+
+    if (user.blocked) {
+      throw new Error("user-blocked");
+    }
+
     const refreshToken = await createRefreshToken(user.id);
 
     setRefreshTokenCookie(event, {

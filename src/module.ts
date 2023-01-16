@@ -11,7 +11,6 @@ import {
 import { defu } from "defu";
 
 export interface ModuleOptions {
-  jwtSecret: string;
   accessTokenSecret: string;
   refreshTokenSecret: string;
   accessTokenExpiresIn: string;
@@ -55,9 +54,8 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   defaults: {
-    jwtSecret: "",
-    accessTokenSecret: "",
-    refreshTokenSecret: "",
+    accessTokenSecret: "abc",
+    refreshTokenSecret: "efg",
     accessTokenExpiresIn: "7s",
     refreshTokenMaxAge: 3600,
 
@@ -65,7 +63,7 @@ export default defineNuxtModule<ModuleOptions>({
       google: {
         clientId: "",
         clientSecret: "",
-        scopes: "email",
+        scopes: "email profile",
         authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
         getTokenUrl: "https://accounts.google.com/o/oauth2/token",
         getUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -80,7 +78,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
-    refreshTokenCookieName: "directus_refresh_token",
+    refreshTokenCookieName: "auth_refresh_token",
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
@@ -169,7 +167,6 @@ export default defineNuxtModule<ModuleOptions>({
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {
-        jwtSecret: options.jwtSecret,
         accessTokenSecret: options.accessTokenSecret,
         refreshTokenSecret: options.refreshTokenSecret,
         accessTokenExpiresIn: options.accessTokenExpiresIn,

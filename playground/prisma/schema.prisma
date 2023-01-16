@@ -10,24 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  User
-  Admin
-}
-
 model User {
-  id                 Int                @id @default(autoincrement())
-  name               String
-  email              String             @unique
-  role               Role               @default(User)
-  provider           String             @default("default")
-  password           String?
-  verified           Boolean            @default(false)
-  blocked            Boolean            @default(false)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  refreshTokens      RefreshToken[]
-  metadata           Json?
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  role          Role           @default(user)
+  provider      Provider       @default(default)
+  password      String?
+  verified      Boolean        @default(false)
+  blocked       Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
+  metadata      Json?
 }
 
 model RefreshToken {
@@ -36,4 +31,15 @@ model RefreshToken {
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum Provider {
+  default
+  google
+  github
 }

@@ -1,6 +1,7 @@
 //@ts-ignore
 import { useRuntimeConfig } from "#imports";
 import { defineEventHandler, createError, readBody } from "h3";
+import { sendMail } from "../../../utils/mail";
 import { createEmailVerifyToken } from "../../../utils/token";
 import { findUser } from "../../../utils/user";
 
@@ -19,7 +20,16 @@ export default defineEventHandler(async (event) => {
 
       const redirectUrl = config.public.auth.baseUrl + "/api/auth/email/verify";
       const fullRedirectUrl = redirectUrl + "?token=" + emailVerifyToken;
-      console.log(fullRedirectUrl);
+
+      await sendMail({
+        to: user.email,
+        subject: "Email verification",
+        html: `
+            <h2>Hello ${user.name}</h2>
+            <br>
+            <a href="${fullRedirectUrl}"style="background-color:#206bc4;color:white;padding:10px;border-radius:5px;margin:20px;text-decoration: none;">Verify My Email</a>
+            `,
+      });
     }
 
     return {};

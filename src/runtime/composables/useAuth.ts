@@ -1,19 +1,7 @@
 import jwt_decode from "jwt-decode";
-
 import type { Ref } from "vue";
-
 import { appendHeader } from "h3";
-
-import type {
-  AuthProvider,
-  User,
-  LoginRequest,
-  LoginResponse,
-  RefreshResponse,
-  RegisterRequest,
-  requestPasswordResetRequest,
-  resetPasswordRequest,
-} from "../types";
+import { Provider, Role } from "@prisma/client";
 
 import {
   useRuntimeConfig,
@@ -24,14 +12,25 @@ import {
   useRequestHeaders,
 } from "#app";
 
+type User = {
+  id: number;
+  email: string;
+  name: string;
+  blocked: boolean;
+  verified: boolean;
+  metadata: JSON;
+  role: Role;
+  provider: Provider;
+};
+
 export default function () {
   const config = useRuntimeConfig();
   const useInitialized: () => Ref<boolean> = () =>
-    useState("directus_auth_initialized", () => false);
+    useState("auth_initialized", () => false);
   const useUser: () => Ref<User | null> = () =>
-    useState<User | null>("directus_auth_user", () => null);
+    useState<User | null>("auth_user", () => null);
   const useAccessToken: () => Ref<string | null> = () =>
-    useState<string | null>("directus_auth_access_token", () => null);
+    useState<string | null>("auth_access_token", () => null);
   const event = useRequestEvent();
   const route = useRoute();
 
@@ -45,10 +44,10 @@ export default function () {
     return true;
   }
 
-  async function login(input: LoginRequest) {
+  async function login(input: { email: string; password: string }) {
     const accessToken = useAccessToken();
 
-    return useFetch<LoginResponse>("/api/auth/login", {
+    return useFetch<{ accessToken: string }>("/api/auth/login", {
       method: "POST",
       credentials: "include",
       body: {
@@ -65,9 +64,22 @@ export default function () {
     });
   }
 
-  async function loginWithProvider(provider: AuthProvider) {
+  async function loginWithProvider(provider: Provider) {
     if (process.client) {
       window.location.replace(`/api/auth/login/${provider}`);
+    }
+  }
+
+  async function prefetch() {
+    const accessToken = useAccessToken();
+    if (accessToken) {
+      if (isAccessTokenExpired()) {
+        await refresh();
+        if (!accessToken) {
+          await logout();
+          throw new Error("Unauthorized");
+        }
+      }
     }
   }
 
@@ -89,11 +101,14 @@ export default function () {
         }
       }
 
-      const res = await $fetch.raw<RefreshResponse>("/api/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-        headers: cookie ? { cookie } : {},
-      });
+      const res = await $fetch.raw<{ accessToken: string }>(
+        "/api/auth/refresh",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: cookie ? { cookie } : {},
+        }
+      );
 
       if (process.server) {
         const cookie = res.headers.get("set-cookie") || "";
@@ -115,13 +130,7 @@ export default function () {
       return;
     }
 
-    if (isAccessTokenExpired()) {
-      await refresh();
-      if (!accessToken.value) {
-        await logout();
-        return;
-      }
-    }
+    await prefetch();
 
     try {
       user.value = await $fetch<User>("/api/auth/me", {
@@ -151,7 +160,7 @@ export default function () {
     await navigateTo(config.public.auth.redirect.logout);
   }
 
-  function register(input: RegisterRequest) {
+  function register(input: { email: string; password: string; name: string }) {
     return useFetch<User>("/api/auth/register", {
       method: "POST",
       body: input,
@@ -167,7 +176,7 @@ export default function () {
     });
   }
 
-  async function resetPassword(input: resetPasswordRequest) {
+  async function resetPassword(input: { password: string }) {
     return useFetch<void>("/api/auth/password/reset", {
       method: "PATCH",
       body: {
@@ -198,7 +207,7 @@ export default function () {
     register,
     requestPasswordReset,
     resetPassword,
-    isAccessTokenExpired,
     requestEmailVerify,
+    prefetch,
   };
 }

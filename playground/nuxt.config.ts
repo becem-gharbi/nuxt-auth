@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   //@ts-ignore
   modules: [myModule],
   auth: {
-    jwtSecret: process.env.AUTH_JWT_SECRET,
     accessTokenSecret: process.env.AUTH_ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.AUTH_REFRESH_TOKEN_SECRET,
 

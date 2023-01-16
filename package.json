@@ -44,13 +44,12 @@
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/nodemailer": "^6.4.7",
-    "@types/simple-oauth2": "^4.1.1",
     "@types/uuid": "^9.0.0",
     "bcrypt": "^5.1.0",
     "defu": "^6.1.1",
-    "jso": "^4.1.1",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
+    "nodemailer": "^6.9.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
