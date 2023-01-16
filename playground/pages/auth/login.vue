@@ -4,6 +4,7 @@
         <button @click="handleLogin">Login</button>
         <button @click="handleRequestPasswordReset">Forgot password</button>
         <button @click="() => loginWithProvider('google')">Login with google</button>
+        <button @click="() => loginWithProvider('github')">Login with github</button>
     </div>
 </template>
 

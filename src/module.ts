@@ -22,6 +22,7 @@ export interface ModuleOptions {
     {
       clientId: string;
       clientSecret: string;
+      scopes: string;
       authorizeUrl: string;
       getTokenUrl: string;
       getUserUrl: string;
@@ -63,6 +64,7 @@ export default defineNuxtModule<ModuleOptions>({
       google: {
         clientId: "",
         clientSecret: "",
+        scopes: "email",
         authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
         getTokenUrl: "https://accounts.google.com/o/oauth2/token",
         getUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",

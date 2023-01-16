@@ -1,63 +1,37 @@
-import { defineEventHandler, setCookie, createError, getCookie } from "h3";
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
-import jwt from "jsonwebtoken";
-import prisma from "../../utils/prisma";
+import { defineEventHandler, createError } from "h3";
+import {
+  createAccessToken,
+  getRefreshTokenFromCookie,
+  setRefreshTokenCookie,
+  updateRefreshToken,
+  verifyRefreshToken,
+} from "../../utils/token";
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig();
-
-    const refreshToken = getCookie(
-      event,
-      config.public.auth.refreshTokenCookieName
-    );
+    const refreshToken = getRefreshTokenFromCookie(event);
 
     if (!refreshToken) {
       throw new Error("Unauthorized");
     }
 
-    const payload = jwt.verify(
-      refreshToken,
-      config.auth.refreshTokenSecret
-    ) as {
-      userId: number;
-    };
+    const payload = verifyRefreshToken(refreshToken);
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: payload.userId,
-      },
-    });
-
-    if (!user) {
-      throw new Error("user-not-found");
+    if (!payload) {
+      throw new Error("Unauthorized");
     }
 
-    const accessToken = jwt.sign(
-      { userId: user.id },
-      config.auth.accessTokenSecret,
-      {
-        expiresIn: config.auth.accessTokenExpiresIn,
-      }
-    );
+    const newRefreshToken = await updateRefreshToken(payload.id);
 
-    const newRefreshToken = jwt.sign(
-      { userId: user.id },
-      config.auth.refreshTokenSecret
-    );
+    setRefreshTokenCookie(event, {
+      id: newRefreshToken.id,
+      uid: newRefreshToken.uid,
+      userId: newRefreshToken.userId,
+    });
 
-    setCookie(
-      event,
-      config.public.auth.refreshTokenCookieName,
-      newRefreshToken,
-      {
-        httpOnly: true,
-        secure: true,
-        maxAge: config.auth.refreshTokenMaxAge,
-        sameSite: "lax",
-      }
-    );
+    const accessToken = createAccessToken({
+      userId: newRefreshToken.userId,
+    });
 
     return { accessToken };
   } catch (error) {

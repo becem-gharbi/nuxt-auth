@@ -1,6 +1,7 @@
-import { defineEventHandler, createError, sendRedirect } from "h3";
 //@ts-ignore
 import { useRuntimeConfig } from "#imports";
+
+import { defineEventHandler, createError, sendRedirect } from "h3";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
       "?" +
       "response_type=code" +
       "&" +
-      "scope=email profile" +
+      `scope=${config.auth.oauth[provider].scopes}` +
       "&" +
       `redirect_uri=${config.public.auth.baseUrl}/api/auth/login/${provider}/callback` +
       "&" +

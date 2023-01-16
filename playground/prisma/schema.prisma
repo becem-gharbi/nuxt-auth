@@ -10,29 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            Int      @id @default(autoincrement())
-  firstName     String?
-  lastName      String?
-  picture       String?
-  email         String?  @unique
-  emailVerified Boolean?
-  gender        String?
-  birthdate     String?
-  locale        String?
-  phoneNumber   String?
-  role          Role     @default(User)
-  provider      String
-
-  photoUrl String?
-  password String?
-  blocked  Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 enum Role {
   User
   Admin
+}
+
+model User {
+  id                 Int            @id @default(autoincrement())
+  name               String
+  email              String         @unique
+  role               Role           @default(User)
+  provider           String         @default("default")
+  password           String?
+  verified           Boolean        @default(false)
+  blocked            Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  emailVerifyToken   String?
+  passwordResetToken String?
+  refreshTokens      RefreshToken[]
+  metadata           Json?
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  uid       String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

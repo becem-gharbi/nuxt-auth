@@ -1,14 +1,14 @@
-import prisma from "../../../utils/prisma";
-import jwt from "jsonwebtoken";
-import { defineEventHandler, readBody, createError, setCookie } from "h3";
+import { prisma } from "../../../utils/prisma";
+import { defineEventHandler, readBody, createError } from "h3";
 import bcrypt from "bcrypt";
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
+import {
+  createRefreshToken,
+  setRefreshTokenCookie,
+  createAccessToken,
+} from "../../../utils/token";
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig();
-
     const { email, password } = await readBody(event);
 
     const user = await prisma.user.findUnique({
@@ -22,37 +22,26 @@ export default defineEventHandler(async (event) => {
       !user.password ||
       !bcrypt.compareSync(password, user.password)
     ) {
-      throw createError({
-        statusCode: 400,
-        message: "wrong-credentials",
-      });
+      throw new Error("wrong-credentials");
     }
 
-    const accessToken = jwt.sign(
-      { userId: user.id },
-      config.auth.accessTokenSecret,
-      {
-        expiresIn: config.auth.accessTokenExpiresIn,
-      }
-    );
+    const refreshToken = await createRefreshToken(user.id);
 
-    const refreshToken = jwt.sign(
-      { userId: user.id },
-      config.auth.refreshTokenSecret
-    );
+    setRefreshTokenCookie(event, {
+      id: refreshToken.id,
+      uid: refreshToken.uid,
+      userId: refreshToken.userId,
+    });
 
-    setCookie(event, config.public.auth.refreshTokenCookieName, refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: config.auth.refreshTokenMaxAge,
-      sameSite: "lax",
+    const accessToken = createAccessToken({
+      userId: user.id,
     });
 
     return { accessToken };
   } catch (error) {
     throw createError({
       statusCode: 400,
-      message: error,
+      message: error.message,
     });
   }
 });

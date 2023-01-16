@@ -1,4 +1,4 @@
-import prisma from "../../utils/prisma";
+import { prisma } from "../../utils/prisma";
 import bcrypt from "bcrypt";
 import { defineEventHandler, readBody, createError } from "h3";
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    return { ok: true };
+    return {};
   } catch (error) {
     throw createError({
       statusCode: 400,

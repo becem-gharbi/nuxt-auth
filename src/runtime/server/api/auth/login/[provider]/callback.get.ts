@@ -1,20 +1,17 @@
-import {
-  defineEventHandler,
-  setCookie,
-  createError,
-  getCookie,
-  getQuery,
-  sendRedirect,
-} from "h3";
 //@ts-ignore
-import { useRuntimeConfig, useFetch } from "#imports";
-import prisma from "../../../../utils/prisma";
-import jwt from "jsonwebtoken";
+import { useRuntimeConfig } from "#imports";
+import { defineEventHandler, createError, getQuery, sendRedirect } from "h3";
 import { ofetch } from "ofetch";
+import { createUser, findUser } from "../../../../utils/user";
+import {
+  createRefreshToken,
+  setRefreshTokenCookie,
+} from "../../../../utils/token";
+
+const config = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig();
     const provider = event.context.params.provider;
     const code = getQuery(event).code?.toString() || "";
 
@@ -33,13 +30,15 @@ export default defineEventHandler(async (event) => {
       {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       }
     );
 
     const userInfo = await ofetch<{
       email: string;
       name: string;
-      picture: string;
     }>(config.auth.oauth[provider].getUserUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
@@ -47,41 +46,28 @@ export default defineEventHandler(async (event) => {
     });
 
     if (userInfo.email) {
-      let user = await prisma.user.findUnique({
-        where: {
-          email: userInfo.email,
-        },
-      });
+      let user = await findUser({ email: userInfo.email });
+
+      if (user && user.provider !== provider) {
+        throw new Error("wrong-provider");
+      }
 
       if (!user) {
-        const newUser = await prisma.user.create({
-          data: {
-            email: userInfo.email,
-            name: userInfo.name,
-            photoUrl: userInfo.picture,
-          },
+        user = await createUser({
+          email: userInfo.email,
+          name: userInfo.name,
+          provider: provider,
         });
-
-        user = Object.assign(newUser);
       }
 
       if (user) {
-        const newRefreshToken = jwt.sign(
-          { userId: user.id },
-          config.auth.refreshTokenSecret
-        );
+        const refreshToken = await createRefreshToken(user.id);
 
-        setCookie(
-          event,
-          config.public.auth.refreshTokenCookieName,
-          newRefreshToken,
-          {
-            httpOnly: true,
-            secure: true,
-            maxAge: config.auth.refreshTokenMaxAge,
-            sameSite: "lax",
-          }
-        );
+        setRefreshTokenCookie(event, {
+          id: refreshToken.id,
+          uid: refreshToken.uid,
+          userId: refreshToken.userId,
+        });
       }
     }
 
@@ -90,9 +76,14 @@ export default defineEventHandler(async (event) => {
       `${config.public.auth.baseUrl + config.public.auth.redirect.callback}`
     );
   } catch (error) {
-    throw createError({
-      statusCode: 400,
-      message: error,
-    });
+    await sendRedirect(
+      event,
+      `${
+        config.public.auth.baseUrl +
+        config.public.auth.redirect.callback +
+        "?error=" +
+        error.message
+      }`
+    );
   }
 });

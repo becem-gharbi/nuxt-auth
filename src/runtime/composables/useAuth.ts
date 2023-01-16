@@ -5,10 +5,14 @@ import type { Ref } from "vue";
 import { appendHeader } from "h3";
 
 import type {
-  ResponseLogin,
   AuthProvider,
-  ResponseRefresh,
   User,
+  LoginRequest,
+  LoginResponse,
+  RefreshResponse,
+  RegisterRequest,
+  requestPasswordResetRequest,
+  resetPasswordRequest,
 } from "../types";
 
 import {
@@ -41,14 +45,15 @@ export default function () {
     return true;
   }
 
-  async function login(credentials: { email: string; password: string }) {
+  async function login(input: LoginRequest) {
     const accessToken = useAccessToken();
-    return useFetch("/api/auth/login", {
+
+    return useFetch<LoginResponse>("/api/auth/login", {
       method: "POST",
       credentials: "include",
       body: {
-        email: credentials.email,
-        password: credentials.password,
+        email: input.email,
+        password: input.password,
       },
     }).then(async (res) => {
       if (res.data.value) {
@@ -84,14 +89,11 @@ export default function () {
         }
       }
 
-      const res = await $fetch.raw<{ accessToken: string }>(
-        "/api/auth/refresh",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: cookie ? { cookie } : {},
-        }
-      );
+      const res = await $fetch.raw<RefreshResponse>("/api/auth/refresh", {
+        method: "POST",
+        credentials: "include",
+        headers: cookie ? { cookie } : {},
+      });
 
       if (process.server) {
         const cookie = res.headers.get("set-cookie") || "";
@@ -122,13 +124,11 @@ export default function () {
     }
 
     try {
-      const res = await $fetch<any>("/api/auth/me", {
+      user.value = await $fetch<User>("/api/auth/me", {
         headers: {
           Authorization: "Bearer " + accessToken.value,
         },
       });
-
-      user.value = res;
     } catch (error) {
       user.value = null;
     }
@@ -151,10 +151,10 @@ export default function () {
     await navigateTo(config.public.auth.redirect.logout);
   }
 
-  function register(user: User) {
-    return useFetch("/api/auth/register", {
+  function register(input: RegisterRequest) {
+    return useFetch<User>("/api/auth/register", {
       method: "POST",
-      body: user,
+      body: input,
     });
   }
 
@@ -162,21 +162,21 @@ export default function () {
     return config.public.auth.baseUrl + path;
   }
 
-  async function requestPasswordReset(email: string) {
+  async function requestPasswordReset(input: requestPasswordResetRequest) {
     return useFetch<void>("/auth/password/request", {
       method: "POST",
       body: {
-        email,
+        email: input.email,
         reset_url: getRedirectUrl(config.public.auth.redirect.resetPassword),
       },
     });
   }
 
-  async function resetPassword(password: string) {
+  async function resetPassword(input: resetPasswordRequest) {
     return useFetch<void>("/auth/password/reset", {
       method: "POST",
       body: {
-        password,
+        password: input.password,
         token: route.query.token,
       },
     });
