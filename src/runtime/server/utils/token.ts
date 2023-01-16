@@ -17,6 +17,10 @@ type ResetPasswordPayload = {
   userId: number;
 };
 
+type EmailVerifyPayload = {
+  userId: number;
+};
+
 type AccessTokenPayload = {
   userId: number;
 };
@@ -142,3 +146,22 @@ export function verifyResetPasswordToken(resetPasswordToken: string) {
 }
 
 /*************** Email Verify token ***************/
+
+export function createEmailVerifyToken(payload: EmailVerifyPayload) {
+  const emailVerifyToken = jwt.sign(
+    payload,
+    config.auth.accessTokenSecret + "email-verify",
+    {
+      expiresIn: "5m",
+    }
+  );
+  return emailVerifyToken;
+}
+
+export function verifyEmailVerifyToken(emailVerifyToken: string) {
+  const payload = jwt.verify(
+    emailVerifyToken,
+    config.auth.accessTokenSecret + "email-verify"
+  ) as EmailVerifyPayload;
+  return payload;
+}

@@ -8,9 +8,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyResetPasswordToken(token);
 
-    if (payload) {
-      await changePassword(payload.userId, password);
-    }
+    await changePassword(payload.userId, password);
 
     return {};
   } catch (error) {

@@ -17,10 +17,6 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyRefreshToken(refreshToken);
 
-    if (!payload) {
-      throw new Error("Unauthorized");
-    }
-
     const newRefreshToken = await updateRefreshToken(payload.id);
 
     setRefreshTokenCookie(event, {

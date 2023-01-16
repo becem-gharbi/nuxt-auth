@@ -43,7 +43,8 @@ export interface ModuleOptions {
     logout: string;
     home: string;
     callback: string;
-    resetPassword: string;
+    passwordReset: string;
+    emailVerify: string;
   };
 }
 
@@ -85,7 +86,8 @@ export default defineNuxtModule<ModuleOptions>({
       logout: "/auth/login",
       home: "/home",
       callback: "/auth/callback",
-      resetPassword: "/auth/reset-password",
+      passwordReset: "/auth/password-reset",
+      emailVerify: "/auth/email-verify",
     },
   },
 
@@ -154,6 +156,16 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/password/reset.patch"),
     });
 
+    addServerHandler({
+      route: "/api/auth/email/request",
+      handler: resolve(runtimeDir, "server/api/auth/email/request.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/email/verify",
+      handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
+    });
+
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {
@@ -181,7 +193,8 @@ export default defineNuxtModule<ModuleOptions>({
             logout: options.redirect.logout,
             home: options.redirect.home,
             callback: options.redirect.callback,
-            resetPassword: options.redirect.resetPassword,
+            passwordReset: options.redirect.passwordReset,
+            emailVerify: options.redirect.emailVerify,
           },
         },
       },

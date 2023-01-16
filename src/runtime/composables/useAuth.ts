@@ -158,16 +158,11 @@ export default function () {
     });
   }
 
-  function getRedirectUrl(path: string) {
-    return config.public.auth.baseUrl + path;
-  }
-
-  async function requestPasswordReset(input: requestPasswordResetRequest) {
+  async function requestPasswordReset(input: { email: string }) {
     return useFetch<void>("/api/auth/password/request", {
       method: "POST",
       body: {
         email: input.email,
-        resetUrl: getRedirectUrl(config.public.auth.redirect.resetPassword),
       },
     });
   }
@@ -178,6 +173,15 @@ export default function () {
       body: {
         password: input.password,
         token: route.query.token,
+      },
+    });
+  }
+
+  async function requestEmailVerify(input: { email: string }) {
+    return useFetch<void>("/api/auth/email/request", {
+      method: "POST",
+      body: {
+        email: input.email,
       },
     });
   }
@@ -195,5 +199,6 @@ export default function () {
     requestPasswordReset,
     resetPassword,
     isAccessTokenExpired,
+    requestEmailVerify,
   };
 }

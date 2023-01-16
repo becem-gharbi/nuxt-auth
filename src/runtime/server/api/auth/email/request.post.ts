@@ -1,12 +1,10 @@
 //@ts-ignore
 import { useRuntimeConfig } from "#imports";
 import { defineEventHandler, createError, readBody } from "h3";
-import { createResetPasswordToken } from "../../../utils/token";
+import { createEmailVerifyToken } from "../../../utils/token";
 import { findUser } from "../../../utils/user";
 
 const config = useRuntimeConfig();
-const redirectUrl =
-  config.public.auth.baseUrl + config.public.auth.redirect.resetPassword;
 
 export default defineEventHandler(async (event) => {
   try {
@@ -14,12 +12,13 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ email: email });
 
-    if (user) {
-      const resetPasswordToken = createResetPasswordToken({
+    if (user && !user.verified) {
+      const emailVerifyToken = createEmailVerifyToken({
         userId: user.id,
       });
 
-      const fullRedirectUrl = redirectUrl + "?token=" + resetPasswordToken;
+      const redirectUrl = config.public.auth.baseUrl + "/api/auth/email/verify";
+      const fullRedirectUrl = redirectUrl + "?token=" + emailVerifyToken;
       console.log(fullRedirectUrl);
     }
 

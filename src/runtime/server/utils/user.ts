@@ -43,3 +43,14 @@ export async function changePassword(userId: number, password: string) {
     },
   });
 }
+
+export async function setUserEmailVerified(userId: number) {
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      verified: true,
+    },
+  });
+}

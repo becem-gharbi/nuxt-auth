@@ -36,13 +36,14 @@ export default defineNuxtConfig({
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
-    refreshTokenCookieName: "directus_refresh_token",
+    refreshTokenCookieName: "auth_refresh_token",
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
       home: "/home",
       callback: "/auth/callback",
-      resetPassword: "/auth/reset-password",
+      passwordReset: "/auth/password-reset",
+      emailVerify: "/auth/email-verify",
     },
   },
 });
