@@ -10,7 +10,7 @@
   ],
   "release": {
     "branches": [
-      { "name": "beta", "channel": "beta", "prerelease": true }
+      { "name": "main", "channel": "beta", "prerelease": true }
     ]
   },
   "publishConfig": {
