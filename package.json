@@ -54,8 +54,8 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.29.0",
     "nuxt": "^3.0.0",
-    "semantic-release": "^20.0.2",
-    "prisma": "^4.8.1"
+    "prisma": "^4.8.1",
+    "semantic-release": "^20.0.2"
   },
   "repository": "https://github.com/becem-gharbi/nuxt-auth.git",
   "config": {
