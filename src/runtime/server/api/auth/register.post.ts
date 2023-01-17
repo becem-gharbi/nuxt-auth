@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     const { email, password, name } = await readBody(event);
 
     const user = await findUser({ email: email });
+
     if (user) {
       throw new Error("email-already-used");
     }

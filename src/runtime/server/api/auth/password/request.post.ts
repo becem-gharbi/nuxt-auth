@@ -1,13 +1,8 @@
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
 import { defineEventHandler, createError, readBody } from "h3";
 import { sendMail } from "../../../utils/mail";
 import { createResetPasswordToken } from "../../../utils/token";
 import { findUser } from "../../../utils/user";
-
-const config = useRuntimeConfig();
-const redirectUrl =
-  config.public.auth.baseUrl + config.public.auth.redirect.passwordReset;
+import { publicConfig } from "../../../utils/config";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -20,6 +15,8 @@ export default defineEventHandler(async (event) => {
         userId: user.id,
       });
 
+      const redirectUrl =
+        publicConfig.baseUrl + publicConfig.redirect.passwordReset;
       const fullRedirectUrl = redirectUrl + "?token=" + resetPasswordToken;
 
       await sendMail({

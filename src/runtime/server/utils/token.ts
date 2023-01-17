@@ -1,5 +1,3 @@
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -10,32 +8,19 @@ import {
   deleteCookie,
 } from "h3";
 import { prisma } from "./prisma";
-
-const config = useRuntimeConfig();
-
-type ResetPasswordPayload = {
-  userId: number;
-};
-
-type EmailVerifyPayload = {
-  userId: number;
-};
-
-type AccessTokenPayload = {
-  userId: number;
-};
-
-type RefreshTokenPayload = {
-  id: number;
-  uid: string;
-  userId: number;
-};
+import { privateConfig, publicConfig } from "./config";
+import type {
+  AccessTokenPayload,
+  RefreshTokenPayload,
+  ResetPasswordPayload,
+  EmailVerifyPayload,
+} from "../../types";
 
 /*************** Access token ***************/
 
 export function createAccessToken(payload: AccessTokenPayload) {
-  const accessToken = jwt.sign(payload, config.auth.accessTokenSecret, {
-    expiresIn: config.auth.accessTokenExpiresIn,
+  const accessToken = jwt.sign(payload, privateConfig.accessTokenSecret, {
+    expiresIn: privateConfig.accessTokenExpiresIn,
   });
 
   return accessToken;
@@ -52,7 +37,7 @@ export function getAccessTokenFromHeader(event: H3Event) {
 export function verifyAccessToken(accessToken: string) {
   const payload = jwt.verify(
     accessToken,
-    config.auth.accessTokenSecret
+    privateConfig.accessTokenSecret
   ) as AccessTokenPayload;
   return payload;
 }
@@ -86,28 +71,25 @@ export function setRefreshTokenCookie(
   event: H3Event,
   payload: RefreshTokenPayload
 ) {
-  const refreshToken = jwt.sign(payload, config.auth.refreshTokenSecret);
+  const refreshToken = jwt.sign(payload, privateConfig.refreshTokenSecret);
 
-  setCookie(event, config.public.auth.refreshTokenCookieName, refreshToken, {
+  setCookie(event, publicConfig.refreshTokenCookieName, refreshToken, {
     httpOnly: true,
     secure: true,
-    maxAge: config.auth.refreshTokenMaxAge,
+    maxAge: privateConfig.refreshTokenMaxAge,
     sameSite: "lax",
   });
 }
 
 export function getRefreshTokenFromCookie(event: H3Event) {
-  const refreshToken = getCookie(
-    event,
-    config.public.auth.refreshTokenCookieName
-  );
+  const refreshToken = getCookie(event, publicConfig.refreshTokenCookieName);
   return refreshToken;
 }
 
 export async function verifyRefreshToken(refreshToken: string) {
   const payload = jwt.verify(
     refreshToken,
-    config.auth.refreshTokenSecret
+    privateConfig.refreshTokenSecret
   ) as RefreshTokenPayload;
 
   await prisma.refreshToken.findFirstOrThrow({
@@ -137,7 +119,7 @@ export async function deleteManyRefreshToken(userId: number) {
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {
-  deleteCookie(event, config.public.auth.refreshTokenCookieName);
+  deleteCookie(event, publicConfig.refreshTokenCookieName);
 }
 
 /*************** Reset Password token ***************/
@@ -145,7 +127,7 @@ export function deleteRefreshTokenCookie(event: H3Event) {
 export function createResetPasswordToken(payload: ResetPasswordPayload) {
   const resetPasswordToken = jwt.sign(
     payload,
-    config.auth.accessTokenSecret + "reset-password",
+    privateConfig.accessTokenSecret + "reset-password",
     {
       expiresIn: "5m",
     }
@@ -156,7 +138,7 @@ export function createResetPasswordToken(payload: ResetPasswordPayload) {
 export function verifyResetPasswordToken(resetPasswordToken: string) {
   const payload = jwt.verify(
     resetPasswordToken,
-    config.auth.accessTokenSecret + "reset-password"
+    privateConfig.accessTokenSecret + "reset-password"
   ) as ResetPasswordPayload;
   return payload;
 }
@@ -166,7 +148,7 @@ export function verifyResetPasswordToken(resetPasswordToken: string) {
 export function createEmailVerifyToken(payload: EmailVerifyPayload) {
   const emailVerifyToken = jwt.sign(
     payload,
-    config.auth.accessTokenSecret + "email-verify",
+    privateConfig.accessTokenSecret + "email-verify",
     {
       expiresIn: "5m",
     }
@@ -177,7 +159,7 @@ export function createEmailVerifyToken(payload: EmailVerifyPayload) {
 export function verifyEmailVerifyToken(emailVerifyToken: string) {
   const payload = jwt.verify(
     emailVerifyToken,
-    config.auth.accessTokenSecret + "email-verify"
+    privateConfig.accessTokenSecret + "email-verify"
   ) as EmailVerifyPayload;
   return payload;
 }

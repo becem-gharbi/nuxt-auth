@@ -1,10 +1,7 @@
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { verifyEmailVerifyToken } from "../../../utils/token";
 import { setUserEmailVerified } from "../../../utils/user";
-
-const config = useRuntimeConfig();
+import { publicConfig } from "../../../utils/config";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -15,14 +12,14 @@ export default defineEventHandler(async (event) => {
 
       await setUserEmailVerified(payload.userId);
 
-      await sendRedirect(event, config.public.auth.redirect.emailVerify);
+      await sendRedirect(event, publicConfig.redirect.emailVerify);
     } else {
       throw new Error("token-not-found");
     }
   } catch (error) {
     await sendRedirect(
       event,
-      config.public.auth.redirect.emailVerify + "?error=" + error.message
+      publicConfig.redirect.emailVerify + "?error=" + error.message
     );
   }
 });

@@ -1,30 +1,21 @@
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
 import nodemailer from "nodemailer";
+import type { MailMessage } from "../../types";
+import { privateConfig } from "./config";
 
-type Message = {
-  to: string;
-  subject: string;
-  html: string;
-  text?: string;
-};
-
-export function sendMail(msg: Message) {
-  const config = useRuntimeConfig();
-
+export function sendMail(msg: MailMessage) {
   let transporter = nodemailer.createTransport({
-    host: config.auth.smtpHost,
-    port: config.auth.smtpPort,
+    host: privateConfig.smtpHost,
+    port: privateConfig.smtpPort,
     auth: {
-      user: config.auth.smtpUser,
-      pass: config.auth.smtpPass,
+      user: privateConfig.smtpUser,
+      pass: privateConfig.smtpPass,
     },
   });
 
   return new Promise((resolve, reject) => {
     transporter.sendMail(
       {
-        from: config.auth.smtpFrom,
+        from: privateConfig.smtpFrom,
         to: msg.to,
         subject: msg.subject,
         html: msg.html,

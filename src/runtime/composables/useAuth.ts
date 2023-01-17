@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import type { Ref } from "vue";
 import { appendHeader } from "h3";
-import { Provider, User } from "@prisma/client";
+import { User, Provider } from "../types";
 
 import {
   useRuntimeConfig,

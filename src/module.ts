@@ -1,5 +1,5 @@
 import { fileURLToPath } from "url";
-import type { Provider } from "./runtime/types";
+import type { PublicConfig, PrivateConfig } from "./runtime/types";
 
 import {
   defineNuxtModule,
@@ -11,44 +11,7 @@ import {
 
 import { defu } from "defu";
 
-export interface ModuleOptions {
-  accessTokenSecret: string;
-  refreshTokenSecret: string;
-  accessTokenExpiresIn: string;
-  refreshTokenMaxAge: number;
-
-  oauth?: Partial<
-    Record<
-      Provider,
-      {
-        clientId: string;
-        clientSecret: string;
-        scopes: string;
-        authorizeUrl: string;
-        tokenUrl: string;
-        userUrl: string;
-      }
-    >
-  >;
-
-  smtpHost: string;
-  smtpPort: number;
-  smtpUser: string;
-  smtpPass: string;
-  smtpFrom: string;
-
-  baseUrl: string;
-  enableGlobalAuthMiddleware: boolean;
-  refreshTokenCookieName: string;
-  redirect: {
-    login: string;
-    logout: string;
-    home: string;
-    callback: string;
-    passwordReset: string;
-    emailVerify: string;
-  };
-}
+export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {

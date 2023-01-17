@@ -1,5 +1,3 @@
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { ofetch } from "ofetch";
 import { createUser, findUser } from "../../../../utils/user";
@@ -7,26 +5,32 @@ import {
   createRefreshToken,
   setRefreshTokenCookie,
 } from "../../../../utils/token";
-
-const config = useRuntimeConfig();
+import { privateConfig, publicConfig } from "../../../../utils/config";
 
 export default defineEventHandler(async (event) => {
   try {
     const provider = event.context.params.provider;
     const code = getQuery(event).code?.toString() || "";
 
+    if (!privateConfig.oauth || !privateConfig.oauth[provider]) {
+      throw new Error("oauth-not-configured");
+    }
+
     const formData = new FormData();
     formData.append("grant_type", "authorization_code");
     formData.append("code", code);
-    formData.append("client_id", config.auth.oauth[provider].clientId);
-    formData.append("client_secret", config.auth.oauth[provider].clientSecret);
+    formData.append("client_id", privateConfig.oauth[provider].clientId);
+    formData.append(
+      "client_secret",
+      privateConfig.oauth[provider].clientSecret
+    );
     formData.append(
       "redirect_uri",
-      `${config.public.auth.baseUrl}/api/auth/login/${provider}/callback`
+      `${publicConfig.baseUrl}/api/auth/login/${provider}/callback`
     );
 
     const { access_token } = await ofetch(
-      config.auth.oauth[provider].tokenUrl,
+      privateConfig.oauth[provider].tokenUrl,
       {
         method: "POST",
         body: formData,
@@ -39,7 +43,7 @@ export default defineEventHandler(async (event) => {
     const userInfo = await ofetch<{
       email: string;
       name: string;
-    }>(config.auth.oauth[provider].userUrl, {
+    }>(privateConfig.oauth[provider].userUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
       },
@@ -57,6 +61,7 @@ export default defineEventHandler(async (event) => {
           email: userInfo.email,
           name: userInfo.name,
           provider: provider,
+          verified: true,
         });
       }
 
@@ -73,14 +78,14 @@ export default defineEventHandler(async (event) => {
 
     await sendRedirect(
       event,
-      `${config.public.auth.baseUrl + config.public.auth.redirect.callback}`
+      `${publicConfig.baseUrl + publicConfig.redirect.callback}`
     );
   } catch (error) {
     await sendRedirect(
       event,
       `${
-        config.public.auth.baseUrl +
-        config.public.auth.redirect.callback +
+        publicConfig.baseUrl +
+        publicConfig.redirect.callback +
         "?error=" +
         error.message
       }`

@@ -1,11 +1,8 @@
-//@ts-ignore
-import { useRuntimeConfig } from "#imports";
 import { defineEventHandler, createError, readBody } from "h3";
 import { sendMail } from "../../../utils/mail";
 import { createEmailVerifyToken } from "../../../utils/token";
 import { findUser } from "../../../utils/user";
-
-const config = useRuntimeConfig();
+import { publicConfig } from "../../../utils/config";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -18,7 +15,7 @@ export default defineEventHandler(async (event) => {
         userId: user.id,
       });
 
-      const redirectUrl = config.public.auth.baseUrl + "/api/auth/email/verify";
+      const redirectUrl = publicConfig.baseUrl + "/api/auth/email/verify";
       const fullRedirectUrl = redirectUrl + "?token=" + emailVerifyToken;
 
       await sendMail({
