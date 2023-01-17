@@ -104,11 +104,19 @@ export function getRefreshTokenFromCookie(event: H3Event) {
   return refreshToken;
 }
 
-export function verifyRefreshToken(refreshToken: string) {
+export async function verifyRefreshToken(refreshToken: string) {
   const payload = jwt.verify(
     refreshToken,
     config.auth.refreshTokenSecret
   ) as RefreshTokenPayload;
+
+  await prisma.refreshToken.findFirstOrThrow({
+    where: {
+      userId: payload.userId,
+      uid: payload.uid,
+    },
+  });
+
   return payload;
 }
 
@@ -116,6 +124,14 @@ export async function deleteRefreshToken(refreshTokenId: number) {
   await prisma.refreshToken.delete({
     where: {
       id: refreshTokenId,
+    },
+  });
+}
+
+export async function deleteManyRefreshToken(userId: number) {
+  await prisma.refreshToken.deleteMany({
+    where: {
+      userId,
     },
   });
 }

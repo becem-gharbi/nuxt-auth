@@ -19,15 +19,14 @@ model User {
   password      String?
   verified      Boolean        @default(false)
   blocked       Boolean        @default(false)
+  refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  refreshTokens RefreshToken[]
-  metadata      Json?
 }
 
 model RefreshToken {
   id        Int      @id @default(autoincrement())
-  uid       String   @unique
+  uid       String
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
@@ -42,4 +41,5 @@ enum Provider {
   default
   google
   github
+  facebook
 }

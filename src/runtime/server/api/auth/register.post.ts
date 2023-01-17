@@ -1,17 +1,11 @@
-import { prisma } from "../../utils/prisma";
 import { defineEventHandler, readBody, createError } from "h3";
-import { createUser } from "../../utils/user";
+import { createUser, findUser } from "../../utils/user";
 
 export default defineEventHandler(async (event) => {
   try {
     const { email, password, name } = await readBody(event);
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
+    const user = await findUser({ email: email });
     if (user) {
       throw new Error("email-already-used");
     }

@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     );
 
     const { access_token } = await ofetch(
-      config.auth.oauth[provider].getTokenUrl,
+      config.auth.oauth[provider].tokenUrl,
       {
         method: "POST",
         body: formData,
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     const userInfo = await ofetch<{
       email: string;
       name: string;
-    }>(config.auth.oauth[provider].getUserUrl, {
+    }>(config.auth.oauth[provider].userUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
       },

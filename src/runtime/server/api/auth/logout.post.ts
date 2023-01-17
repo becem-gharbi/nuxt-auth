@@ -1,6 +1,6 @@
 import { defineEventHandler, createError } from "h3";
 import {
-  deleteRefreshToken,
+  deleteManyRefreshToken,
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
@@ -14,13 +14,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("Unauthorized");
     }
 
-    const payload = verifyRefreshToken(refreshToken);
+    const payload = await verifyRefreshToken(refreshToken);
 
-    if (!payload) {
-      throw new Error("Unauthorized");
-    }
-
-    await deleteRefreshToken(payload.id);
+    await deleteManyRefreshToken(payload.id);
 
     deleteRefreshTokenCookie(event);
     return {};

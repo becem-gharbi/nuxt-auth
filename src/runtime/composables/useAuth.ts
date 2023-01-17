@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import type { Ref } from "vue";
 import { appendHeader } from "h3";
-import { Provider, Role } from "@prisma/client";
+import { Provider, User } from "@prisma/client";
 
 import {
   useRuntimeConfig,
@@ -11,17 +11,6 @@ import {
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
-
-type User = {
-  id: number;
-  email: string;
-  name: string;
-  blocked: boolean;
-  verified: boolean;
-  metadata: JSON;
-  role: Role;
-  provider: Provider;
-};
 
 export default function () {
   const config = useRuntimeConfig();
@@ -178,7 +167,7 @@ export default function () {
 
   async function resetPassword(input: { password: string }) {
     return useFetch<void>("/api/auth/password/reset", {
-      method: "PATCH",
+      method: "PUT",
       body: {
         password: input.password,
         token: route.query.token,

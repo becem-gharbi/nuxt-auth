@@ -1,27 +1,18 @@
-import { prisma } from "../../../utils/prisma";
 import { defineEventHandler, readBody, createError } from "h3";
-import bcrypt from "bcrypt";
 import {
   createRefreshToken,
   setRefreshTokenCookie,
   createAccessToken,
 } from "../../../utils/token";
+import { findUser, verifyPassword } from "../../../utils/user";
 
 export default defineEventHandler(async (event) => {
   try {
     const { email, password } = await readBody(event);
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const user = await findUser({email})
 
-    if (
-      !user ||
-      !user.password ||
-      !bcrypt.compareSync(password, user.password)
-    ) {
+    if (!user || !user.password || !verifyPassword(password, user.password)) {
       throw new Error("wrong-credentials");
     }
 

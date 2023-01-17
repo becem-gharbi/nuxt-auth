@@ -5,16 +5,6 @@ import bcrypt from "bcrypt";
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUnique({
     where,
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      blocked: true,
-      verified: true,
-      metadata: true,
-      role: true,
-      provider: true,
-    },
   });
   return user;
 }
@@ -53,4 +43,8 @@ export async function setUserEmailVerified(userId: number) {
       verified: true,
     },
   });
+}
+
+export function verifyPassword(password: string, hashedPassword: string) {
+  return bcrypt.compareSync(password, hashedPassword);
 }

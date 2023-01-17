@@ -18,7 +18,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("user-not-found");
     }
 
-    return { user };
+    const { password, ...sanitizedUser } = user;
+
+    return { user: sanitizedUser };
   } catch (error) {
     throw createError({
       statusCode: 400,

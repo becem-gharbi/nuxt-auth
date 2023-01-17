@@ -1,4 +1,5 @@
 import { fileURLToPath } from "url";
+import type { Provider } from "./runtime/types";
 
 import {
   defineNuxtModule,
@@ -16,16 +17,18 @@ export interface ModuleOptions {
   accessTokenExpiresIn: string;
   refreshTokenMaxAge: number;
 
-  oauth?: Record<
-    string,
-    {
-      clientId: string;
-      clientSecret: string;
-      scopes: string;
-      authorizeUrl: string;
-      getTokenUrl: string;
-      getUserUrl: string;
-    }
+  oauth?: Partial<
+    Record<
+      Provider,
+      {
+        clientId: string;
+        clientSecret: string;
+        scopes: string;
+        authorizeUrl: string;
+        tokenUrl: string;
+        userUrl: string;
+      }
+    >
   >;
 
   smtpHost: string;
@@ -65,8 +68,8 @@ export default defineNuxtModule<ModuleOptions>({
         clientSecret: "",
         scopes: "email profile",
         authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
-        getTokenUrl: "https://accounts.google.com/o/oauth2/token",
-        getUserUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
+        tokenUrl: "https://accounts.google.com/o/oauth2/token",
+        userUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
       },
     },
 
@@ -151,7 +154,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     addServerHandler({
       route: "/api/auth/password/reset",
-      handler: resolve(runtimeDir, "server/api/auth/password/reset.patch"),
+      handler: resolve(runtimeDir, "server/api/auth/password/reset.put"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/password/change",
+      handler: resolve(runtimeDir, "server/api/auth/password/change.put"),
     });
 
     addServerHandler({
