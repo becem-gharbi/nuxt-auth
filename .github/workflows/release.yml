@@ -2,7 +2,7 @@ name: Release
 "on":
   push:
     branches:
-      - 'main'
+      - "main"
 jobs:
   release:
     name: release
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: npm
-          node-version: 16
+          node-version: 18
       - run: npm ci
       - run: npm run dev:prepare
       - run: npx semantic-release
