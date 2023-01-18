@@ -3,7 +3,8 @@
     "main",
     {
       "name": "beta",
-      "prerelease": true
+      "prerelease": true,
+      "channel": "latest"
     }
   ]
 }
