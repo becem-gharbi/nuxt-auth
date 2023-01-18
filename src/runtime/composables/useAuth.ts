@@ -8,12 +8,13 @@ import {
   useRoute,
   navigateTo,
   useState,
+  useFetch,
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
 
 export default function () {
-  const config = useRuntimeConfig();
+  const publicConfig = useRuntimeConfig().public.auth;
   const useInitialized: () => Ref<boolean> = () =>
     useState("auth_initialized", () => false);
   const useUser: () => Ref<User | null> = () =>
@@ -47,7 +48,7 @@ export default function () {
       if (res.data.value) {
         accessToken.value = res.data.value.accessToken;
         await fetchUser();
-        await navigateTo(config.public.auth.redirect.home);
+        await navigateTo(publicConfig.redirect.home);
       }
       return res;
     });
@@ -81,10 +82,7 @@ export default function () {
         const headers = useRequestHeaders(["Cookie"]);
         cookie = headers.cookie;
 
-        if (
-          !cookie ||
-          !cookie.includes(config.public.auth.refreshTokenCookieName)
-        ) {
+        if (!cookie || !cookie.includes(publicConfig.refreshTokenCookieName)) {
           accessToken.value = null;
           return;
         }
@@ -146,7 +144,7 @@ export default function () {
     }
 
     user.value = null;
-    await navigateTo(config.public.auth.redirect.logout);
+    await navigateTo(publicConfig.redirect.logout);
   }
 
   function register(input: { email: string; password: string; name: string }) {
