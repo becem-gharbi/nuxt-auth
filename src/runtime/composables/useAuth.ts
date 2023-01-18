@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import type { Ref } from "vue";
 import { appendHeader } from "h3";
-import {
+import type {
   User,
   Provider,
   FetchReturn,
