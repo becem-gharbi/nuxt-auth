@@ -1,13 +1,9 @@
 import jwt_decode from "jwt-decode";
 import type { Ref } from "vue";
 import { appendHeader } from "h3";
-import type {
-  User,
-  Provider,
-  FetchReturn,
-  UseFetchErrorT,
-  UseFetchDataT,
-} from "../types";
+import type { User, Provider } from "../types";
+import type { AsyncData } from "#app";
+import type { FetchError } from "ofetch";
 
 import {
   useRuntimeConfig,
@@ -18,6 +14,16 @@ import {
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
+
+type ErrorT = {
+  message: string;
+};
+
+type UseFetchDataT<T> = T | null;
+
+type UseFetchErrorT = FetchError<ErrorT> | null;
+
+type FetchReturn<T> = Promise<AsyncData<UseFetchDataT<T>, UseFetchErrorT>>;
 
 export default function () {
   const publicConfig = useRuntimeConfig().public.auth;
