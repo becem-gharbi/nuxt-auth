@@ -3,7 +3,7 @@ import type {
   Provider as PrismaProvider,
 } from "@prisma/client";
 
-import type { AsyncData } from "#app";
+import type { AsyncData } from "#imports";
 
 import type { FetchError } from "ofetch";
 
