@@ -4,18 +4,18 @@ import { privateConfig } from "./config";
 
 export function sendMail(msg: MailMessage) {
   let transporter = nodemailer.createTransport({
-    host: privateConfig.smtpHost,
-    port: privateConfig.smtpPort,
+    host: privateConfig.smtp.host,
+    port: privateConfig.smtp.port,
     auth: {
-      user: privateConfig.smtpUser,
-      pass: privateConfig.smtpPass,
+      user: privateConfig.smtp.user,
+      pass: privateConfig.smtp.pass,
     },
   });
 
   return new Promise((resolve, reject) => {
     transporter.sendMail(
       {
-        from: privateConfig.smtpFrom,
+        from: privateConfig.smtp.from,
         to: msg.to,
         subject: msg.subject,
         html: msg.html,

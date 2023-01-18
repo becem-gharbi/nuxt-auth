@@ -154,30 +154,30 @@ export default function () {
     });
   }
 
-  async function requestPasswordReset(input: { email: string }) {
+  async function requestPasswordReset(email: string) {
     return useFetch<void>("/api/auth/password/request", {
       method: "POST",
       body: {
-        email: input.email,
+        email,
       },
     });
   }
 
-  async function resetPassword(input: { password: string }) {
+  async function resetPassword(password: string) {
     return useFetch<void>("/api/auth/password/reset", {
       method: "PUT",
       body: {
-        password: input.password,
+        password: password,
         token: route.query.token,
       },
     });
   }
 
-  async function requestEmailVerify(input: { email: string }) {
+  async function requestEmailVerify(email: string) {
     return useFetch<void>("/api/auth/email/request", {
       method: "POST",
       body: {
-        email: input.email,
+        email,
       },
     });
   }

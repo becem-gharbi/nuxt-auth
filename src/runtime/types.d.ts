@@ -52,11 +52,13 @@ export type PrivateConfig = {
     >
   >;
 
-  smtpHost: string;
-  smtpPort: number;
-  smtpUser: string;
-  smtpPass: string;
-  smtpFrom: string;
+  smtp: {
+    host: string;
+    port: number;
+    user: string;
+    pass: string;
+    from: string;
+  };
 };
 
 export type PublicConfig = {
