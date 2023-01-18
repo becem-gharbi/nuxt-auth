@@ -3,14 +3,14 @@ import {
   createRefreshToken,
   setRefreshTokenCookie,
   createAccessToken,
-} from "../../../utils/token";
-import { findUser, verifyPassword } from "../../../utils/user";
+} from "#auth";
+import { findUser, verifyPassword } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {
     const { email, password } = await readBody(event);
 
-    const user = await findUser({email})
+    const user = await findUser({ email });
 
     if (!user || !user.password || !verifyPassword(password, user.password)) {
       throw new Error("wrong-credentials");

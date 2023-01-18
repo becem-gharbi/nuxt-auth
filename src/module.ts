@@ -135,6 +135,20 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
     });
 
+    //Create virtual imports for server-side
+    nuxt.hook("nitro:config", (nitroConfig) => {
+      nitroConfig.alias = nitroConfig.alias || {};
+
+      // Inline module runtime in Nitro bundle
+      nitroConfig.externals = defu(
+        typeof nitroConfig.externals === "object" ? nitroConfig.externals : {},
+        {
+          inline: [resolve(runtimeDir)],
+        }
+      );
+      nitroConfig.alias["#auth"] = resolve(runtimeDir, "server/utils");
+    });
+
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {

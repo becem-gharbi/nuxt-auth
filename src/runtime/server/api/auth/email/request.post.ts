@@ -1,8 +1,8 @@
 import { defineEventHandler, createError, readBody } from "h3";
-import { sendMail } from "../../../utils/mail";
-import { createEmailVerifyToken } from "../../../utils/token";
-import { findUser } from "../../../utils/user";
-import { publicConfig } from "../../../utils/config";
+import { sendMail } from "#auth";
+import { createEmailVerifyToken } from "#auth";
+import { findUser } from "#auth";
+import { publicConfig } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

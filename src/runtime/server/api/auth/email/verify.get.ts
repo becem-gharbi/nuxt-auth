@@ -1,7 +1,7 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
-import { verifyEmailVerifyToken } from "../../../utils/token";
-import { setUserEmailVerified } from "../../../utils/user";
-import { publicConfig } from "../../../utils/config";
+import { verifyEmailVerifyToken } from "#auth";
+import { setUserEmailVerified } from "#auth";
+import { publicConfig } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

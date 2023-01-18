@@ -1,5 +1,5 @@
 import { defineEventHandler, createError, sendRedirect } from "h3";
-import { privateConfig, publicConfig } from "../../../utils/config";
+import { privateConfig, publicConfig } from "#auth";
 
 export default defineEventHandler(async (event) => {
   const provider = event.context.params.provider;
