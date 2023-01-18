@@ -1,9 +1,6 @@
 import { defineEventHandler, createError, readBody } from "h3";
-import {
-  deleteManyRefreshToken,
-  verifyResetPasswordToken,
-} from "../../../utils/token";
-import { changePassword } from "../../../utils/user";
+import { deleteManyRefreshToken, verifyResetPasswordToken } from "#auth";
+import { changePassword } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

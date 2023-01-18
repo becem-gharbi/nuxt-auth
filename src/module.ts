@@ -25,22 +25,13 @@ export default defineNuxtModule<ModuleOptions>({
     accessTokenExpiresIn: "7s",
     refreshTokenMaxAge: 3600,
 
-    oauth: {
-      google: {
-        clientId: "",
-        clientSecret: "",
-        scopes: "email profile",
-        authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
-        tokenUrl: "https://accounts.google.com/o/oauth2/token",
-        userUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
-      },
+    smtp: {
+      host: "",
+      port: 587,
+      user: "",
+      pass: "",
+      from: "",
     },
-
-    smtpHost: "",
-    smtpPort: 587,
-    smtpUser: "",
-    smtpPass: "",
-    smtpFrom: "",
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
@@ -135,6 +126,20 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
     });
 
+    //Create virtual imports for server-side
+    nuxt.hook("nitro:config", (nitroConfig) => {
+      nitroConfig.alias = nitroConfig.alias || {};
+
+      // Inline module runtime in Nitro bundle
+      nitroConfig.externals = defu(
+        typeof nitroConfig.externals === "object" ? nitroConfig.externals : {},
+        {
+          inline: [resolve(runtimeDir)],
+        }
+      );
+      nitroConfig.alias["#auth"] = resolve(runtimeDir, "server/utils");
+    });
+
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {
@@ -145,11 +150,7 @@ export default defineNuxtModule<ModuleOptions>({
 
         oauth: options.oauth,
 
-        smtpHost: options.smtpHost,
-        smtpPort: options.smtpPort,
-        smtpUser: options.smtpUser,
-        smtpPass: options.smtpPass,
-        smtpFrom: options.smtpFrom,
+        smtp: options.smtp,
       },
       public: {
         auth: {

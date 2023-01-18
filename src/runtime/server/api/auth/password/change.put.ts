@@ -3,8 +3,8 @@ import {
   deleteManyRefreshToken,
   getAccessTokenFromHeader,
   verifyAccessToken,
-} from "../../../utils/token";
-import { changePassword, findUser, verifyPassword } from "../../../utils/user";
+} from "#auth";
+import { changePassword, findUser, verifyPassword } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

@@ -1,11 +1,8 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { ofetch } from "ofetch";
-import { createUser, findUser } from "../../../../utils/user";
-import {
-  createRefreshToken,
-  setRefreshTokenCookie,
-} from "../../../../utils/token";
-import { privateConfig, publicConfig } from "../../../../utils/config";
+import { createUser, findUser } from "#auth";
+import { createRefreshToken, setRefreshTokenCookie } from "#auth";
+import { privateConfig, publicConfig } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

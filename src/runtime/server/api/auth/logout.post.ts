@@ -4,7 +4,7 @@ import {
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
-} from "../../utils/token";
+} from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

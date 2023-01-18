@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody, createError } from "h3";
-import { createUser, findUser } from "../../utils/user";
+import { createUser, findUser } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

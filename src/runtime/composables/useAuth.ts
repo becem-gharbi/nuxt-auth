@@ -1,19 +1,32 @@
 import jwt_decode from "jwt-decode";
 import type { Ref } from "vue";
 import { appendHeader } from "h3";
-import { User, Provider } from "../types";
+import type { User, Provider } from "../types";
+import type { AsyncData } from "#app";
+import type { FetchError } from "ofetch";
 
 import {
   useRuntimeConfig,
   useRoute,
   navigateTo,
   useState,
+  useFetch,
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
 
+type ErrorT = {
+  message: string;
+};
+
+type UseFetchDataT<T> = T | null;
+
+type UseFetchErrorT = FetchError<ErrorT> | null;
+
+type FetchReturn<T> = Promise<AsyncData<UseFetchDataT<T>, UseFetchErrorT>>;
+
 export default function () {
-  const config = useRuntimeConfig();
+  const publicConfig = useRuntimeConfig().public.auth;
   const useInitialized: () => Ref<boolean> = () =>
     useState("auth_initialized", () => false);
   const useUser: () => Ref<User | null> = () =>
@@ -33,38 +46,44 @@ export default function () {
     return true;
   }
 
-  async function login(input: { email: string; password: string }) {
+  async function login(input: {
+    email: string;
+    password: string;
+  }): FetchReturn<{ accessToken: string }> {
     const accessToken = useAccessToken();
 
-    return useFetch<{ accessToken: string }>("/api/auth/login", {
-      method: "POST",
-      credentials: "include",
-      body: {
-        email: input.email,
-        password: input.password,
-      },
-    }).then(async (res) => {
+    return useFetch<UseFetchDataT<{ accessToken: string }>, UseFetchErrorT>(
+      "/api/auth/login",
+      {
+        method: "POST",
+        credentials: "include",
+        body: {
+          email: input.email,
+          password: input.password,
+        },
+      }
+    ).then(async (res) => {
       if (res.data.value) {
         accessToken.value = res.data.value.accessToken;
         await fetchUser();
-        await navigateTo(config.public.auth.redirect.home);
+        await navigateTo(publicConfig.redirect.home);
       }
       return res;
     });
   }
 
-  async function loginWithProvider(provider: Provider) {
+  function loginWithProvider(provider: Provider): void {
     if (process.client) {
       window.location.replace(`/api/auth/login/${provider}`);
     }
   }
 
-  async function prefetch() {
+  async function prefetch(): Promise<void> {
     const accessToken = useAccessToken();
-    if (accessToken) {
+    if (accessToken.value) {
       if (isAccessTokenExpired()) {
         await refresh();
-        if (!accessToken) {
+        if (!accessToken.value) {
           await logout();
           throw new Error("Unauthorized");
         }
@@ -72,7 +91,7 @@ export default function () {
     }
   }
 
-  async function refresh() {
+  async function refresh(): Promise<void> {
     let cookie: string | undefined;
     const accessToken = useAccessToken();
 
@@ -81,10 +100,7 @@ export default function () {
         const headers = useRequestHeaders(["Cookie"]);
         cookie = headers.cookie;
 
-        if (
-          !cookie ||
-          !cookie.includes(config.public.auth.refreshTokenCookieName)
-        ) {
+        if (!cookie || !cookie.includes(publicConfig.refreshTokenCookieName)) {
           accessToken.value = null;
           return;
         }
@@ -110,7 +126,7 @@ export default function () {
     }
   }
 
-  async function fetchUser() {
+  async function fetchUser(): Promise<void> {
     const accessToken = useAccessToken();
     const user = useUser();
 
@@ -132,7 +148,7 @@ export default function () {
     }
   }
 
-  async function logout() {
+  async function logout(): Promise<void> {
     const accessToken = useAccessToken();
     const user = useUser();
 
@@ -146,42 +162,55 @@ export default function () {
     }
 
     user.value = null;
-    await navigateTo(config.public.auth.redirect.logout);
+    await navigateTo(publicConfig.redirect.logout);
   }
 
-  function register(input: { email: string; password: string; name: string }) {
-    return useFetch<User>("/api/auth/register", {
+  async function register(input: {
+    email: string;
+    password: string;
+    name: string;
+  }): FetchReturn<void> {
+    return useFetch<UseFetchDataT<void>, UseFetchErrorT>("/api/auth/register", {
       method: "POST",
       body: input,
     });
   }
 
-  async function requestPasswordReset(input: { email: string }) {
-    return useFetch<void>("/api/auth/password/request", {
-      method: "POST",
-      body: {
-        email: input.email,
-      },
-    });
+  async function requestPasswordReset(email: string): FetchReturn<void> {
+    return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
+      "/api/auth/password/request",
+      {
+        method: "POST",
+        body: {
+          email,
+        },
+      }
+    );
   }
 
-  async function resetPassword(input: { password: string }) {
-    return useFetch<void>("/api/auth/password/reset", {
-      method: "PUT",
-      body: {
-        password: input.password,
-        token: route.query.token,
-      },
-    });
+  async function resetPassword(password: string): FetchReturn<void> {
+    return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
+      "/api/auth/password/reset",
+      {
+        method: "PUT",
+        body: {
+          password: password,
+          token: route.query.token,
+        },
+      }
+    );
   }
 
-  async function requestEmailVerify(input: { email: string }) {
-    return useFetch<void>("/api/auth/email/request", {
-      method: "POST",
-      body: {
-        email: input.email,
-      },
-    });
+  async function requestEmailVerify(email: string): FetchReturn<void> {
+    return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
+      "/api/auth/email/request",
+      {
+        method: "POST",
+        body: {
+          email,
+        },
+      }
+    );
   }
 
   return {

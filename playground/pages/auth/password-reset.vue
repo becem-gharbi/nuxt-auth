@@ -11,7 +11,8 @@ definePageMeta({ middleware: "guest" })
 const { resetPassword } = useAuth()
 
 async function handleResetPassword() {
-    await resetPassword({ password: "123456" })
+    const { error } = await resetPassword("123456")
+    console.log(error.value?.data.message)
 }
 
 </script>
