@@ -3,6 +3,10 @@ import type {
   Provider as PrismaProvider,
 } from "@prisma/client";
 
+import type { AsyncData } from "#app";
+
+import type { FetchError } from "ofetch";
+
 export type Provider = Exclude<PrismaProvider, "default">;
 
 export type User = Exclude<PrismaUser, "password">;
@@ -74,3 +78,15 @@ export type PublicConfig = {
     emailVerify: string;
   };
 };
+
+export type ErrorT = {
+  message: string;
+};
+
+export type UseFetchDataT<T> = T | null;
+
+export type UseFetchErrorT = FetchError<ErrorT> | null;
+
+export type FetchReturn<T> = Promise<
+  AsyncData<UseFetchDataT<T>, UseFetchErrorT>
+>;
