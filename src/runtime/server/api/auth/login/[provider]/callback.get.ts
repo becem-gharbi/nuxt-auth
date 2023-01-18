@@ -1,5 +1,4 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
-import { ofetch } from "ofetch";
 import { createUser, findUser } from "#auth";
 import { createRefreshToken, setRefreshTokenCookie } from "#auth";
 import { privateConfig, publicConfig } from "#auth";
@@ -26,25 +25,23 @@ export default defineEventHandler(async (event) => {
       `${publicConfig.baseUrl}/api/auth/login/${provider}/callback`
     );
 
-    const { access_token } = await ofetch(
-      privateConfig.oauth[provider].tokenUrl,
-      {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+    const tokenResponse = await fetch(privateConfig.oauth[provider].tokenUrl, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
-    const userInfo = await ofetch<{
-      email: string;
-      name: string;
-    }>(privateConfig.oauth[provider].userUrl, {
+    const { access_token } = await tokenResponse.json();
+
+    const userResponse = await fetch(privateConfig.oauth[provider].userUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
       },
     });
+
+    const userInfo = await userResponse.json();
 
     if (userInfo.email) {
       let user = await findUser({ email: userInfo.email });
