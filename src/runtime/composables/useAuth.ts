@@ -80,10 +80,10 @@ export default function () {
 
   async function prefetch(): Promise<void> {
     const accessToken = useAccessToken();
-    if (accessToken) {
+    if (accessToken.value) {
       if (isAccessTokenExpired()) {
         await refresh();
-        if (!accessToken) {
+        if (!accessToken.value) {
           await logout();
           throw new Error("Unauthorized");
         }
