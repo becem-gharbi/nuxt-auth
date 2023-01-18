@@ -4,10 +4,8 @@ A Nuxt 3 module to handle authentication
 
 ## Features
 
-- Basic email/password authentication
-- Mails sent on various operations
+- Email/password authentication
 - Oauth login (Google, Github ...)
-- Auto refresh of access token
 - Route middleware auth protection
 - Database agnostic (Prisma based)
 - Auth operations through `useAuth` composable
