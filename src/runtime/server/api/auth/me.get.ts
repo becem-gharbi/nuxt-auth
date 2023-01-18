@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
     const { password, ...sanitizedUser } = user;
 
-    return { user: sanitizedUser };
+    return { ...sanitizedUser };
   } catch (error) {
     throw createError({
       statusCode: 400,
