@@ -5,6 +5,7 @@ A Nuxt 3 module to handle authentication
 ## Features
 
 - Email/password authentication
+- Email verification & password reset flow
 - Oauth login (Google, Github ...)
 - Route middleware auth protection
 - Database agnostic (Prisma based)
@@ -37,6 +38,7 @@ export default defineNuxtConfig({
     refreshTokenMaxAge: // Refresh token's cookie maxAge
 
     oauth: { // Oauth providers's config (optional)
+      //...
       google: {
         clientId:
         clientSecret:
@@ -45,6 +47,7 @@ export default defineNuxtConfig({
         tokenUrl:
         userUrl:
       },
+      //...
     },
 
     smtp: { // SMTP server's config (required)
@@ -153,7 +156,7 @@ definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
 
 <br>
 
-For auto refresh of access token you can use `prefetch` method
+For handling refresh of access token you can use `prefetch` method
 
 ```javascript
 const { prefetch, useAccessToken } = useAuth();
@@ -171,7 +174,7 @@ const { data, error } = await useFetch("/api/protected", {
 
 ## Appendix
 
-![workflow](https://github.com/becem-gharbi/nuxt-auth/blob/alpha/workflow.png)
+![workflow](https://github.com/becem-gharbi/nuxt-auth/blob/beta/workflow.png)
 
 ## Development
 
