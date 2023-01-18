@@ -1,6 +1,9 @@
 {
   "branches": [
     "main",
-    "alpha"
+    {
+      "name": "alpha",
+      "prerelease": true
+    }
   ]
 }
