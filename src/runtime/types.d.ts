@@ -34,8 +34,10 @@ export type RefreshTokenPayload = {
 
 export type PrivateConfig = {
   accessTokenSecret: string;
-  refreshTokenSecret: string;
   accessTokenExpiresIn: string;
+  accessTokenClaims?: Record<string, any>;
+
+  refreshTokenSecret: string;
   refreshTokenMaxAge: number;
 
   oauth?: Partial<

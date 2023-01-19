@@ -1,10 +1,10 @@
 import { defineEventHandler, createError } from "h3";
 import {
-  deleteManyRefreshToken,
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
 } from "#auth";
+import { deleteRefreshToken } from "../../utils/token";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyRefreshToken(refreshToken);
 
-    await deleteManyRefreshToken(payload.id);
+    await deleteRefreshToken(payload.id);
 
     deleteRefreshTokenCookie(event);
     return {};

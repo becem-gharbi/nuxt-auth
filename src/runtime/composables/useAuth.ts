@@ -112,6 +112,9 @@ export default function () {
           method: "POST",
           credentials: "include",
           headers: cookie ? { cookie } : {},
+          body: {
+            accessToken: accessToken.value,
+          },
         }
       );
 

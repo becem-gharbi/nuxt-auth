@@ -6,6 +6,7 @@ import {
   updateRefreshToken,
   verifyRefreshToken,
 } from "#auth";
+import { findUser } from "../../utils/user";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -25,9 +26,9 @@ export default defineEventHandler(async (event) => {
       userId: newRefreshToken.userId,
     });
 
-    const accessToken = createAccessToken({
-      userId: newRefreshToken.userId,
-    });
+    const user = await findUser({ id: newRefreshToken.userId });
+
+    const accessToken = createAccessToken(user);
 
     return { accessToken };
   } catch (error) {

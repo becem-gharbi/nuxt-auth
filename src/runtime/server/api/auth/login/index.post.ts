@@ -32,9 +32,7 @@ export default defineEventHandler(async (event) => {
       userId: refreshToken.userId,
     });
 
-    const accessToken = createAccessToken({
-      userId: user.id,
-    });
+    const accessToken = createAccessToken(user);
 
     return { accessToken };
   } catch (error) {

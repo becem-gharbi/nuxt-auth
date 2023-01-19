@@ -7,6 +7,13 @@ export default defineNuxtConfig({
   auth: {
     accessTokenSecret: process.env.AUTH_ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.AUTH_REFRESH_TOKEN_SECRET,
+    accessTokenClaims: {
+      "https://hasura.io/jwt/claims": {
+        "x-hasura-allowed-roles": ["user", "admin"],
+        "x-hasura-default-role": "{{role}}",
+        "x-hasura-user-id": "{{id}}",
+      },
+    },
 
     oauth: {
       google: {
@@ -27,11 +34,13 @@ export default defineNuxtConfig({
       },
     },
 
-    smtpHost: process.env.AUTH_SMTP_HOST,
-    smtpPort: parseInt(process.env.AUTH_SMTP_PORT!),
-    smtpUser: process.env.AUTH_SMTP_USER,
-    smtpPass: process.env.AUTH_SMTP_PASS,
-    smtpFrom: process.env.AUTH_SMTP_FROM,
+    smtp: {
+      host: process.env.AUTH_SMTP_HOST || "",
+      port: parseInt(process.env.AUTH_SMTP_PORT!),
+      user: process.env.AUTH_SMTP_USER || "",
+      pass: process.env.AUTH_SMTP_PASS || "",
+      from: process.env.AUTH_SMTP_FROM || "",
+    },
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,

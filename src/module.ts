@@ -147,6 +147,7 @@ export default defineNuxtModule<ModuleOptions>({
         refreshTokenSecret: options.refreshTokenSecret,
         accessTokenExpiresIn: options.accessTokenExpiresIn,
         refreshTokenMaxAge: options.refreshTokenMaxAge,
+        accessTokenClaims: options.accessTokenClaims,
 
         oauth: options.oauth,
 

@@ -14,11 +14,26 @@ import type {
   RefreshTokenPayload,
   ResetPasswordPayload,
   EmailVerifyPayload,
+  User,
 } from "../../types";
+
+import Mustache from "mustache";
 
 /*************** Access token ***************/
 
-export function createAccessToken(payload: AccessTokenPayload) {
+export function createAccessToken(user: User) {
+  let customClaims = privateConfig.accessTokenClaims || {};
+
+  if (customClaims) {
+    const output = Mustache.render(JSON.stringify(customClaims), user);
+    customClaims = Object.assign(JSON.parse(output));
+  }
+
+  const payload = {
+    userId: user.id,
+    ...customClaims,
+  };
+
   const accessToken = jwt.sign(payload, privateConfig.accessTokenSecret, {
     expiresIn: privateConfig.accessTokenExpiresIn,
   });

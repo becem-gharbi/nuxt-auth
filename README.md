@@ -11,6 +11,7 @@ A Nuxt 3 module to handle authentication
 - Database agnostic (Prisma based)
 - Auth operations through `useAuth` composable
 - Auto refresh of access token through `useAuthFetch` composable
+- Add dynamic custom claims to access token
 - Typescript support
 
 ## Demo
@@ -37,6 +38,7 @@ export default defineNuxtConfig({
     refreshTokenSecret:  // Refresh token secret key HS256
     accessTokenExpiresIn:  // Access token'JWT expiresIn;
     refreshTokenMaxAge: // Refresh token's cookie maxAge
+    accessTokenClaims: // Custom claims added to access token (optional)
 
     oauth: { // Oauth providers's config (optional)
       //...
@@ -153,6 +155,20 @@ definePageMeta({ middleware: "auth" }); // Redirects to login path when not logg
 
 ```javascript
 definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
+```
+
+<br>
+
+For adding custom claims to the access token's payload, set the accessTokenClaims option in the `nuxt.config.ts`. For **User** related dynamic values, use the [mustache](https://github.com/janl/mustache.js/) syntax.
+
+```javascript
+    accessTokenClaims: {
+      "https://hasura.io/jwt/claims": {
+        "x-hasura-allowed-roles": ["user", "admin"],
+        "x-hasura-default-role": "{{role}}",
+        "x-hasura-user-id": "{{id}}",
+      },
+    },
 ```
 
 ## Appendix

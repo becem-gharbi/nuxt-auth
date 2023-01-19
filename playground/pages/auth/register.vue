@@ -17,12 +17,10 @@ async function handleRegister() {
         password: "123456",
         name: "becem"
     })
-
-    console.warn(error.value.data.message)
 }
 
 async function requestEmailVerifyHandler() {
-    const { error, } = await requestEmailVerify("becem.gh")
+    const { error, } = await requestEmailVerify("becem.gharbi96@gmail.com")
     console.log(error.value?.data.message)
 }
 </script>
