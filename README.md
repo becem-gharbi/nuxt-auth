@@ -1,6 +1,5 @@
-# ⚠️ Under development
-
-A Nuxt 3 module to handle authentication
+## Nuxt Auth
+## ⚠️ *Under development*
 
 ## Features
 
@@ -44,27 +43,14 @@ export default defineNuxtConfig({
     oauth: { // Oauth providers's config (optional)
       //...
       google: {
-        clientId:
-        clientSecret:
-        scopes:
-        authorizeUrl:
-        tokenUrl:
-        userUrl:
       },
       //...
     },
 
     smtp: { // SMTP server's config (required)
-      host:
-      port:
-      user:
-      pass:
-      from:
     },
 
     emailTemplates: { // Html email templates (optional)
-      passwordReset:
-      emailVerify:
     },
 
     baseUrl: // Nuxt app base url
@@ -202,7 +188,7 @@ emailTemplates: {
        <a href="{{link}}">Reset your password</a>
      </body>
     </html>
-    `;
+    `
 }
 ```
 
