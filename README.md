@@ -1,4 +1,4 @@
-# Nuxt Auth
+# ⚠️ Under development
 
 A Nuxt 3 module to handle authentication
 
@@ -199,11 +199,10 @@ emailTemplates: {
      <body>
        <h2>Hello {{name}},</h2>
        <p>To reset your password, please follow this link</p>
-       <a href="{{link}}">Verify your email</a>
+       <a href="{{link}}">Reset your password</a>
      </body>
     </html>
-    `
-
+    `;
 }
 ```
 
