@@ -72,7 +72,7 @@ const passwordResetTemplate = `
     <p>
       Otherwise, to complete the process, click the following link.
     </p>
-    <a href="{{link}}">Verify your email</a>
+    <a href="{{link}}">Reset your password</a>
     <b>Important, this link will expire in 5 minutes.</b>
     <p>Thank you, and have a good day.</p>
   </body>
