@@ -149,6 +149,8 @@ export default defineNuxtModule<ModuleOptions>({
         refreshTokenMaxAge: options.refreshTokenMaxAge,
         accessTokenClaims: options.accessTokenClaims,
 
+        emailTemplates: options.emailTemplates,
+
         oauth: options.oauth,
 
         smtp: options.smtp,

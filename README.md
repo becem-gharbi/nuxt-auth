@@ -12,6 +12,7 @@ A Nuxt 3 module to handle authentication
 - Auth operations through `useAuth` composable
 - Auto refresh of access token through `useAuthFetch` composable
 - Add dynamic custom claims to access token
+- Customizable email templates
 - Typescript support
 
 ## Demo
@@ -59,7 +60,12 @@ export default defineNuxtConfig({
       user:
       pass:
       from:
-    };
+    },
+
+    emailTemplates: { // Html email templates (optional)
+      passwordReset:
+      emailVerify:
+    },
 
     baseUrl: // Nuxt app base url
     enableGlobalAuthMiddleware: // Enable auth middleware on every page
@@ -162,13 +168,43 @@ definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
 For adding custom claims to the access token's payload, set the accessTokenClaims option in the `nuxt.config.ts`. For **User** related dynamic values, use the [mustache](https://github.com/janl/mustache.js/) syntax.
 
 ```javascript
-    accessTokenClaims: {
-      "https://hasura.io/jwt/claims": {
-        "x-hasura-allowed-roles": ["user", "admin"],
-        "x-hasura-default-role": "{{role}}",
-        "x-hasura-user-id": "{{id}}",
-      },
-    },
+accessTokenClaims: {
+  "https://hasura.io/jwt/claims": {
+    "x-hasura-allowed-roles": ["user", "admin"],
+    "x-hasura-default-role": "{{role}}",
+    "x-hasura-user-id": "{{id}}",
+  },
+},
+```
+
+<br>
+
+For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. For variable interpolation use the [mustache](https://github.com/janl/mustache.js/) syntax. Exposed variables are **User properties** and **link** for redirection url.
+
+```javascript
+emailTemplates: {
+  passwordReset: `
+    <html lang="en">
+      <head>
+        <style>
+          body {
+           background-color: #f1f5f9;
+           color: #0f172a;
+           font-family: "Arial";
+           padding: 8px;
+         }
+        </style>
+      </head>
+
+     <body>
+       <h2>Hello {{name}},</h2>
+       <p>To reset your password, please follow this link</p>
+       <a href="{{link}}">Verify your email</a>
+     </body>
+    </html>
+    `
+
+}
 ```
 
 ## Appendix

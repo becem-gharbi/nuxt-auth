@@ -2,7 +2,8 @@ import { defineEventHandler, createError, readBody } from "h3";
 import { sendMail } from "#auth";
 import { createResetPasswordToken } from "#auth";
 import { findUser } from "#auth";
-import { publicConfig } from "#auth";
+import { publicConfig, privateConfig } from "#auth";
+import Mustache from "mustache";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -17,16 +18,18 @@ export default defineEventHandler(async (event) => {
 
       const redirectUrl =
         publicConfig.baseUrl + publicConfig.redirect.passwordReset;
-      const fullRedirectUrl = redirectUrl + "?token=" + resetPasswordToken;
+      const link = redirectUrl + "?token=" + resetPasswordToken;
 
       await sendMail({
         to: user.email,
         subject: "Password Reset",
-        html: `
-            <h2>Hello ${user.name}</h2>
-            <br>
-            <a href="${fullRedirectUrl}"style="background-color:#206bc4;color:white;padding:10px;border-radius:5px;margin:20px;text-decoration: none;">Reset My password</a>
-            `,
+        html: Mustache.render(
+          privateConfig.emailTemplates?.passwordReset || passwordResetTemplate,
+          {
+            ...user,
+            link,
+          }
+        ),
       });
     }
 
@@ -38,3 +41,40 @@ export default defineEventHandler(async (event) => {
     });
   }
 });
+
+const passwordResetTemplate = `
+<html lang="en">
+  <head>
+    <style>
+      body {
+        background-color: #f1f5f9;
+        color: #0f172a;
+        font-family: "Arial";
+        padding: 8px;
+      }
+
+      a {
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        color: #4338ca;
+        margin: 24px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Hello {{name}},</h2>
+    <p>
+      We have received a request to reset your password. If you haven't
+      made this request please ignore the following email.
+    </p>
+    <p>
+      Otherwise, to complete the process, click the following link.
+    </p>
+    <a href="{{link}}">Verify your email</a>
+    <b>Important, this link will expire in 5 minutes.</b>
+    <p>Thank you, and have a good day.</p>
+  </body>
+</html>
+`;

@@ -54,6 +54,11 @@ export type PrivateConfig = {
     >
   >;
 
+  emailTemplates?: {
+    passwordReset?: string;
+    emailVerify?: string;
+  };
+
   smtp: {
     host: string;
     port: number;

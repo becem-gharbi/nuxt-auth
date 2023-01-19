@@ -2,7 +2,8 @@ import { defineEventHandler, createError, readBody } from "h3";
 import { sendMail } from "#auth";
 import { createEmailVerifyToken } from "#auth";
 import { findUser } from "#auth";
-import { publicConfig } from "#auth";
+import { publicConfig, privateConfig } from "#auth";
+import Mustache from "mustache";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,22 +11,24 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ email: email });
 
-    if (user && !user.verified) {
+    if (user) {
       const emailVerifyToken = createEmailVerifyToken({
         userId: user.id,
       });
 
       const redirectUrl = publicConfig.baseUrl + "/api/auth/email/verify";
-      const fullRedirectUrl = redirectUrl + "?token=" + emailVerifyToken;
+      const link = redirectUrl + "?token=" + emailVerifyToken;
 
       await sendMail({
         to: user.email,
         subject: "Email verification",
-        html: `
-            <h2>Hello ${user.name}</h2>
-            <br>
-            <a href="${fullRedirectUrl}"style="background-color:#206bc4;color:white;padding:10px;border-radius:5px;margin:20px;text-decoration: none;">Verify My Email</a>
-            `,
+        html: Mustache.render(
+          privateConfig.emailTemplates?.emailVerify || emailVerifyTemplate,
+          {
+            ...user,
+            link,
+          }
+        ),
       });
     }
 
@@ -37,3 +40,44 @@ export default defineEventHandler(async (event) => {
     });
   }
 });
+
+const emailVerifyTemplate = `
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: #f1f5f9;
+        color: #0f172a;
+        font-family: "Arial";
+        padding: 8px;
+      }
+
+      a {
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        color: #4338ca;
+        margin: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Hello {{name}},</h2>
+    <p>
+      We have received a request to verify your email address. If you haven't
+      made this request please ignore the following email.
+    </p>
+    <p>
+      Otherwise, to complete the process, click the following link.
+    </p>
+    <a href="{{link}}">Verify your email</a>
+    <b>Important, this link will expire in 5 minutes.</b>
+    <p>Thank you, and have a good day.</p>
+  </body>
+</html>
+`;
