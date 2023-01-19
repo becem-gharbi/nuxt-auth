@@ -10,6 +10,7 @@ A Nuxt 3 module to handle authentication
 - Route middleware auth protection
 - Database agnostic (Prisma based)
 - Auth operations through `useAuth` composable
+- Auto refresh of access token through `useAuthFetch` composable
 - Typescript support
 
 ## Demo
@@ -152,24 +153,6 @@ definePageMeta({ middleware: "auth" }); // Redirects to login path when not logg
 
 ```javascript
 definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
-```
-
-<br>
-
-For handling refresh of access token you can use `prefetch` method
-
-```javascript
-const { prefetch, useAccessToken } = useAuth();
-const accessToken = useAccessToken();
-
-const { data, error } = await useFetch("/api/protected", {
-  async onRequest({ request, options }) {
-    await prefetch();
-    if (accessToken) {
-      options.headers = { Authorization: "Bearer " + accessToken };
-    }
-  },
-});
 ```
 
 ## Appendix
