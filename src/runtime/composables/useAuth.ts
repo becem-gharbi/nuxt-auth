@@ -2,7 +2,7 @@ import { Ref } from "vue";
 import { appendHeader } from "h3";
 import type { User, Provider } from "../types";
 import type { AsyncData } from "#app";
-import type { FetchError } from "ohmyfetch";
+import type { FetchError } from "ofetch";
 import useAuthFetch from "./useAuthFetch";
 import jwtDecode from "jwt-decode";
 
@@ -36,12 +36,6 @@ export default function () {
   const useAccessToken: () => Ref<string | undefined | null> = () =>
     useState<string | undefined | null>("auth_access_token", () => null);
 
-  const useAccessTokenCookie = () =>
-    useCookie(privateConfig.accessToken.cookieName);
-
-  const useRefreshTokenCookie = () =>
-    useCookie(privateConfig.refreshToken.cookieName);
-
   const event = useRequestEvent();
 
   const route = useRoute();
@@ -56,6 +50,12 @@ export default function () {
     }
 
     return true;
+  }
+
+  function extractCookie(cookies: string, name: string) {
+    const value = `; ${cookies}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(";").shift();
   }
 
   async function login(input: {
@@ -93,9 +93,9 @@ export default function () {
   }
 
   async function prefetch(): Promise<void> {
-    const accessToken = useAccessToken();
-
     await refresh();
+
+    const accessToken = useAccessToken();
 
     if (!accessToken.value) {
       await logout();
@@ -108,13 +108,13 @@ export default function () {
     const user = useUser();
 
     try {
+      const cookies = useRequestHeaders(["cookie"]).cookie || "";
+
       if (process.server) {
-        accessToken.value = useAccessTokenCookie().value;
-        console.log({
-          src: "refresh method, from at cookie",
-          server: process.server,
-          at: accessToken.value,
-        });
+        accessToken.value = extractCookie(
+          cookies,
+          privateConfig.accessToken.cookieName
+        );
       } else {
         accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
       }
@@ -126,26 +126,25 @@ export default function () {
               Authorization: "Bearer " + accessToken.value,
             },
           });
-          console.log({
-            src: "refresh method, from fetch user",
-            server: process.server,
-            user: user.value,
-          });
         }
         return;
       }
 
-      if (process.server && !useRefreshTokenCookie().value) {
-        return;
+      if (process.server) {
+        const refreshToken = extractCookie(
+          cookies,
+          privateConfig.refreshToken.cookieName
+        );
+        if (!refreshToken) {
+          return;
+        }
       }
-
-      const cookie = useRequestHeaders(["cookie"]).cookie || "";
 
       const res = await $fetch<{ accessToken: string; user: User }>(
         "/api/auth/refresh",
         {
           method: "POST",
-          headers: process.server ? { cookie } : {},
+          headers: process.server ? { cookie: cookies } : {},
           onResponse({ response }) {
             if (process.server) {
               const cookies = (response?.headers.get("set-cookie") || "").split(
@@ -167,6 +166,7 @@ export default function () {
         server: process.server,
         msg: e,
       });
+
       accessToken.value = null;
       user.value = null;
     }
