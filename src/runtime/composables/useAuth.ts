@@ -110,6 +110,11 @@ export default function () {
     try {
       if (process.server) {
         accessToken.value = useAccessTokenCookie().value;
+        console.log({
+          src: "refresh method, from at cookie",
+          server: process.server,
+          at: accessToken.value,
+        });
       } else {
         accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
       }
@@ -120,6 +125,11 @@ export default function () {
             headers: {
               Authorization: "Bearer " + accessToken.value,
             },
+          });
+          console.log({
+            src: "refresh method, from fetch user",
+            server: process.server,
+            user: user.value,
           });
         }
         return;
@@ -152,6 +162,10 @@ export default function () {
       accessToken.value = res.accessToken;
       user.value = res.user;
     } catch (e) {
+      console.log({
+        src: "refresh method, failed",
+        server: process.server,
+      });
       accessToken.value = null;
       user.value = null;
     }
@@ -167,7 +181,11 @@ export default function () {
       method: "POST",
     }).finally(() => {
       const accessToken = useAccessToken();
+      const user = useUser();
+
+      user.value = null;
       accessToken.value = null;
+
       return navigateTo(publicConfig.redirect.logout);
     });
   }

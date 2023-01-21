@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
 
     await sendRedirect(
       event,
-      `${publicConfig.baseUrl + publicConfig.redirect.callback}`
+      `${publicConfig.baseUrl + publicConfig.redirect.home}`
     );
   } catch (error) {
     await sendRedirect(

@@ -10,7 +10,9 @@ export default defineNuxtRouteMiddleware((to) => {
   ) {
     const { useAccessToken } = useAuth();
 
-    if (useAccessToken().value) {
+    const accessToken = useAccessToken();
+
+    if (accessToken.value) {
       return navigateTo(publicConfig.redirect.home);
     }
   }
