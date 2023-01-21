@@ -3,24 +3,26 @@ import {
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
+  deleteAccessTokenCookie,
+  deleteRefreshToken,
 } from "#auth";
-import { deleteRefreshToken } from "../../utils/token";
 
 export default defineEventHandler(async (event) => {
   try {
     const refreshToken = getRefreshTokenFromCookie(event);
-
-    if (!refreshToken) {
-      throw new Error("Unauthorized");
-    }
 
     const payload = await verifyRefreshToken(refreshToken);
 
     await deleteRefreshToken(payload.id);
 
     deleteRefreshTokenCookie(event);
+    deleteAccessTokenCookie(event);
+
     return {};
   } catch (error) {
+    deleteRefreshTokenCookie(event);
+    deleteAccessTokenCookie(event);
+
     throw createError({
       statusCode: 400,
       message: error.message,

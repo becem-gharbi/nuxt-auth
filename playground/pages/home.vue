@@ -3,22 +3,16 @@
         <h1>Home</h1>
         <button @click="fetchUser">Fetch user</button>
         <button @click="handleLogout">Logout</button>
+        <p>{{ user }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-import { User } from '.prisma/client';
-
 definePageMeta({ middleware: "auth" })
 
-const { logout } = useAuth()
+const { logout, fetchUser, useUser } = useAuth()
 
-async function fetchUser() {
-    const data = await useAuthFetch<User>("/api/auth/me")
-
-    console.log(data)
-}
-
+const user = useUser()
 
 async function handleLogout() {
     await logout()

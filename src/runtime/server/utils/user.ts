@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findUniqueOrThrow({
     where,
   });
   return user;

@@ -3,6 +3,7 @@ import {
   createRefreshToken,
   setRefreshTokenCookie,
   createAccessToken,
+  setAccessTokenCookie,
 } from "#auth";
 import { findUser, verifyPassword } from "#auth";
 
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ email });
 
-    if (!user || !user.password || !verifyPassword(password, user.password)) {
+    if (!user.password || !verifyPassword(password, user.password)) {
       throw new Error("wrong-credentials");
     }
 
@@ -24,17 +25,17 @@ export default defineEventHandler(async (event) => {
       throw new Error("user-blocked");
     }
 
-    const refreshToken = await createRefreshToken(user.id);
+    const refreshToken = await createRefreshToken(user);
 
-    setRefreshTokenCookie(event, {
-      id: refreshToken.id,
-      uid: refreshToken.uid,
-      userId: refreshToken.userId,
-    });
+    setRefreshTokenCookie(event, refreshToken);
 
     const accessToken = createAccessToken(user);
 
-    return { accessToken };
+    setAccessTokenCookie(event, accessToken);
+
+    delete user.password;
+
+    return { accessToken, user };
   } catch (error) {
     throw createError({
       statusCode: 400,

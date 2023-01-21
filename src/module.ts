@@ -24,6 +24,7 @@ export default defineNuxtModule<ModuleOptions>({
     refreshTokenSecret: "efg",
     accessTokenExpiresIn: "7s",
     refreshTokenMaxAge: 3600,
+    accessTokenMaxAge: 10,
 
     smtp: {
       host: "",
@@ -36,6 +37,9 @@ export default defineNuxtModule<ModuleOptions>({
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
     refreshTokenCookieName: "auth_refresh_token",
+
+    accessTokenCookieName: "auth_access_token",
+
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
@@ -147,6 +151,7 @@ export default defineNuxtModule<ModuleOptions>({
         refreshTokenSecret: options.refreshTokenSecret,
         accessTokenExpiresIn: options.accessTokenExpiresIn,
         refreshTokenMaxAge: options.refreshTokenMaxAge,
+        accessTokenMaxAge: options.accessTokenMaxAge,
         accessTokenClaims: options.accessTokenClaims,
 
         emailTemplates: options.emailTemplates,
@@ -160,6 +165,7 @@ export default defineNuxtModule<ModuleOptions>({
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           refreshTokenCookieName: options.refreshTokenCookieName,
+          accessTokenCookieName: options.accessTokenCookieName,
           redirect: {
             login: options.redirect.login,
             logout: options.redirect.logout,

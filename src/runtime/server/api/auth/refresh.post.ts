@@ -5,36 +5,38 @@ import {
   setRefreshTokenCookie,
   updateRefreshToken,
   verifyRefreshToken,
+  setAccessTokenCookie,
+  deleteAccessTokenCookie,
+  deleteRefreshTokenCookie,
+  findUser,
 } from "#auth";
-import { findUser } from "../../utils/user";
 
 export default defineEventHandler(async (event) => {
   try {
     const refreshToken = getRefreshTokenFromCookie(event);
 
-    if (!refreshToken) {
-      throw new Error("Unauthorized");
-    }
-
     const payload = await verifyRefreshToken(refreshToken);
 
     const newRefreshToken = await updateRefreshToken(payload.id);
 
-    setRefreshTokenCookie(event, {
-      id: newRefreshToken.id,
-      uid: newRefreshToken.uid,
-      userId: newRefreshToken.userId,
-    });
+    setRefreshTokenCookie(event, newRefreshToken);
 
-    const user = await findUser({ id: newRefreshToken.userId });
+    const user = await findUser({ id: payload.userId });
 
     const accessToken = createAccessToken(user);
 
-    return { accessToken };
+    setAccessTokenCookie(event, accessToken);
+
+    delete user.password;
+    
+    return { accessToken, user };
   } catch (error) {
+    deleteRefreshTokenCookie(event);
+    deleteAccessTokenCookie(event);
+
     throw createError({
       statusCode: 400,
-      message: error,
+      message: error.message,
     });
   }
 });

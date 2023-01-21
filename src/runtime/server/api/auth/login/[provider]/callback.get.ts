@@ -1,7 +1,19 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
-import { createUser, findUser } from "#auth";
-import { createRefreshToken, setRefreshTokenCookie } from "#auth";
-import { privateConfig, publicConfig } from "#auth";
+
+import { $fetch } from "ohmyfetch";
+
+import {
+  createRefreshToken,
+  setRefreshTokenCookie,
+  privateConfig,
+  createUser,
+  findUser,
+  publicConfig,
+  createAccessToken,
+  setAccessTokenCookie,
+} from "#auth";
+
+import { User } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -25,48 +37,53 @@ export default defineEventHandler(async (event) => {
       `${publicConfig.baseUrl}/api/auth/login/${provider}/callback`
     );
 
-    const tokenResponse = await fetch(privateConfig.oauth[provider].tokenUrl, {
-      method: "POST",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    const { access_token } = await $fetch(
+      privateConfig.oauth[provider].tokenUrl,
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
 
-    const { access_token } = await tokenResponse.json();
-
-    const userResponse = await fetch(privateConfig.oauth[provider].userUrl, {
+    const userInfo = await $fetch(privateConfig.oauth[provider].userUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
       },
     });
 
-    const userInfo = await userResponse.json();
-
     if (userInfo.email) {
-      let user = await findUser({ email: userInfo.email });
+      let user: User | undefined = undefined;
+
+      try {
+        user = await findUser({ email: userInfo.email });
+      } catch (error) {}
 
       if (user && user.provider !== provider) {
         throw new Error("wrong-provider");
       }
 
       if (!user) {
-        user = await createUser({
+        const newUser = await createUser({
           email: userInfo.email,
           name: userInfo.name,
           provider: provider,
           verified: true,
         });
+
+        user = Object.assign(newUser);
       }
 
       if (user) {
-        const refreshToken = await createRefreshToken(user.id);
+        const refreshToken = await createRefreshToken(user);
 
-        setRefreshTokenCookie(event, {
-          id: refreshToken.id,
-          uid: refreshToken.uid,
-          userId: refreshToken.userId,
-        });
+        setRefreshTokenCookie(event, refreshToken);
+
+        const accessToken = createAccessToken(user);
+
+        setAccessTokenCookie(event, accessToken);
       }
     }
 

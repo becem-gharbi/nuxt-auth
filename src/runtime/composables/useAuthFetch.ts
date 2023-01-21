@@ -8,18 +8,16 @@ export default async function <DataT>(
 ): Promise<DataT> {
   const { useAccessToken, prefetch } = useAuth();
 
-  const accessToken = useAccessToken();
-
   await prefetch();
 
-  if (accessToken.value) {
-    fetchOptions.headers = defu(
-      {
-        Authorization: "Bearer " + accessToken.value,
-      },
-      fetchOptions.headers
-    );
-  }
+  const accessToken = useAccessToken();
+
+  fetchOptions.headers = defu(
+    {
+      Authorization: "Bearer " + accessToken.value,
+    },
+    fetchOptions.headers
+  );
 
   return $fetch<DataT>(path, fetchOptions);
 }
