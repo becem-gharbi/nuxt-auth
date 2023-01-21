@@ -2,7 +2,7 @@ import { Ref } from "vue";
 import { appendHeader } from "h3";
 import type { User, Provider } from "../types";
 import type { AsyncData } from "#app";
-import type { FetchError } from "ofetch";
+import type { FetchError } from "ohmyfetch";
 import useAuthFetch from "./useAuthFetch";
 import jwtDecode from "jwt-decode";
 
@@ -165,6 +165,7 @@ export default function () {
       console.log({
         src: "refresh method, failed",
         server: process.server,
+        msg: e,
       });
       accessToken.value = null;
       user.value = null;
