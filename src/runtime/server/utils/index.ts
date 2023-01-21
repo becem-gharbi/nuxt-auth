@@ -18,6 +18,9 @@ export {
   verifyEmailVerifyToken,
   verifyRefreshToken,
   verifyResetPasswordToken,
+  setAccessTokenCookie,
+  getAccessTokenFromCookie,
+  deleteAccessTokenCookie,
 } from "./token";
 
 export {

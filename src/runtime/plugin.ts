@@ -6,9 +6,6 @@ import guest from "./middleware/guest";
 
 export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig();
-  const { useAccessToken, useInitialized } = useAuth();
-  const accessToken = useAccessToken();
-  const initialized = useInitialized();
 
   addRouteMiddleware(common);
 
@@ -18,17 +15,10 @@ export default defineNuxtPlugin(async () => {
 
   addRouteMiddleware("guest", guest);
 
-  if (initialized.value) {
-    return;
-  }
+  if (process.server) {
+    const { refresh, useAccessToken } = useAuth();
+    await refresh();
 
-  initialized.value = true;
-
-  const { refresh, fetchUser } = useAuth();
-
-  await refresh();
-
-  if (accessToken.value) {
-    await fetchUser();
+    //console.log("after plugin refresh", useAccessToken().value);
   }
 });

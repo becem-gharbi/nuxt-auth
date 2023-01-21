@@ -35,7 +35,7 @@ export function createAccessToken(user: User) {
   };
 
   const accessToken = jwt.sign(payload, privateConfig.accessTokenSecret, {
-    expiresIn: privateConfig.accessTokenExpiresIn,
+    expiresIn: privateConfig.accessTokenMaxAge,
   });
 
   return accessToken;
@@ -57,21 +57,48 @@ export function verifyAccessToken(accessToken: string) {
   return payload;
 }
 
+export function setAccessTokenCookie(event: H3Event, accessToken: string) {
+  setCookie(event, publicConfig.accessTokenCookieName, accessToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: privateConfig.accessTokenMaxAge,
+    sameSite: "lax",
+  });
+}
+
+export function getAccessTokenFromCookie(event: H3Event) {
+  const accessToken = getCookie(event, publicConfig.accessTokenCookieName);
+  return accessToken;
+}
+
+export function deleteAccessTokenCookie(event: H3Event) {
+  deleteCookie(event, publicConfig.accessTokenCookieName);
+}
 /*************** Refresh token ***************/
 
-export async function createRefreshToken(userId: number) {
-  const refreshToken = await prisma.refreshToken.create({
+export async function createRefreshToken(user: User) {
+  const refreshTokenEntity = await prisma.refreshToken.create({
     data: {
       uid: uuidv4(),
-      userId: userId,
+      userId: user.id,
     },
+  });
+
+  const payload = {
+    id: refreshTokenEntity.id,
+    uid: refreshTokenEntity.uid,
+    userId: refreshTokenEntity.userId,
+  };
+
+  const refreshToken = jwt.sign(payload, privateConfig.refreshTokenSecret, {
+    expiresIn: privateConfig.refreshTokenMaxAge,
   });
 
   return refreshToken;
 }
 
 export async function updateRefreshToken(refreshTokenId: number) {
-  const refreshToken = await prisma.refreshToken.update({
+  const refreshTokenEntity = await prisma.refreshToken.update({
     where: {
       id: refreshTokenId,
     },
@@ -79,15 +106,21 @@ export async function updateRefreshToken(refreshTokenId: number) {
       uid: uuidv4(),
     },
   });
+
+  const payload = {
+    id: refreshTokenEntity.id,
+    uid: refreshTokenEntity.uid,
+    userId: refreshTokenEntity.userId,
+  };
+
+  const refreshToken = jwt.sign(payload, privateConfig.refreshTokenSecret, {
+    expiresIn: privateConfig.refreshTokenMaxAge,
+  });
+
   return refreshToken;
 }
 
-export function setRefreshTokenCookie(
-  event: H3Event,
-  payload: RefreshTokenPayload
-) {
-  const refreshToken = jwt.sign(payload, privateConfig.refreshTokenSecret);
-
+export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
   setCookie(event, publicConfig.refreshTokenCookieName, refreshToken, {
     httpOnly: true,
     secure: true,

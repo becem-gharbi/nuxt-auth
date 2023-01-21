@@ -2,17 +2,16 @@ import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
 import useAuth from "../composables/useAuth";
 
 export default defineNuxtRouteMiddleware((to) => {
-  const config = useRuntimeConfig();
+  const publicConfig = useRuntimeConfig().public.auth;
 
   if (
-    to.path === config.public.auth.redirect.login ||
-    to.path === config.public.auth.redirect.callback
+    to.path === publicConfig.redirect.login ||
+    to.path === publicConfig.redirect.callback
   ) {
-    const { useUser } = useAuth();
-    const user = useUser();
+    const { useAccessToken } = useAuth();
 
-    if (user.value) {
-      return navigateTo(config.public.auth.redirect.home);
+    if (useAccessToken().value) {
+      return navigateTo(publicConfig.redirect.home);
     }
   }
 });
