@@ -33,7 +33,9 @@ export default defineEventHandler(async (event) => {
 
     setAccessTokenCookie(event, accessToken);
 
-    return { accessToken };
+    delete user.password;
+
+    return { accessToken, user };
   } catch (error) {
     throw createError({
       statusCode: 400,

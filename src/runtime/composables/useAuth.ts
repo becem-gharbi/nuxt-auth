@@ -29,8 +29,8 @@ type FetchReturn<T> = Promise<AsyncData<UseFetchDataT<T>, UseFetchErrorT>>;
 export default function () {
   const publicConfig = useRuntimeConfig().public.auth;
 
-  const useUser: () => Ref<User | null> = () =>
-    useState<User | null>("auth_user", () => null);
+  const useUser: () => Ref<User | null | undefined> = () =>
+    useState<User | null | undefined>("auth_user", () => null);
 
   const useAccessToken: () => Ref<string | undefined | null> = () =>
     useState<string | undefined | null>("auth_access_token", () => null);
@@ -58,20 +58,22 @@ export default function () {
   async function login(input: {
     email: string;
     password: string;
-  }): FetchReturn<{ accessToken: string }> {
-    return useFetch<UseFetchDataT<{ accessToken: string }>, UseFetchErrorT>(
-      "/api/auth/login",
-      {
-        method: "POST",
-        body: {
-          email: input.email,
-          password: input.password,
-        },
-      }
-    ).then(async (res) => {
+  }): FetchReturn<{ accessToken: string; user: User }> {
+    return useFetch<
+      UseFetchDataT<{ accessToken: string; user: User }>,
+      UseFetchErrorT
+    >("/api/auth/login", {
+      method: "POST",
+      body: {
+        email: input.email,
+        password: input.password,
+      },
+    }).then(async (res) => {
       const accessToken = useAccessToken();
+      const user = useUser();
 
       accessToken.value = res.data.value?.accessToken;
+      user.value = res.data.value?.user;
 
       if (accessToken.value) {
         await navigateTo(publicConfig.redirect.home);
@@ -101,6 +103,7 @@ export default function () {
   async function refresh(): Promise<void> {
     try {
       const accessToken = useAccessToken();
+      const user = useUser();
 
       if (process.server) {
         accessToken.value = useAccessTokenCookie().value;
@@ -109,6 +112,9 @@ export default function () {
       }
 
       if (accessToken.value) {
+        if (!user.value) {
+          await fetchUser();
+        }
         return;
       }
 
@@ -118,7 +124,7 @@ export default function () {
 
       const cookie = useRequestHeaders(["cookie"]).cookie || "";
 
-      const res = await $fetch.raw<{ accessToken: string }>(
+      const res = await $fetch.raw<{ accessToken: string; user: User }>(
         "/api/auth/refresh",
         {
           method: "POST",
@@ -134,6 +140,7 @@ export default function () {
       }
 
       accessToken.value = res._data?.accessToken;
+      user.value = res._data?.user;
     } catch (e) {}
   }
 

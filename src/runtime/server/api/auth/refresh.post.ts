@@ -27,7 +27,9 @@ export default defineEventHandler(async (event) => {
 
     setAccessTokenCookie(event, accessToken);
 
-    return { accessToken };
+    delete user.password;
+    
+    return { accessToken, user };
   } catch (error) {
     deleteRefreshTokenCookie(event);
     deleteAccessTokenCookie(event);
