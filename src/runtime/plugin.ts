@@ -16,9 +16,7 @@ export default defineNuxtPlugin(async () => {
   addRouteMiddleware("guest", guest);
 
   if (process.server) {
-    const { refresh, useAccessToken } = useAuth();
+    const { refresh } = useAuth();
     await refresh();
-
-    //console.log("after plugin refresh", useAccessToken().value);
   }
 });

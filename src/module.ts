@@ -20,11 +20,17 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   defaults: {
-    accessTokenSecret: "abc",
-    refreshTokenSecret: "efg",
-    accessTokenExpiresIn: "7s",
-    refreshTokenMaxAge: 3600,
-    accessTokenMaxAge: 10,
+    accessToken: {
+      cookieName: "auth_access_token",
+      jwtSecret: "hqkdsjfHJKBH568FGD",
+      maxAge: 30 * 60,
+    },
+
+    refreshToken: {
+      cookieName: "auth_refresh_token",
+      jwtSecret: "sldkfbld6f8gdfgKJBLK",
+      maxAge: 30 * 24 * 60 * 60,
+    },
 
     smtp: {
       host: "",
@@ -36,10 +42,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
-    refreshTokenCookieName: "auth_refresh_token",
-
-    accessTokenCookieName: "auth_access_token",
-
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
@@ -147,12 +149,9 @@ export default defineNuxtModule<ModuleOptions>({
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       auth: {
-        accessTokenSecret: options.accessTokenSecret,
-        refreshTokenSecret: options.refreshTokenSecret,
-        accessTokenExpiresIn: options.accessTokenExpiresIn,
-        refreshTokenMaxAge: options.refreshTokenMaxAge,
-        accessTokenMaxAge: options.accessTokenMaxAge,
-        accessTokenClaims: options.accessTokenClaims,
+        accessToken: options.accessToken,
+
+        refreshToken: options.refreshToken,
 
         emailTemplates: options.emailTemplates,
 
@@ -160,12 +159,11 @@ export default defineNuxtModule<ModuleOptions>({
 
         smtp: options.smtp,
       },
+
       public: {
         auth: {
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
-          refreshTokenCookieName: options.refreshTokenCookieName,
-          accessTokenCookieName: options.accessTokenCookieName,
           redirect: {
             login: options.redirect.login,
             logout: options.redirect.logout,

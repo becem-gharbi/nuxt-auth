@@ -1,6 +1,5 @@
 import { defineEventHandler, createError } from "h3";
-import { getAccessTokenFromHeader, verifyAccessToken } from "#auth";
-import { findUser } from "#auth";
+import { getAccessTokenFromHeader, verifyAccessToken, findUser } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

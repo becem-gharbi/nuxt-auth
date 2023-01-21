@@ -27,6 +27,7 @@ type UseFetchErrorT = FetchError<ErrorT> | null;
 type FetchReturn<T> = Promise<AsyncData<UseFetchDataT<T>, UseFetchErrorT>>;
 
 export default function () {
+  const privateConfig = useRuntimeConfig().auth;
   const publicConfig = useRuntimeConfig().public.auth;
 
   const useUser: () => Ref<User | null | undefined> = () =>
@@ -36,10 +37,10 @@ export default function () {
     useState<string | undefined | null>("auth_access_token", () => null);
 
   const useAccessTokenCookie = () =>
-    useCookie(publicConfig.accessTokenCookieName);
+    useCookie(privateConfig.accessToken.cookieName);
 
   const useRefreshTokenCookie = () =>
-    useCookie(publicConfig.refreshTokenCookieName);
+    useCookie(privateConfig.refreshToken.cookieName);
 
   const event = useRequestEvent();
 

@@ -33,17 +33,18 @@ export type RefreshTokenPayload = {
 };
 
 export type PrivateConfig = {
-  accessTokenSecret: string;
+  accessToken: {
+    cookieName?: string;
+    jwtSecret: string;
+    maxAge?: number;
+    customClaims?: Record<string, any>;
+  };
 
-  accessTokenExpiresIn: string;
-
-  accessTokenMaxAge: number;
-
-  accessTokenClaims?: Record<string, any>;
-
-  refreshTokenSecret: string;
-
-  refreshTokenMaxAge: number;
+  refreshToken: {
+    cookieName?: string;
+    jwtSecret: string;
+    maxAge?: number;
+  };
 
   oauth?: Partial<
     Record<
@@ -75,11 +76,7 @@ export type PrivateConfig = {
 
 export type PublicConfig = {
   baseUrl: string;
-  enableGlobalAuthMiddleware: boolean;
-
-  refreshTokenCookieName: string;
-  accessTokenCookieName: string;
-
+  enableGlobalAuthMiddleware?: boolean;
   redirect: {
     login: string;
     logout: string;

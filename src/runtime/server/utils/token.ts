@@ -22,7 +22,7 @@ import Mustache from "mustache";
 /*************** Access token ***************/
 
 export function createAccessToken(user: User) {
-  let customClaims = privateConfig.accessTokenClaims || {};
+  let customClaims = privateConfig.accessToken.customClaims || {};
 
   if (customClaims) {
     const output = Mustache.render(JSON.stringify(customClaims), user);
@@ -34,8 +34,8 @@ export function createAccessToken(user: User) {
     ...customClaims,
   };
 
-  const accessToken = jwt.sign(payload, privateConfig.accessTokenSecret, {
-    expiresIn: privateConfig.accessTokenMaxAge,
+  const accessToken = jwt.sign(payload, privateConfig.accessToken.jwtSecret, {
+    expiresIn: privateConfig.accessToken.maxAge,
   });
 
   return accessToken;
@@ -52,27 +52,27 @@ export function getAccessTokenFromHeader(event: H3Event) {
 export function verifyAccessToken(accessToken: string) {
   const payload = jwt.verify(
     accessToken,
-    privateConfig.accessTokenSecret
+    privateConfig.accessToken.jwtSecret
   ) as AccessTokenPayload;
   return payload;
 }
 
 export function setAccessTokenCookie(event: H3Event, accessToken: string) {
-  setCookie(event, publicConfig.accessTokenCookieName, accessToken, {
+  setCookie(event, privateConfig.accessToken.cookieName!, accessToken, {
     httpOnly: true,
     secure: true,
-    maxAge: privateConfig.accessTokenMaxAge,
+    maxAge: privateConfig.accessToken.maxAge,
     sameSite: "lax",
   });
 }
 
 export function getAccessTokenFromCookie(event: H3Event) {
-  const accessToken = getCookie(event, publicConfig.accessTokenCookieName);
+  const accessToken = getCookie(event, privateConfig.accessToken.cookieName!);
   return accessToken;
 }
 
 export function deleteAccessTokenCookie(event: H3Event) {
-  deleteCookie(event, publicConfig.accessTokenCookieName);
+  deleteCookie(event, privateConfig.accessToken.cookieName!);
 }
 /*************** Refresh token ***************/
 
@@ -90,8 +90,8 @@ export async function createRefreshToken(user: User) {
     userId: refreshTokenEntity.userId,
   };
 
-  const refreshToken = jwt.sign(payload, privateConfig.refreshTokenSecret, {
-    expiresIn: privateConfig.refreshTokenMaxAge,
+  const refreshToken = jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
+    expiresIn: privateConfig.refreshToken.maxAge,
   });
 
   return refreshToken;
@@ -113,31 +113,31 @@ export async function updateRefreshToken(refreshTokenId: number) {
     userId: refreshTokenEntity.userId,
   };
 
-  const refreshToken = jwt.sign(payload, privateConfig.refreshTokenSecret, {
-    expiresIn: privateConfig.refreshTokenMaxAge,
+  const refreshToken = jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
+    expiresIn: privateConfig.refreshToken.maxAge,
   });
 
   return refreshToken;
 }
 
 export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
-  setCookie(event, publicConfig.refreshTokenCookieName, refreshToken, {
+  setCookie(event, privateConfig.refreshToken.cookieName!, refreshToken, {
     httpOnly: true,
     secure: true,
-    maxAge: privateConfig.refreshTokenMaxAge,
+    maxAge: privateConfig.refreshToken.maxAge,
     sameSite: "lax",
   });
 }
 
 export function getRefreshTokenFromCookie(event: H3Event) {
-  const refreshToken = getCookie(event, publicConfig.refreshTokenCookieName);
+  const refreshToken = getCookie(event, privateConfig.refreshToken.cookieName!);
   return refreshToken;
 }
 
 export async function verifyRefreshToken(refreshToken: string) {
   const payload = jwt.verify(
     refreshToken,
-    privateConfig.refreshTokenSecret
+    privateConfig.refreshToken.jwtSecret
   ) as RefreshTokenPayload;
 
   await prisma.refreshToken.findFirstOrThrow({
@@ -167,7 +167,7 @@ export async function deleteManyRefreshToken(userId: number) {
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {
-  deleteCookie(event, publicConfig.refreshTokenCookieName);
+  deleteCookie(event, privateConfig.refreshToken.cookieName!);
 }
 
 /*************** Reset Password token ***************/
@@ -175,9 +175,9 @@ export function deleteRefreshTokenCookie(event: H3Event) {
 export function createResetPasswordToken(payload: ResetPasswordPayload) {
   const resetPasswordToken = jwt.sign(
     payload,
-    privateConfig.accessTokenSecret + "reset-password",
+    privateConfig.accessToken.jwtSecret + "reset-password",
     {
-      expiresIn: "5m",
+      expiresIn: privateConfig.accessToken.maxAge,
     }
   );
   return resetPasswordToken;
@@ -186,7 +186,7 @@ export function createResetPasswordToken(payload: ResetPasswordPayload) {
 export function verifyResetPasswordToken(resetPasswordToken: string) {
   const payload = jwt.verify(
     resetPasswordToken,
-    privateConfig.accessTokenSecret + "reset-password"
+    privateConfig.accessToken.jwtSecret + "reset-password"
   ) as ResetPasswordPayload;
   return payload;
 }
@@ -196,9 +196,9 @@ export function verifyResetPasswordToken(resetPasswordToken: string) {
 export function createEmailVerifyToken(payload: EmailVerifyPayload) {
   const emailVerifyToken = jwt.sign(
     payload,
-    privateConfig.accessTokenSecret + "email-verify",
+    privateConfig.accessToken.jwtSecret + "email-verify",
     {
-      expiresIn: "5m",
+      expiresIn: privateConfig.accessToken.maxAge,
     }
   );
   return emailVerifyToken;
@@ -207,7 +207,7 @@ export function createEmailVerifyToken(payload: EmailVerifyPayload) {
 export function verifyEmailVerifyToken(emailVerifyToken: string) {
   const payload = jwt.verify(
     emailVerifyToken,
-    privateConfig.accessTokenSecret + "email-verify"
+    privateConfig.accessToken.jwtSecret + "email-verify"
   ) as EmailVerifyPayload;
   return payload;
 }

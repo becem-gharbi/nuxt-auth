@@ -1,8 +1,11 @@
 import { defineEventHandler, createError, readBody } from "h3";
-import { sendMail } from "#auth";
-import { createResetPasswordToken } from "#auth";
-import { findUser } from "#auth";
-import { publicConfig, privateConfig } from "#auth";
+import {
+  sendMail,
+  createResetPasswordToken,
+  findUser,
+  publicConfig,
+  privateConfig,
+} from "#auth";
 import Mustache from "mustache";
 
 export default defineEventHandler(async (event) => {

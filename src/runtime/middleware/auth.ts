@@ -20,7 +20,6 @@ export default defineNuxtRouteMiddleware((to) => {
   const { useAccessToken } = useAuth();
 
   if (!useAccessToken().value) {
-    console.log("from auth middle redirect ro login");
     return navigateTo(publicConfig.redirect.login);
   }
 });

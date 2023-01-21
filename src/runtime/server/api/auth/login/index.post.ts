@@ -4,8 +4,9 @@ import {
   setRefreshTokenCookie,
   createAccessToken,
   setAccessTokenCookie,
+  findUser,
+  verifyPassword,
 } from "#auth";
-import { findUser, verifyPassword } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {

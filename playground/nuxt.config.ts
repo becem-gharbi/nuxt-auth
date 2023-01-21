@@ -5,14 +5,20 @@ export default defineNuxtConfig({
   //@ts-ignore
   modules: [myModule],
   auth: {
-    accessTokenSecret: process.env.AUTH_ACCESS_TOKEN_SECRET,
-    refreshTokenSecret: process.env.AUTH_REFRESH_TOKEN_SECRET,
-    accessTokenClaims: {
-      "https://hasura.io/jwt/claims": {
-        "x-hasura-allowed-roles": ["user", "admin"],
-        "x-hasura-default-role": "{{role}}",
-        "x-hasura-user-id": "{{id}}",
+    accessToken: {
+      jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
+      maxAge: 10,
+      customClaims: {
+        "https://hasura.io/jwt/claims": {
+          "x-hasura-allowed-roles": '["user", "admin"]',
+          "x-hasura-default-role": "{{role}}",
+          "x-hasura-user-id": "{{id}}",
+        },
       },
+    },
+
+    refreshToken: {
+      jwtSecret: process.env.AUTH_REFRESH_TOKEN_SECRET || "abc",
     },
 
     oauth: {
@@ -43,8 +49,6 @@ export default defineNuxtConfig({
     },
 
     baseUrl: "http://localhost:3000",
-    enableGlobalAuthMiddleware: false,
-    refreshTokenCookieName: "auth_refresh_token",
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
