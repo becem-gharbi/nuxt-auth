@@ -44,6 +44,8 @@ export default function () {
 
   const event = useRequestEvent();
 
+  const route = useRoute();
+
   function isAccessTokenExpired() {
     const accessToken = useAccessToken();
 
@@ -102,10 +104,10 @@ export default function () {
   }
 
   async function refresh(): Promise<void> {
-    try {
-      const accessToken = useAccessToken();
-      const user = useUser();
+    const accessToken = useAccessToken();
+    const user = useUser();
 
+    try {
       if (process.server) {
         accessToken.value = useAccessTokenCookie().value;
       } else {
@@ -129,24 +131,30 @@ export default function () {
 
       const cookie = useRequestHeaders(["cookie"]).cookie || "";
 
-      const res = await $fetch.raw<{ accessToken: string; user: User }>(
+      const res = await $fetch<{ accessToken: string; user: User }>(
         "/api/auth/refresh",
         {
           method: "POST",
           headers: process.server ? { cookie } : {},
+          onResponse({ response }) {
+            if (process.server) {
+              const cookies = (response?.headers.get("set-cookie") || "").split(
+                ","
+              );
+              for (const cookie of cookies) {
+                appendHeader(event, "set-cookie", cookie);
+              }
+            }
+          },
         }
       );
 
-      if (process.server) {
-        const cookies = (res.headers.get("set-cookie") || "").split(",");
-        for (const cookie of cookies) {
-          appendHeader(event, "set-cookie", cookie);
-        }
-      }
-
-      accessToken.value = res._data?.accessToken;
-      user.value = res._data?.user;
-    } catch (e) {}
+      accessToken.value = res.accessToken;
+      user.value = res.user;
+    } catch (e) {
+      accessToken.value = null;
+      user.value = null;
+    }
   }
 
   async function fetchUser(): Promise<void> {
@@ -188,7 +196,6 @@ export default function () {
   }
 
   async function resetPassword(password: string): FetchReturn<void> {
-    const route = useRoute();
     return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
       "/api/auth/password/reset",
       {
