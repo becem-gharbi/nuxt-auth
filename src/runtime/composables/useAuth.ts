@@ -1,5 +1,5 @@
 import { Ref } from "vue";
-import { appendHeader, setHeader } from "h3";
+import { appendHeader } from "h3";
 import type { User, Provider } from "../types";
 import type { AsyncData } from "#app";
 import type { FetchError } from "ofetch";
@@ -113,7 +113,11 @@ export default function () {
 
       if (accessToken.value) {
         if (!user.value) {
-          await fetchUser();
+          user.value = await $fetch<User>("/api/auth/me", {
+            headers: {
+              Authorization: "Bearer " + accessToken.value,
+            },
+          });
         }
         return;
       }
