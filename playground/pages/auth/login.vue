@@ -15,7 +15,7 @@ definePageMeta({ middleware: "guest" })
 const { login, requestPasswordReset, loginWithProvider } = useAuth()
 
 async function handleLogin() {
-    const { data, error } = await login({ email: "becem.gharbi96@gmail.com", password: "123456" })
+    const { data, error } = await login({ email: "becem.gharbi96@gmail.com", password: "" })
 }
 
 async function handleRequestPasswordReset() {

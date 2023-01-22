@@ -1,5 +1,5 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
-
+import { z } from "zod";
 import { $fetch } from "ohmyfetch";
 
 import {
@@ -19,6 +19,12 @@ export default defineEventHandler(async (event) => {
   try {
     const provider = event.context.params.provider;
     const code = getQuery(event).code?.toString() || "";
+
+    const schema = z.object({
+      code: z.string().min(1),
+    });
+
+    schema.parse({ code });
 
     if (!privateConfig.oauth || !privateConfig.oauth[provider]) {
       throw new Error("oauth-not-configured");

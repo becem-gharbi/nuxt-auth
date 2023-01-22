@@ -4,10 +4,18 @@ import {
   verifyResetPasswordToken,
   changePassword,
 } from "#auth";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
     const { password, token } = await readBody(event);
+
+    const schema = z.object({
+      token: z.string().min(1),
+      password: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})")),
+    });
+
+    schema.parse({ password, token });
 
     const payload = verifyResetPasswordToken(token);
 

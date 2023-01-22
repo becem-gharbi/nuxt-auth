@@ -7,10 +7,17 @@ import {
   privateConfig,
 } from "#auth";
 import Mustache from "mustache";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
     const { email } = await readBody(event);
+
+    const schema = z.object({
+      email: z.string().email(),
+    });
+
+    schema.parse({ email });
 
     const user = await findUser({ email: email });
 

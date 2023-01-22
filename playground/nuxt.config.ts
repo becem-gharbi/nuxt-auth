@@ -7,12 +7,12 @@ export default defineNuxtConfig({
 
   auth: {
     prisma: {
-      log: ["query"],
+      log: [],
     },
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
-      maxAge: 10,
+      maxAge: 60,
       customClaims: {
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": '["user", "admin"]',

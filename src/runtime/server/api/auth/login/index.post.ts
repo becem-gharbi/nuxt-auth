@@ -1,4 +1,5 @@
 import { defineEventHandler, readBody, createError } from "h3";
+import { z } from "zod";
 import {
   createRefreshToken,
   setRefreshTokenCookie,
@@ -11,6 +12,13 @@ import {
 export default defineEventHandler(async (event) => {
   try {
     const { email, password } = await readBody(event);
+
+    const schema = z.object({
+      email: z.string().email(),
+      password: z.string().min(1),
+    });
+
+    schema.parse({ email, password });
 
     const user = await findUser({ email });
 

@@ -7,10 +7,18 @@ import {
   findUser,
   verifyPassword,
 } from "#auth";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
     const { oldPassword, newPassword } = await readBody(event);
+
+    const schema = z.object({
+      oldPassword: z.string().min(1),
+      newPassword: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})")),
+    });
+
+    schema.parse({ oldPassword, newPassword });
 
     const accessToken = getAccessTokenFromHeader(event);
 
