@@ -1,18 +1,18 @@
-## Nuxt Auth
-## ⚠️ *Under development*
+## Nuxt Auth (Beta)
+
+A nuxt 3 module to handle authentication
 
 ## Features
 
-- Email/password authentication
-- Email verification & password reset flow
-- Oauth login (Google, Github ...)
-- Route middleware auth protection
-- Database agnostic (Prisma based)
-- Auth operations through `useAuth` composable
-- Auto refresh of access token through `useAuthFetch` composable
-- Add dynamic custom claims to access token
-- Customizable email templates
-- Typescript support
+✔️ Email/password authentication<br>
+✔️ Email verification & password reset flows<br>
+✔️ Oauth login (Google, Github ...)<br>
+✔️ Route middleware protection<br>
+✔️ Database agnostic (Prisma based)<br>
+✔️ Auth operations through `useAuth` composable<br>
+✔️ Auto refresh of access token through `useAuthFetch` composable<br>
+✔️ Add dynamic custom claims to access token<br>
+✔️ Customizable email templates
 
 ## Demo
 
@@ -34,47 +34,32 @@ export default defineNuxtConfig({
  modules: ["@bg-dev/nuxt-auth"],
 
  auth: {
-    accessToken: // Access token config
-
-    refreshToken: // Refresh token config
-
-    oauth: { // Oauth providers's config (optional)
-      //...
-      google: {
-      },
-      //...
-    },
-
-    smtp: { // SMTP server's config (required)
-    },
-
-    emailTemplates: { // Html email templates (optional)
-    },
-
-    baseUrl: // Nuxt app base url
-    enableGlobalAuthMiddleware: // Enable auth middleware on every page
+    accessToken:{} // Access token config
+    refreshToken:{} // Refresh token config
+    oauth: {} // Oauth providers's config (optional)
+    smtp: {} // SMTP server's config (required)
+    emailTemplates: {} // Html email templates (optional)
+    prisma: {} // Prisma client config
+    baseUrl: "" // Nuxt app base url
+    enableGlobalAuthMiddleware: false // Enable auth middleware on every page
     redirect: {
-      login: // Path to redirect to when login is required
-      logout: // Path to redirect to after logout
-      home: //  Path to redirect to after successful login
-      callback: // Path to redirect to after login with provider
-      passwordReset: // Path to redirect to for password reset
-      emailVerify:  // Path to redirect to after email verification
+      login: "" // Path to redirect to when login is required
+      logout: "" // Path to redirect to after logout
+      home: "" //  Path to redirect to after successful login
+      callback: "" // Path to redirect to after login with provider
+      passwordReset: "" // Path to redirect to for password reset
+      emailVerify: ""  // Path to redirect to after email verification
     }
   },
   //...
 });
 ```
 
-<br>
-
 Setup Prisma if not already set
 
 ```bash
 npx prisma init
 ```
-
-<br>
 
 Copy the default schema definition to your `prisma/schema.prisma` file & optionally add your custom fields
 
@@ -109,12 +94,8 @@ enum Role {
 enum Provider {
   default
   google
-  github
-  facebook
 }
 ```
-
-<br>
 
 Run a migration to reflect schema changes to your database & generate prisma client
 
@@ -146,8 +127,6 @@ definePageMeta({ middleware: "auth" }); // Redirects to login path when not logg
 definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
 ```
 
-<br>
-
 For adding custom claims to the access token's payload, set the customClaims accessToken's option in the `nuxt.config.ts`. For **User** related dynamic values, use the [mustache](https://github.com/janl/mustache.js/) syntax.
 
 ```javascript
@@ -160,9 +139,7 @@ customClaims: {
 },
 ```
 
-<br>
-
-For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. For variable interpolation use the [mustache](https://github.com/janl/mustache.js/) syntax. Exposed variables are **User properties** and **link** for redirection url.
+For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. For variable interpolation use the [mustache](https://github.com/janl/mustache.js/) syntax. Exposed variables are **User** and **link** for redirection url.
 
 ```javascript
 emailTemplates: {
@@ -185,7 +162,7 @@ emailTemplates: {
        <a href="{{link}}">Reset your password</a>
      </body>
     </html>
-    `
+    `;
 }
 ```
 
