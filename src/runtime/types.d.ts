@@ -1,6 +1,7 @@
 import type {
   User as PrismaUser,
   Provider as PrismaProvider,
+  Prisma,
 } from "@prisma/client";
 
 export type Provider = Exclude<PrismaProvider, "default">;
@@ -72,6 +73,8 @@ export type PrivateConfig = {
     pass: string;
     from: string;
   };
+
+  prisma?: Prisma.PrismaClientOptions;
 };
 
 export type PublicConfig = {

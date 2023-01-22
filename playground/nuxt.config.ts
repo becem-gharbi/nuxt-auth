@@ -4,7 +4,12 @@ import myModule from "..";
 export default defineNuxtConfig({
   //@ts-ignore
   modules: [myModule],
+
   auth: {
+    prisma: {
+      log: ["query"],
+    },
+
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
       maxAge: 10,

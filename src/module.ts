@@ -158,6 +158,8 @@ export default defineNuxtModule<ModuleOptions>({
         oauth: options.oauth,
 
         smtp: options.smtp,
+
+        prisma: options.prisma,
       },
 
       public: {
