@@ -31,28 +31,28 @@ Add `@bg-dev/nuxt-auth` to your nuxt modules and set `auth` options
 ```javascript
 export default defineNuxtConfig({
   //...
- modules: ["@bg-dev/nuxt-auth"],
+  modules: ["@bg-dev/nuxt-auth"],
 
- auth: {
-    accessToken:{} // Access token config
-    refreshToken:{} // Refresh token config
-    oauth: {} // Oauth providers's config (optional)
-    smtp: {} // SMTP server's config (required)
-    emailTemplates: {} // Html email templates (optional)
-    prisma: {} // Prisma client config
-    baseUrl: "" // Nuxt app base url
-    enableGlobalAuthMiddleware: false // Enable auth middleware on every page
+  auth: {
+    accessToken: {}, // Access token config
+    refreshToken: {}, // Refresh token config
+    oauth: {}, // Oauth providers's config (optional)
+    smtp: {}, // SMTP server's config (required)
+    emailTemplates: {}, // Html email templates (optional)
+    prisma: {}, // Prisma client config
+    baseUrl: "", // Nuxt app base url
+    enableGlobalAuthMiddleware: false, // Enable auth middleware on every page
     redirect: {
-      login: "" // Path to redirect to when login is required
-      logout: "" // Path to redirect to after logout
-      home: "" //  Path to redirect to after successful login
-      callback: "" // Path to redirect to after login with provider
-      passwordReset: "" // Path to redirect to for password reset
-      emailVerify: ""  // Path to redirect to after email verification
-    }
+      login: "", // Path to redirect to when login is required
+      logout: "", // Path to redirect to after logout
+      home: "", //  Path to redirect to after successful login
+      callback: "", // Path to redirect to after login with provider
+      passwordReset: "", // Path to redirect to for password reset
+      emailVerify: "", // Path to redirect to after email verification
+    },
   },
   //...
-});
+})
 ```
 
 Setup Prisma if not already set
