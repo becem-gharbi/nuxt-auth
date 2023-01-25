@@ -1,4 +1,4 @@
-import { defineEventHandler, createError } from "h3";
+import { defineEventHandler } from "h3";
 import {
   createAccessToken,
   getRefreshTokenFromCookie,
@@ -9,6 +9,7 @@ import {
   deleteAccessTokenCookie,
   deleteRefreshTokenCookie,
   findUser,
+  handleError,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -28,15 +29,11 @@ export default defineEventHandler(async (event) => {
     setAccessTokenCookie(event, accessToken);
 
     delete user.password;
-    
+
     return { accessToken, user };
   } catch (error) {
     deleteRefreshTokenCookie(event);
     deleteAccessTokenCookie(event);
-
-    throw createError({
-      statusCode: 400,
-      message: error.message,
-    });
+    await handleError(error);
   }
 });

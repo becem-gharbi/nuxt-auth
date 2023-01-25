@@ -40,6 +40,10 @@ export default defineNuxtModule<ModuleOptions>({
       from: "",
     },
 
+    prisma: {
+      log: ["error"],
+    },
+
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
     redirect: {
@@ -67,6 +71,8 @@ export default defineNuxtModule<ModuleOptions>({
     //Add composables directory
     const composables = resolve(runtimeDir, "composables");
     addImportsDir(composables);
+
+    //Add server middleware
 
     //Add server routes
     addServerHandler({

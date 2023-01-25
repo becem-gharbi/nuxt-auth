@@ -1,10 +1,11 @@
-import { defineEventHandler, createError } from "h3";
+import { defineEventHandler } from "h3";
 import {
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
   deleteAccessTokenCookie,
   deleteRefreshToken,
+  handleError,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -23,9 +24,6 @@ export default defineEventHandler(async (event) => {
     deleteRefreshTokenCookie(event);
     deleteAccessTokenCookie(event);
 
-    throw createError({
-      statusCode: 400,
-      message: error.message,
-    });
+    await handleError(error);
   }
 });

@@ -1,6 +1,6 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { z } from "zod";
-import { $fetch } from "ohmyfetch";
+import { $fetch } from "ofetch";
 
 import {
   createRefreshToken,
@@ -11,6 +11,7 @@ import {
   publicConfig,
   createAccessToken,
   setAccessTokenCookie,
+  handleError,
 } from "#auth";
 
 import { User } from "@prisma/client";
@@ -98,14 +99,14 @@ export default defineEventHandler(async (event) => {
       `${publicConfig.baseUrl + publicConfig.redirect.home}`
     );
   } catch (error) {
-    await sendRedirect(
+    await handleError(error, {
       event,
-      `${
+      url: `${
         publicConfig.baseUrl +
         publicConfig.redirect.callback +
         "?error=" +
         error.message
-      }`
-    );
+      }`,
+    });
   }
 });

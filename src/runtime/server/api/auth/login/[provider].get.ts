@@ -1,5 +1,5 @@
-import { defineEventHandler, createError, sendRedirect } from "h3";
-import { privateConfig, publicConfig } from "#auth";
+import { defineEventHandler, sendRedirect } from "h3";
+import { privateConfig, publicConfig, handleError } from "#auth";
 
 export default defineEventHandler(async (event) => {
   const provider = event.context.params.provider;
@@ -22,9 +22,6 @@ export default defineEventHandler(async (event) => {
 
     await sendRedirect(event, authorizationUrl);
   } catch (error) {
-    throw createError({
-      statusCode: 400,
-      message: error,
-    });
+    await handleError(error);
   }
 });

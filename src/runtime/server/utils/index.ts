@@ -30,3 +30,5 @@ export {
   setUserEmailVerified,
   verifyPassword,
 } from "./user";
+
+export { handleError } from "./error";

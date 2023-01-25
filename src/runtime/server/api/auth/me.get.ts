@@ -1,5 +1,10 @@
-import { defineEventHandler, createError } from "h3";
-import { getAccessTokenFromHeader, verifyAccessToken, findUser } from "#auth";
+import { defineEventHandler } from "h3";
+import {
+  getAccessTokenFromHeader,
+  verifyAccessToken,
+  findUser,
+  handleError,
+} from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -21,9 +26,6 @@ export default defineEventHandler(async (event) => {
 
     return { ...sanitizedUser };
   } catch (error) {
-    throw createError({
-      statusCode: 400,
-      message: error.message,
-    });
+    await handleError(error);
   }
 });

@@ -1,5 +1,6 @@
-import { defineEventHandler, readBody, createError } from "h3";
+import { defineEventHandler, readBody } from "h3";
 import { z } from "zod";
+
 import {
   createRefreshToken,
   setRefreshTokenCookie,
@@ -7,6 +8,7 @@ import {
   setAccessTokenCookie,
   findUser,
   verifyPassword,
+  handleError,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -46,9 +48,6 @@ export default defineEventHandler(async (event) => {
 
     return { accessToken, user };
   } catch (error) {
-    throw createError({
-      statusCode: 400,
-      message: error.message,
-    });
+    await handleError(error);
   }
 });

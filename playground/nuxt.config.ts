@@ -6,10 +6,6 @@ export default defineNuxtConfig({
   modules: [myModule],
 
   auth: {
-    prisma: {
-      log: [],
-    },
-
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
       maxAge: 60,
