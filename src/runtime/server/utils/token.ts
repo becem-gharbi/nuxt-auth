@@ -8,7 +8,7 @@ import {
   deleteCookie,
 } from "h3";
 import { prisma } from "./prisma";
-import { privateConfig, publicConfig } from "./config";
+import { privateConfig } from "./config";
 import type {
   AccessTokenPayload,
   RefreshTokenPayload,

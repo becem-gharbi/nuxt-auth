@@ -7,6 +7,7 @@ import {
   createResolver,
   addImportsDir,
   addServerHandler,
+  addTemplate,
 } from "@nuxt/kit";
 
 import { defu } from "defu";
@@ -41,7 +42,7 @@ export default defineNuxtModule<ModuleOptions>({
     },
 
     prisma: {
-      log: ["error"],
+      log: ["error", "info"],
     },
 
     baseUrl: "http://localhost:3000",
@@ -71,8 +72,6 @@ export default defineNuxtModule<ModuleOptions>({
     //Add composables directory
     const composables = resolve(runtimeDir, "composables");
     addImportsDir(composables);
-
-    //Add server middleware
 
     //Add server routes
     addServerHandler({
@@ -150,6 +149,38 @@ export default defineNuxtModule<ModuleOptions>({
         }
       );
       nitroConfig.alias["#auth"] = resolve(runtimeDir, "server/utils");
+    });
+
+    addTemplate({
+      filename: "types/auth.d.ts",
+      getContents: () =>
+        [
+          "declare module '#auth' {",
+          `  const verifyAccessToken: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').verifyAccessToken`,
+          `  const getAccessTokenFromHeader: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').getAccessTokenFromHeader`,
+          `  const sendMail: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').sendMail`,
+          `  const handleError: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').handleError`,
+          "}",
+        ].join("\n"),
+    });
+
+    // Register module types
+    nuxt.hook("prepare:types", (options) => {
+      options.references.push({
+        path: resolve(nuxt.options.buildDir, "types/auth.d.ts"),
+      });
     });
 
     //Initialize the module options

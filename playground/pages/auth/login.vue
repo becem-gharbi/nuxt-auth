@@ -9,13 +9,12 @@
 </template>
 
 <script setup lang="ts">
-
-definePageMeta({ middleware: "guest" })
-
 const { login, requestPasswordReset, loginWithProvider } = useAuth()
 
 async function handleLogin() {
-    const { data, error } = await login({ email: "becem.gharbi96@gmail.com", password: "" })
+    const { data, error } = await login({ email: "becem.gharbi96@gmail.com", password: "123456" })
+
+    console.log(error.value?.data?.message)
 }
 
 async function handleRequestPasswordReset() {

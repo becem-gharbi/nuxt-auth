@@ -24,6 +24,10 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ id: payload.userId });
 
+    if (!user) {
+      throw new Error("user-not-found");
+    }
+
     const accessToken = createAccessToken(user);
 
     setAccessTokenCookie(event, accessToken);
@@ -34,6 +38,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     deleteRefreshTokenCookie(event);
     deleteAccessTokenCookie(event);
+
     await handleError(error);
   }
 });

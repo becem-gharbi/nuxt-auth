@@ -16,15 +16,9 @@ import {
   useRequestHeaders,
 } from "#app";
 
-type ErrorT = {
-  message: string;
-};
+import type { H3Error } from "h3";
 
-type UseFetchDataT<T> = T | null;
-
-type UseFetchErrorT = FetchError<ErrorT> | null;
-
-type FetchReturn<T> = Promise<AsyncData<UseFetchDataT<T>, UseFetchErrorT>>;
+type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
   const privateConfig = useRuntimeConfig().auth;
@@ -58,18 +52,15 @@ export default function () {
     if (parts.length === 2) return parts.pop()?.split(";").shift();
   }
 
-  async function login(input: {
+  async function login(credentials: {
     email: string;
     password: string;
   }): FetchReturn<{ accessToken: string; user: User }> {
-    return useFetch<
-      UseFetchDataT<{ accessToken: string; user: User }>,
-      UseFetchErrorT
-    >("/api/auth/login", {
+    return useFetch<{ accessToken: string; user: User }>("/api/auth/login", {
       method: "POST",
       body: {
-        email: input.email,
-        password: input.password,
+        email: credentials.email,
+        password: credentials.password,
       },
     }).then(async (res) => {
       const accessToken = useAccessToken();
@@ -135,6 +126,7 @@ export default function () {
           cookies,
           privateConfig.refreshToken.cookieName
         );
+
         if (!refreshToken) {
           return;
         }
@@ -161,12 +153,6 @@ export default function () {
       accessToken.value = res.accessToken;
       user.value = res.user;
     } catch (e) {
-      console.log({
-        src: "refresh method, failed",
-        server: process.server,
-        msg: e,
-      });
-
       accessToken.value = null;
       user.value = null;
     }
@@ -191,52 +177,43 @@ export default function () {
     });
   }
 
-  async function register(input: {
+  async function register(userInfo: {
     email: string;
     password: string;
     name: string;
   }): FetchReturn<void> {
-    return useFetch<UseFetchDataT<void>, UseFetchErrorT>("/api/auth/register", {
+    return useFetch("/api/auth/register", {
       method: "POST",
-      body: input,
+      body: userInfo,
     });
   }
 
   async function requestPasswordReset(email: string): FetchReturn<void> {
-    return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
-      "/api/auth/password/request",
-      {
-        method: "POST",
-        body: {
-          email,
-        },
-      }
-    );
+    return useFetch("/api/auth/password/request", {
+      method: "POST",
+      body: {
+        email,
+      },
+    });
   }
 
   async function resetPassword(password: string): FetchReturn<void> {
-    return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
-      "/api/auth/password/reset",
-      {
-        method: "PUT",
-        body: {
-          password: password,
-          token: route.query.token,
-        },
-      }
-    );
+    return useFetch("/api/auth/password/reset", {
+      method: "PUT",
+      body: {
+        password: password,
+        token: route.query.token,
+      },
+    });
   }
 
   async function requestEmailVerify(email: string): FetchReturn<void> {
-    return useFetch<UseFetchDataT<void>, UseFetchErrorT>(
-      "/api/auth/email/request",
-      {
-        method: "POST",
-        body: {
-          email,
-        },
-      }
-    );
+    return useFetch("/api/auth/email/request", {
+      method: "POST",
+      body: {
+        email,
+      },
+    });
   }
 
   return {

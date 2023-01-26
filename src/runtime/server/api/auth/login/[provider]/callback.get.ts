@@ -64,9 +64,7 @@ export default defineEventHandler(async (event) => {
     if (userInfo.email) {
       let user: User | undefined = undefined;
 
-      try {
-        user = await findUser({ email: userInfo.email });
-      } catch (error) {}
+      user = await findUser({ email: userInfo.email });
 
       if (user && user.provider !== provider) {
         throw new Error("wrong-provider");
@@ -101,12 +99,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     await handleError(error, {
       event,
-      url: `${
-        publicConfig.baseUrl +
-        publicConfig.redirect.callback +
-        "?error=" +
-        error.message
-      }`,
+      url: `${publicConfig.baseUrl + publicConfig.redirect.callback}`,
     });
   }
 });
