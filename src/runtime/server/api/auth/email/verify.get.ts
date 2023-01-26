@@ -28,6 +28,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("token-not-found");
     }
   } catch (error) {
-    await handleError(error, { event, url: publicConfig.redirect.emailVerify });
+    await handleError(error, {
+      event: event,
+      url: publicConfig.redirect.emailVerify,
+    });
   }
 });

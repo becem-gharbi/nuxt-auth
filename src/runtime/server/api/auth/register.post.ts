@@ -9,7 +9,11 @@ export default defineEventHandler(async (event) => {
     const schema = z.object({
       name: z.string().min(1),
       email: z.string().email(),
-      password: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})")),
+      password: z
+        .string()
+        .regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})"), {
+          message: "At least 6 characters, 1 lowercase, 1 number",
+        }),
     });
 
     schema.parse({ email, password, name });

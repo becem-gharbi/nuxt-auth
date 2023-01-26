@@ -18,7 +18,9 @@ export default defineEventHandler(async (event) => {
 
     const schema = z.object({
       oldPassword: z.string().min(1),
-      newPassword: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})")),
+      newPassword: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})"), {
+        message: "At least 6 characters, 1 lowercase, 1 number",
+      }),
     });
 
     schema.parse({ oldPassword, newPassword });

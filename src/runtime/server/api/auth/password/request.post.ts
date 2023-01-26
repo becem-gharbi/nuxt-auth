@@ -42,6 +42,9 @@ export default defineEventHandler(async (event) => {
           {
             ...user,
             link,
+            validityInMinutes: Math.round(
+              privateConfig.accessToken.maxAge / 60
+            ),
           }
         ),
       });
@@ -84,7 +87,7 @@ const passwordResetTemplate = `
       Otherwise, to complete the process, click the following link.
     </p>
     <a href="{{link}}">Reset your password</a>
-    <b>Important, this link will expire in 5 minutes.</b>
+    <b>Important, this link will expire in {{validityInMinutes}} minutes.</b>
     <p>Thank you, and have a good day.</p>
   </body>
 </html>

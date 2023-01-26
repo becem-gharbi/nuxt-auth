@@ -41,10 +41,6 @@ export default defineNuxtModule<ModuleOptions>({
       from: "",
     },
 
-    prisma: {
-      log: ["error", "info"],
-    },
-
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
     redirect: {

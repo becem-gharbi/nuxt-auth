@@ -52,7 +52,7 @@ export default defineNuxtConfig({
     },
   },
   //...
-})
+});
 ```
 
 Setup Prisma if not already set
@@ -139,7 +139,7 @@ customClaims: {
 },
 ```
 
-For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. For variable interpolation use the [mustache](https://github.com/janl/mustache.js/) syntax. Exposed variables are **User** and **link** for redirection url.
+For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. Exposed variables are **User**, **link** for redirection and **validityInMinutes** (equals to accessToken `maxAge`).
 
 ```javascript
 emailTemplates: {
@@ -160,10 +160,27 @@ emailTemplates: {
        <h2>Hello {{name}},</h2>
        <p>To reset your password, please follow this link</p>
        <a href="{{link}}">Reset your password</a>
+       <p>Valid for {{validityInMinutes}} minutes</p>
      </body>
     </html>
     `;
 }
+```
+
+For adding a server side auth protection, create `server/middleware/auth.ts` and copy the handler below. On protected server routes check `event.context.auth` property.
+
+```javascript
+import { getAccessTokenFromHeader, verifyAccessToken } from "#auth";
+
+export default defineEventHandler((event) => {
+  try {
+    const accessToken = getAccessTokenFromHeader(event);
+    if (accessToken) {
+      const payload = verifyAccessToken(accessToken);
+      event.context.auth = payload;
+    }
+  } catch (error) {}
+});
 ```
 
 ## Development

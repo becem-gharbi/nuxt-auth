@@ -15,7 +15,9 @@ export default defineEventHandler(async (event) => {
 
     const schema = z.object({
       token: z.string().min(1),
-      password: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})")),
+      password: z.string().regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})"), {
+        message: "At least 6 characters, 1 lowercase, 1 number",
+      }),
     });
 
     schema.parse({ password, token });

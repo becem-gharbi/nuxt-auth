@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ email: email });
 
-    if (user) {
+    if (user && !user.verified) {
       const emailVerifyToken = createEmailVerifyToken({
         userId: user.id,
       });
@@ -39,6 +39,9 @@ export default defineEventHandler(async (event) => {
           {
             ...user,
             link,
+            validityInMinutes: Math.round(
+              privateConfig.accessToken.maxAge / 60
+            ),
           }
         ),
       });
@@ -85,7 +88,7 @@ const emailVerifyTemplate = `
       Otherwise, to complete the process, click the following link.
     </p>
     <a href="{{link}}">Verify your email</a>
-    <b>Important, this link will expire in 5 minutes.</b>
+    <b>Important, this link will expire in {{validityInMinutes}} minutes.</b>
     <p>Thank you, and have a good day.</p>
   </body>
 </html>
