@@ -133,7 +133,7 @@ export default function () {
       }
 
       const res = await $fetch<{ accessToken: string; user: User }>(
-        "/api/auth/refresh",
+        "/api/auth/session/refresh",
         {
           method: "POST",
           headers: process.server ? { cookie: cookies } : {},
@@ -230,7 +230,7 @@ export default function () {
   }
 
   async function revokeSessions() {
-    return useAuthFetch("/api/auth/revoke", {
+    return useAuthFetch("/api/auth/session/revoke", {
       method: "DELETE",
     });
   }

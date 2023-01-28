@@ -25,7 +25,7 @@ const { logout, fetchUser, useUser, changePassword, revokeSessions } = useAuth()
 
 const user = useUser()
 
-const pictureUrl = computed(() => user.value?.picture || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541')
+const pictureUrl = computed(() => user.value?.picture || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png')
 
 async function handleLogout() {
     await logout()
