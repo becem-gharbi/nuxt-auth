@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     smtp: {}, // SMTP server's config (required)
     emailTemplates: {}, // Html email templates (optional)
     prisma: {}, // Prisma client config
-    registration: {} // Configure registration state and constraints
+    registration: {}, // Configure registration state and constraints
     baseUrl: "", // Nuxt app base url
     enableGlobalAuthMiddleware: false, // Enable auth middleware on every page
     redirect: {

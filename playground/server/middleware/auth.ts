@@ -6,8 +6,11 @@ export default defineEventHandler((event) => {
     if (accessToken) {
       const payload = verifyAccessToken(accessToken);
       event.context.auth = payload;
+
       //User is authenticated
-      console.log(`User authenticated id: ${payload.userId}`);
+      console.log(
+        `User authenticated id: ${payload.userId} role: ${payload.userRole}`
+      );
     }
   } catch (error) {}
 });

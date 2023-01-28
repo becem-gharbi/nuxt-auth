@@ -31,6 +31,7 @@ export function createAccessToken(user: User) {
 
   const payload = {
     userId: user.id,
+    userRole: user.role,
     ...customClaims,
   };
 
