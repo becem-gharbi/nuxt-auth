@@ -12,7 +12,8 @@ A nuxt 3 module to handle authentication
 ✔️ Auth operations through `useAuth` composable<br>
 ✔️ Auto refresh of access token through `useAuthFetch` composable<br>
 ✔️ Add dynamic custom claims to access token<br>
-✔️ Customizable email templates
+✔️ Customizable email templates<br>
+✔️ Registration management
 
 ## Demo
 
@@ -40,6 +41,7 @@ export default defineNuxtConfig({
     smtp: {}, // SMTP server's config (required)
     emailTemplates: {}, // Html email templates (optional)
     prisma: {}, // Prisma client config
+    registration: {} // Configure registration state and constraints
     baseUrl: "", // Nuxt app base url
     enableGlobalAuthMiddleware: false, // Enable auth middleware on every page
     redirect: {
@@ -68,6 +70,7 @@ model User {
   id            Int            @id @default(autoincrement())
   name          String
   email         String         @unique
+  picture       String?
   role          Role           @default(user)
   provider      Provider       @default(default)
   password      String?

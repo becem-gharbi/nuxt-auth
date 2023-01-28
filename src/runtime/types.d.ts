@@ -7,7 +7,7 @@ import type {
 
 export type Provider = Exclude<PrismaProvider, "default">;
 
-export type User = Exclude<PrismaUser, "password">;
+export interface User extends Omit<PrismaUser, "password"> {}
 
 export type MailMessage = {
   to: string;
