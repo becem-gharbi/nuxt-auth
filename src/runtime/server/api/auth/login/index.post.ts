@@ -9,6 +9,7 @@ import {
   findUser,
   verifyPassword,
   handleError,
+  privateConfig,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -28,7 +29,10 @@ export default defineEventHandler(async (event) => {
       throw new Error("wrong-credentials");
     }
 
-    if (!user.verified) {
+    if (
+      !user.verified &&
+      privateConfig.registration?.requireEmailVerification
+    ) {
       throw new Error("user-not-verified");
     }
 

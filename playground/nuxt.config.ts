@@ -49,6 +49,12 @@ export default defineNuxtConfig({
       from: process.env.AUTH_SMTP_FROM || "",
     },
 
+    registration: {
+      defaultRole: "user",
+      requireEmailVerification: true,
+      passwordValidationRegex: "(?=.*[a-z])(?=.*[0-9])(?=.{6,})",
+    },
+
     baseUrl: "http://localhost:3000",
     redirect: {
       login: "/auth/login",

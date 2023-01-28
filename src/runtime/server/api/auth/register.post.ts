@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody } from "h3";
-import { createUser, findUser, handleError } from "#auth";
+import { createUser, findUser, handleError, privateConfig } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
@@ -11,12 +11,14 @@ export default defineEventHandler(async (event) => {
       email: z.string().email(),
       password: z
         .string()
-        .regex(RegExp("(?=.*[a-z])(?=.*[0-9])(?=.{6,})"), {
-          message: "At least 6 characters, 1 lowercase, 1 number",
-        }),
+        .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
     });
 
     schema.parse({ email, password, name });
+
+    if (privateConfig.registration?.enable === false) {
+      throw new Error("registration-disabled");
+    }
 
     const user = await findUser({ email: email });
 
@@ -28,6 +30,7 @@ export default defineEventHandler(async (event) => {
       email,
       password,
       name,
+      role: privateConfig.registration?.defaultRole,
     });
 
     return {};

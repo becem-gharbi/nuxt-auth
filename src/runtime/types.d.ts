@@ -2,6 +2,7 @@ import type {
   User as PrismaUser,
   Provider as PrismaProvider,
   Prisma,
+  Role,
 } from "@prisma/client";
 
 export type Provider = Exclude<PrismaProvider, "default">;
@@ -75,6 +76,13 @@ export type PrivateConfig = {
   };
 
   prisma?: Prisma.PrismaClientOptions;
+
+  registration: {
+    enable?: boolean;
+    requireEmailVerification?: boolean;
+    passwordValidationRegex?: string;
+    defaultRole: Role;
+  };
 };
 
 export type PublicConfig = {

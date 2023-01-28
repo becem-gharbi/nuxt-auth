@@ -51,6 +51,13 @@ export default defineNuxtModule<ModuleOptions>({
       passwordReset: "/auth/password-reset",
       emailVerify: "/auth/email-verify",
     },
+
+    registration: {
+      enable: true,
+      defaultRole: "user",
+      passwordValidationRegex: "(?=.*[a-z])(?=.*[0-9])(?=.{6,})",
+      requireEmailVerification: true,
+    },
   },
 
   setup(options, nuxt) {
@@ -193,6 +200,8 @@ export default defineNuxtModule<ModuleOptions>({
         smtp: options.smtp,
 
         prisma: options.prisma,
+
+        registration: options.registration,
       },
 
       public: {

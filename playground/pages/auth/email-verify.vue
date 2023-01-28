@@ -1,3 +1,3 @@
 <template>
-    <h1>Verify email</h1>
+    <h1>Your email is verified</h1>
 </template>
