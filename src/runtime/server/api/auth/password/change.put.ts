@@ -15,16 +15,16 @@ import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
-    const { oldPassword, newPassword } = await readBody(event);
+    const { currentPassword, newPassword } = await readBody(event);
 
     const schema = z.object({
-      oldPassword: z.string().min(1),
+      currentPassword: z.string().min(1),
       newPassword: z
         .string()
         .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
     });
 
-    schema.parse({ oldPassword, newPassword });
+    schema.parse({ currentPassword, newPassword });
 
     const accessToken = getAccessTokenFromHeader(event);
 
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     if (
       !user ||
       !user.password ||
-      !verifyPassword(oldPassword, user.password)
+      !verifyPassword(currentPassword, user.password)
     ) {
       throw new Error("wrong-password");
     }

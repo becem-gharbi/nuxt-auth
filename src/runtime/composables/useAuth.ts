@@ -216,6 +216,19 @@ export default function () {
     });
   }
 
+  async function changePassword(input: {
+    currentPassword: string;
+    newPassword: string;
+  }) {
+    return useAuthFetch("/api/auth/password/change", {
+      method: "PUT",
+      body: {
+        currentPassword: input.currentPassword,
+        newPassword: input.newPassword,
+      },
+    });
+  }
+
   return {
     useUser,
     useAccessToken,
@@ -229,5 +242,6 @@ export default function () {
     resetPassword,
     requestEmailVerify,
     prefetch,
+    changePassword,
   };
 }
