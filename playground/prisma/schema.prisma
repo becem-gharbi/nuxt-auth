@@ -43,5 +43,4 @@ enum Provider {
   default
   google
   github
-  facebook
 }
