@@ -51,8 +51,7 @@ export default defineNuxtConfig({
 
     registration: {
       defaultRole: "user",
-      requireEmailVerification: true,
-      passwordValidationRegex: "(?=.*[a-z])(?=.*[0-9])(?=.{6,})",
+      requireEmailVerification: false,
     },
 
     baseUrl: "http://localhost:3000",

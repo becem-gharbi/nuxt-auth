@@ -177,6 +177,7 @@ export async function findManyRefreshToken(userId: number) {
       uid: false,
       createdAt: true,
       id: true,
+      updatedAt:true
     },
   });
 
