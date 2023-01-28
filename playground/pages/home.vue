@@ -15,13 +15,16 @@
         </form>
 
         <button @click="revokeSessions">Delete all my sessions</button>
+
+        <button @click="handleGetSessions">Get sessions</button>
+        <p>{{ sessions }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" })
 
-const { logout, fetchUser, useUser, changePassword, revokeSessions } = useAuth()
+const { logout, fetchUser, useUser, changePassword, revokeSessions, getSessions } = useAuth()
 
 const user = useUser()
 
@@ -39,5 +42,12 @@ async function handleChangePassword() {
         currentPassword: currentPassword.value,
         newPassword: newPassword.value
     })
+}
+
+const sessions = ref()
+
+async function handleGetSessions() {
+    const { refreshTokens } = await getSessions()
+    sessions.value = refreshTokens
 }
 </script>

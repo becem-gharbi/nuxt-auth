@@ -3,11 +3,14 @@ import type {
   Provider as PrismaProvider,
   Prisma,
   Role,
+  RefreshToken as PrismaRefreshToken,
 } from "@prisma/client";
 
 export type Provider = Exclude<PrismaProvider, "default">;
 
 export interface User extends Omit<PrismaUser, "password"> {}
+
+export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> {}
 
 export type MailMessage = {
   to: string;

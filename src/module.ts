@@ -95,11 +95,6 @@ export default defineNuxtModule<ModuleOptions>({
     });
 
     addServerHandler({
-      route: "/api/auth/session/refresh",
-      handler: resolve(runtimeDir, "server/api/auth/session/refresh.post"),
-    });
-
-    addServerHandler({
       route: "/api/auth/register",
       handler: resolve(runtimeDir, "server/api/auth/register.post"),
     });
@@ -142,6 +137,16 @@ export default defineNuxtModule<ModuleOptions>({
     addServerHandler({
       route: "/api/auth/session/revoke",
       handler: resolve(runtimeDir, "server/api/auth/session/revoke.delete"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session/refresh",
+      handler: resolve(runtimeDir, "server/api/auth/session/refresh.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session",
+      handler: resolve(runtimeDir, "server/api/auth/session/index.get"),
     });
 
     //Create virtual imports for server-side

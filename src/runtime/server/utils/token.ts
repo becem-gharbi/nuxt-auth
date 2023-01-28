@@ -167,6 +167,22 @@ export async function deleteManyRefreshToken(userId: number) {
   });
 }
 
+export async function findManyRefreshToken(userId: number) {
+  const refreshTokens = await prisma.refreshToken.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      userId: true,
+      uid: false,
+      createdAt: true,
+      id: true,
+    },
+  });
+
+  return refreshTokens;
+}
+
 export function deleteRefreshTokenCookie(event: H3Event) {
   deleteCookie(event, privateConfig.refreshToken.cookieName!);
 }

@@ -1,6 +1,6 @@
 import { Ref } from "vue";
 import { appendHeader } from "h3";
-import type { User, Provider } from "../types";
+import type { User, Provider, RefreshToken } from "../types";
 import type { AsyncData } from "#app";
 import type { FetchError } from "ofetch";
 import useAuthFetch from "./useAuthFetch";
@@ -219,7 +219,7 @@ export default function () {
   async function changePassword(input: {
     currentPassword: string;
     newPassword: string;
-  }) {
+  }): Promise<void> {
     return useAuthFetch("/api/auth/password/change", {
       method: "PUT",
       body: {
@@ -229,10 +229,14 @@ export default function () {
     });
   }
 
-  async function revokeSessions() {
-    return useAuthFetch("/api/auth/session/revoke", {
+  async function revokeSessions(): Promise<void> {
+    return useAuthFetch<void>("/api/auth/session/revoke", {
       method: "DELETE",
     });
+  }
+
+  async function getSessions(): Promise<{ refreshTokens: RefreshToken[] }> {
+    return useAuthFetch<{ refreshTokens: RefreshToken[] }>("/api/auth/session");
   }
 
   return {
@@ -250,5 +254,6 @@ export default function () {
     prefetch,
     changePassword,
     revokeSessions,
+    getSessions,
   };
 }
