@@ -229,6 +229,12 @@ export default function () {
     });
   }
 
+  async function revokeSessions() {
+    return useAuthFetch("/api/auth/revoke", {
+      method: "DELETE",
+    });
+  }
+
   return {
     useUser,
     useAccessToken,
@@ -243,5 +249,6 @@ export default function () {
     requestEmailVerify,
     prefetch,
     changePassword,
+    revokeSessions,
   };
 }

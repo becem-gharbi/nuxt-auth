@@ -139,6 +139,11 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
     });
 
+    addServerHandler({
+      route: "/api/auth/revoke",
+      handler: resolve(runtimeDir, "server/api/auth/revoke.delete"),
+    });
+
     //Create virtual imports for server-side
     nuxt.hook("nitro:config", (nitroConfig) => {
       nitroConfig.alias = nitroConfig.alias || {};

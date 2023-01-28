@@ -13,13 +13,15 @@
             <input id="new-password" v-model="newPassword" />
             <button type="submit">Change password</button>
         </form>
+
+        <button @click="revokeSessions">Delete all my sessions</button>
     </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" })
 
-const { logout, fetchUser, useUser, changePassword } = useAuth()
+const { logout, fetchUser, useUser, changePassword, revokeSessions } = useAuth()
 
 const user = useUser()
 
