@@ -34,7 +34,7 @@ export default defineNuxtConfig({
       github: {
         clientId: process.env.AUTH_OAUTH_GITHUB_CLIENT_ID || "",
         clientSecret: process.env.AUTH_OAUTH_GITHUB_CLIENT_SECRET || "",
-        scopes: "email profile",
+        scopes: "user:email",
         authorizeUrl: "https://github.com/login/oauth/authorize",
         tokenUrl: "https://github.com/login/oauth/access_token",
         userUrl: "https://api.github.com/user",

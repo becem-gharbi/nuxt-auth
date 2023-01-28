@@ -71,11 +71,24 @@ export default defineEventHandler(async (event) => {
       }
 
       if (!user) {
+        const picture_key = Object.keys(userInfo).find((el) =>
+          [
+            "avatar",
+            "avatar_url",
+            "picture",
+            "picture_url",
+            "photo",
+            "photo_url",
+          ].includes(el)
+        );
+
+        const picture = picture_key ? userInfo[picture_key] : null;
+
         const newUser = await createUser({
           email: userInfo.email,
           name: userInfo.name,
           provider: provider,
-          picture: userInfo.picture,
+          picture,
           verified: true,
         });
 
@@ -91,6 +104,8 @@ export default defineEventHandler(async (event) => {
 
         setAccessTokenCookie(event, accessToken);
       }
+    } else {
+      throw new Error("email-not-accessible");
     }
 
     await sendRedirect(
