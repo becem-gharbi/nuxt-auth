@@ -75,6 +75,7 @@ export default defineEventHandler(async (event) => {
           email: userInfo.email,
           name: userInfo.name,
           provider: provider,
+          picture: userInfo.picture,
           verified: true,
         });
 
