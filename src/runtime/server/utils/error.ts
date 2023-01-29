@@ -12,7 +12,7 @@ export async function handleError(
   if (error instanceof Prisma.PrismaClientInitializationError) {
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
-    console.error("Failed to connected to database");
+    console.error("!!! Failed to connected to database !!!");
   } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //Query engine related issues
     if (error.code.startsWith("P2")) {

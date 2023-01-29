@@ -86,6 +86,7 @@ model RefreshToken {
   uid       String
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
+  userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

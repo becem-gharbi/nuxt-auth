@@ -1,12 +1,13 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import {
-  H3Event,
   setCookie,
   getCookie,
   getRequestHeader,
   deleteCookie,
+  getHeader,
 } from "h3";
+import type { H3Event } from "h3";
 import { prisma } from "./prisma";
 import { privateConfig } from "./config";
 import type {
@@ -77,11 +78,14 @@ export function deleteAccessTokenCookie(event: H3Event) {
 }
 /*************** Refresh token ***************/
 
-export async function createRefreshToken(user: User) {
+export async function createRefreshToken(event: H3Event, user: User) {
+  const userAgent = getHeader(event, "user-agent");
+
   const refreshTokenEntity = await prisma.refreshToken.create({
     data: {
       uid: uuidv4(),
       userId: user.id,
+      userAgent,
     },
   });
 
@@ -141,12 +145,18 @@ export async function verifyRefreshToken(refreshToken: string) {
     privateConfig.refreshToken.jwtSecret
   ) as RefreshTokenPayload;
 
-  await prisma.refreshToken.findFirstOrThrow({
+  const refreshTokenEntity = await prisma.refreshToken.findUniqueOrThrow({
     where: {
-      userId: payload.userId,
-      uid: payload.uid,
+      id: payload.id,
     },
   });
+
+  if (
+    refreshTokenEntity.userId !== payload.userId ||
+    refreshTokenEntity.uid !== payload.uid
+  ) {
+    throw new Error("unauthorized");
+  }
 
   return payload;
 }
@@ -178,6 +188,7 @@ export async function findManyRefreshToken(userId: number) {
       createdAt: true,
       id: true,
       updatedAt: true,
+      userAgent: true,
     },
   });
 

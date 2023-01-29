@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody } from "h3";
+import { defineEventHandler, readBody, getHeader } from "h3";
 import { z } from "zod";
 
 import {
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("user-blocked");
     }
 
-    const refreshToken = await createRefreshToken(user);
+    const refreshToken = await createRefreshToken(event, user);
 
     setRefreshTokenCookie(event, refreshToken);
 

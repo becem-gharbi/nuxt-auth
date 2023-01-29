@@ -96,7 +96,7 @@ export default defineEventHandler(async (event) => {
       }
 
       if (user) {
-        const refreshToken = await createRefreshToken(user);
+        const refreshToken = await createRefreshToken(event, user);
 
         setRefreshTokenCookie(event, refreshToken);
 
