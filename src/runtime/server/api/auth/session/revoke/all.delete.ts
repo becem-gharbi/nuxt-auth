@@ -1,6 +1,5 @@
 import { defineEventHandler } from "h3";
 import {
-  deleteRefreshTokenCookie,
   handleError,
   getAccessTokenFromHeader,
   verifyAccessToken,
@@ -18,8 +17,6 @@ export default defineEventHandler(async (event) => {
     const payload = verifyAccessToken(accessToken);
 
     await deleteManyRefreshTokenByUser(payload.userId);
-
-    deleteRefreshTokenCookie(event);
 
     return {};
   } catch (error) {

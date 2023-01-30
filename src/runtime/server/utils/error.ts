@@ -2,6 +2,7 @@ import { ZodError } from "zod";
 import { createError, H3Error, sendRedirect } from "h3";
 import type { H3Event } from "h3";
 import { Prisma } from "@prisma/client";
+import jwt from "jsonwebtoken";
 
 export async function handleError(
   error: any,
@@ -27,8 +28,12 @@ export async function handleError(
   } else if (error instanceof ZodError) {
     h3Error.message = error.issues[0].path + " | " + error.issues[0].message;
     h3Error.statusCode = 400;
-  } else if (error.message === "unauthorized") {
-    h3Error.message = error.message;
+  } else if (
+    error instanceof jwt.JsonWebTokenError ||
+    error instanceof jwt.TokenExpiredError ||
+    error.message === "unauthorized"
+  ) {
+    h3Error.message = "unauthorized";
     h3Error.statusCode = 401;
   } else {
     h3Error.message = error.message;

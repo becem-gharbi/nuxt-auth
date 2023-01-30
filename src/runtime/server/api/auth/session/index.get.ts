@@ -4,6 +4,8 @@ import {
   verifyAccessToken,
   handleError,
   findManyRefreshTokenByUser,
+  getRefreshTokenFromCookie,
+  verifyRefreshToken,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -14,11 +16,17 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const accessTokenPayload = verifyAccessToken(accessToken);
 
-    const refreshTokens = await findManyRefreshTokenByUser(payload.userId);
+    const refreshToken = getRefreshTokenFromCookie(event);
 
-    return { refreshTokens };
+    const refreshTokenPayload = await verifyRefreshToken(refreshToken);
+
+    const refreshTokens = await findManyRefreshTokenByUser(
+      accessTokenPayload.userId
+    );
+
+    return { refreshTokens, active: refreshTokenPayload.id };
   } catch (error) {
     await handleError(error);
   }

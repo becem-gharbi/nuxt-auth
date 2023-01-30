@@ -19,7 +19,7 @@ import { User } from "@prisma/client";
 export default defineEventHandler(async (event) => {
   try {
     const provider = event.context.params.provider;
-    const code = getQuery(event).code?.toString() || "";
+    const code = getQuery(event).code?.toString();
 
     const schema = z.object({
       code: z.string().min(1),
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     const formData = new FormData();
     formData.append("grant_type", "authorization_code");
-    formData.append("code", code);
+    formData.append("code", code!);
     formData.append("client_id", privateConfig.oauth[provider].clientId);
     formData.append(
       "client_secret",

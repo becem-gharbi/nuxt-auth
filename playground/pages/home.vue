@@ -14,14 +14,15 @@
             <button type="submit">Change password</button>
         </form>
 
-        <ul>
+        <ul v-if="data">
             <li v-for="session of data">
                 <p>{{ session }}</p>
                 <button @click="revokeSession(session.id)">revoke</button>
             </li>
+            <li>
+                <button @click="() => refresh()">Update sessions</button>
+            </li>
         </ul>
-        
-        <button @click="() => refresh()">Update sessions</button>
 
         <button @click="revokeAllSessions">Delete all my sessions</button>
 
@@ -52,5 +53,5 @@ async function handleChangePassword() {
     })
 }
 
-const { data, refresh } = await useAsyncData(() => getAllSessions())
+const { data, refresh } = await useAsyncData(getAllSessions, { server: false })
 </script>
