@@ -9,14 +9,14 @@ A nuxt 3 module to handle authentication
 ✔️ Oauth login (Google, Github ...)<br>
 ✔️ Route middleware protection<br>
 ✔️ Database agnostic (Prisma based)<br>
-✔️ Auth operations through `useAuth` composable<br>
-✔️ Auto refresh of access token through `useAuthFetch` composable<br>
+✔️ Auth operations via `useAuth` composable<br>
+✔️ Auto refresh of access token via `useAuthFetch` composable<br>
 ✔️ Add dynamic custom claims to access token<br>
 ✔️ Customizable email templates<br>
 ✔️ Admin registration management<br>
-✔️ User session management
+✔️ User session management via `useAuthSession` composable
 
-## 👉 Demo ( [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app) )
+## 👉 Demo - [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app) 
 
 ## Installation
 
@@ -167,7 +167,7 @@ emailTemplates: {
        <p>Valid for {{validityInMinutes}} minutes</p>
      </body>
     </html>
-    `;
+    `,
 }
 ```
 
