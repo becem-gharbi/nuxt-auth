@@ -9,7 +9,7 @@ import {
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
-import { UAParser } from "ua-parser-js";
+import uaParserJs from "ua-parser-js";
 
 export default function () {
   const privateConfig = useRuntimeConfig().auth;
@@ -131,15 +131,15 @@ export default function () {
     });
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {
-      const uaParser = new UAParser(refreshToken.userAgent || undefined);
+      const ua = uaParserJs(refreshToken.userAgent || undefined);
 
       return {
         id: refreshToken.id,
         active: refreshToken.id === active,
         userId: refreshToken.userId,
-        browser: uaParser.getBrowser(),
-        device: uaParser.getDevice(),
-        os: uaParser.getOS(),
+        browser: ua.browser,
+        device: ua.device,
+        os: ua.os,
         updatedAt: refreshToken.updatedAt,
         createdAt: refreshToken.createdAt,
       };
