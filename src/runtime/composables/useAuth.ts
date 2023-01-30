@@ -20,6 +20,7 @@ export default function () {
   }): FetchReturn<{ accessToken: string; user: User }> {
     return useFetch<{ accessToken: string; user: User }>("/api/auth/login", {
       method: "POST",
+      credentials: "include",
       body: {
         email: credentials.email,
         password: credentials.password,
@@ -53,6 +54,7 @@ export default function () {
   async function logout(): Promise<void> {
     await $fetch("/api/auth/logout", {
       method: "POST",
+      credentials: "include",
     }).finally(() => {
       const accessToken = useAccessToken();
       const user = useUser();
@@ -72,12 +74,14 @@ export default function () {
     return useFetch("/api/auth/register", {
       method: "POST",
       body: userInfo,
+      credentials: "omit",
     });
   }
 
   async function requestPasswordReset(email: string): FetchReturn<void> {
     return useFetch("/api/auth/password/request", {
       method: "POST",
+      credentials: "omit",
       body: {
         email,
       },
@@ -87,6 +91,7 @@ export default function () {
   async function resetPassword(password: string): FetchReturn<void> {
     return useFetch("/api/auth/password/reset", {
       method: "PUT",
+      credentials: "omit",
       body: {
         password: password,
         token: route.query.token,
@@ -97,6 +102,7 @@ export default function () {
   async function requestEmailVerify(email: string): FetchReturn<void> {
     return useFetch("/api/auth/email/request", {
       method: "POST",
+      credentials: "omit",
       body: {
         email,
       },
@@ -109,6 +115,7 @@ export default function () {
   }): Promise<void> {
     return useAuthFetch("/api/auth/password/change", {
       method: "PUT",
+      credentials: "omit",
       body: {
         currentPassword: input.currentPassword,
         newPassword: input.newPassword,

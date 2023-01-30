@@ -21,6 +21,8 @@ export default async function <DataT>(
     throw new Error("unauthorized");
   }
 
+  fetchOptions.credentials = fetchOptions.credentials || "omit";
+
   fetchOptions.headers = defu(
     {
       Authorization: "Bearer " + accessToken.value,

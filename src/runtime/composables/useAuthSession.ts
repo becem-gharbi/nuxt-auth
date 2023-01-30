@@ -58,6 +58,7 @@ export default function () {
       if (accessToken.value) {
         if (!user.value) {
           user.value = await $fetch<User>("/api/auth/me", {
+            credentials: "omit",
             headers: {
               Authorization: "Bearer " + accessToken.value,
             },
@@ -82,6 +83,7 @@ export default function () {
         {
           method: "POST",
           headers: process.server ? { cookie: cookies } : {},
+          credentials: "include",
           onResponse({ response }) {
             if (process.server) {
               const cookies = (response?.headers.get("set-cookie") || "").split(
@@ -106,12 +108,14 @@ export default function () {
   async function revokeAllSessions(): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke/all", {
       method: "DELETE",
+      credentials: "omit",
     });
   }
 
   async function revokeSession(id: number): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke", {
       method: "DELETE",
+      credentials: "omit",
       body: {
         id,
       },
@@ -122,7 +126,9 @@ export default function () {
     const { refreshTokens, active } = await useAuthFetch<{
       refreshTokens: RefreshToken[];
       active: number;
-    }>("/api/auth/session");
+    }>("/api/auth/session", {
+      credentials: "include",
+    });
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {
       const uaParser = new UAParser(refreshToken.userAgent || undefined);
