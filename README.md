@@ -1,4 +1,4 @@
-## Nuxt Auth (RC)
+## Nuxt Auth
 
 A nuxt 3 module to handle authentication
 
@@ -16,9 +16,7 @@ A nuxt 3 module to handle authentication
 ✔️ Admin registration management<br>
 ✔️ User session management
 
-## Demo ( [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app) )
-
-![Alt text](https://nuxt-auth-starter.vercel.app/capture_dark.png "Demo screenshot")
+## 👉 Demo ( [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app) )
 
 ## Installation
 
