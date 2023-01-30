@@ -3,7 +3,6 @@ import { setCookie, getCookie, getRequestHeader, deleteCookie } from "h3";
 import type { H3Event } from "h3";
 import { privateConfig } from "../config";
 import type { AccessTokenPayload, User } from "../../../types";
-
 import Mustache from "mustache";
 
 export function createAccessToken(user: User) {

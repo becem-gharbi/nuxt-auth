@@ -3,7 +3,7 @@ import {
   getAccessTokenFromHeader,
   verifyAccessToken,
   handleError,
-  findManyRefreshToken,
+  findManyRefreshTokenByUser,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyAccessToken(accessToken);
 
-    const refreshTokens = await findManyRefreshToken(payload.userId);
+    const refreshTokens = await findManyRefreshTokenByUser(payload.userId);
 
     return { refreshTokens };
   } catch (error) {

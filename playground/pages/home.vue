@@ -29,7 +29,8 @@
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" })
 
-const { logout, fetchUser, useUser, changePassword, revokeAllSessions, getAllSessions, revokeSession } = useAuth()
+const { logout, fetchUser, changePassword } = useAuth()
+const { useUser, revokeAllSessions, getAllSessions, revokeSession } = useAuthSession()
 
 const user = useUser()
 

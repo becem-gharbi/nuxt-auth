@@ -13,14 +13,14 @@ export {
 
 export {
   createRefreshToken,
-  deleteManyRefreshToken,
+  deleteManyRefreshTokenByUser,
   deleteRefreshToken,
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   setRefreshTokenCookie,
   updateRefreshToken,
   verifyRefreshToken,
-  findManyRefreshToken,
+  findManyRefreshTokenByUser,
   findRefreshTokenById,
 } from "./token/refreshToken";
 

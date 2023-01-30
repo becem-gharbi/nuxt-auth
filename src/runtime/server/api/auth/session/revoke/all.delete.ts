@@ -4,7 +4,7 @@ import {
   handleError,
   getAccessTokenFromHeader,
   verifyAccessToken,
-  deleteManyRefreshToken,
+  deleteManyRefreshTokenByUser,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyAccessToken(accessToken);
 
-    await deleteManyRefreshToken(payload.userId);
+    await deleteManyRefreshTokenByUser(payload.userId);
 
     deleteRefreshTokenCookie(event);
 

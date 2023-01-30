@@ -1,7 +1,7 @@
 import { defineEventHandler, readBody } from "h3";
 
 import {
-  deleteManyRefreshToken,
+  deleteManyRefreshTokenByUser,
   getAccessTokenFromHeader,
   verifyAccessToken,
   changePassword,
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
 
     await changePassword(user.id, newPassword);
 
-    await deleteManyRefreshToken(payload.userId);
+    await deleteManyRefreshTokenByUser(payload.userId);
 
     return {};
   } catch (error) {

@@ -1,56 +1,18 @@
-import { Ref } from "vue";
-import { appendHeader } from "h3";
-import type { User, Provider, RefreshToken } from "../types";
+import type { User, Provider } from "../types";
 import type { AsyncData } from "#app";
 import type { FetchError } from "ofetch";
-import useAuthFetch from "./useAuthFetch";
-import jwtDecode from "jwt-decode";
-
-import {
-  useRuntimeConfig,
-  useRoute,
-  navigateTo,
-  useState,
-  useFetch,
-  useRequestEvent,
-  useRequestHeaders,
-} from "#app";
-
 import type { H3Error } from "h3";
+
+import useAuthFetch from "./useAuthFetch";
+import { useRuntimeConfig, useRoute, navigateTo, useFetch } from "#app";
+import useAuthSession from "./useAuthSession";
 
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
-  const privateConfig = useRuntimeConfig().auth;
+  const { useAccessToken, useUser } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth;
-
-  const useUser: () => Ref<User | null | undefined> = () =>
-    useState<User | null | undefined>("auth_user", () => null);
-
-  const useAccessToken: () => Ref<string | undefined | null> = () =>
-    useState<string | undefined | null>("auth_access_token", () => null);
-
-  const event = useRequestEvent();
-
   const route = useRoute();
-
-  function isAccessTokenExpired() {
-    const accessToken = useAccessToken();
-
-    if (accessToken.value) {
-      const decoded = jwtDecode(accessToken.value) as { exp: number };
-      const expires = decoded.exp * 1000;
-      return expires < Date.now();
-    }
-
-    return true;
-  }
-
-  function extractCookie(cookies: string, name: string) {
-    const value = `; ${cookies}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(";").shift();
-  }
 
   async function login(credentials: {
     email: string;
@@ -80,81 +42,6 @@ export default function () {
   function loginWithProvider(provider: Provider): void {
     if (process.client) {
       window.location.replace(`/api/auth/login/${provider}`);
-    }
-  }
-
-  async function prefetch(): Promise<void> {
-    await refresh();
-
-    const accessToken = useAccessToken();
-
-    if (!accessToken.value) {
-      await logout();
-      throw new Error("unauthorized");
-    }
-  }
-
-  async function refresh(): Promise<void> {
-    const accessToken = useAccessToken();
-    const user = useUser();
-
-    try {
-      const cookies = useRequestHeaders(["cookie"]).cookie || "";
-
-      if (process.server) {
-        accessToken.value = extractCookie(
-          cookies,
-          privateConfig.accessToken.cookieName
-        );
-      } else {
-        accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
-      }
-
-      if (accessToken.value) {
-        if (!user.value) {
-          user.value = await $fetch<User>("/api/auth/me", {
-            headers: {
-              Authorization: "Bearer " + accessToken.value,
-            },
-          });
-        }
-        return;
-      }
-
-      if (process.server) {
-        const refreshToken = extractCookie(
-          cookies,
-          privateConfig.refreshToken.cookieName
-        );
-
-        if (!refreshToken) {
-          return;
-        }
-      }
-
-      const res = await $fetch<{ accessToken: string; user: User }>(
-        "/api/auth/session/refresh",
-        {
-          method: "POST",
-          headers: process.server ? { cookie: cookies } : {},
-          onResponse({ response }) {
-            if (process.server) {
-              const cookies = (response?.headers.get("set-cookie") || "").split(
-                ","
-              );
-              for (const cookie of cookies) {
-                appendHeader(event, "set-cookie", cookie);
-              }
-            }
-          },
-        }
-      );
-
-      accessToken.value = res.accessToken;
-      user.value = res.user;
-    } catch (e) {
-      accessToken.value = null;
-      user.value = null;
     }
   }
 
@@ -229,41 +116,15 @@ export default function () {
     });
   }
 
-  async function revokeAllSessions(): Promise<void> {
-    return useAuthFetch<void>("/api/auth/session/revoke/all", {
-      method: "DELETE",
-    });
-  }
-
-  async function revokeSession(id: number): Promise<void> {
-    return useAuthFetch<void>("/api/auth/session/revoke", {
-      method: "DELETE",
-      body: {
-        id,
-      },
-    });
-  }
-
-  async function getAllSessions(): Promise<{ refreshTokens: RefreshToken[] }> {
-    return useAuthFetch<{ refreshTokens: RefreshToken[] }>("/api/auth/session");
-  }
-
   return {
-    useUser,
-    useAccessToken,
     login,
     loginWithProvider,
-    refresh,
     fetchUser,
     logout,
     register,
     requestPasswordReset,
     resetPassword,
     requestEmailVerify,
-    prefetch,
     changePassword,
-    revokeAllSessions,
-    revokeSession,
-    getAllSessions,
   };
 }

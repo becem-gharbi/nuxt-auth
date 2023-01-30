@@ -4,7 +4,7 @@ import {
   handleError,
   getAccessTokenFromHeader,
   verifyAccessToken,
-  deleteManyRefreshToken,
+  deleteManyRefreshTokenByUser,
   findRefreshTokenById,
   deleteRefreshToken,
 } from "#auth";

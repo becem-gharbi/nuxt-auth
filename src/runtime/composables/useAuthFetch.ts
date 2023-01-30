@@ -1,17 +1,25 @@
+import type { FetchOptions } from "ofetch";
+import useAuthSession from "./useAuthSession";
 import useAuth from "./useAuth";
 import { defu } from "defu";
-import type { FetchOptions } from "ofetch";
 import { $fetch } from "ofetch";
 
 export default async function <DataT>(
   path: string,
   fetchOptions: FetchOptions<"json"> = {}
 ): Promise<DataT> {
-  const { useAccessToken, prefetch } = useAuth();
+  const { useAccessToken, refresh } = useAuthSession();
 
-  await prefetch();
+  const { logout } = useAuth();
 
   const accessToken = useAccessToken();
+
+  await refresh();
+
+  if (!accessToken.value) {
+    await logout();
+    throw new Error("unauthorized");
+  }
 
   fetchOptions.headers = defu(
     {

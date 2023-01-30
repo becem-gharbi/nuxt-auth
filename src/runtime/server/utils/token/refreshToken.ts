@@ -103,7 +103,7 @@ export async function deleteRefreshToken(refreshTokenId: number) {
   });
 }
 
-export async function deleteManyRefreshToken(userId: number) {
+export async function deleteManyRefreshTokenByUser(userId: number) {
   await prisma.refreshToken.deleteMany({
     where: {
       userId,
@@ -111,7 +111,7 @@ export async function deleteManyRefreshToken(userId: number) {
   });
 }
 
-export async function findManyRefreshToken(userId: number) {
+export async function findManyRefreshTokenByUser(userId: number) {
   const refreshTokens = await prisma.refreshToken.findMany({
     where: {
       userId,

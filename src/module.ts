@@ -205,6 +205,8 @@ export default defineNuxtModule<ModuleOptions>({
 
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
+      app: {},
+
       auth: {
         accessToken: options.accessToken,
 

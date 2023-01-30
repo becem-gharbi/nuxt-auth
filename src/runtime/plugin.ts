@@ -1,8 +1,8 @@
 import { defineNuxtPlugin, addRouteMiddleware, useRuntimeConfig } from "#app";
-import useAuth from "../runtime/composables/useAuth";
 import common from "./middleware/common.global";
 import auth from "./middleware/auth";
 import guest from "./middleware/guest";
+import useAuthSession from "./composables/useAuthSession";
 
 export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig();
@@ -16,7 +16,7 @@ export default defineNuxtPlugin(async () => {
   addRouteMiddleware("guest", guest);
 
   if (process.server) {
-    const { refresh } = useAuth();
+    const { refresh } = useAuthSession();
     await refresh();
   }
 });
