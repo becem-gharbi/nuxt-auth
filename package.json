@@ -38,14 +38,12 @@
   "dependencies": {
     "@nuxt/kit": "^3.1.1",
     "@prisma/client": "^4.9.0",
-    "@types/ua-parser-js": "^0.7.36",
     "bcrypt": "^5.1.0",
     "defu": "^6.1.2",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "mustache": "^4.2.0",
     "nodemailer": "^6.9.0",
-    "ua-parser-js": "^1.0.33",
     "uuid": "^9.0.0",
     "zod": "^3.20.2"
   },

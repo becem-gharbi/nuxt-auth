@@ -5,7 +5,6 @@ import type {
   Role,
   RefreshToken as PrismaRefreshToken,
 } from "@prisma/client";
-import type { IBrowser, IDevice, IOS } from "ua-parser-js";
 
 export type Provider = Exclude<PrismaProvider, "default">;
 
@@ -17,9 +16,7 @@ export interface Session {
   id: number;
   active: boolean;
   userId: number;
-  browser: IBrowser;
-  device: IDevice;
-  os: IOS;
+  ua: string | null;
   updatedAt: Date;
   createdAt: Date;
 }

@@ -67,9 +67,6 @@ export default defineNuxtModule<ModuleOptions>({
     //Transpile the runtime directory
     nuxt.options.build.transpile.push(runtimeDir);
 
-    //Transpile ua-parser-js package
-    nuxt.options.build.transpile.push("ua-parser-js");
-
     //Add plugins
     const plugin = resolve(runtimeDir, "plugin");
     addPlugin(plugin);
