@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const payload = verifyAccessToken(accessToken);
 
     await deleteManyRefreshToken(payload.userId);
-    
+
     deleteRefreshTokenCookie(event);
 
     return {};

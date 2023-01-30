@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   auth: {
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
-      maxAge: 60,
+      maxAge: 3600,
       customClaims: {
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": '["user", "admin"]',

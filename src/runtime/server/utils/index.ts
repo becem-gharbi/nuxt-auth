@@ -22,6 +22,7 @@ export {
   getAccessTokenFromCookie,
   deleteAccessTokenCookie,
   findManyRefreshToken,
+  findRefreshTokenById,
 } from "./token";
 
 export {

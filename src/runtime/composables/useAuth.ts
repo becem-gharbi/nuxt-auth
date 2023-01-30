@@ -229,13 +229,22 @@ export default function () {
     });
   }
 
-  async function revokeSessions(): Promise<void> {
-    return useAuthFetch<void>("/api/auth/session/revoke", {
+  async function revokeAllSessions(): Promise<void> {
+    return useAuthFetch<void>("/api/auth/session/revoke/all", {
       method: "DELETE",
     });
   }
 
-  async function getSessions(): Promise<{ refreshTokens: RefreshToken[] }> {
+  async function revokeSession(id: number): Promise<void> {
+    return useAuthFetch<void>("/api/auth/session/revoke", {
+      method: "DELETE",
+      body: {
+        id,
+      },
+    });
+  }
+
+  async function getAllSessions(): Promise<{ refreshTokens: RefreshToken[] }> {
     return useAuthFetch<{ refreshTokens: RefreshToken[] }>("/api/auth/session");
   }
 
@@ -253,7 +262,8 @@ export default function () {
     requestEmailVerify,
     prefetch,
     changePassword,
-    revokeSessions,
-    getSessions,
+    revokeAllSessions,
+    revokeSession,
+    getAllSessions,
   };
 }

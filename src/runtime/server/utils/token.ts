@@ -139,19 +139,25 @@ export function getRefreshTokenFromCookie(event: H3Event) {
   return refreshToken;
 }
 
+export async function findRefreshTokenById(id: number) {
+  const refreshTokenEntity = await prisma.refreshToken.findUnique({
+    where: {
+      id,
+    },
+  });
+  return refreshTokenEntity;
+}
+
 export async function verifyRefreshToken(refreshToken: string) {
   const payload = jwt.verify(
     refreshToken,
     privateConfig.refreshToken.jwtSecret
   ) as RefreshTokenPayload;
 
-  const refreshTokenEntity = await prisma.refreshToken.findUniqueOrThrow({
-    where: {
-      id: payload.id,
-    },
-  });
+  const refreshTokenEntity = await findRefreshTokenById(payload.id);
 
   if (
+    !refreshTokenEntity ||
     refreshTokenEntity.userId !== payload.userId ||
     refreshTokenEntity.uid !== payload.uid
   ) {

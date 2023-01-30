@@ -136,7 +136,15 @@ export default defineNuxtModule<ModuleOptions>({
 
     addServerHandler({
       route: "/api/auth/session/revoke",
-      handler: resolve(runtimeDir, "server/api/auth/session/revoke.delete"),
+      handler: resolve(
+        runtimeDir,
+        "server/api/auth/session/revoke/index.delete"
+      ),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session/revoke/all",
+      handler: resolve(runtimeDir, "server/api/auth/session/revoke/all.delete"),
     });
 
     addServerHandler({
