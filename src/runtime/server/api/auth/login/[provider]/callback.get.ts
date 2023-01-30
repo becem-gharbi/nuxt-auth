@@ -71,6 +71,10 @@ export default defineEventHandler(async (event) => {
       }
 
       if (!user) {
+        if (privateConfig.registration?.enable === false) {
+          throw new Error("registration-disabled");
+        }
+
         const picture_key = Object.keys(userInfo).find((el) =>
           [
             "avatar",
