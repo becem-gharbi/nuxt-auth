@@ -17,7 +17,7 @@ export async function createRefreshToken(event: H3Event, user: User) {
     },
   });
 
-  const payload = {
+  const payload: RefreshTokenPayload = {
     id: refreshTokenEntity.id,
     uid: refreshTokenEntity.uid,
     userId: refreshTokenEntity.userId,
@@ -40,7 +40,7 @@ export async function updateRefreshToken(refreshTokenId: number) {
     },
   });
 
-  const payload = {
+  const payload: RefreshTokenPayload = {
     id: refreshTokenEntity.id,
     uid: refreshTokenEntity.uid,
     userId: refreshTokenEntity.userId,
@@ -77,6 +77,7 @@ export async function findRefreshTokenById(id: number) {
 }
 
 export async function verifyRefreshToken(refreshToken: string) {
+  //check if the refreshToken is issued by the auth server && if it's not expired
   const payload = jwt.verify(
     refreshToken,
     privateConfig.refreshToken.jwtSecret
@@ -85,9 +86,8 @@ export async function verifyRefreshToken(refreshToken: string) {
   const refreshTokenEntity = await findRefreshTokenById(payload.id);
 
   if (
-    !refreshTokenEntity ||
-    refreshTokenEntity.userId !== payload.userId ||
-    refreshTokenEntity.uid !== payload.uid
+    !refreshTokenEntity || //check if the refresh token is revoked (deleted from database)
+    refreshTokenEntity.uid !== payload.uid //check if the refresh token is fresh (not stolen)
   ) {
     throw new Error("unauthorized");
   }

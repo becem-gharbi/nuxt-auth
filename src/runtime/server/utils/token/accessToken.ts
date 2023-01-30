@@ -13,10 +13,10 @@ export function createAccessToken(user: User) {
     customClaims = Object.assign(JSON.parse(output));
   }
 
-  const payload = {
+  const payload: AccessTokenPayload = {
     userId: user.id,
     userRole: user.role,
-    ...customClaims,
+    customClaims,
   };
 
   const accessToken = jwt.sign(payload, privateConfig.accessToken.jwtSecret, {
@@ -26,6 +26,11 @@ export function createAccessToken(user: User) {
   return accessToken;
 }
 
+/**
+ * Get the access token from Authorization header
+ * @param event
+ * @returns accessToken
+ */
 export function getAccessTokenFromHeader(event: H3Event) {
   const authorization = getRequestHeader(event, "Authorization");
   if (authorization) {
@@ -34,6 +39,11 @@ export function getAccessTokenFromHeader(event: H3Event) {
   }
 }
 
+/**
+ * Check if the access token is issued by the server and not expired
+ * @param accessToken
+ * @returns accessTokenPayload
+ */
 export function verifyAccessToken(accessToken: string) {
   const payload = jwt.verify(
     accessToken,
