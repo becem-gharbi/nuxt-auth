@@ -4,26 +4,35 @@ export { sendMail } from "./mail";
 
 export {
   createAccessToken,
-  createEmailVerifyToken,
-  createRefreshToken,
-  createResetPasswordToken,
-  deleteManyRefreshToken,
-  deleteRefreshToken,
-  deleteRefreshTokenCookie,
   getAccessTokenFromHeader,
-  getRefreshTokenFromCookie,
-  setRefreshTokenCookie,
-  updateRefreshToken,
   verifyAccessToken,
-  verifyEmailVerifyToken,
-  verifyRefreshToken,
-  verifyResetPasswordToken,
   setAccessTokenCookie,
   getAccessTokenFromCookie,
   deleteAccessTokenCookie,
+} from "./token/accessToken";
+
+export {
+  createRefreshToken,
+  deleteManyRefreshToken,
+  deleteRefreshToken,
+  deleteRefreshTokenCookie,
+  getRefreshTokenFromCookie,
+  setRefreshTokenCookie,
+  updateRefreshToken,
+  verifyRefreshToken,
   findManyRefreshToken,
   findRefreshTokenById,
-} from "./token";
+} from "./token/refreshToken";
+
+export {
+  createEmailVerifyToken,
+  verifyEmailVerifyToken,
+} from "./token/emailVerify";
+
+export {
+  createResetPasswordToken,
+  verifyResetPasswordToken,
+} from "./token/passwordReset";
 
 export {
   changePassword,
