@@ -1,5 +1,5 @@
 import type { Ref } from "vue";
-import type { User, RefreshToken } from "../types";
+import type { User, RefreshToken, Session } from "../types";
 import { appendHeader } from "h3";
 import useAuthFetch from "./useAuthFetch";
 import jwtDecode from "jwt-decode";
@@ -9,6 +9,7 @@ import {
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
+import { UAParser } from "ua-parser-js";
 
 export default function () {
   const privateConfig = useRuntimeConfig().auth;
@@ -117,8 +118,26 @@ export default function () {
     });
   }
 
-  async function getAllSessions(): Promise<{ refreshTokens: RefreshToken[] }> {
-    return useAuthFetch<{ refreshTokens: RefreshToken[] }>("/api/auth/session");
+  async function getAllSessions(): Promise<Session[]> {
+    const { refreshTokens } = await useAuthFetch<{
+      refreshTokens: RefreshToken[];
+    }>("/api/auth/session");
+
+    const sessions: Session[] = refreshTokens.map((refreshToken) => {
+      const uaParser = new UAParser(refreshToken.userAgent || undefined);
+
+      return {
+        id: refreshToken.id,
+        userId: refreshToken.userId,
+        browser: uaParser.getBrowser(),
+        device: uaParser.getDevice(),
+        os: uaParser.getOS(),
+        updatedAt: refreshToken.updatedAt,
+        createdAt: refreshToken.createdAt,
+      };
+    });
+
+    return sessions;
   }
 
   return {

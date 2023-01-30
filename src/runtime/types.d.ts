@@ -5,12 +5,23 @@ import type {
   Role,
   RefreshToken as PrismaRefreshToken,
 } from "@prisma/client";
+import type { IBrowser, IDevice, IOS } from "ua-parser-js";
 
 export type Provider = Exclude<PrismaProvider, "default">;
 
 export interface User extends Omit<PrismaUser, "password"> {}
 
 export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> {}
+
+export interface Session {
+  id: number;
+  userId: number;
+  browser: IBrowser;
+  device: IDevice;
+  os: IOS;
+  updatedAt: Date;
+  createdAt: Date;
+}
 
 export type MailMessage = {
   to: string;
