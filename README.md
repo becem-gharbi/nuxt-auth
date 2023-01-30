@@ -1,4 +1,4 @@
-## Nuxt Auth (Beta)
+## Nuxt Auth (RC)
 
 A nuxt 3 module to handle authentication
 
@@ -13,11 +13,12 @@ A nuxt 3 module to handle authentication
 ✔️ Auto refresh of access token through `useAuthFetch` composable<br>
 ✔️ Add dynamic custom claims to access token<br>
 ✔️ Customizable email templates<br>
-✔️ Registration management
+✔️ Admin registration management<br>
+✔️ User session management
 
-## Demo
+## Demo ( [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app) )
 
-For a demonstration follow this [link](https://nuxt-auth-starter.vercel.app/)
+![Alt text](https://nuxt-auth-starter.vercel.app/capture_dark.png "Demo screenshot")
 
 ## Installation
 

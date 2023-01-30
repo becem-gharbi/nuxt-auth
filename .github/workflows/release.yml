@@ -5,6 +5,7 @@ on:
       - "main"
       - "alpha"
       - "beta"
+      - "rc"
 permissions:
   contents: write
   issues: write
