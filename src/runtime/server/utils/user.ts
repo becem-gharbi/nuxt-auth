@@ -1,6 +1,7 @@
 import { prisma } from "./prisma";
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { privateConfig } from "./config";
 
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUnique({
@@ -15,7 +16,11 @@ export async function createUser(input: Prisma.UserCreateInput) {
     : undefined;
 
   const user = await prisma.user.create({
-    data: { ...input, password: hashedPassword },
+    data: {
+      ...input,
+      password: hashedPassword,
+      role: privateConfig.registration?.defaultRole,
+    },
   });
 
   return user;

@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
       email,
       password,
       name,
-      role: privateConfig.registration?.defaultRole,
     });
 
     return {};
