@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const accessToken = getAccessTokenFromHeader(event);
 
     if (!accessToken) {
-      throw new Error("Unauthorized");
+      throw new Error("unauthorized");
     }
 
     const payload = verifyAccessToken(accessToken);
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     const user = await findUser({ id: payload.userId });
 
     if (!user) {
-      throw new Error("user-not-found");
+      throw new Error("unauthorized");
     }
 
     const { password, ...sanitizedUser } = user;

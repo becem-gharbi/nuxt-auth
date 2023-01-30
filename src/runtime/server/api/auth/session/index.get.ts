@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const accessToken = getAccessTokenFromHeader(event);
 
     if (!accessToken) {
-      throw new Error("Unauthorized");
+      throw new Error("unauthorized");
     }
 
     const payload = verifyAccessToken(accessToken);
