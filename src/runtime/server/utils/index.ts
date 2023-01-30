@@ -43,3 +43,5 @@ export {
 } from "./user";
 
 export { handleError } from "./error";
+
+export { prisma } from "./prisma";

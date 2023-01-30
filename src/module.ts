@@ -192,6 +192,10 @@ export default defineNuxtModule<ModuleOptions>({
             runtimeDir,
             "server/utils"
           )}').handleError`,
+          `  const prisma: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').prisma`,
           "}",
         ].join("\n"),
     });
