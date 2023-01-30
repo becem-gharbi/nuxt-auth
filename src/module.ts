@@ -30,7 +30,7 @@ export default defineNuxtModule<ModuleOptions>({
     refreshToken: {
       cookieName: "auth_refresh_token",
       jwtSecret: "sldkfbld6f8gdfgKJBLK",
-      maxAge: 30 * 24 * 60 * 60,
+      maxAge: 7 * 24 * 60 * 60,
     },
 
     smtp: {
