@@ -1,4 +1,4 @@
-## Nuxt Auth
+## Nuxt Auth (rc)
 
 A nuxt 3 module to handle authentication
 
