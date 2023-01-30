@@ -9,7 +9,9 @@ export default defineEventHandler((event) => {
 
       //User is authenticated
       console.log(
-        `User authenticated id: ${payload.userId} role: ${payload.userRole}`
+        `User authenticated id: ${payload.userId} role: ${
+          payload.userRole
+        } claims: ${JSON.stringify(payload.customClaims)}`
       );
     }
   } catch (error) {}
