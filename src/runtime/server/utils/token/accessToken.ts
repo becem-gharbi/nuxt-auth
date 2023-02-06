@@ -16,7 +16,7 @@ export function createAccessToken(user: User) {
   const payload: AccessTokenPayload = {
     userId: user.id,
     userRole: user.role,
-    customClaims,
+    ...customClaims,
   };
 
   const accessToken = jwt.sign(payload, privateConfig.accessToken.jwtSecret, {

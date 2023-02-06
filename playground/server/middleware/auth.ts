@@ -8,11 +8,7 @@ export default defineEventHandler((event) => {
       event.context.auth = payload;
 
       //User is authenticated
-      console.log(
-        `User authenticated id: ${payload.userId} role: ${
-          payload.userRole
-        } claims: ${JSON.stringify(payload.customClaims)}`
-      );
+      console.log(`User authenticated ${JSON.stringify(payload)}`);
     }
   } catch (error) {}
 });

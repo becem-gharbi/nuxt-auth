@@ -1,4 +1,4 @@
-## Nuxt Auth (rc)
+## Nuxt Auth
 
 A nuxt 3 module to handle authentication
 
@@ -16,7 +16,7 @@ A nuxt 3 module to handle authentication
 ✔️ Admin registration management<br>
 ✔️ User session management via `useAuthSession` composable
 
-## 👉 Demo - [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app) 
+## 👉 Demo - [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app)
 
 ## Installation
 
@@ -191,3 +191,5 @@ export default defineEventHandler((event) => {
 
 - Run `npm run dev:prepare` to generate type stubs.
 - Use `npm run dev` to start [playground](./playground) in development mode.
+
+

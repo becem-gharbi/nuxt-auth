@@ -39,7 +39,6 @@ export type EmailVerifyPayload = {
 export type AccessTokenPayload = {
   userId: number;
   userRole: string;
-  customClaims?: Record<string, any>;
 };
 
 export type RefreshTokenPayload = {
