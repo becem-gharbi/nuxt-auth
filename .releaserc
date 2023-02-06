@@ -3,7 +3,7 @@
     "main",
     {
       "name": "rc",
-      "prerelease": false
+      "prerelease": true
     },
     {
       "name": "beta",
