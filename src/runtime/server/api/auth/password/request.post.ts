@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ email: email });
 
-    if (user) {
+    if (user && user.provider === "default") {
       const resetPasswordToken = createResetPasswordToken({
         userId: user.id,
       });

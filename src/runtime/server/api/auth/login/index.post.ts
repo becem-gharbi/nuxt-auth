@@ -25,7 +25,11 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser({ email });
 
-    if (!user || !user.password || !verifyPassword(password, user.password)) {
+    if (
+      !user ||
+      user.provider !== "default" ||
+      !verifyPassword(password, user.password)
+    ) {
       throw new Error("wrong-credentials");
     }
 

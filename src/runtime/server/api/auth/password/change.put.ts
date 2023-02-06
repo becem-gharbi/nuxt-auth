@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
 
     if (
       !user ||
-      !user.password ||
+      user.provider !== "default" ||
       !verifyPassword(currentPassword, user.password)
     ) {
       throw new Error("wrong-password");

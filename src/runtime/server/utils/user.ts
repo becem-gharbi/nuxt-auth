@@ -19,7 +19,8 @@ export async function createUser(input: Prisma.UserCreateInput) {
     data: {
       ...input,
       password: hashedPassword,
-      role: privateConfig.registration?.defaultRole,
+      role: privateConfig.registration?.defaultRole || "user",
+      provider: input.provider || "default",
     },
   });
 
