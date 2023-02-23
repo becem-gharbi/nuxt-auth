@@ -1,0 +1,74 @@
+{
+  "name": "@bg-dev/nuxt-auth",
+  "version": "0.0.0-development",
+  "license": "MIT",
+  "type": "module",
+  "author": "Becem Gharbi",
+  "keywords": [
+    "nuxt",
+    "authentication",
+    "oauth"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "semantic-release": "semantic-release",
+    "commit": "cz",
+    "prisma:init": "cd playground && prisma init",
+    "prisma:generate": "cd playground && prisma generate",
+    "prisma:migrate": "cd playground && prisma migrate dev"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.1.1",
+    "@prisma/client": "^4.9.0",
+    "bcrypt": "^5.1.0",
+    "defu": "^6.1.2",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
+    "mustache": "^4.2.0",
+    "nodemailer": "^6.9.0",
+    "uuid": "^9.0.0",
+    "zod": "^3.20.2"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "^0.2.1",
+    "@nuxt/schema": "^3.1.1",
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/mustache": "^4.2.2",
+    "@types/nodemailer": "^6.4.7",
+    "@types/uuid": "^9.0.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.32.0",
+    "nuxt": "^3.1.1",
+    "prisma": "^4.9.0",
+    "semantic-release": "^20.1.0"
+  },
+  "peerDependencies": {
+    "prisma": "^4.9.0"
+  },
+  "repository": "https://github.com/becem-gharbi/nuxt-auth.git",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
