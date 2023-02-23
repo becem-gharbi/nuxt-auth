@@ -10,8 +10,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.4.1",
     "@types/ua-parser-js": "^0.7.36",
-    "nuxt": "3.2.2",
-    "nuxt-icon": "^0.3.2"
+    "nuxt": "3.2.2"
   },
   "dependencies": {
     "@bg-dev/nuxt-auth": "^1.2.1-rc.2",

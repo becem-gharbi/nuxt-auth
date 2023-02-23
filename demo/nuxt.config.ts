@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: ["@/assets/fonts/gellix/style.css"],
-  modules: ["@bg-dev/nuxt-auth", "@nuxtjs/tailwindcss", "nuxt-icon", "@bg-dev/nuxt-naiveui"],
+  modules: ["@bg-dev/nuxt-auth", "@nuxtjs/tailwindcss", "@bg-dev/nuxt-naiveui"],
 
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -53,6 +53,14 @@ export default defineNuxtConfig({
       port: parseInt(process.env.AUTH_SMTP_PORT || ""),
       pass: process.env.AUTH_SMTP_PASS || "",
       user: process.env.AUTH_SMTP_USER || "",
+    },
+  },
+
+  vite: {
+    server: {
+      fs: {
+        allow: ["../package"],
+      },
     },
   },
 });
