@@ -16,8 +16,6 @@ A nuxt 3 module to handle authentication
 ✔️ Admin registration management<br>
 ✔️ User session management via `useAuthSession` composable
 
-## 👉 Demo - [nuxt-auth-starter](https://nuxt-auth-starter.vercel.app)
-
 ## Installation
 
 ```bash

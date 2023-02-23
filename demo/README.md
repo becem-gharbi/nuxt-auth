@@ -5,7 +5,7 @@ A Nuxt 3 starter app with authentication
 ## Features
 
 - User authentication through [@bg-dev/nuxt-auth](https://github.com/becem-gharbi/nuxt-auth) module
-- UI based on Naive UI through [@bg-dev/nuxt-naive-ui](https://github.com/becem-gharbi/nuxt-naive-ui) layer
+- UI based on Naive UI through [@bg-dev/nuxt-naiveui](https://github.com/becem-gharbi/nuxt-naiveui) module
 
 ## Setup
 
