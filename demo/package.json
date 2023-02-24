@@ -13,8 +13,8 @@
     "nuxt": "3.2.2"
   },
   "dependencies": {
-    "@bg-dev/nuxt-auth": "^1.2.1-rc.3",
-    "@bg-dev/nuxt-naiveui": "^1.0.0-beta.3",
+    "@bg-dev/nuxt-auth": "^1.2.1-rc.4",
+    "@bg-dev/nuxt-naiveui": "^1.0.0-beta.4",
     "dayjs": "^1.11.7",
     "ua-parser-js": "^1.0.33"
   }

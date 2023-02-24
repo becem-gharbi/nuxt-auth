@@ -7,7 +7,7 @@
             </div>
         </template>
 
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-2">
             <n-text>{{ 'Provider: ' + user.provider }}</n-text>
             <n-text>{{ 'Email: ' + user.email }}</n-text>
             <n-text>{{ 'Role: ' + user.role }}</n-text>
