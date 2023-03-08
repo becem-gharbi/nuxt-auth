@@ -38,14 +38,6 @@ export default defineNuxtModule<ModuleOptions>({
       maxAge: 7 * 24 * 60 * 60,
     },
 
-    smtp: {
-      host: "",
-      port: 587,
-      user: "",
-      pass: "",
-      from: "",
-    },
-
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
     redirect: {
@@ -71,6 +63,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     if (!options.registration?.enable) {
       logger.warn(`Registration is disabled in ${name}`);
+    }
+
+    if (!options.oauth && !options.smtp) {
+      logger.warn(`Please make sure to set smtp in ${name}`);
     }
 
     //Get the runtime directory

@@ -3,6 +3,10 @@ import type { MailMessage } from "../../types";
 import { privateConfig } from "./config";
 
 export function sendMail(msg: MailMessage) {
+  if (!privateConfig.smtp) {
+    throw new Error("Please configure SMTP in auth config option");
+  }
+
   let transporter = nodemailer.createTransport({
     host: privateConfig.smtp.host,
     port: privateConfig.smtp.port,
@@ -13,6 +17,10 @@ export function sendMail(msg: MailMessage) {
   });
 
   return new Promise((resolve, reject) => {
+    if (!privateConfig.smtp) {
+      throw new Error("Please configure SMTP in auth config option");
+    }
+
     transporter.sendMail(
       {
         from: privateConfig.smtp.from,

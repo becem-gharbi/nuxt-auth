@@ -80,7 +80,7 @@ export type PrivateConfig = {
     emailVerify?: string;
   };
 
-  smtp: {
+  smtp?: {
     host: string;
     port: number;
     user: string;

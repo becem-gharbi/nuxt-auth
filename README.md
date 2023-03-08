@@ -32,6 +32,7 @@ npm install --save-dev @bg-dev/nuxt-auth
 # Using yarn
 yarn add --dev @bg-dev/nuxt-auth
 ```
+
 ## Setup
 
 Add `@bg-dev/nuxt-auth` to the `modules` section of `nuxt.config.ts` and set `auth` config option
@@ -44,7 +45,7 @@ export default defineNuxtConfig({
     accessToken: {}, // Access token config
     refreshToken: {}, // Refresh token config
     oauth: {}, // Oauth providers's config (optional)
-    smtp: {}, // SMTP server's config (required)
+    smtp: {}, // SMTP server's config (optional)
     emailTemplates: {}, // Html email templates (optional)
     prisma: {}, // Prisma client config
     registration: {}, // Configure registration state and constraints
@@ -114,6 +115,7 @@ npx prisma migrate dev
 ```
 
 That's it! You can now use `@bg-dev/nuxt-auth` in your Nuxt app ✨
+
 ## Usage
 
 For protecting page routes, 2 possible approachs can be used
@@ -194,15 +196,31 @@ export default defineEventHandler((event) => {
 });
 ```
 
-## Contributing
+## Development
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+```bash
+# Install dependencies
+npm install
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+# Generate type stubs
+npm run dev:prepare
+
+# Develop with the playground
+npm run dev
+
+# Build the playground
+npm run dev:build
+
+# Run ESLint
+npm run lint
+
+# Run Vitest
+npm run test
+npm run test:watch
+
+# Release new version
+npm run release
+```
 
 ## License
 
@@ -218,5 +236,3 @@ Contributions are what make the open source community such an amazing place to l
 [license-href]: https://npmjs.com/package/@bg-dev/nuxt-auth
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
-
-
