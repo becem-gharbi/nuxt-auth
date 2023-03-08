@@ -68,7 +68,11 @@ export default defineNuxtModule<ModuleOptions>({
     if (!options.baseUrl) {
       logger.warn(`Please make sure to set baseUrl in ${name}`);
     }
-    
+
+    if (!options.registration?.enable) {
+      logger.warn(`Registration is disabled in ${name}`);
+    }
+
     //Get the runtime directory
     const { resolve } = createResolver(import.meta.url);
     const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
