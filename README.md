@@ -1,34 +1,42 @@
 ## Nuxt Auth
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![License][license-src]][license-href]
+[![Nuxt][nuxt-src]][nuxt-href]
 
-A nuxt 3 module to handle authentication
+A complete solution to handle authentication for your Nuxt 3 project
 
 ## Features
 
-✔️ Email/password authentication<br>
-✔️ Email verification & password reset flows<br>
-✔️ Oauth login (Google, Github ...)<br>
-✔️ Route middleware protection<br>
-✔️ Database agnostic (Prisma based)<br>
-✔️ Auth operations via `useAuth` composable<br>
-✔️ Auto refresh of access token via `useAuthFetch` composable<br>
-✔️ Add dynamic custom claims to access token<br>
-✔️ Customizable email templates<br>
-✔️ Admin registration management<br>
-✔️ User session management via `useAuthSession` composable
+- ✔️ Email/password authentication
+- ✔️ Email verification & password reset flows
+- ✔️ Oauth login (Google, Github ...)
+- ✔️ Route middleware protection
+- ✔️ Database agnostic (Prisma based)
+- ✔️ Auth operations via `useAuth` composable
+- ✔️ Auto refresh of access token via `useAuthFetch` composable
+- ✔️ Add dynamic custom claims to access token
+- ✔️ Customizable email templates
+- ✔️ Admin registration management
+- ✔️ User session management via `useAuthSession` composable
 
 ## Installation
 
-```bash
-npm i @bg-dev/nuxt-auth
-```
+Add `@bg-dev/nuxt-auth` dependency to your project
 
+```bash
+# Using npm
+npm install --save-dev @bg-dev/nuxt-auth
+
+# Using yarn
+yarn add --dev @bg-dev/nuxt-auth
+```
 ## Setup
 
-Add `@bg-dev/nuxt-auth` to your nuxt modules and set `auth` options
+Add `@bg-dev/nuxt-auth` to the `modules` section of `nuxt.config.ts` and set `auth` config option
 
-```javascript
+```js
 export default defineNuxtConfig({
-  //...
   modules: ["@bg-dev/nuxt-auth"],
 
   auth: {
@@ -49,8 +57,7 @@ export default defineNuxtConfig({
       passwordReset: "", // Path to redirect to for password reset
       emailVerify: "", // Path to redirect to after email verification
     },
-  },
-  //...
+  },.
 });
 ```
 
@@ -105,33 +112,34 @@ Run a migration to reflect schema changes to your database & generate prisma cli
 npx prisma migrate dev
 ```
 
+That's it! You can now use `@bg-dev/nuxt-auth` in your Nuxt app ✨
 ## Usage
 
-For protecting routes, 2 possible approachs can be used
+For protecting page routes, 2 possible approachs can be used
 
 - Globally enable and locally disable
 
-```javascript
+```js
 enableGlobalAuthMiddleware: true;
 ```
 
-```javascript
+```js
 definePageMeta({ auth: false });
 ```
 
 - Locally enable
 
-```javascript
+```js
 definePageMeta({ middleware: "auth" }); // Redirects to login path when not loggedIn
 ```
 
-```javascript
+```js
 definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
 ```
 
 For adding custom claims to the access token's payload, set the customClaims accessToken's option in the `nuxt.config.ts`. For **User** related dynamic values, use the [mustache](https://github.com/janl/mustache.js/) syntax.
 
-```javascript
+```js
 customClaims: {
   "https://hasura.io/jwt/claims": {
     "x-hasura-allowed-roles": ["user", "admin"],
@@ -143,7 +151,7 @@ customClaims: {
 
 For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. Exposed variables are **User**, **link** for redirection and **validityInMinutes** (equals to accessToken `maxAge`).
 
-```javascript
+```js
 emailTemplates: {
   passwordReset: `
     <html lang="en">
@@ -171,7 +179,7 @@ emailTemplates: {
 
 For adding a server side auth protection, create `server/middleware/auth.ts` and copy the handler below. On protected server routes check `event.context.auth` property.
 
-```javascript
+```js
 import { getAccessTokenFromHeader, verifyAccessToken } from "#auth";
 
 export default defineEventHandler((event) => {
@@ -185,9 +193,29 @@ export default defineEventHandler((event) => {
 });
 ```
 
-## Development
+## Contributing
 
-- Run `npm run dev:prepare` to generate type stubs.
-- Use `npm run dev` to start [playground](./playground) in development mode.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+[MIT License](./LICENSE)
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/@bg-dev/nuxt-auth/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/@bg-dev/nuxt-auth
+[npm-downloads-src]: https://img.shields.io/npm/dm/@bg-dev/nuxt-auth.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/@bg-dev/nuxt-auth
+[license-src]: https://img.shields.io/npm/l/@bg-dev/nuxt-auth.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-href]: https://npmjs.com/package/@bg-dev/nuxt-auth
+[nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
+[nuxt-href]: https://nuxt.com
 
 
