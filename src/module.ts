@@ -8,15 +8,20 @@ import {
   addImportsDir,
   addServerHandler,
   addTemplate,
+  logger,
 } from "@nuxt/kit";
-
+import { name, version } from "../package.json";
 import { defu } from "defu";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: "@bg-dev/nuxt-auth",
+    name,
+    version,
+    compatibility: {
+      nuxt: "^3.0.0",
+    },
     configKey: "auth",
   },
 
@@ -60,6 +65,10 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   setup(options, nuxt) {
+    if (!options.baseUrl) {
+      logger.warn(`Please make sure to set baseUrl in ${name}`);
+    }
+    
     //Get the runtime directory
     const { resolve } = createResolver(import.meta.url);
     const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
