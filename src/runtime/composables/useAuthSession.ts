@@ -9,6 +9,7 @@ import {
   useRequestEvent,
   useRequestHeaders,
 } from "#app";
+import { getCookie } from "h3";
 
 export default function () {
   const privateConfig = useRuntimeConfig().auth;
@@ -32,12 +33,6 @@ export default function () {
     return true;
   }
 
-  function extractCookie(cookies: string, name: string) {
-    const value = `; ${cookies}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(";").shift();
-  }
-
   async function refresh(): Promise<void> {
     const accessToken = useAccessToken();
     const user = useUser();
@@ -46,8 +41,8 @@ export default function () {
       const cookies = useRequestHeaders(["cookie"]).cookie || "";
 
       if (process.server) {
-        accessToken.value = extractCookie(
-          cookies,
+        accessToken.value = getCookie(
+          event,
           privateConfig.accessToken.cookieName
         );
       } else {
@@ -67,8 +62,8 @@ export default function () {
       }
 
       if (process.server) {
-        const refreshToken = extractCookie(
-          cookies,
+        const refreshToken = getCookie(
+          event,
           privateConfig.refreshToken.cookieName
         );
 
