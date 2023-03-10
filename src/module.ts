@@ -268,7 +268,7 @@ export default defineNuxtModule<ModuleOptions>({
 
         registration: options.registration,
 
-        webhooksKey: options.webhooksKey,
+        webhookKey: options.webhookKey,
       },
 
       public: {

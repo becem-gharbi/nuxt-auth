@@ -97,7 +97,7 @@ export type PrivateConfig = {
     defaultRole: Role;
   };
 
-  webhooksKey?: string;
+  webhookKey?: string;
 };
 
 export type PublicConfig = {

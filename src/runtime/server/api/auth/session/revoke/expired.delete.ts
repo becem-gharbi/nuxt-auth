@@ -8,15 +8,15 @@ import { getRequestHeader } from "h3";
 
 export default defineEventHandler(async (event) => {
   try {
-    const webhooksKey = privateConfig.webhooksKey;
+    const webhookKey = privateConfig.webhookKey;
 
-    if (!webhooksKey) {
+    if (!webhookKey) {
       throw new Error(
-        "Please make sure to set webhooks key in auth config option"
+        "Please make sure to set Webhook Key in auth config option"
       );
     }
 
-    if (getRequestHeader(event, "Webhook-Key") !== webhooksKey) {
+    if (getRequestHeader(event, "Webhook-Key") !== webhookKey) {
       throw new Error("unauthorized");
     }
 
