@@ -18,6 +18,10 @@ import { User } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
   try {
+    if (!publicConfig.redirect.callback) {
+      throw new Error("Please make sure to set callback redirect path");
+    }
+
     const provider = event.context.params.provider;
     const code = getQuery(event).code?.toString();
 

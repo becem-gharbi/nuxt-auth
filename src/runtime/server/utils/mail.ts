@@ -4,7 +4,7 @@ import { privateConfig } from "./config";
 
 export function sendMail(msg: MailMessage) {
   if (!privateConfig.smtp) {
-    throw new Error("Please configure SMTP in auth config option");
+    throw new Error("Please make sure to configure smtp option");
   }
 
   let transporter = nodemailer.createTransport({
@@ -18,7 +18,7 @@ export function sendMail(msg: MailMessage) {
 
   return new Promise((resolve, reject) => {
     if (!privateConfig.smtp) {
-      throw new Error("Please configure SMTP in auth config option");
+      throw new Error("Please make sure to configure smtp option");
     }
 
     transporter.sendMail(

@@ -10,6 +10,10 @@ import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
+    if (!publicConfig.redirect.emailVerify) {
+      throw new Error("Please make sure to set emailVerify redirect path");
+    }
+
     const token = getQuery(event).token?.toString();
 
     const schema = z.object({

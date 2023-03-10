@@ -13,6 +13,14 @@ import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
+    if (!publicConfig.redirect.emailVerify) {
+      throw new Error("Please make sure to set emailVerify redirect path");
+    }
+
+    if (!privateConfig.smtp) {
+      throw new Error("Please make sure to configure smtp option");
+    }
+
     const { email } = await readBody(event);
 
     const schema = z.object({

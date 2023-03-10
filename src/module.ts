@@ -28,25 +28,26 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     accessToken: {
       cookieName: "auth_access_token",
-      jwtSecret: "hqkdsjfHJKBH568FGD",
+      jwtSecret: "",
       maxAge: 30 * 60,
     },
 
     refreshToken: {
       cookieName: "auth_refresh_token",
-      jwtSecret: "sldkfbld6f8gdfgKJBLK",
+      jwtSecret: "",
       maxAge: 7 * 24 * 60 * 60,
     },
 
     baseUrl: "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
+
     redirect: {
-      login: "/auth/login",
-      logout: "/auth/login",
-      home: "/home",
-      callback: "/auth/callback",
-      passwordReset: "/auth/password-reset",
-      emailVerify: "/auth/email-verify",
+      login: "",
+      logout: "",
+      home: "",
+      callback: "",
+      passwordReset: "",
+      emailVerify: "",
     },
 
     registration: {
@@ -57,6 +58,26 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   setup(options, nuxt) {
+    if (!options.refreshToken.jwtSecret) {
+      logger.warn(`Please make sure to set refresh token's secret in ${name}`);
+    }
+
+    if (!options.accessToken.jwtSecret) {
+      logger.warn(`Please make sure to set access token's secret in ${name}`);
+    }
+
+    if (!options.redirect.login) {
+      logger.warn(`Please make sure to set login redirect path in ${name}`);
+    }
+
+    if (!options.redirect.logout) {
+      logger.warn(`Please make sure to set logout redirect path in ${name}`);
+    }
+
+    if (!options.redirect.home) {
+      logger.warn(`Please make sure to set home redirect path in ${name}`);
+    }
+
     if (!process.env.DATABASE_URL) {
       logger.warn(`Please make sure to set DATABASE_URL env`);
     }

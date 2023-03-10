@@ -105,8 +105,8 @@ export type PublicConfig = {
     login: string;
     logout: string;
     home: string;
-    callback: string;
-    passwordReset: string;
-    emailVerify: string;
+    callback?: string;
+    passwordReset?: string;
+    emailVerify?: string;
   };
 };

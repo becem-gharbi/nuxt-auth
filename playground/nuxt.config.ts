@@ -2,13 +2,11 @@ import { defineNuxtConfig } from "nuxt/config";
 import myModule from "..";
 
 export default defineNuxtConfig({
-  //@ts-ignore
   modules: [myModule],
 
   auth: {
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
-      maxAge: 10,
       customClaims: {
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": '["user", "admin"]',
@@ -55,7 +53,7 @@ export default defineNuxtConfig({
     },
 
     baseUrl: "http://localhost:3000",
-    
+
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
