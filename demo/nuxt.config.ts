@@ -5,8 +5,7 @@ export default defineNuxtConfig({
   modules: [
     "@bg-dev/nuxt-auth",
     "@nuxtjs/tailwindcss",
-    "@bg-dev/nuxt-naiveui",
-    "nuxt-security",
+    "@bg-dev/nuxt-naiveui"
   ],
 
   app: {
@@ -76,6 +75,7 @@ export default defineNuxtConfig({
       pass: process.env.AUTH_SMTP_PASS || "",
       user: process.env.AUTH_SMTP_USER || "",
     },
+    webhookKey: process.env.AUTH_WEBHOOK_KEY
   },
 
   vite: {
