@@ -96,6 +96,8 @@ export type PrivateConfig = {
     passwordValidationRegex?: string;
     defaultRole: Role;
   };
+
+  webhooksKey?: string;
 };
 
 export type PublicConfig = {

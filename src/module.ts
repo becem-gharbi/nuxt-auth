@@ -191,6 +191,14 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/session/index.get"),
     });
 
+    addServerHandler({
+      route: "/api/auth/session/revoke/expired",
+      handler: resolve(
+        runtimeDir,
+        "server/api/auth/session/revoke/expired.delete"
+      ),
+    });
+
     //Create virtual imports for server-side
     nuxt.hook("nitro:config", (nitroConfig) => {
       nitroConfig.alias = nitroConfig.alias || {};
@@ -259,6 +267,8 @@ export default defineNuxtModule<ModuleOptions>({
         prisma: options.prisma,
 
         registration: options.registration,
+
+        webhooksKey: options.webhooksKey,
       },
 
       public: {

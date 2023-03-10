@@ -140,3 +140,18 @@ export async function findManyRefreshTokenByUser(userId: number) {
 export function deleteRefreshTokenCookie(event: H3Event) {
   deleteCookie(event, privateConfig.refreshToken.cookieName!);
 }
+
+export async function deleteManyRefreshTokenExpired() {
+  const now = new Date();
+  const minDate = new Date(
+    now.getTime() - privateConfig.refreshToken.maxAge! * 1000
+  );
+
+  await prisma.refreshToken.deleteMany({
+    where: {
+      updatedAt: {
+        lt: minDate,
+      },
+    },
+  });
+}

@@ -22,6 +22,7 @@ export {
   verifyRefreshToken,
   findManyRefreshTokenByUser,
   findRefreshTokenById,
+  deleteManyRefreshTokenExpired,
 } from "./token/refreshToken";
 
 export {
