@@ -22,7 +22,7 @@ export async function handleError(
       h3Error.statusCode = 400;
       if (["P2021", "P2022"].includes(error.code)) {
         logger.error(
-          "Table or column not defined. Please make sure to run db migration"
+          "Table or column not defined. Please make sure to run prisma migration"
         );
       }
     }
