@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, getHeader } from "h3";
+import { defineEventHandler, readBody } from "h3";
 import { z } from "zod";
 
 import {

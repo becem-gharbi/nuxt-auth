@@ -1,10 +1,8 @@
 import { defineEventHandler, readBody } from "h3";
 import {
-  deleteRefreshTokenCookie,
   handleError,
   getAccessTokenFromHeader,
   verifyAccessToken,
-  deleteManyRefreshTokenByUser,
   findRefreshTokenById,
   deleteRefreshToken,
 } from "#auth";
