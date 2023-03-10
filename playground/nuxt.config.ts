@@ -55,6 +55,7 @@ export default defineNuxtConfig({
     },
 
     baseUrl: "http://localhost:3000",
+    
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",

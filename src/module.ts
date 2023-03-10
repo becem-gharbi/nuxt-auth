@@ -57,6 +57,10 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   setup(options, nuxt) {
+    if (!process.env.DATABASE_URL) {
+      logger.warn(`Please make sure to set DATABASE_URL env`);
+    }
+
     if (!options.baseUrl) {
       logger.warn(`Please make sure to set baseUrl in ${name}`);
     }
