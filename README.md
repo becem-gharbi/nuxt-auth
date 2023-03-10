@@ -18,7 +18,6 @@ A complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Auto refresh of access token via `useAuthFetch` composable
 - ✔️ Add dynamic custom claims to access token
 - ✔️ Customizable email templates
-- ✔️ Admin registration management
 - ✔️ User session management via `useAuthSession` composable
 
 ## Installation
@@ -51,6 +50,7 @@ export default defineNuxtConfig({
     registration: {}, // Configure registration state and constraints
     baseUrl: "", // Nuxt app base url
     enableGlobalAuthMiddleware: false, // Enable auth middleware on every page
+    webhookKey: "", // Webhook key used in the Webhook-Key header
     redirect: {
       login: "", // Path to redirect to when login is required
       logout: "", // Path to redirect to after logout
@@ -119,7 +119,7 @@ npx prisma migrate dev
 That's it! You can now use `@bg-dev/nuxt-auth` in your Nuxt app ✨
 
 ## Usage
-
+### Route protection
 For protecting page routes, 2 possible approachs can be used
 
 - Globally enable and locally disable
@@ -142,6 +142,7 @@ definePageMeta({ middleware: "auth" }); // Redirects to login path when not logg
 definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
 ```
 
+### Custom claims
 For adding custom claims to the access token's payload, set the customClaims accessToken's option in the `nuxt.config.ts`. For **User** related dynamic values, use the [mustache](https://github.com/janl/mustache.js/) syntax.
 
 ```js
@@ -154,6 +155,7 @@ customClaims: {
 },
 ```
 
+### Email templates
 For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. Exposed variables are **User**, **link** for redirection and **validityInMinutes** (equals to accessToken `maxAge`).
 
 ```js
@@ -182,6 +184,7 @@ emailTemplates: {
 }
 ```
 
+### Authorization
 For adding a server side auth protection, create `server/middleware/auth.ts` and copy the handler below. On protected server routes check `event.context.auth` property.
 
 ```js
@@ -197,6 +200,18 @@ export default defineEventHandler((event) => {
   } catch (error) {}
 });
 ```
+
+## Important notes
+
+- The module implements a JWT based authentication. The `Session` abstract used in the module refers to a `Refresh token stored in DB`
+
+- The sessions are subject to expiration in case the user does not refresh his login. To flush this useless data, the module exposes a webhook
+
+```bash
+curl -X DELETE -H "Webhook-Key: WEBHOOK_KEY" BASE_URL/api/auth/session/revoke/expired
+```
+
+- For security reasons, it's recommended to add rate limiting and CORS protection.
 
 ## Development
 

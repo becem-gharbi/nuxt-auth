@@ -5,10 +5,6 @@ export default defineNuxtConfig({
   modules: [myModule],
 
   auth: {
-    prisma: {
-      log: ["query"],
-    },
-
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
       customClaims: {
@@ -22,7 +18,6 @@ export default defineNuxtConfig({
 
     refreshToken: {
       jwtSecret: process.env.AUTH_REFRESH_TOKEN_SECRET || "abc",
-      maxAge: 2 * 60,
     },
 
     oauth: {

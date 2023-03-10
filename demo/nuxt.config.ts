@@ -1,8 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: ["@/assets/fonts/gellix/style.css"],
-  
-  modules: ["@bg-dev/nuxt-auth", "@nuxtjs/tailwindcss", "@bg-dev/nuxt-naiveui"],
+
+  modules: [
+    "@bg-dev/nuxt-auth",
+    "@nuxtjs/tailwindcss",
+    "@bg-dev/nuxt-naiveui",
+    "nuxt-security",
+  ],
 
   app: {
     pageTransition: { name: "page", mode: "out-in" },
