@@ -13,9 +13,9 @@ const { register, requestEmailVerify } = useAuth()
 
 async function handleRegister() {
     const { data, error } = await register({
-        email: "becem.gharbi96@gmail.com",
+        email: "tester.3@test.com",
         password: "abc123",
-        name: "becem"
+        name: "tester 3"
     })
 }
 
