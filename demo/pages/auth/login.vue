@@ -14,7 +14,7 @@
                     <NuxtLink to="/auth/request-password-reset" class="no-underline">
                         <n-text type="primary">Forgot password?</n-text>
                     </NuxtLink>
-                    <n-button attr-type="submit" block :loading="pending" :disabled="pending">Login</n-button>
+                    <n-button attr-type="submit" block :loading="pending" :disabled="pending" type="primary">Login</n-button>
                     <n-button @click="loginWithProvider('google')" block>
                         <template #icon>
                             <NaiveIcon name="logos:google-icon"></NaiveIcon>
