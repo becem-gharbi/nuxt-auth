@@ -20,6 +20,11 @@ export async function handleError(
     if (error.code.startsWith("P2")) {
       h3Error.message = error.message;
       h3Error.statusCode = 400;
+      if (["P2021", "P2022"].includes(error.code)) {
+        logger.error(
+          "Table or column not defined. Please make sure to run db migration"
+        );
+      }
     }
     //Other server side errors (db, migration, introspection.. )
     else {
