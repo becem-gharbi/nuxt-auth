@@ -112,9 +112,17 @@ export async function deleteManyRefreshTokenByUser(userId: number) {
 }
 
 export async function findManyRefreshTokenByUser(userId: number) {
+  const now = new Date();
+  const minDate = new Date(
+    now.getTime() - privateConfig.refreshToken.maxAge! * 1000
+  );
+
   const refreshTokens = await prisma.refreshToken.findMany({
     where: {
       userId,
+      updatedAt: {
+        gt: minDate,
+      },
     },
     select: {
       userId: true,
