@@ -205,7 +205,7 @@ export default defineEventHandler((event) => {
 
 - The module implements a JWT based authentication. The `Session` abstract used in the module refers to a `Refresh token stored in DB`
 
-- The sessions are subject to expiration in case the user does not refresh his login. To flush this useless data, the module exposes a webhook
+- The sessions are subject to expiration in case the user does not refresh his login. To flush this useless data, the module exposes the following API
 
 ```bash
 curl -X DELETE -H "Webhook-Key: WEBHOOK_KEY" BASE_URL/api/auth/session/revoke/expired
