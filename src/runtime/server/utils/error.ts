@@ -45,7 +45,10 @@ export async function handleError(
   } else {
     h3Error.message = error.message;
     h3Error.statusCode = 400;
-    logger.error(error.message);
+
+    if (process.env.NODE_ENV === "development") {
+      logger.error(error.message);
+    }
   }
 
   if (redirect) {

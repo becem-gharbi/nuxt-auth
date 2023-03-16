@@ -2,6 +2,7 @@ import { prisma } from "./prisma";
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { privateConfig } from "./config";
+import { withQuery } from "ufo";
 
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUnique({
@@ -23,7 +24,10 @@ export async function createUser(input: Prisma.UserCreateInput) {
       provider: input.provider || "default",
       picture:
         input.picture ||
-        `https://ui-avatars.com/api/?name=${input.name}&background=random&bold=true`,
+        withQuery("https://ui-avatars.com/api", {
+          name: input.name,
+          background: "random",
+        }),
     },
   });
 
