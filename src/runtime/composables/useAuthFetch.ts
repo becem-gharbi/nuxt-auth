@@ -3,10 +3,11 @@ import useAuthSession from "./useAuthSession";
 import useAuth from "./useAuth";
 import { defu } from "defu";
 import { $fetch } from "ofetch";
+import type { NitroFetchRequest } from "nitropack";
 
 export default async function <DataT>(
-  path: string,
-  fetchOptions: FetchOptions<"json"> = {}
+  request: NitroFetchRequest,
+  options: FetchOptions<"json"> = {}
 ): Promise<DataT> {
   const { useAccessToken, refresh } = useAuthSession();
 
@@ -21,14 +22,14 @@ export default async function <DataT>(
     throw new Error("unauthorized");
   }
 
-  fetchOptions.credentials = fetchOptions.credentials || "omit";
+  options.credentials = options.credentials || "omit";
 
-  fetchOptions.headers = defu(
+  options.headers = defu(
     {
       Authorization: "Bearer " + accessToken.value,
     },
-    fetchOptions.headers
+    options.headers
   );
 
-  return $fetch<DataT>(path, fetchOptions);
+  return $fetch<DataT>(request, options);
 }

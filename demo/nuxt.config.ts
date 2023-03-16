@@ -10,7 +10,6 @@ export default defineNuxtConfig({
   ],
 
   app: {
-    baseURL: "http://localhost:3000",
     pageTransition: { name: "page", mode: "out-in" },
     layoutTransition: { name: "layout", mode: "out-in" },
     head: {
