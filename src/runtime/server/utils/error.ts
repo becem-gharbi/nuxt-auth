@@ -4,6 +4,7 @@ import type { H3Event } from "h3";
 import { Prisma } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { logger } from "@nuxt/kit";
+import { withQuery } from "ufo";
 
 export async function handleError(
   error: any,
@@ -50,7 +51,7 @@ export async function handleError(
   if (redirect) {
     await sendRedirect(
       redirect.event,
-      `${redirect.url}?error=${h3Error.message}`
+      withQuery(redirect.url, { error: h3Error.message })
     );
     return;
   }

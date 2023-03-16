@@ -1,6 +1,5 @@
 import { defineEventHandler, readBody } from "h3";
 import { z } from "zod";
-
 import {
   createRefreshToken,
   setRefreshTokenCookie,

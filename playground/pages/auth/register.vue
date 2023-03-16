@@ -13,14 +13,14 @@ const { register, requestEmailVerify } = useAuth()
 
 async function handleRegister() {
     const { data, error } = await register({
-        email: "tester.3@test.com",
+        email: "becem.gharbi@live.com",
         password: "abc123",
         name: "becem"
     })
 }
 
 async function requestEmailVerifyHandler() {
-    const { error } = await requestEmailVerify("becem.gharbi96@gmail.com")
+    const { error } = await requestEmailVerify("becem.gharbi@live.com")
     console.log(error.value?.data.message)
 }
 </script>

@@ -1,5 +1,4 @@
 import { defineEventHandler, readBody } from "h3";
-
 import {
   deleteManyRefreshTokenByUser,
   getAccessTokenFromHeader,
@@ -10,7 +9,6 @@ import {
   handleError,
   privateConfig,
 } from "#auth";
-
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {

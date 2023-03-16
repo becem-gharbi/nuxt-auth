@@ -8,7 +8,7 @@ import {
   handleError,
 } from "#auth";
 import Mustache from "mustache";
-
+import { resolveURL, withQuery } from "ufo";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
@@ -36,8 +36,12 @@ export default defineEventHandler(async (event) => {
         userId: user.id,
       });
 
-      const redirectUrl = publicConfig.baseUrl + "/api/auth/email/verify";
-      const link = redirectUrl + "?token=" + emailVerifyToken;
+      const redirectUrl = resolveURL(
+        publicConfig.baseUrl,
+        "/api/auth/email/verify"
+      );
+
+      const link = withQuery(redirectUrl, { token: emailVerifyToken });
 
       await sendMail({
         to: user.email,

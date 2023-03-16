@@ -2,7 +2,7 @@ import type { User, Provider } from "../types";
 import type { AsyncData } from "#app";
 import type { FetchError } from "ofetch";
 import type { H3Error } from "h3";
-
+import { resolveURL } from "ufo";
 import useAuthFetch from "./useAuthFetch";
 import { useRuntimeConfig, useRoute, navigateTo, useFetch } from "#app";
 import useAuthSession from "./useAuthSession";
@@ -42,7 +42,7 @@ export default function () {
 
   function loginWithProvider(provider: Provider): void {
     if (process.client) {
-      window.location.replace(`/api/auth/login/${provider}`);
+      window.location.replace(resolveURL("/api/auth/login", provider));
     }
   }
 

@@ -1,5 +1,6 @@
 import { defineEventHandler, sendRedirect } from "h3";
 import { privateConfig, publicConfig, handleError } from "#auth";
+import { resolveURL, withQuery } from "ufo";
 
 export default defineEventHandler(async (event) => {
   const provider = event.context.params.provider;
@@ -9,16 +10,20 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const authorizationUrl =
-      privateConfig.oauth[provider].authorizeUrl +
-      "?" +
-      "response_type=code" +
-      "&" +
-      `scope=${privateConfig.oauth[provider].scopes}` +
-      "&" +
-      `redirect_uri=${publicConfig.baseUrl}/api/auth/login/${provider}/callback` +
-      "&" +
-      `client_id=${privateConfig.oauth[provider].clientId}`;
+    const authorizationUrl = withQuery(
+      privateConfig.oauth[provider].authorizeUrl,
+      {
+        response_type: "code",
+        scope: privateConfig.oauth[provider].scopes,
+        redirect_uri: resolveURL(
+          publicConfig.baseUrl,
+          "/api/auth/login",
+          provider,
+          "callback"
+        ),
+        client_id: privateConfig.oauth[provider].clientId,
+      }
+    );
 
     await sendRedirect(event, authorizationUrl);
   } catch (error) {

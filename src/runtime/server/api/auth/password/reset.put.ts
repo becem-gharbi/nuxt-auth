@@ -1,5 +1,4 @@
 import { defineEventHandler, readBody } from "h3";
-
 import {
   deleteManyRefreshTokenByUser,
   verifyResetPasswordToken,
@@ -7,7 +6,6 @@ import {
   handleError,
   privateConfig,
 } from "#auth";
-
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {

@@ -5,7 +5,6 @@ import {
   publicConfig,
   handleError,
 } from "#auth";
-
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {

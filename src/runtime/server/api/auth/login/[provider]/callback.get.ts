@@ -1,7 +1,6 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { z } from "zod";
 import { $fetch } from "ofetch";
-
 import {
   createRefreshToken,
   setRefreshTokenCookie,
@@ -13,7 +12,7 @@ import {
   setAccessTokenCookie,
   handleError,
 } from "#auth";
-
+import { resolveURL } from "ufo";
 import { User } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
@@ -45,7 +44,7 @@ export default defineEventHandler(async (event) => {
     );
     formData.append(
       "redirect_uri",
-      `${publicConfig.baseUrl}/api/auth/login/${provider}/callback`
+      resolveURL(publicConfig.baseUrl, "/api/auth/login", provider, "callback")
     );
 
     const { access_token } = await $fetch(
@@ -116,14 +115,11 @@ export default defineEventHandler(async (event) => {
       throw new Error("email-not-accessible");
     }
 
-    await sendRedirect(
-      event,
-      `${publicConfig.baseUrl + publicConfig.redirect.home}`
-    );
+    await sendRedirect(event, publicConfig.redirect.home);
   } catch (error) {
     await handleError(error, {
       event,
-      url: `${publicConfig.baseUrl + publicConfig.redirect.callback}`,
+      url: publicConfig.redirect.callback,
     });
   }
 });

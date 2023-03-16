@@ -1,5 +1,4 @@
 import { defineEventHandler, readBody } from "h3";
-
 import {
   sendMail,
   createResetPasswordToken,
@@ -8,9 +7,8 @@ import {
   privateConfig,
   handleError,
 } from "#auth";
-
 import Mustache from "mustache";
-
+import { resolveURL, withQuery } from "ufo";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
@@ -38,9 +36,11 @@ export default defineEventHandler(async (event) => {
         userId: user.id,
       });
 
-      const redirectUrl =
-        publicConfig.baseUrl + publicConfig.redirect.passwordReset;
-      const link = redirectUrl + "?token=" + resetPasswordToken;
+      const redirectUrl = resolveURL(
+        publicConfig.baseUrl,
+        publicConfig.redirect.passwordReset
+      );
+      const link = withQuery(redirectUrl, { token: resetPasswordToken });
 
       await sendMail({
         to: user.email,
