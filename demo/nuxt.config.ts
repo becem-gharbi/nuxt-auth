@@ -35,6 +35,8 @@ export default defineNuxtConfig({
   },
 
   auth: {
+    baseUrl: process.env.BASE_URL || "http://localhost:3000",
+
     registration: {
       defaultRole: "user",
       requireEmailVerification: false,
@@ -48,7 +50,6 @@ export default defineNuxtConfig({
       jwtSecret: process.env.AUTH_REFRESH_TOKEN_SECRET || "efg",
     },
 
-    baseUrl: process.env.BASE_URL || "http://localhost:3000",
     enableGlobalAuthMiddleware: false,
 
     redirect: {
