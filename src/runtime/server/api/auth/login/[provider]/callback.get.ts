@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     const code = getQuery(event).code?.toString();
 
     const schema = z.object({
-      code: z.string().min(1),
+      code: z.string(),
     });
 
     schema.parse({ code });

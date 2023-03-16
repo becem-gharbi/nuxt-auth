@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     const token = getQuery(event).token?.toString();
 
     const schema = z.object({
-      token: z.string().min(1),
+      token: z.string(),
     });
 
     schema.parse({ token });

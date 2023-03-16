@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const { email, password, name } = await readBody(event);
 
     const schema = z.object({
-      name: z.string().min(1),
+      name: z.string(),
       email: z.string().email(),
       password: z
         .string()
