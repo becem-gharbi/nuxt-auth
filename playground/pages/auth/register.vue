@@ -15,7 +15,7 @@ async function handleRegister() {
     const { data, error } = await register({
         email: "tester.3@test.com",
         password: "abc123",
-        name: "a"
+        name: "becem"
     })
 }
 

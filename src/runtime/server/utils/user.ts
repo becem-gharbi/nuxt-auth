@@ -21,6 +21,9 @@ export async function createUser(input: Prisma.UserCreateInput) {
       password: hashedPassword,
       role: privateConfig.registration?.defaultRole || "user",
       provider: input.provider || "default",
+      picture:
+        input.picture ||
+        `https://ui-avatars.com/api/?name=${input.name}&background=random&bold=true`,
     },
   });
 

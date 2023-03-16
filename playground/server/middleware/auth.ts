@@ -8,7 +8,7 @@ export default defineEventHandler((event) => {
       event.context.auth = payload;
 
       //User is authenticated
-      console.log(`User authenticated ${JSON.stringify(payload)}`);
+      // console.log(`User authenticated ${JSON.stringify(payload)}`);
     }
   } catch (error) {}
 });

@@ -4,7 +4,7 @@
         <button @click="fetchUser">Fetch user</button>
         <button @click="handleLogout">Logout</button>
         <p>{{ user }}</p>
-        <img :src="pictureUrl" height="40" />
+        <img :src="user?.picture!" height="40" />
 
         <form @submit.prevent="handleChangePassword">
             <label for="current-password">Current password</label>
@@ -36,8 +36,6 @@ const { logout, fetchUser, changePassword } = useAuth()
 const { useUser, revokeAllSessions, getAllSessions, revokeSession } = useAuthSession()
 
 const user = useUser()
-
-const pictureUrl = computed(() => user.value?.picture || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png')
 
 async function handleLogout() {
     await logout()
