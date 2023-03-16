@@ -119,7 +119,9 @@ npx prisma migrate dev
 That's it! You can now use `@bg-dev/nuxt-auth` in your Nuxt app ✨
 
 ## Usage
+
 ### Route protection
+
 For protecting page routes, 2 possible approachs can be used
 
 - Globally enable and locally disable
@@ -143,6 +145,7 @@ definePageMeta({ middleware: "guest" }); // Redirects to home path when loggedIn
 ```
 
 ### Custom claims
+
 For adding custom claims to the access token's payload, set the customClaims accessToken's option in the `nuxt.config.ts`. For **User** related dynamic values, use the [mustache](https://github.com/janl/mustache.js/) syntax.
 
 ```js
@@ -156,6 +159,7 @@ customClaims: {
 ```
 
 ### Email templates
+
 For adding your own email templates, set the emailTemplates options in `nuxt.config.ts`. Exposed variables are **User**, **link** for redirection and **validityInMinutes** (equals to accessToken `maxAge`).
 
 ```js
@@ -185,6 +189,7 @@ emailTemplates: {
 ```
 
 ### Authorization
+
 For adding a server side auth protection, create `server/middleware/auth.ts` and copy the handler below. On protected server routes check `event.context.auth` property.
 
 ```js

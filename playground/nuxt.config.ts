@@ -5,8 +5,10 @@ export default defineNuxtConfig({
   modules: [myModule],
 
   auth: {
+    baseUrl: "http://localhost:3000",
+
     accessToken: {
-      jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "hqskjd",
+      jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "",
       customClaims: {
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": '["user", "admin"]',
@@ -51,8 +53,6 @@ export default defineNuxtConfig({
       defaultRole: "user",
       requireEmailVerification: false,
     },
-
-    baseUrl: "http://localhost:3000",
 
     redirect: {
       login: "/auth/login",

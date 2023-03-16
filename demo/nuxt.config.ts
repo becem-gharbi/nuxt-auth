@@ -5,10 +5,12 @@ export default defineNuxtConfig({
   modules: [
     "@bg-dev/nuxt-auth",
     "@nuxtjs/tailwindcss",
-    "@bg-dev/nuxt-naiveui"
+    "@bg-dev/nuxt-naiveui",
+    "@nuxt/devtools",
   ],
 
   app: {
+    baseURL: "http://localhost:3000",
     pageTransition: { name: "page", mode: "out-in" },
     layoutTransition: { name: "layout", mode: "out-in" },
     head: {
@@ -75,7 +77,7 @@ export default defineNuxtConfig({
       pass: process.env.AUTH_SMTP_PASS || "",
       user: process.env.AUTH_SMTP_USER || "",
     },
-    webhookKey: process.env.AUTH_WEBHOOK_KEY
+    webhookKey: process.env.AUTH_WEBHOOK_KEY,
   },
 
   vite: {
