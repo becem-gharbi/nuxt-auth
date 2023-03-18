@@ -28,7 +28,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const accessToken = createAccessToken(user);
+    const sessionId = payload.id;
+
+    const accessToken = createAccessToken(user, sessionId);
 
     setAccessTokenCookie(event, accessToken);
 

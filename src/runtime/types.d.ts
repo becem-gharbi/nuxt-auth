@@ -38,6 +38,7 @@ export type EmailVerifyPayload = {
 
 export type AccessTokenPayload = {
   userId: number;
+  sessionId: number;
   userRole: string;
 };
 

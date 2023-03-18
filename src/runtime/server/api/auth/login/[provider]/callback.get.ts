@@ -11,6 +11,7 @@ import {
   createAccessToken,
   setAccessTokenCookie,
   handleError,
+  signRefreshToken,
 } from "#auth";
 import { resolveURL } from "ufo";
 import { User } from "@prisma/client";
@@ -103,11 +104,13 @@ export default defineEventHandler(async (event) => {
       }
 
       if (user) {
-        const refreshToken = await createRefreshToken(event, user);
+        const payload = await createRefreshToken(event, user);
 
-        setRefreshTokenCookie(event, refreshToken);
+        setRefreshTokenCookie(event, signRefreshToken(payload));
 
-        const accessToken = createAccessToken(user);
+        const sessionId = payload.id;
+
+        const accessToken = createAccessToken(user, sessionId);
 
         setAccessTokenCookie(event, accessToken);
       }

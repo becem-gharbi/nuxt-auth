@@ -23,11 +23,13 @@ export async function createRefreshToken(event: H3Event, user: User) {
     userId: refreshTokenEntity.userId,
   };
 
-  const refreshToken = jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
+  return payload;
+}
+
+export function signRefreshToken(payload: RefreshTokenPayload) {
+  return jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
     expiresIn: privateConfig.refreshToken.maxAge,
   });
-
-  return refreshToken;
 }
 
 export async function updateRefreshToken(refreshTokenId: number) {

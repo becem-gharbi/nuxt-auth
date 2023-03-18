@@ -1,48 +1,17 @@
 export { privateConfig, publicConfig } from "./config";
 
-export { sendMail } from "./mail";
+export * from "./mail";
 
-export {
-  createAccessToken,
-  getAccessTokenFromHeader,
-  verifyAccessToken,
-  setAccessTokenCookie,
-  getAccessTokenFromCookie,
-  deleteAccessTokenCookie,
-} from "./token/accessToken";
+export * from "./token/accessToken";
 
-export {
-  createRefreshToken,
-  deleteManyRefreshTokenByUser,
-  deleteRefreshToken,
-  deleteRefreshTokenCookie,
-  getRefreshTokenFromCookie,
-  setRefreshTokenCookie,
-  updateRefreshToken,
-  verifyRefreshToken,
-  findManyRefreshTokenByUser,
-  findRefreshTokenById,
-  deleteManyRefreshTokenExpired,
-} from "./token/refreshToken";
+export * from "./token/refreshToken";
 
-export {
-  createEmailVerifyToken,
-  verifyEmailVerifyToken,
-} from "./token/emailVerify";
+export * from "./token/emailVerify";
 
-export {
-  createResetPasswordToken,
-  verifyResetPasswordToken,
-} from "./token/passwordReset";
+export * from "./token/passwordReset";
 
-export {
-  changePassword,
-  createUser,
-  findUser,
-  setUserEmailVerified,
-  verifyPassword,
-} from "./user";
+export * from "./user";
 
-export { handleError } from "./error";
+export * from "./error";
 
-export { prisma } from "./prisma";
+export * from "./prisma";
