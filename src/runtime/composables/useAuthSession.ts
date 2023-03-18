@@ -120,9 +120,7 @@ export default function () {
     const { refreshTokens, active } = await useAuthFetch<{
       refreshTokens: RefreshToken[];
       active: number;
-    }>("/api/auth/session", {
-      credentials: "include",
-    });
+    }>("/api/auth/session");
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {
       return {

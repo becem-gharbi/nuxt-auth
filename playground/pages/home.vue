@@ -51,5 +51,7 @@ async function handleChangePassword() {
     })
 }
 
-const { data, refresh } = await useAsyncData(getAllSessions, { server: false })
+const { data, refresh, error } = await useAsyncData(() => useAuthFetch("/api/auth/session"))
+
+console.log("error", error.value)
 </script>

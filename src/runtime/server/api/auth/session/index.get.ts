@@ -4,12 +4,12 @@ import {
   verifyAccessToken,
   handleError,
   findManyRefreshTokenByUser,
-  getRefreshTokenFromCookie,
-  verifyRefreshToken,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {
+    console.log("hit session get")
+    
     const accessToken = getAccessTokenFromHeader(event);
 
     if (!accessToken) {
@@ -18,15 +18,11 @@ export default defineEventHandler(async (event) => {
 
     const accessTokenPayload = verifyAccessToken(accessToken);
 
-    const refreshToken = getRefreshTokenFromCookie(event);
-
-    const refreshTokenPayload = await verifyRefreshToken(refreshToken);
-
     const refreshTokens = await findManyRefreshTokenByUser(
       accessTokenPayload.userId
     );
 
-    return { refreshTokens, active: refreshTokenPayload.id };
+    return { refreshTokens, active: accessTokenPayload.sessionId };
   } catch (error) {
     await handleError(error);
   }
