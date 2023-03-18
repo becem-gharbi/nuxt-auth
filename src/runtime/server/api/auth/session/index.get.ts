@@ -8,8 +8,6 @@ import {
 
 export default defineEventHandler(async (event) => {
   try {
-    console.log("hit session get")
-    
     const accessToken = getAccessTokenFromHeader(event);
 
     if (!accessToken) {
