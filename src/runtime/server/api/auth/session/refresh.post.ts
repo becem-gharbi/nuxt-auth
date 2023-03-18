@@ -38,6 +38,7 @@ export default defineEventHandler(async (event) => {
 
     return { accessToken, user };
   } catch (error) {
+    console.log(error);
     deleteRefreshTokenCookie(event);
     deleteAccessTokenCookie(event);
 

@@ -12,14 +12,16 @@ export default async function <DataT>(
   options: FetchOptions<"json"> = {}
 ): Promise<DataT> {
   const { useAccessToken, refresh } = useAuthSession();
-  
+
   const publicConfig = useRuntimeConfig().public.auth;
 
   const { logout } = useAuth();
 
   const accessToken = useAccessToken();
 
-  await refresh();
+  if (process.client) {
+    await refresh();
+  }
 
   if (!accessToken.value) {
     await logout();
@@ -34,7 +36,6 @@ export default async function <DataT>(
     },
     options.headers
   );
-
 
   const url = resolveURL(publicConfig.baseUrl, request.toString());
 
