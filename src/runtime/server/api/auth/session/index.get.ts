@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
       accessTokenPayload.userId
     );
 
-    return { refreshTokens, active: accessTokenPayload.sessionId };
+    return { refreshTokens, current: accessTokenPayload.sessionId };
   } catch (error) {
     await handleError(error);
   }

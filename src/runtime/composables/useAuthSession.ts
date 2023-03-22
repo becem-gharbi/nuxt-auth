@@ -117,15 +117,15 @@ export default function () {
   }
 
   async function getAllSessions(): Promise<Session[]> {
-    const { refreshTokens, active } = await useAuthFetch<{
+    const { refreshTokens, current } = await useAuthFetch<{
       refreshTokens: RefreshToken[];
-      active: number;
+      current: number;
     }>("/api/auth/session");
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {
       return {
         id: refreshToken.id,
-        active: refreshToken.id === active,
+        current: refreshToken.id === current,
         userId: refreshToken.userId,
         ua: refreshToken.userAgent,
         updatedAt: refreshToken.updatedAt,

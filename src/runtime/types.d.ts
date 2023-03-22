@@ -14,7 +14,7 @@ export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> {}
 
 export interface Session {
   id: number;
-  active: boolean;
+  current: boolean;
   userId: number;
   ua: string | null;
   updatedAt: Date;
