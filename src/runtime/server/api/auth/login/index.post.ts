@@ -40,8 +40,8 @@ export default defineEventHandler(async (event) => {
       throw new Error("user-not-verified");
     }
 
-    if (user.blocked) {
-      throw new Error("user-blocked");
+    if (user.suspended) {
+      throw new Error("user-suspended");
     }
 
     const payload = await createRefreshToken(event, user);

@@ -67,7 +67,7 @@ export async function findUsers(args: Prisma.UserFindManyArgs) {
     ...args,
     select: {
       password: false,
-      blocked: true,
+      suspended: true,
       createdAt: true,
       email: true,
       id: true,
@@ -89,7 +89,7 @@ export async function editUser(id: number, data: Prisma.UserUpdateInput) {
     },
     select: {
       password: false,
-      blocked: true,
+      suspended: true,
       createdAt: true,
       email: true,
       id: true,

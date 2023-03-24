@@ -7,7 +7,7 @@
 
                 <form @submit.prevent="() => editUser({ id: user.id, data: user })">
                     <label for="suspend">Suspend</label>
-                    <input id="suspend" type="checkbox" v-model="user.blocked">
+                    <input id="suspend" type="checkbox" v-model="user.suspended">
                     <button>Edit</button>
                 </form>
 
