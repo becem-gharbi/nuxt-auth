@@ -25,7 +25,6 @@
         </ul>
 
         <button @click="revokeAllSessions">Delete all my sessions</button>
-
     </div>
 </template>
 
