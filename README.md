@@ -19,7 +19,7 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Add dynamic custom claims to access token
 - ✔️ Customizable email templates
 - ✔️ User session management via `useAuthSession` composable
-- ✔️ Users management via `useAuthAdmin` composable
+- ✔️ Admin users management via `useAuthAdmin` composable
 
 ## Installation
 

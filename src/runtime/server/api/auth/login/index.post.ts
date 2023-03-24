@@ -37,11 +37,11 @@ export default defineEventHandler(async (event) => {
       !user.verified &&
       privateConfig.registration?.requireEmailVerification
     ) {
-      throw new Error("user-not-verified");
+      throw new Error("account-not-verified");
     }
 
     if (user.suspended) {
-      throw new Error("user-suspended");
+      throw new Error("account-suspended");
     }
 
     const payload = await createRefreshToken(event, user);
