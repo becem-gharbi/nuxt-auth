@@ -1,6 +1,9 @@
 <template>
     <section>
         <h1>Users management</h1>
+
+        <h2>{{ 'Total users: ' + usersCount.count }}</h2>
+
         <ul>
             <li v-for="user of data">
                 <p>{{ user }}</p>
@@ -18,11 +21,9 @@
 </template>
 
 <script setup>
-const { listUsers, editUser } = useAuthAdmin()
+const { listUsers, editUser, countUsers } = useAuthAdmin()
 
-const { data } = await useAsyncData(() => listUsers({
-    select: {
-        id: true
-    }
-}))
+const { data } = await useAsyncData(() => listUsers())
+
+const { data: usersCount } = await useAsyncData(() => countUsers())
 </script>

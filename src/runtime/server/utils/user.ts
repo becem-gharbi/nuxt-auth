@@ -64,7 +64,6 @@ export function verifyPassword(password: string, hashedPassword: string) {
 
 export async function findUsers(args: Prisma.UserFindManyArgs) {
   const users = await prisma.user.findMany(args);
-
   return users;
 }
 
@@ -77,4 +76,9 @@ export async function editUser(id: number, data: Prisma.UserUpdateInput) {
   });
 
   return user;
+}
+
+export async function countUsers(args: Prisma.UserCountArgs) {
+  const numberOfUsers = await prisma.user.count(args);
+  return numberOfUsers;
 }

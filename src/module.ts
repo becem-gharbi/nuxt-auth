@@ -210,6 +210,11 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
     });
 
+    addServerHandler({
+      route: "/api/auth/admin/users/count",
+      handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
+    });
+
     //Create virtual imports for server-side
     nuxt.hook("nitro:config", (nitroConfig) => {
       nitroConfig.alias = nitroConfig.alias || {};

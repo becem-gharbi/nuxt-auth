@@ -10,12 +10,19 @@ export default function () {
     });
   }
 
-  function listUsers(body?: Prisma.UserFindManyArgs) {
+  function listUsers(body: Prisma.UserFindManyArgs = {}) {
     return useAuthFetch<User[]>("/api/auth/admin/users/list", {
       method: "POST",
       body,
     });
   }
 
-  return { editUser, listUsers };
+  function countUsers(body: Prisma.UserCountArgs = {}) {
+    return useAuthFetch<{ count: number }>("/api/auth/admin/users/count", {
+      method: "POST",
+      body,
+    });
+  }
+
+  return { editUser, listUsers, countUsers };
 }
