@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery } from "h3";
+import { defineEventHandler, readBody } from "h3";
 import {
   getAccessTokenFromHeader,
   verifyAccessToken,
@@ -8,7 +8,7 @@ import {
 
 export default defineEventHandler(async (event) => {
   try {
-    const args = getQuery(event);
+    const args = await readBody(event);
 
     const accessToken = getAccessTokenFromHeader(event);
 

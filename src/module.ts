@@ -201,8 +201,8 @@ export default defineNuxtModule<ModuleOptions>({
     });
 
     addServerHandler({
-      route: "/api/auth/admin/users",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/index.get"),
+      route: "/api/auth/admin/users/list",
+      handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),
     });
 
     addServerHandler({

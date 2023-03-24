@@ -10,9 +10,18 @@ export default function () {
     });
   }
 
-  function listUsers(args: Prisma.UserFindManyArgs) {
-    return useAuthFetch<User[]>("/api/auth/admin/users", {
-      query: args,
+  function listUsers() {
+    const body: Prisma.UserFindManyArgs = {
+      where: {
+        name: {
+          contains: "test",
+        },
+      },
+    };
+
+    return useAuthFetch<User[]>("/api/auth/admin/users/list", {
+      method: "POST",
+      body,
     });
   }
 
