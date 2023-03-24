@@ -1,12 +1,11 @@
-import type { FetchOptions } from "ofetch";
 import useAuthSession from "./useAuthSession";
 import useAuth from "./useAuth";
 import { defu } from "defu";
-import type { NitroFetchRequest } from "nitropack";
+import type { NitroFetchRequest, NitroFetchOptions } from "nitropack";
 
 export default async function <DataT>(
   request: NitroFetchRequest,
-  options: FetchOptions<"json"> = {}
+  options: NitroFetchOptions<NitroFetchRequest> = {}
 ): Promise<DataT> {
   const { useAccessToken, refresh } = useAuthSession();
 
@@ -32,5 +31,5 @@ export default async function <DataT>(
     options.headers
   );
 
-  return $fetch<DataT>(request, options);
+  return $fetch(request, options);
 }
