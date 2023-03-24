@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
     const count = await countUsers(args);
 
-    return { count };
+    return count;
   } catch (error) {
     await handleError(error);
   }

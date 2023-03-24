@@ -2,7 +2,7 @@
     <section>
         <h1>Users management</h1>
 
-        <h2>{{ 'Total users: ' + usersCount?.count }}</h2>
+        <h2>{{ 'Total users: ' + count }}</h2>
 
         <ul>
             <li v-for="user of data">
@@ -25,5 +25,5 @@ const { listUsers, editUser, countUsers } = useAuthAdmin()
 
 const { data } = await useAsyncData(() => listUsers())
 
-const { data: usersCount } = await useAsyncData(() => countUsers())
+const { data: count } = await useAsyncData(() => countUsers())
 </script>

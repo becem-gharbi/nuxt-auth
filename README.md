@@ -82,7 +82,7 @@ model User {
   provider      Provider       @default(default)
   password      String?
   verified      Boolean        @default(false)
-  suspended       Boolean        @default(false)
+  suspended     Boolean        @default(false)
   refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt

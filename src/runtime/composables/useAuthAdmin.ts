@@ -18,7 +18,7 @@ export default function () {
   }
 
   function countUsers(body: Prisma.UserCountArgs = {}) {
-    return useAuthFetch<{ count: number }>("/api/auth/admin/users/count", {
+    return useAuthFetch<number>("/api/auth/admin/users/count", {
       method: "POST",
       body,
     });

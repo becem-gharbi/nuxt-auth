@@ -79,6 +79,6 @@ export async function editUser(id: number, data: Prisma.UserUpdateInput) {
 }
 
 export async function countUsers(args: Prisma.UserCountArgs) {
-  const numberOfUsers = await prisma.user.count(args);
-  return numberOfUsers;
+  const count = await prisma.user.count(args);
+  return count;
 }
