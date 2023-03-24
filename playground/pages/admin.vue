@@ -20,5 +20,9 @@
 <script setup>
 const { listUsers, editUser } = useAuthAdmin()
 
-const { data } = await useAsyncData(() => listUsers())
+const { data } = await useAsyncData(() => listUsers({
+    select: {
+        id: true
+    }
+}))
 </script>

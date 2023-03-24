@@ -24,7 +24,9 @@ export default defineEventHandler(async (event) => {
 
     const user = await editUser(id, data);
 
-    return user;
+    const { password, ...sanitizedUser } = user;
+
+    return sanitizedUser;
   } catch (error) {
     await handleError(error);
   }

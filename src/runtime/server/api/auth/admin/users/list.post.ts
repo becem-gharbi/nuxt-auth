@@ -24,7 +24,10 @@ export default defineEventHandler(async (event) => {
 
     const users = await findUsers(args);
 
-    return users;
+    return users.map((user) => {
+      const { password, ...sanitizedUser } = user;
+      return sanitizedUser;
+    });
   } catch (error) {
     await handleError(error);
   }

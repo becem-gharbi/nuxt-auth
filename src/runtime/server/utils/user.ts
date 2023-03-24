@@ -63,21 +63,7 @@ export function verifyPassword(password: string, hashedPassword: string) {
 }
 
 export async function findUsers(args: Prisma.UserFindManyArgs) {
-  const users = await prisma.user.findMany({
-    ...args,
-    select: {
-      password: false,
-      suspended: true,
-      createdAt: true,
-      email: true,
-      id: true,
-      name: true,
-      picture: true,
-      provider: true,
-      role: true,
-      verified: true,
-    },
-  });
+  const users = await prisma.user.findMany(args);
 
   return users;
 }
@@ -86,18 +72,6 @@ export async function editUser(id: number, data: Prisma.UserUpdateInput) {
   const user = await prisma.user.update({
     where: {
       id,
-    },
-    select: {
-      password: false,
-      suspended: true,
-      createdAt: true,
-      email: true,
-      id: true,
-      name: true,
-      picture: true,
-      provider: true,
-      role: true,
-      verified: true,
     },
     data,
   });
