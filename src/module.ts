@@ -27,7 +27,7 @@ export default defineNuxtModule<ModuleOptions>({
 
   defaults: {
     baseUrl: "",
-    
+
     accessToken: {
       cookieName: "auth_access_token",
       jwtSecret: "",
@@ -198,6 +198,16 @@ export default defineNuxtModule<ModuleOptions>({
         runtimeDir,
         "server/api/auth/session/revoke/expired.delete"
       ),
+    });
+
+    addServerHandler({
+      route: "/api/auth/admin/users",
+      handler: resolve(runtimeDir, "server/api/auth/admin/users.get"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/admin/user",
+      handler: resolve(runtimeDir, "server/api/auth/admin/user.put"),
     });
 
     //Create virtual imports for server-side

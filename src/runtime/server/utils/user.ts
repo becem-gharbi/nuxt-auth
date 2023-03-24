@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { privateConfig } from "./config";
 import { withQuery } from "ufo";
+import defu from "defu";
 
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUnique({
@@ -60,4 +61,33 @@ export async function setUserEmailVerified(userId: number) {
 
 export function verifyPassword(password: string, hashedPassword: string) {
   return bcrypt.compareSync(password, hashedPassword);
+}
+
+export async function findUsers(args: Prisma.UserFindManyArgs) {
+  const users = await prisma.user.findMany(
+    defu(
+      {
+        select: {
+          password: false,
+        },
+      },
+      args
+    )
+  );
+
+  return users;
+}
+
+export async function editUser(id: number, data: Prisma.UserUpdateInput) {
+  const user = await prisma.user.update({
+    where: {
+      id,
+    },
+    select: {
+      password: false,
+    },
+    data,
+  });
+
+  return user;
 }
