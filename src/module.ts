@@ -202,13 +202,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     addServerHandler({
       route: "/api/auth/admin/users",
-      method: "get",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users.get"),
+      handler: resolve(runtimeDir, "server/api/auth/admin/users/index.get"),
     });
 
     addServerHandler({
-      route: "/api/auth/admin/user",
-      handler: resolve(runtimeDir, "server/api/auth/admin/user.put"),
+      route: "/api/auth/admin/users/edit",
+      handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
     });
 
     //Create virtual imports for server-side

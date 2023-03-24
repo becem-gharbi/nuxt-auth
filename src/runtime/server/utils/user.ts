@@ -3,7 +3,6 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { privateConfig } from "./config";
 import { withQuery } from "ufo";
-import defu from "defu";
 
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUnique({
@@ -64,16 +63,21 @@ export function verifyPassword(password: string, hashedPassword: string) {
 }
 
 export async function findUsers(args: Prisma.UserFindManyArgs) {
-  const users = await prisma.user.findMany(
-    defu(
-      {
-        select: {
-          password: false,
-        },
-      },
-      args
-    )
-  );
+  const users = await prisma.user.findMany({
+    ...args,
+    select: {
+      password: false,
+      blocked: true,
+      createdAt: true,
+      email: true,
+      id: true,
+      name: true,
+      picture: true,
+      provider: true,
+      role: true,
+      verified: true,
+    },
+  });
 
   return users;
 }
@@ -85,6 +89,15 @@ export async function editUser(id: number, data: Prisma.UserUpdateInput) {
     },
     select: {
       password: false,
+      blocked: true,
+      createdAt: true,
+      email: true,
+      id: true,
+      name: true,
+      picture: true,
+      provider: true,
+      role: true,
+      verified: true,
     },
     data,
   });
