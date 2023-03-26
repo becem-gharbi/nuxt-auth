@@ -52,14 +52,16 @@ export default function () {
     await $fetch("/api/auth/logout", {
       method: "POST",
       credentials: "include",
-    }).finally(() => {
-      const user = useUser();
+    })
+      .catch((e) => {})
+      .finally(() => {
+        const user = useUser();
 
-      user.value = null;
-      setAccessToken(null);
+        user.value = null;
+        setAccessToken(null);
 
-      return navigateTo(publicConfig.redirect.logout);
-    });
+        return navigateTo(publicConfig.redirect.logout);
+      });
   }
 
   async function register(userInfo: {
