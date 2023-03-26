@@ -77,7 +77,7 @@ model User {
   id            Int            @id @default(autoincrement())
   name          String
   email         String         @unique
-  picture       String?
+  picture       String
   role          Role           @default(user)
   provider      Provider       @default(default)
   password      String?

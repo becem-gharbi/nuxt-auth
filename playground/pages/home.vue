@@ -4,7 +4,7 @@
         <button @click="fetchUser">Fetch user</button>
         <button @click="handleLogout">Logout</button>
         <p>{{ user }}</p>
-        <img :src="user?.picture!" height="40" />
+        <img :src="user?.picture" height="40" />
 
         <form @submit.prevent="handleChangePassword">
             <label for="current-password">Current password</label>
