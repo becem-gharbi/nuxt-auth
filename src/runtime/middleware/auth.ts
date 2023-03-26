@@ -1,7 +1,7 @@
 import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
 import useAuthSession from "../composables/useAuthSession";
 
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware((to) => {
   const publicConfig = useRuntimeConfig().public.auth;
 
   if (
@@ -17,11 +17,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
   }
 
-  const { getAccessToken } = useAuthSession();
+  const { useAccessToken } = useAuthSession();
 
-  const accessToken = await getAccessToken();
+  const accessToken = useAccessToken();
 
-  if (!accessToken) {
+  if (!accessToken.value) {
     return navigateTo(publicConfig.redirect.login);
   }
 });

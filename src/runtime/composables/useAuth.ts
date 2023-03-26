@@ -10,7 +10,7 @@ import useAuthSession from "./useAuthSession";
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
-  const { setAccessToken, useUser } = useAuthSession();
+  const { useAccessToken, useUser } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth;
   const route = useRoute();
 
@@ -27,9 +27,10 @@ export default function () {
       },
     }).then(async (res) => {
       const user = useUser();
+      const accessToken = useAccessToken();
 
-      setAccessToken(res.data.value?.accessToken);
       user.value = res.data.value?.user;
+      accessToken.value = res.data.value?.accessToken;
 
       await navigateTo(publicConfig.redirect.home);
 
@@ -56,9 +57,10 @@ export default function () {
       .catch((e) => {})
       .finally(() => {
         const user = useUser();
+        const accessToken = useAccessToken();
 
         user.value = null;
-        setAccessToken(null);
+        accessToken.value = null;
 
         return navigateTo(publicConfig.redirect.logout);
       });

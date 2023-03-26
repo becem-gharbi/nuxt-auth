@@ -150,15 +150,10 @@ export default function () {
     return accessToken.value;
   }
 
-  function setAccessToken(accessToken: string | undefined | null) {
-    const _accessToken = useAccessToken();
-    _accessToken.value = accessToken;
-  }
-
   return {
     useUser,
     getAccessToken,
-    setAccessToken,
+    useAccessToken,
     refresh,
     revokeAllSessions,
     revokeSession,
