@@ -7,17 +7,13 @@ export default async function <DataT>(
   request: NitroFetchRequest,
   options: NitroFetchOptions<NitroFetchRequest> = {}
 ): Promise<DataT> {
-  const { useAccessToken, refresh } = useAuthSession();
+  const { getAccessToken } = useAuthSession();
 
   const { logout } = useAuth();
 
-  const accessToken = useAccessToken();
+  const accessToken = await getAccessToken();
 
-  if (process.client) {
-    await refresh();
-  }
-
-  if (!accessToken.value) {
+  if (!accessToken) {
     await logout();
     throw new Error("unauthorized");
   }
@@ -26,7 +22,7 @@ export default async function <DataT>(
 
   options.headers = defu(
     {
-      Authorization: "Bearer " + accessToken.value,
+      Authorization: "Bearer " + accessToken,
     },
     options.headers
   );

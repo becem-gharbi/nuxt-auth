@@ -10,7 +10,7 @@ import useAuthSession from "./useAuthSession";
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
-  const { useAccessToken, useUser } = useAuthSession();
+  const { setAccessToken, useUser } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth;
   const route = useRoute();
 
@@ -18,7 +18,7 @@ export default function () {
     email: string;
     password: string;
   }): FetchReturn<{ accessToken: string; user: User }> {
-    return useFetch<{ accessToken: string; user: User }>("/api/auth/login", {
+    return useFetch("/api/auth/login", {
       method: "POST",
       credentials: "include",
       body: {
@@ -26,15 +26,12 @@ export default function () {
         password: credentials.password,
       },
     }).then(async (res) => {
-      const accessToken = useAccessToken();
       const user = useUser();
 
-      accessToken.value = res.data.value?.accessToken;
+      setAccessToken(res.data.value?.accessToken);
       user.value = res.data.value?.user;
 
-      if (accessToken.value) {
-        await navigateTo(publicConfig.redirect.home);
-      }
+      await navigateTo(publicConfig.redirect.home);
 
       return res;
     });
@@ -56,11 +53,10 @@ export default function () {
       method: "POST",
       credentials: "include",
     }).finally(() => {
-      const accessToken = useAccessToken();
       const user = useUser();
 
       user.value = null;
-      accessToken.value = null;
+      setAccessToken(null);
 
       return navigateTo(publicConfig.redirect.logout);
     });

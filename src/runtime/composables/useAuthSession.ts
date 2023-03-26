@@ -136,9 +136,29 @@ export default function () {
     return sessions;
   }
 
+  /**
+   * Async get access token
+   * @returns Fresh access token (refreshed if expired)
+   */
+  async function getAccessToken() {
+    if (process.client) {
+      await refresh();
+    }
+
+    const accessToken = useAccessToken();
+
+    return accessToken.value;
+  }
+
+  function setAccessToken(accessToken: string | undefined | null) {
+    const _accessToken = useAccessToken();
+    _accessToken.value = accessToken;
+  }
+
   return {
     useUser,
-    useAccessToken,
+    getAccessToken,
+    setAccessToken,
     refresh,
     revokeAllSessions,
     revokeSession,
