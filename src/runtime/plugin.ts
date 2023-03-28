@@ -24,7 +24,7 @@ export default defineNuxtPlugin(async () => {
 
   if (
     process.server ||
-    localStorage.getItem("loggedIn") === "true" ||
+    localStorage.getItem("auth_logged_in") === "true" ||
     route.path === publicConfig.redirect.home
   ) {
     const { refresh } = useAuthSession();

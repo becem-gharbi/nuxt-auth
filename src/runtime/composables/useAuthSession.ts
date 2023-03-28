@@ -24,7 +24,7 @@ export default function () {
   const accessToken = useAccessToken();
   watch(accessToken, (value) => {
     if (process.client) {
-      localStorage.setItem("loggedIn", value ? "true" : "false");
+      localStorage.setItem("auth_logged_in", value ? "true" : "false");
     }
   });
 
