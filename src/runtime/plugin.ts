@@ -1,21 +1,32 @@
-import { defineNuxtPlugin, addRouteMiddleware, useRuntimeConfig } from "#app";
+import {
+  defineNuxtPlugin,
+  addRouteMiddleware,
+  useRuntimeConfig,
+  useRoute,
+} from "#app";
 import common from "./middleware/common.global";
 import auth from "./middleware/auth";
 import guest from "./middleware/guest";
 import useAuthSession from "./composables/useAuthSession";
 
 export default defineNuxtPlugin(async () => {
-  const config = useRuntimeConfig();
+  const publicConfig = useRuntimeConfig().public.auth;
 
   addRouteMiddleware(common);
 
   addRouteMiddleware("auth", auth, {
-    global: config.public.auth.enableGlobalAuthMiddleware,
+    global: publicConfig.enableGlobalAuthMiddleware,
   });
 
   addRouteMiddleware("guest", guest);
 
-  if (process.server) {
+  const route = useRoute();
+
+  if (
+    process.server ||
+    localStorage.getItem("loggedIn") === "true" ||
+    route.path === publicConfig.redirect.home
+  ) {
     const { refresh } = useAuthSession();
     await refresh();
   }

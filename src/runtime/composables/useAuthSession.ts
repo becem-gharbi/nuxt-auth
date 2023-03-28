@@ -21,6 +21,13 @@ export default function () {
   const useAccessToken: () => Ref<string | undefined | null> = () =>
     useState<string | undefined | null>("auth_access_token", () => null);
 
+  const accessToken = useAccessToken();
+  watch(accessToken, (value) => {
+    if (process.client) {
+      localStorage.setItem("loggedIn", value ? "true" : "false");
+    }
+  });
+
   function isAccessTokenExpired() {
     const accessToken = useAccessToken();
 

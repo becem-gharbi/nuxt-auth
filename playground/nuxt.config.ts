@@ -2,6 +2,8 @@ import { defineNuxtConfig } from "nuxt/config";
 import myModule from "..";
 
 export default defineNuxtConfig({
+  ssr: false,
+
   modules: [myModule],
 
   auth: {
