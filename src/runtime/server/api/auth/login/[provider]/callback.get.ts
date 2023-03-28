@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
       user = await findUser({ email: userInfo.email });
 
       if (user && user.provider !== provider) {
-        throw new Error("wrong-provider");
+        throw new Error(`email-used-with-${user.provider}`);
       }
 
       if (!user) {

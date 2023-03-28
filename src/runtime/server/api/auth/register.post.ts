@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     const user = await findUser({ email: email });
 
     if (user) {
-      throw new Error("email-already-used");
+      throw new Error(`email-used-with-${user.provider}`);
     }
 
     await createUser({
