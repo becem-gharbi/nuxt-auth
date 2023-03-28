@@ -10,6 +10,7 @@ import {
   useRequestHeaders,
 } from "#app";
 import { getCookie } from "h3";
+import { watch } from "#imports";
 
 export default function () {
   const privateConfig = useRuntimeConfig().auth;
