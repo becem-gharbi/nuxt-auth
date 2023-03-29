@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "0.0.0-development",
+  "version": "0.1.0",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -29,11 +29,10 @@
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "semantic-release": "semantic-release",
-    "commit": "cz",
     "prisma:init": "cd playground && prisma init",
     "prisma:generate": "cd playground && prisma generate",
-    "prisma:migrate": "cd playground && prisma migrate dev"
+    "prisma:migrate": "cd playground && prisma migrate dev",
+    "release": "npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
     "@nuxt/kit": "^3.3.1",
@@ -56,19 +55,12 @@
     "@types/mustache": "^4.2.2",
     "@types/nodemailer": "^6.4.7",
     "@types/uuid": "^9.0.1",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.36.0",
     "nuxt": "^3.3.1",
-    "prisma": "^4.11.0",
-    "semantic-release": "^20.1.3"
+    "prisma": "^4.11.0"
   },
   "peerDependencies": {
     "prisma": "^4.9.0"
   },
-  "repository": "https://github.com/becem-gharbi/nuxt-auth.git",
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  "repository": "https://github.com/becem-gharbi/nuxt-auth.git"
 }
