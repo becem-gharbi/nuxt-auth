@@ -26,13 +26,15 @@ export default function () {
         password: credentials.password,
       },
     }).then(async (res) => {
-      const user = useUser();
-      const accessToken = useAccessToken();
+      if (!res.error.value) {
+        const user = useUser();
+        const accessToken = useAccessToken();
 
-      user.value = res.data.value?.user;
-      accessToken.value = res.data.value?.accessToken;
+        user.value = res.data.value?.user;
+        accessToken.value = res.data.value?.accessToken;
 
-      await navigateTo(publicConfig.redirect.home);
+        await navigateTo(publicConfig.redirect.home);
+      }
 
       return res;
     });
