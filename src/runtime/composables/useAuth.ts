@@ -52,20 +52,18 @@ export default function () {
   }
 
   async function logout(): Promise<void> {
+    const user = useUser();
+    const accessToken = useAccessToken();
+
+    user.value = null;
+    accessToken.value = null;
+
+    await navigateTo(publicConfig.redirect.logout);
+
     await $fetch("/api/auth/logout", {
       method: "POST",
       credentials: "include",
-    })
-      .catch((e) => {})
-      .finally(() => {
-        const user = useUser();
-        const accessToken = useAccessToken();
-
-        user.value = null;
-        accessToken.value = null;
-
-        return navigateTo(publicConfig.redirect.logout);
-      });
+    }).catch((e) => {});
   }
 
   async function register(userInfo: {
