@@ -207,7 +207,7 @@ export default defineEventHandler((event) => {
 });
 ```
 
-## Important notes
+## Notes
 
 - The module implements a JWT based authentication. The `Session` abstract used in the module refers to a `Refresh token stored in DB`
 
@@ -217,7 +217,7 @@ export default defineEventHandler((event) => {
 curl -X DELETE -H "Webhook-Key: WEBHOOK_KEY" BASE_URL/api/auth/session/revoke/expired
 ```
 
-- For security reasons, it's recommended to add rate limiting and CORS protection.
+- For security reasons, it's recommended to add rate limiting and CORS policy.
 
 ## Development
 
