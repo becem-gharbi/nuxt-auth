@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.2...v0.1.3)
+
+
+### 💅 Refactors
+
+  - Refactor logger messages ([884a959](https://github.com/becem-gharbi/nuxt-auth/commit/884a959))
+
+### 📖 Documentation
+
+  - Update README ([82b9a77](https://github.com/becem-gharbi/nuxt-auth/commit/82b9a77))
+
+### ❤️  Contributors
+
+- Becem-gharbi
+
 ## v0.1.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.1...v0.1.2)
