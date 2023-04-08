@@ -60,39 +60,39 @@ export default defineNuxtModule<ModuleOptions>({
 
   setup(options, nuxt) {
     if (!options.refreshToken.jwtSecret) {
-      logger.warn(`Please make sure to set refresh token's secret in ${name}`);
+      logger.warn(`[${name}] Please make sure to set refresh token's secret`);
     }
 
     if (!options.accessToken.jwtSecret) {
-      logger.warn(`Please make sure to set access token's secret in ${name}`);
+      logger.warn(`[${name}] Please make sure to set access token's secret`);
     }
 
     if (!options.redirect.login) {
-      logger.warn(`Please make sure to set login redirect path in ${name}`);
+      logger.warn(`[${name}] Please make sure to set login redirect path`);
     }
 
     if (!options.redirect.logout) {
-      logger.warn(`Please make sure to set logout redirect path in ${name}`);
+      logger.warn(`[${name}] Please make sure to set logout redirect path`);
     }
 
     if (!options.redirect.home) {
-      logger.warn(`Please make sure to set home redirect path in ${name}`);
+      logger.warn(`[${name}] Please make sure to set home redirect path`);
     }
 
     if (!process.env.DATABASE_URL) {
-      logger.warn(`Please make sure to set DATABASE_URL env`);
+      logger.warn(`[${name}] Please make sure to set DATABASE_URL env`);
     }
 
     if (!options.baseUrl) {
-      logger.warn(`Please make sure to set baseUrl in ${name}`);
+      logger.warn(`[${name}] Please make sure to set baseUrl`);
     }
 
     if (!options.registration?.enable) {
-      logger.warn(`Registration is disabled in ${name}`);
+      logger.warn(`[${name}] Registration is disabled`);
     }
 
     if (!options.oauth && !options.smtp) {
-      logger.warn(`Please make sure to set smtp in ${name}`);
+      logger.warn(`[${name}] Please make sure to set smtp`);
     }
 
     //Get the runtime directory
