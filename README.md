@@ -207,6 +207,24 @@ export default defineEventHandler((event) => {
 });
 ```
 
+### Graphql client authorization
+
+For data fetching with Graphql, you can use [nuxt-apollo](https://github.com/nuxt-modules/apollo) module. Add a Nuxt plugin to get into `apollo:auth` hook, get an auto refreshed access token via `getAccessToken` and set the client's token.
+
+```js
+// plugins/apollo.ts
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const { getAccessToken } = useAuthSession();
+
+  nuxtApp.hook("apollo:auth", async ({ client, token }) => {
+    const accessToken = await getAccessToken();
+
+    token.value = accessToken || null;
+  });
+});
+```
+
 ## Notes
 
 - The module implements a JWT based authentication. The `Session` abstract used in the module refers to a `Refresh token stored in DB`
