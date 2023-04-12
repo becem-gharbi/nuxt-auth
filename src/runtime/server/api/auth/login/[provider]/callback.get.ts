@@ -70,10 +70,6 @@ export default defineEventHandler(async (event) => {
 
       user = await findUser({ email: userInfo.email });
 
-      if (user && user.provider !== provider) {
-        throw new Error(`email-used-with-${user.provider}`);
-      }
-
       if (!user) {
         if (privateConfig.registration?.enable === false) {
           throw new Error("registration-disabled");
@@ -104,6 +100,14 @@ export default defineEventHandler(async (event) => {
       }
 
       if (user) {
+        if (user.provider !== provider) {
+          throw new Error(`email-used-with-${user.provider}`);
+        }
+
+        if (user.suspended) {
+          throw new Error("account-suspended");
+        }
+
         const payload = await createRefreshToken(event, user);
 
         setRefreshTokenCookie(event, signRefreshToken(payload));
