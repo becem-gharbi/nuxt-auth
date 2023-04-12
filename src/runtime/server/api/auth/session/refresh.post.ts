@@ -28,6 +28,10 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
+    if (user.suspended) {
+      throw new Error("account-suspended");
+    }
+
     const sessionId = payload.id;
 
     const accessToken = createAccessToken(user, sessionId);
