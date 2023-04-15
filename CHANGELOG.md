@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.4...v0.1.5)
+
+
+### 🩹 Fixes
+
+  - Fix runtimeConfig related warnings ([b308c73](https://github.com/becem-gharbi/nuxt-auth/commit/b308c73))
+
+### ❤️  Contributors
+
+- Becem-gharbi
+
 ## v0.1.4
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.3...v0.1.4)
