@@ -35,8 +35,8 @@
     "release": "npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.3.1",
-    "@prisma/client": "^4.11.0",
+    "@nuxt/kit": "^3.4.1",
+    "@prisma/client": "^4.12.0",
     "bcrypt": "^5.1.0",
     "defu": "^6.1.2",
     "jsonwebtoken": "^9.0.0",
@@ -47,18 +47,18 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^0.2.1",
-    "@nuxt/schema": "^3.3.1",
+    "@nuxt/module-builder": "^0.3.0",
+    "@nuxt/schema": "^3.4.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/mustache": "^4.2.2",
     "@types/nodemailer": "^6.4.7",
     "@types/uuid": "^9.0.1",
-    "changelogen": "^0.5.2",
-    "eslint": "^8.36.0",
-    "nuxt": "^3.3.1",
-    "prisma": "^4.11.0"
+    "changelogen": "^0.5.3",
+    "eslint": "^8.38.0",
+    "nuxt": "^3.4.1",
+    "prisma": "^4.12.0"
   },
   "peerDependencies": {
     "prisma": "^4.9.0"

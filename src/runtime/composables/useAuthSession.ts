@@ -13,7 +13,6 @@ import { getCookie } from "h3";
 import { watch } from "#imports";
 
 export default function () {
-  const privateConfig = useRuntimeConfig().auth;
   const event = useRequestEvent();
 
   const useUser: () => Ref<User | null | undefined> = () =>
@@ -51,7 +50,7 @@ export default function () {
       if (process.server) {
         accessToken.value = getCookie(
           event,
-          privateConfig.accessToken.cookieName
+          useRuntimeConfig().auth.accessToken.cookieName
         );
       } else {
         accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
@@ -72,7 +71,7 @@ export default function () {
       if (process.server) {
         const refreshToken = getCookie(
           event,
-          privateConfig.refreshToken.cookieName
+          useRuntimeConfig().auth.refreshToken.cookieName
         );
 
         if (!refreshToken) {
