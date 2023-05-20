@@ -1,6 +1,31 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.5...v0.1.6)
+
+
+### 🚀 Enhancements
+
+  - **session:** Store access token in localStorage ([166a58c](https://github.com/becem-gharbi/nuxt-auth/commit/166a58c))
+
+### 🩹 Fixes
+
+  - **refresh:** Set refresh token cookie after user check ([162bb66](https://github.com/becem-gharbi/nuxt-auth/commit/162bb66))
+
+### 💅 Refactors
+
+  - Replace bcrypt with bcryptjs, fix Cloudflare build ([ac355ba](https://github.com/becem-gharbi/nuxt-auth/commit/ac355ba))
+
+### 🏡 Chore
+
+  - Upgrade dependencies ([192410a](https://github.com/becem-gharbi/nuxt-auth/commit/192410a))
+
+### ❤️  Contributors
+
+- Becem-gharbi
+
 ## v0.1.5
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.4...v0.1.5)
