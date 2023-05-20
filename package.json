@@ -35,33 +35,33 @@
     "release": "npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.4.1",
-    "@prisma/client": "^4.12.0",
+    "@nuxt/kit": "^3.5.0",
+    "@prisma/client": "^4.14.1",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.2",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "mustache": "^4.2.0",
-    "nodemailer": "^6.9.1",
+    "nodemailer": "^6.9.2",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^0.3.0",
-    "@nuxt/schema": "^3.4.1",
+    "@nuxt/module-builder": "^0.3.1",
+    "@nuxt/schema": "^3.5.0",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/bcryptjs": "^2.4.2",
-    "@types/jsonwebtoken": "^9.0.1",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/mustache": "^4.2.2",
-    "@types/nodemailer": "^6.4.7",
+    "@types/nodemailer": "^6.4.8",
     "@types/uuid": "^9.0.1",
     "changelogen": "^0.5.3",
-    "eslint": "^8.38.0",
-    "nuxt": "^3.4.1",
-    "prisma": "^4.12.0"
+    "eslint": "^8.41.0",
+    "nuxt": "^3.5.0",
+    "prisma": "^4.14.1"
   },
   "peerDependencies": {
-    "prisma": "^4.9.0"
+    "prisma": "^4.14.1"
   },
   "repository": "https://github.com/becem-gharbi/nuxt-auth.git"
 }
