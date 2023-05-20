@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { setCookie, getCookie, getRequestHeader, deleteCookie } from "h3";
+import { getRequestHeader } from "h3";
 import type { H3Event } from "h3";
 import { privateConfig } from "../config";
 import type { AccessTokenPayload, User } from "../../../types";
@@ -51,22 +51,4 @@ export function verifyAccessToken(accessToken: string) {
     privateConfig.accessToken.jwtSecret
   ) as AccessTokenPayload;
   return payload;
-}
-
-export function setAccessTokenCookie(event: H3Event, accessToken: string) {
-  setCookie(event, privateConfig.accessToken.cookieName!, accessToken, {
-    httpOnly: true,
-    secure: true,
-    maxAge: privateConfig.accessToken.maxAge,
-    sameSite: "lax",
-  });
-}
-
-export function getAccessTokenFromCookie(event: H3Event) {
-  const accessToken = getCookie(event, privateConfig.accessToken.cookieName!);
-  return accessToken;
-}
-
-export function deleteAccessTokenCookie(event: H3Event) {
-  deleteCookie(event, privateConfig.accessToken.cookieName!);
 }

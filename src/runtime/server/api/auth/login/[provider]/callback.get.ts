@@ -8,8 +8,6 @@ import {
   createUser,
   findUser,
   publicConfig,
-  createAccessToken,
-  setAccessTokenCookie,
   handleError,
   signRefreshToken,
 } from "#auth";
@@ -111,12 +109,6 @@ export default defineEventHandler(async (event) => {
         const payload = await createRefreshToken(event, user);
 
         setRefreshTokenCookie(event, signRefreshToken(payload));
-
-        const sessionId = payload.id;
-
-        const accessToken = createAccessToken(user, sessionId);
-
-        setAccessTokenCookie(event, accessToken);
       }
     } else {
       throw new Error("email-not-accessible");

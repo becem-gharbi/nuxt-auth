@@ -19,14 +19,23 @@ export default function () {
     useState<User | null | undefined>("auth_user", () => null);
 
   const useAccessToken: () => Ref<string | undefined | null> = () =>
-    useState<string | undefined | null>("auth_access_token", () => null);
+    useState<string | undefined | null>("auth_access_token", () =>
+      process.client ? localStorage.getItem("auth_access_token") : null
+    );
 
   const accessToken = useAccessToken();
-  watch(accessToken, (value) => {
-    if (process.client) {
-      localStorage.setItem("auth_logged_in", value ? "true" : "false");
-    }
-  });
+
+  watch(
+    accessToken,
+    (value) => {
+      if (process.client) {
+        value
+          ? localStorage.setItem("auth_access_token", value)
+          : localStorage.removeItem("auth_access_token");
+      }
+    },
+    { immediate: true }
+  );
 
   function isAccessTokenExpired() {
     const accessToken = useAccessToken();
@@ -47,12 +56,7 @@ export default function () {
     try {
       const cookies = useRequestHeaders(["cookie"]).cookie || "";
 
-      if (process.server) {
-        accessToken.value = getCookie(
-          event,
-          useRuntimeConfig().auth.accessToken.cookieName
-        );
-      } else {
+      if (process.client) {
         accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
       }
 

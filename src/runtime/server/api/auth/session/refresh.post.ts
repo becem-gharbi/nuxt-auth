@@ -5,8 +5,6 @@ import {
   setRefreshTokenCookie,
   updateRefreshToken,
   verifyRefreshToken,
-  setAccessTokenCookie,
-  deleteAccessTokenCookie,
   deleteRefreshTokenCookie,
   findUser,
   handleError,
@@ -36,14 +34,11 @@ export default defineEventHandler(async (event) => {
 
     const accessToken = createAccessToken(user, sessionId);
 
-    setAccessTokenCookie(event, accessToken);
-
     delete user.password;
 
     return { accessToken, user };
   } catch (error) {
     deleteRefreshTokenCookie(event);
-    deleteAccessTokenCookie(event);
 
     await handleError(error);
   }

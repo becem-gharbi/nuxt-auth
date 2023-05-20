@@ -3,7 +3,6 @@ import {
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
-  deleteAccessTokenCookie,
   deleteRefreshToken,
   handleError,
 } from "#auth";
@@ -17,12 +16,10 @@ export default defineEventHandler(async (event) => {
     await deleteRefreshToken(payload.id);
 
     deleteRefreshTokenCookie(event);
-    deleteAccessTokenCookie(event);
 
     return {};
   } catch (error) {
     deleteRefreshTokenCookie(event);
-    deleteAccessTokenCookie(event);
 
     await handleError(error);
   }

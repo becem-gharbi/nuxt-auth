@@ -4,7 +4,6 @@ import {
   createRefreshToken,
   setRefreshTokenCookie,
   createAccessToken,
-  setAccessTokenCookie,
   findUser,
   verifyPassword,
   handleError,
@@ -51,8 +50,6 @@ export default defineEventHandler(async (event) => {
     const sessionId = payload.id;
 
     const accessToken = createAccessToken(user, sessionId);
-
-    setAccessTokenCookie(event, accessToken);
 
     delete user.password;
 
