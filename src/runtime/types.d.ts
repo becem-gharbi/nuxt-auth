@@ -98,6 +98,10 @@ export type PrivateConfig = {
   };
 
   webhookKey?: string;
+
+  admin: {
+    enable?: boolean;
+  };
 };
 
 export type PublicConfig = {

@@ -55,6 +55,10 @@ export default defineNuxtModule<ModuleOptions>({
       defaultRole: "user",
       requireEmailVerification: true,
     },
+
+    admin: {
+      enable: true,
+    },
   },
 
   setup(options, nuxt) {
@@ -284,6 +288,8 @@ export default defineNuxtModule<ModuleOptions>({
         registration: options.registration,
 
         webhookKey: options.webhookKey,
+
+        admin: options.admin,
       },
 
       public: {
