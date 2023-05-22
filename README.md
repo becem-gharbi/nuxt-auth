@@ -20,7 +20,7 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Customizable email templates
 - ✔️ User session management via `useAuthSession` composable
 - ✔️ Admin management via `useAuthAdmin` composable
-- ✔️ Serverless deployment on Vercel, Netlify, Cloudflare...
+- ✔️ Serverless deployment on Vercel, Netlify, Cloudflare ...
 
 ## Installation
 
@@ -76,12 +76,12 @@ export default defineNuxtConfig({
     },
     prisma: {}, // Prisma client options (optional)
     registration: {
-        enable?: true,
-        requireEmailVerification?: true,
-        passwordValidationRegex?: "",
+        enable: true,
+        requireEmailVerification: true,
+        passwordValidationRegex: "",
         defaultRole: "user"
     },
-    baseUrl: "", // Nuxt app base url
+    baseUrl: "", // Nuxt app base url, used for external redirects
     enableGlobalAuthMiddleware: false, // Enable auth middleware on every page
     webhookKey: "", // Webhook key used in the Webhook-Key header
     redirect: {
@@ -242,7 +242,7 @@ export default defineEventHandler((event) => {
 });
 ```
 
-### Graphql client authorization
+### Graphql authorization
 
 For data fetching with Graphql, you can use [nuxt-apollo](https://github.com/nuxt-modules/apollo) module. Add a Nuxt plugin to get into `apollo:auth` hook, get an auto refreshed access token via `getAccessToken` and set the client's token.
 
@@ -264,17 +264,17 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 - The module implements a JWT based authentication. The `Session` abstract used in the module refers to a `Refresh token stored in DB`
 
+- An `admin` is a user with `role` equals `admin`.
+
+- On production, include prisma generate step to the build command.
+
+- For security reasons, it's recommended to add rate limiting and CORS policy.
+
 - The sessions are subject to expiration in case the user does not refresh his login. To flush this useless data, the module exposes the following API
 
 ```bash
 curl -X DELETE -H "Webhook-Key: WEBHOOK_KEY" BASE_URL/api/auth/session/revoke/expired
 ```
-
-- An `admin` is a user with `role` equals `admin`.
-
-- On production, include prisma generate step to the build command
-
-- For security reasons, it's recommended to add rate limiting and CORS policy.
 
 ## Development
 
@@ -301,6 +301,10 @@ npm run test:watch
 # Release new version
 npm run release
 ```
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contribution you make is greatly appreciated.
 
 ## License
 
