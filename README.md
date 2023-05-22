@@ -20,6 +20,7 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Customizable email templates
 - ✔️ User session management via `useAuthSession` composable
 - ✔️ Admin management via `useAuthAdmin` composable
+- ✔️ Serverless deployment on Vercel, Netlify, Cloudflare...
 
 ## Installation
 
