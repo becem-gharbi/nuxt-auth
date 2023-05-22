@@ -13,7 +13,7 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Email verification & password reset flows
 - ✔️ Oauth login (Google, Github ...)
 - ✔️ Route middleware protection
-- ✔️ Database agnostic (Prisma based)
+- ✔️ SQL database agnostic (Prisma based)
 - ✔️ Auth operations via `useAuth` composable
 - ✔️ Auto refresh of access token via `useAuthFetch` composable
 - ✔️ Add dynamic custom claims to access token
