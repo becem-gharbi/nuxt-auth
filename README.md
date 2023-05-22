@@ -43,13 +43,44 @@ export default defineNuxtConfig({
   modules: ["@bg-dev/nuxt-auth"],
 
   auth: {
-    accessToken: {}, // Access token config
-    refreshToken: {}, // Refresh token config
-    oauth: {}, // Oauth providers's config (optional)
-    smtp: {}, // SMTP server's config (optional)
-    emailTemplates: {}, // Html email templates (optional)
-    prisma: {}, // Prisma client config
-    registration: {}, // Configure registration state and constraints
+    accessToken: {
+      jwtSecret: "", // JWT secret (required)
+      maxAge: 30 * 60, // 30 Minutes
+      customClaims: {}, // Dynamic custom claims
+    },
+    refreshToken: {
+      cookieName: "auth_refresh_token",
+      jwtSecret: "", // JWT secret (required)
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+    },
+    oauth: { // Oauth providers's config (optional)
+      "<provider>": {
+        clientId: "",
+        clientSecret: "",
+        scopes: "",
+        authorizeUrl: "",
+        tokenUrl: "",
+        userUrl: ""
+      }
+    },
+    smtp: { // SMTP server's config (optional)
+        host: "",
+        port: "",
+        user: "",
+        pass: "",
+        from: ""
+    },
+    emailTemplates: { // Html email templates (optional)
+        passwordReset?: "",
+        emailVerify?: ""
+    },
+    prisma: {}, // Prisma client options (optional)
+    registration: {
+        enable?: true,
+        requireEmailVerification?: true,
+        passwordValidationRegex?: "",
+        defaultRole: "user"
+    },
     baseUrl: "", // Nuxt app base url
     enableGlobalAuthMiddleware: false, // Enable auth middleware on every page
     webhookKey: "", // Webhook key used in the Webhook-Key header
@@ -61,6 +92,9 @@ export default defineNuxtConfig({
       passwordReset: "", // Path to redirect to for password reset
       emailVerify: "", // Path to redirect to after email verification
     },
+    admin: {
+      enable: true, // Enable admin API
+    }
   },.
 });
 ```
