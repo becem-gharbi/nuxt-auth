@@ -270,6 +270,10 @@ export default defineNuxtPlugin((nuxtApp) => {
 curl -X DELETE -H "Webhook-Key: WEBHOOK_KEY" BASE_URL/api/auth/session/revoke/expired
 ```
 
+- An `admin` is a user with `role` equals `admin`.
+
+- On production, include prisma generate step to the build command
+
 - For security reasons, it's recommended to add rate limiting and CORS policy.
 
 ## Development
