@@ -11,7 +11,7 @@ import {
   handleError,
   signRefreshToken,
 } from "#auth";
-import { resolveURL } from "ufo";
+import { resolveURL, withQuery } from "ufo";
 import { User } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
@@ -20,8 +20,12 @@ export default defineEventHandler(async (event) => {
       throw new Error("Please make sure to set callback redirect path");
     }
 
-    const provider = event.context.params.provider;
-    const code = getQuery(event).code?.toString();
+    const provider = event.context.params!.provider;
+
+    const { state: returnToPath, code } = getQuery(event) as {
+      state?: string;
+      code: string;
+    };
 
     const schema = z.object({
       code: z.string(),
@@ -35,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
     const formData = new FormData();
     formData.append("grant_type", "authorization_code");
-    formData.append("code", code!);
+    formData.append("code", code);
     formData.append("client_id", privateConfig.oauth[provider].clientId);
     formData.append(
       "client_secret",
@@ -114,7 +118,10 @@ export default defineEventHandler(async (event) => {
       throw new Error("email-not-accessible");
     }
 
-    await sendRedirect(event, publicConfig.redirect.home);
+    await sendRedirect(
+      event,
+      withQuery(publicConfig.redirect.callback, { redirect: returnToPath })
+    );
   } catch (error) {
     await handleError(error, {
       event,

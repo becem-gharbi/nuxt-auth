@@ -22,7 +22,7 @@ export default defineNuxtPlugin(async () => {
 
   const route = useRoute();
 
-  if (process.server || route.path === publicConfig.redirect.home) {
+  if (process.server || route.path === publicConfig.redirect.callback) {
     const { refresh } = useAuthSession();
     await refresh();
   }

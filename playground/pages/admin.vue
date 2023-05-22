@@ -21,6 +21,9 @@
 </template>
 
 <script setup>
+definePageMeta({ middleware: "auth" })
+
+
 const { listUsers, editUser, countUsers } = useAuthAdmin()
 
 const { data } = await useAsyncData(() => listUsers())

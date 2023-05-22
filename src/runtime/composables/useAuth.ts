@@ -2,7 +2,7 @@ import type { User, Provider } from "../types";
 import type { AsyncData } from "#app";
 import type { FetchError } from "ofetch";
 import type { H3Error } from "h3";
-import { resolveURL } from "ufo";
+import { resolveURL, withQuery } from "ufo";
 import useAuthFetch from "./useAuthFetch";
 import { useRuntimeConfig, useRoute, navigateTo, useFetch } from "#app";
 import useAuthSession from "./useAuthSession";
@@ -18,6 +18,11 @@ export default function () {
     email: string;
     password: string;
   }): FetchReturn<{ accessToken: string; user: User }> {
+    const route = useRoute();
+
+    // The protected page the user has visited before redirect to login page
+    const returnToPath = route.query.redirect?.toString();
+
     return useFetch("/api/auth/login", {
       method: "POST",
       credentials: "include",
@@ -33,7 +38,7 @@ export default function () {
         user.value = res.data.value?.user;
         accessToken.value = res.data.value?.accessToken;
 
-        await navigateTo(publicConfig.redirect.home);
+        await navigateTo(returnToPath || publicConfig.redirect.home);
       }
 
       return res;
@@ -42,7 +47,16 @@ export default function () {
 
   function loginWithProvider(provider: Provider): void {
     if (process.client) {
-      window.location.replace(resolveURL("/api/auth/login", provider));
+      const route = useRoute();
+
+      // The protected page the user has visited before redirect to login page
+      const returnToPath = route.query.redirect?.toString();
+
+      let redirectUrl = resolveURL("/api/auth/login", provider);
+
+      redirectUrl = withQuery(redirectUrl, { redirect: returnToPath });
+
+      window.location.replace(redirectUrl);
     }
   }
 

@@ -70,7 +70,7 @@ export default defineNuxtConfig({
     webhookKey: "abc",
 
     admin: {
-      enable: false,
+      enable: true,
     },
   },
 });
