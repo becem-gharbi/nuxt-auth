@@ -1,38 +1,4 @@
 # Changelog
-
-
-## v1.1.0
-
-[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.6...v1.1.0)
-
-
-### 🚀 Enhancements
-
-  - **admin:** Add admin API enable option ([81a61e4](https://github.com/becem-gharbi/nuxt-auth/commit/81a61e4))
-  - **redirect:** On login required, return to previous page instead of home ([25324ae](https://github.com/becem-gharbi/nuxt-auth/commit/25324ae))
-
-### 💅 Refactors
-
-  - Remove unused condition check ([34b0715](https://github.com/becem-gharbi/nuxt-auth/commit/34b0715))
-  - **session:** Remove accessToken cookieName config ([84aee80](https://github.com/becem-gharbi/nuxt-auth/commit/84aee80))
-
-### 📖 Documentation
-
-  - Add JSDoc to composables ([3637b34](https://github.com/becem-gharbi/nuxt-auth/commit/3637b34))
-  - **readme:** Add serverless deployment feature ([cb1c079](https://github.com/becem-gharbi/nuxt-auth/commit/cb1c079))
-  - **readme:** Add all module options to setup section ([8e73c2c](https://github.com/becem-gharbi/nuxt-auth/commit/8e73c2c))
-  - **readme:** Add notes ([9be490b](https://github.com/becem-gharbi/nuxt-auth/commit/9be490b))
-  - **readme:** Add explicit support to SQL db only ([5871419](https://github.com/becem-gharbi/nuxt-auth/commit/5871419))
-
-### 🏡 Chore
-
-  - Upgrade dependencies ([82c0fd5](https://github.com/becem-gharbi/nuxt-auth/commit/82c0fd5))
-  - Set version to 1.0.0 ([318b644](https://github.com/becem-gharbi/nuxt-auth/commit/318b644))
-
-### ❤️  Contributors
-
-- Becem-gharbi
-
 ## v0.1.6
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.5...v0.1.6)
