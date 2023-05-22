@@ -13,6 +13,8 @@ import { getCookie } from "h3";
 import { watch } from "#imports";
 
 export default function () {
+  const accessTokenStorageName = "auth_access_token";
+
   const event = useRequestEvent();
 
   const useUser: () => Ref<User | null | undefined> = () =>
@@ -20,7 +22,7 @@ export default function () {
 
   const useAccessToken: () => Ref<string | undefined | null> = () =>
     useState<string | undefined | null>("auth_access_token", () =>
-      process.client ? localStorage.getItem("auth_access_token") : null
+      process.client ? localStorage.getItem(accessTokenStorageName) : null
     );
 
   const accessToken = useAccessToken();
@@ -30,8 +32,8 @@ export default function () {
     (value) => {
       if (process.client) {
         value
-          ? localStorage.setItem("auth_access_token", value)
-          : localStorage.removeItem("auth_access_token");
+          ? localStorage.setItem(accessTokenStorageName, value)
+          : localStorage.removeItem(accessTokenStorageName);
       }
     },
     { immediate: true }

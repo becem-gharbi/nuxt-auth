@@ -29,7 +29,6 @@ export default defineNuxtModule<ModuleOptions>({
     baseUrl: "",
 
     accessToken: {
-      cookieName: "auth_access_token",
       jwtSecret: "",
       maxAge: 30 * 60,
     },

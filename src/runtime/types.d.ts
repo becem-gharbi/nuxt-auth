@@ -50,7 +50,6 @@ export type RefreshTokenPayload = {
 
 export type PrivateConfig = {
   accessToken: {
-    cookieName?: string;
     jwtSecret: string;
     maxAge?: number;
     customClaims?: Record<string, any>;
