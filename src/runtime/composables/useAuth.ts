@@ -12,8 +12,10 @@ type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 export default function () {
   const { useAccessToken, useUser } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth;
-  const route = useRoute();
 
+  /**
+   * Login with email/password
+   */
   async function login(credentials: {
     email: string;
     password: string;
@@ -45,6 +47,9 @@ export default function () {
     });
   }
 
+  /**
+   * Login via oauth provider
+   */
   function loginWithProvider(provider: Provider): void {
     if (process.client) {
       const route = useRoute();
@@ -60,6 +65,9 @@ export default function () {
     }
   }
 
+  /**
+   * Fetch active user, usefull to update `user` state
+   */
   async function fetchUser(): Promise<void> {
     const user = useUser();
     user.value = await useAuthFetch<User>("/api/auth/me");
@@ -103,6 +111,8 @@ export default function () {
   }
 
   async function resetPassword(password: string): FetchReturn<void> {
+    const route = useRoute();
+
     return useFetch("/api/auth/password/reset", {
       method: "PUT",
       credentials: "omit",
@@ -129,7 +139,6 @@ export default function () {
   }): Promise<void> {
     return useAuthFetch("/api/auth/password/change", {
       method: "PUT",
-      credentials: "omit",
       body: {
         currentPassword: input.currentPassword,
         newPassword: input.newPassword,

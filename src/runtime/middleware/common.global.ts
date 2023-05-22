@@ -1,6 +1,9 @@
 import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
 import useAuthSession from "../composables/useAuthSession";
 
+/**
+ * Handles redirects when hitting `login` and `callback` pages
+ */
 export default defineNuxtRouteMiddleware((to, from) => {
   const publicConfig = useRuntimeConfig().public.auth;
 
@@ -8,8 +11,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     to.path === publicConfig.redirect.login ||
     to.path === publicConfig.redirect.callback
   ) {
-    console.log("hit common mdw");
-
     const { useAccessToken } = useAuthSession();
 
     const accessToken = useAccessToken();

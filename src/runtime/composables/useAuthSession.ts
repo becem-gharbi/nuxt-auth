@@ -27,6 +27,7 @@ export default function () {
 
   const accessToken = useAccessToken();
 
+  // Updates access token stored in localStorage
   watch(
     accessToken,
     (value) => {
@@ -51,6 +52,10 @@ export default function () {
     return true;
   }
 
+  /**
+   * Internal handler that refreshs access token if needed
+   * @returns
+   */
   async function refresh(): Promise<void> {
     const accessToken = useAccessToken();
     const user = useUser();
@@ -58,6 +63,7 @@ export default function () {
     try {
       const cookies = useRequestHeaders(["cookie"]).cookie || "";
 
+      // Check if access token available (exists and unexpired)
       if (process.client) {
         accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
       }
@@ -71,9 +77,13 @@ export default function () {
             },
           });
         }
+
+        // Access token available & user fetched, abort!
         return;
       }
 
+      // Refresh token cookie is accessible server side only (http-only)
+      // If refresh token not found, abort!
       if (process.server) {
         const refreshToken = getCookie(
           event,
@@ -89,7 +99,7 @@ export default function () {
         "/api/auth/session/refresh",
         {
           method: "POST",
-          headers: process.server ? { cookie: cookies } : {},
+          headers: process.server ? { cookie: cookies } : {}, // Pass cookies to refresh endpoint
           credentials: "include",
           onResponse({ response }) {
             if (process.server) {
@@ -97,13 +107,14 @@ export default function () {
                 ","
               );
               for (const cookie of cookies) {
-                appendHeader(event, "set-cookie", cookie);
+                appendHeader(event, "set-cookie", cookie); // Return cookies from refresh endpoint
               }
             }
           },
         }
       );
 
+      // Update state
       accessToken.value = res.accessToken;
       user.value = res.user;
     } catch (e) {
@@ -112,6 +123,9 @@ export default function () {
     }
   }
 
+  /**
+   * Removes all stored sessions of the active user
+   */
   async function revokeAllSessions(): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke/all", {
       method: "DELETE",
@@ -119,6 +133,9 @@ export default function () {
     });
   }
 
+  /**
+   * Removes a single stored session of the active user
+   */
   async function revokeSession(id: number): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke", {
       method: "DELETE",
@@ -129,6 +146,9 @@ export default function () {
     });
   }
 
+  /**
+   * Get all stored sessions of the active user
+   */
   async function getAllSessions(): Promise<Session[]> {
     const { refreshTokens, current } = await useAuthFetch<{
       refreshTokens: RefreshToken[];

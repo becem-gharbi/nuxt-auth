@@ -6,6 +6,9 @@ import jwt from "jsonwebtoken";
 import { logger } from "@nuxt/kit";
 import { withQuery } from "ufo";
 
+/**
+ * Checks error type and set status code accordingly
+ */
 export async function handleError(
   error: any,
   redirect?: { event: H3Event; url: string }
@@ -15,7 +18,9 @@ export async function handleError(
   if (error instanceof Prisma.PrismaClientInitializationError) {
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
-    logger.error("Databse connection failed. Please check DATABASE_URL env");
+    logger.error(
+      "[nuxt-auth] Database connection failed. Please check DATABASE_URL env"
+    );
   } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //Query engine related issues
     if (error.code.startsWith("P2")) {
@@ -23,7 +28,7 @@ export async function handleError(
       h3Error.statusCode = 400;
       if (["P2021", "P2022"].includes(error.code)) {
         logger.error(
-          "Table or column not defined. Please make sure to run prisma migration"
+          "[nuxt-auth] Table or column not defined. Please make sure to run prisma migration"
         );
       }
     }

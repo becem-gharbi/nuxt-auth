@@ -1,4 +1,4 @@
-export { privateConfig, publicConfig } from "./config";
+export * from "./config";
 
 export * from "./mail";
 

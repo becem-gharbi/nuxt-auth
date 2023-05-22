@@ -1,6 +1,9 @@
 import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
 import useAuthSession from "../composables/useAuthSession";
 
+/**
+ * Handles redirects when hitting a protected page
+ */
 export default defineNuxtRouteMiddleware((to, from) => {
   const publicConfig = useRuntimeConfig().public.auth;
 
