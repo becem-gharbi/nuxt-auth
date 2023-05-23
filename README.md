@@ -71,8 +71,8 @@ export default defineNuxtConfig({
         from: ""
     },
     emailTemplates: { // Html email templates (optional)
-        passwordReset?: "",
-        emailVerify?: ""
+        passwordReset: "",
+        emailVerify: ""
     },
     prisma: {}, // Prisma client options (optional)
     registration: {
