@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: [myModule],
+  modules: [myModule, "@nuxt/devtools"],
 
   auth: {
     baseUrl: "http://localhost:3000",

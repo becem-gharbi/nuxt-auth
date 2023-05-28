@@ -4,7 +4,13 @@ import type { FetchError } from "ofetch";
 import type { H3Error } from "h3";
 import { resolveURL, withQuery } from "ufo";
 import useAuthFetch from "./useAuthFetch";
-import { useRuntimeConfig, useRoute, navigateTo, useFetch } from "#app";
+import {
+  useRuntimeConfig,
+  useRoute,
+  navigateTo,
+  useFetch,
+  clearNuxtData,
+} from "#app";
 import useAuthSession from "./useAuthSession";
 
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
@@ -79,6 +85,8 @@ export default function () {
 
     user.value = null;
     accessToken.value = null;
+
+    clearNuxtData();
 
     await navigateTo(publicConfig.redirect.logout);
 
