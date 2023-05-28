@@ -1,4 +1,17 @@
 # Changelog
+## v1.3.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.0...v1.3.1)
+
+
+### 🩹 Fixes
+
+  - **logout:** Deleted cache of fetched data on logout ([e548110](https://github.com/becem-gharbi/nuxt-auth/commit/e548110))
+
+### ❤️  Contributors
+
+- Becem-gharbi
+
 ## v1.3.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v0.1.6...v1.3.0)
