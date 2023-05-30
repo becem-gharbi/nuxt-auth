@@ -34,12 +34,15 @@ export async function createUser(input: Prisma.UserCreateInput) {
   return user;
 }
 
-export async function changePassword(userId: number, password: string) {
+export async function changePassword(
+  userId: number | string,
+  password: string
+) {
   const hashedPassword = bcrypt.hashSync(password, 12);
 
   await prisma.user.update({
     where: {
-      id: userId,
+      id: userId.toString(),
     },
     data: {
       password: hashedPassword,
@@ -47,10 +50,10 @@ export async function changePassword(userId: number, password: string) {
   });
 }
 
-export async function setUserEmailVerified(userId: number) {
+export async function setUserEmailVerified(userId: number | string) {
   await prisma.user.update({
     where: {
-      id: userId,
+      id: userId.toString(),
     },
     data: {
       verified: true,
@@ -67,10 +70,13 @@ export async function findUsers(args: Prisma.UserFindManyArgs) {
   return users;
 }
 
-export async function editUser(id: number, data: Prisma.UserUpdateInput) {
+export async function editUser(
+  id: number | string,
+  data: Prisma.UserUpdateInput
+) {
   const user = await prisma.user.update({
     where: {
-      id,
+      id: id.toString(),
     },
     data,
   });

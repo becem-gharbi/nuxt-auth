@@ -5,7 +5,7 @@ import { privateConfig } from "../config";
 import type { AccessTokenPayload, User } from "../../../types";
 import Mustache from "mustache";
 
-export function createAccessToken(user: User, sessionId: number) {
+export function createAccessToken(user: User, sessionId: number | string) {
   let customClaims = privateConfig.accessToken.customClaims || {};
 
   if (customClaims) {

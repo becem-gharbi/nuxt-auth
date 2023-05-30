@@ -136,7 +136,7 @@ export default function () {
   /**
    * Removes a single stored session of the active user
    */
-  async function revokeSession(id: number): Promise<void> {
+  async function revokeSession(id: number | string): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke", {
       method: "DELETE",
       credentials: "omit",
@@ -152,7 +152,7 @@ export default function () {
   async function getAllSessions(): Promise<Session[]> {
     const { refreshTokens, current } = await useAuthFetch<{
       refreshTokens: RefreshToken[];
-      current: number;
+      current: number | string;
     }>("/api/auth/session");
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {

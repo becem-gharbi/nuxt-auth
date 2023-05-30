@@ -32,10 +32,10 @@ export function signRefreshToken(payload: RefreshTokenPayload) {
   });
 }
 
-export async function updateRefreshToken(refreshTokenId: number) {
+export async function updateRefreshToken(refreshTokenId: number | string) {
   const refreshTokenEntity = await prisma.refreshToken.update({
     where: {
-      id: refreshTokenId,
+      id: refreshTokenId.toString(),
     },
     data: {
       uid: uuidv4(),
@@ -69,10 +69,10 @@ export function getRefreshTokenFromCookie(event: H3Event) {
   return refreshToken;
 }
 
-export async function findRefreshTokenById(id: number) {
+export async function findRefreshTokenById(id: number | string) {
   const refreshTokenEntity = await prisma.refreshToken.findUnique({
     where: {
-      id,
+      id: id.toString(),
     },
   });
   return refreshTokenEntity;
@@ -97,23 +97,23 @@ export async function verifyRefreshToken(refreshToken: string) {
   return payload;
 }
 
-export async function deleteRefreshToken(refreshTokenId: number) {
+export async function deleteRefreshToken(refreshTokenId: number | string) {
   await prisma.refreshToken.delete({
     where: {
-      id: refreshTokenId,
+      id: refreshTokenId.toString(),
     },
   });
 }
 
-export async function deleteManyRefreshTokenByUser(userId: number) {
+export async function deleteManyRefreshTokenByUser(userId: number | string) {
   await prisma.refreshToken.deleteMany({
     where: {
-      userId,
+      userId: userId.toString(),
     },
   });
 }
 
-export async function findManyRefreshTokenByUser(userId: number) {
+export async function findManyRefreshTokenByUser(userId: number | string) {
   const now = new Date();
   const minDate = new Date(
     now.getTime() - privateConfig.refreshToken.maxAge! * 1000
@@ -121,7 +121,7 @@ export async function findManyRefreshTokenByUser(userId: number) {
 
   const refreshTokens = await prisma.refreshToken.findMany({
     where: {
-      userId,
+      userId: userId.toString(),
       updatedAt: {
         gt: minDate,
       },

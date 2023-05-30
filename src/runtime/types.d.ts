@@ -13,9 +13,9 @@ export interface User extends Omit<PrismaUser, "password"> {}
 export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> {}
 
 export interface Session {
-  id: number;
+  id: number | string;
   current: boolean;
-  userId: number;
+  userId: number | string;
   ua: string | null;
   updatedAt: Date;
   createdAt: Date;
@@ -29,23 +29,23 @@ export type MailMessage = {
 };
 
 export type ResetPasswordPayload = {
-  userId: number;
+  userId: number | string;
 };
 
 export type EmailVerifyPayload = {
-  userId: number;
+  userId: number | string;
 };
 
 export type AccessTokenPayload = {
-  userId: number;
-  sessionId: number;
+  userId: number | string;
+  sessionId: number | string;
   userRole: string;
 };
 
 export type RefreshTokenPayload = {
-  id: number;
+  id: number | string;
   uid: string;
-  userId: number;
+  userId: number | string;
 };
 
 export type PrivateConfig = {
