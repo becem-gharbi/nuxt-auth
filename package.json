@@ -32,6 +32,7 @@
     "prisma:init": "cd playground && prisma init",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
+    "prisma:push": "cd playground && prisma db push",
     "release": "npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
@@ -58,9 +59,6 @@
     "changelogen": "^0.5.3",
     "eslint": "^8.41.0",
     "nuxt": "^3.5.2",
-    "prisma": "^4.14.1"
-  },
-  "peerDependencies": {
     "prisma": "^4.14.1"
   },
   "repository": "https://github.com/becem-gharbi/nuxt-auth.git"
