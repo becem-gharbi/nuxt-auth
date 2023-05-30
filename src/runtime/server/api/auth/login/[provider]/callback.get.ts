@@ -12,7 +12,7 @@ import {
   signRefreshToken,
 } from "#auth";
 import { resolveURL, withQuery } from "ufo";
-import { User } from "@prisma/client";
+import { User } from "../../../../../types";
 
 export default defineEventHandler(async (event) => {
   try {

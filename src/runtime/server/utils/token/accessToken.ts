@@ -2,10 +2,10 @@ import jwt from "jsonwebtoken";
 import { getRequestHeader } from "h3";
 import type { H3Event } from "h3";
 import { privateConfig } from "../config";
-import type { AccessTokenPayload, User } from "../../../types";
+import type { AccessTokenPayload, User, Session } from "../../../types";
 import Mustache from "mustache";
 
-export function createAccessToken(user: User, sessionId: number | string) {
+export function createAccessToken(user: User, sessionId: Session["id"]) {
   let customClaims = privateConfig.accessToken.customClaims || {};
 
   if (customClaims) {

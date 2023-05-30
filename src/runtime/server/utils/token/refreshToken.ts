@@ -4,7 +4,7 @@ import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
 import type { H3Event } from "h3";
 import { prisma } from "../prisma";
 import { privateConfig } from "../config";
-import type { RefreshTokenPayload, User } from "../../../types";
+import type { RefreshTokenPayload, User, RefreshToken } from "../../../types";
 
 export async function createRefreshToken(event: H3Event, user: User) {
   const userAgent = getHeader(event, "user-agent");
@@ -32,10 +32,10 @@ export function signRefreshToken(payload: RefreshTokenPayload) {
   });
 }
 
-export async function updateRefreshToken(refreshTokenId: number | string) {
+export async function updateRefreshToken(refreshTokenId: RefreshToken["id"]) {
   const refreshTokenEntity = await prisma.refreshToken.update({
     where: {
-      id: refreshTokenId.toString(),
+      id: refreshTokenId,
     },
     data: {
       uid: uuidv4(),
@@ -69,10 +69,10 @@ export function getRefreshTokenFromCookie(event: H3Event) {
   return refreshToken;
 }
 
-export async function findRefreshTokenById(id: number | string) {
+export async function findRefreshTokenById(id: RefreshToken["id"]) {
   const refreshTokenEntity = await prisma.refreshToken.findUnique({
     where: {
-      id: id.toString(),
+      id,
     },
   });
   return refreshTokenEntity;
@@ -97,23 +97,23 @@ export async function verifyRefreshToken(refreshToken: string) {
   return payload;
 }
 
-export async function deleteRefreshToken(refreshTokenId: number | string) {
+export async function deleteRefreshToken(refreshTokenId: RefreshToken["id"]) {
   await prisma.refreshToken.delete({
     where: {
-      id: refreshTokenId.toString(),
+      id: refreshTokenId,
     },
   });
 }
 
-export async function deleteManyRefreshTokenByUser(userId: number | string) {
+export async function deleteManyRefreshTokenByUser(userId: User["id"]) {
   await prisma.refreshToken.deleteMany({
     where: {
-      userId: userId.toString(),
+      userId,
     },
   });
 }
 
-export async function findManyRefreshTokenByUser(userId: number | string) {
+export async function findManyRefreshTokenByUser(userId: User["id"]) {
   const now = new Date();
   const minDate = new Date(
     now.getTime() - privateConfig.refreshToken.maxAge! * 1000
@@ -121,7 +121,7 @@ export async function findManyRefreshTokenByUser(userId: number | string) {
 
   const refreshTokens = await prisma.refreshToken.findMany({
     where: {
-      userId: userId.toString(),
+      userId,
       updatedAt: {
         gt: minDate,
       },

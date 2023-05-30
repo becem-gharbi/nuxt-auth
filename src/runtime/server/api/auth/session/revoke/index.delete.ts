@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     const { id } = await readBody(event);
 
     const schema = z.object({
-      id: z.number().or(z.string().min(1)),
+      id: z.number().or(z.string()),
     });
 
     schema.parse({ id });

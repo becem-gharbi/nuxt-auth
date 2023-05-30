@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { privateConfig } from "./config";
 import { withQuery } from "ufo";
+import type { User } from "../../types";
 
 export async function findUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUnique({
@@ -34,15 +35,12 @@ export async function createUser(input: Prisma.UserCreateInput) {
   return user;
 }
 
-export async function changePassword(
-  userId: number | string,
-  password: string
-) {
+export async function changePassword(userId: User["id"], password: string) {
   const hashedPassword = bcrypt.hashSync(password, 12);
 
   await prisma.user.update({
     where: {
-      id: userId.toString(),
+      id: userId,
     },
     data: {
       password: hashedPassword,
@@ -50,10 +48,10 @@ export async function changePassword(
   });
 }
 
-export async function setUserEmailVerified(userId: number | string) {
+export async function setUserEmailVerified(userId: User["id"]) {
   await prisma.user.update({
     where: {
-      id: userId.toString(),
+      id: userId,
     },
     data: {
       verified: true,
@@ -71,12 +69,12 @@ export async function findUsers(args: Prisma.UserFindManyArgs) {
 }
 
 export async function editUser(
-  id: number | string,
+  userId: User["id"],
   data: Prisma.UserUpdateInput
 ) {
   const user = await prisma.user.update({
     where: {
-      id: id.toString(),
+      id: userId,
     },
     data,
   });

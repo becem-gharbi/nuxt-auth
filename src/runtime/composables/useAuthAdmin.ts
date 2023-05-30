@@ -10,10 +10,7 @@ export default function () {
   /**
    * A helper to edit `User` entity, usefull to suspend account
    */
-  function editUser(body: {
-    id: number | string;
-    data: Prisma.UserUpdateInput;
-  }) {
+  function editUser(body: { id: User["id"]; data: Prisma.UserUpdateInput }) {
     return useAuthFetch<User>("/api/auth/admin/users/edit", {
       method: "PUT",
       body,
