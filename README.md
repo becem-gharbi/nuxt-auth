@@ -13,7 +13,7 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Email verification & password reset flows
 - ✔️ Oauth login (Google, Github ...)
 - ✔️ Route middleware protection
-- ✔️ SQL database agnostic (Prisma based)
+- ✔️ Database agnostic (Prisma based)
 - ✔️ Auth operations via `useAuth` composable
 - ✔️ Auto refresh of access token via `useAuthFetch` composable
 - ✔️ Add dynamic custom claims to access token
@@ -107,6 +107,8 @@ npx prisma init
 
 Copy the default schema definition to your `prisma/schema.prisma` file & optionally add your custom fields
 
+#### SQL
+
 ```prisma
 model User {
   id            Int            @id @default(autoincrement())
@@ -146,10 +148,60 @@ enum Provider {
 }
 ```
 
+#### Mongo DB
+
+```prisma
+
+model User {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String         @unique
+  picture       String
+  role          Role           @default(user)
+  provider      Provider       @default(default)
+  password      String?
+  verified      Boolean        @default(false)
+  suspended     Boolean        @default(false)
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  uid       String
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum Provider {
+  default
+  google
+}
+```
+
 Run a migration to reflect schema changes to your database & generate prisma client
+
+#### SQL
 
 ```bash
 npx prisma migrate dev
+```
+
+#### Mongo DB
+
+```bash
+npx prisma db push
 ```
 
 That's it! You can now use `@bg-dev/nuxt-auth` in your Nuxt app ✨
