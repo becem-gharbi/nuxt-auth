@@ -322,7 +322,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 - For security reasons, it's recommended to add rate limiting and CORS policy.
 
-- The sessions are subject to expiration in case the user does not refresh his login. To flush this useless data, the module exposes the following API
+- The sessions are subject to expiration in case the user does not refresh his login. To flush this useless data, the module exposes the following REST API
 
 ```bash
 curl -X DELETE -H "Webhook-Key: WEBHOOK_KEY" BASE_URL/api/auth/session/revoke/expired
