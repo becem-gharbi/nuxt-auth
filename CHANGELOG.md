@@ -1,4 +1,33 @@
 # Changelog
+## v1.3.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.1...v1.3.2)
+
+
+### 💅 Refactors
+
+  - Allow `id` fields to be `string` ([cebe94b](https://github.com/becem-gharbi/nuxt-auth/commit/cebe94b))
+
+### 📖 Documentation
+
+  - Update README.md ([c7f22a1](https://github.com/becem-gharbi/nuxt-auth/commit/c7f22a1))
+  - Add Mongo DB setup instructions ([f7af325](https://github.com/becem-gharbi/nuxt-auth/commit/f7af325))
+  - Update readme ([745907c](https://github.com/becem-gharbi/nuxt-auth/commit/745907c))
+
+### 🌊 Types
+
+  - Resolve `id` fields from Prisma schema ([24a7bca](https://github.com/becem-gharbi/nuxt-auth/commit/24a7bca))
+
+### 🏡 Chore
+
+  - Upgrade dependencies ([de45f86](https://github.com/becem-gharbi/nuxt-auth/commit/de45f86))
+  - Define prisma schema for Mongo DB ([8a65f05](https://github.com/becem-gharbi/nuxt-auth/commit/8a65f05))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+- Becem ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.3.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.0...v1.3.1)
