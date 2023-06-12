@@ -82,10 +82,6 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn(`[${name}] Please make sure to set home redirect path`);
     }
 
-    if (!process.env.DATABASE_URL) {
-      logger.warn(`[${name}] Please make sure to set DATABASE_URL env`);
-    }
-
     if (!options.baseUrl) {
       logger.warn(`[${name}] Please make sure to set baseUrl`);
     }

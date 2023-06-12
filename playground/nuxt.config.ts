@@ -2,7 +2,7 @@ import { defineNuxtConfig } from "nuxt/config";
 import myModule from "..";
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
 
   app: {
     head: {

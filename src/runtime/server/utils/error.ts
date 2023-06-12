@@ -18,9 +18,7 @@ export async function handleError(
   if (error instanceof Prisma.PrismaClientInitializationError) {
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
-    logger.error(
-      "[nuxt-auth] Database connection failed. Please check DATABASE_URL env"
-    );
+    logger.error("[nuxt-auth] Database connection failed");
   } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //Query engine related issues
     if (error.code.startsWith("P2")) {
