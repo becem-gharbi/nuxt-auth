@@ -1,4 +1,17 @@
 # Changelog
+## v1.3.4
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.3...v1.3.4)
+
+
+### 🩹 Fixes
+
+  - Fix useRoute not defined ([d3263de](https://github.com/becem-gharbi/nuxt-auth/commit/d3263de))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.3.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.2...v1.3.3)
