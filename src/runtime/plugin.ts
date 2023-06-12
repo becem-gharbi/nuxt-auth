@@ -1,9 +1,4 @@
-import {
-  defineNuxtPlugin,
-  addRouteMiddleware,
-  useRuntimeConfig,
-  useRoute,
-} from "#app";
+import { defineNuxtPlugin, addRouteMiddleware, useRuntimeConfig } from "#app";
 import common from "./middleware/common.global";
 import auth from "./middleware/auth";
 import guest from "./middleware/guest";
@@ -20,12 +15,6 @@ export default defineNuxtPlugin(async () => {
 
   addRouteMiddleware("guest", guest);
 
-  const route = useRoute();
-
-  // On ssr always proceed to refresh access token
-  // On oauth callback page proceed to refresh access token
-  if (process.server || route.path === publicConfig.redirect.callback) {
-    const { refresh } = useAuthSession();
-    await refresh();
-  }
+  const { refresh } = useAuthSession();
+  await refresh();
 });

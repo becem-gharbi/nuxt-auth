@@ -15,8 +15,6 @@ import { watch } from "#imports";
 export default function () {
   const accessTokenStorageName = "auth_access_token";
 
-  const event = useRequestEvent();
-
   const useUser: () => Ref<User | null | undefined> = () =>
     useState<User | null | undefined>("auth_user", () => null);
 
@@ -59,27 +57,32 @@ export default function () {
   async function refresh(): Promise<void> {
     const accessToken = useAccessToken();
     const user = useUser();
+    const route = useRoute();
+    const event = useRequestEvent();
 
     try {
       const cookies = useRequestHeaders(["cookie"]).cookie || "";
+      const publicConfig = useRuntimeConfig().public.auth;
 
-      // Check if access token available (exists and unexpired)
-      if (process.client) {
-        accessToken.value = isAccessTokenExpired() ? null : accessToken.value;
-      }
-
-      if (accessToken.value) {
-        if (!user.value) {
-          user.value = await $fetch<User>("/api/auth/me", {
-            credentials: "omit",
-            headers: {
-              Authorization: "Bearer " + accessToken.value,
-            },
-          });
+      if (process.client && route.path !== publicConfig.redirect.callback) {
+        // Access token not found client side, abort!
+        if (!accessToken.value) {
+          return;
         }
 
-        // Access token available & user fetched, abort!
-        return;
+        if (!isAccessTokenExpired()) {
+          if (!user.value) {
+            user.value = await $fetch<User>("/api/auth/me", {
+              credentials: "omit",
+              headers: {
+                Authorization: "Bearer " + accessToken.value,
+              },
+            });
+          }
+
+          // Access token available & user fetched, abort!
+          return;
+        }
       }
 
       // Refresh token cookie is accessible server side only (http-only)
