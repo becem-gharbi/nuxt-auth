@@ -22,10 +22,17 @@ export default defineNuxtPlugin(async () => {
 
   const route = useRoute();
 
-  // On ssr always proceed to refresh access token
-  // On oauth callback page proceed to refresh access token
-  if (process.server || route.path === publicConfig.redirect.callback) {
-    const { refresh } = useAuthSession();
-    await refresh();
+  const { refresh, useAccessToken } = useAuthSession();
+
+  const accessToken = useAccessToken();
+
+  if (
+    process.client &&
+    route.path !== publicConfig.redirect.callback &&
+    !accessToken.value
+  ) {
+    return;
   }
+
+  await refresh();
 });
