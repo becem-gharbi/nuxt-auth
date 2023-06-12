@@ -1,6 +1,10 @@
 # Changelog
 ## v1.3.6
 
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.6...v1.3.6)
+
+## v1.3.6
+
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.3...v1.3.6)
 
 
