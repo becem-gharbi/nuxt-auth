@@ -1,4 +1,17 @@
 # Changelog
+## v1.3.4
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.3...v1.3.4)
+
+
+### 🩹 Fixes
+
+  - Fix undefined user on ssr false ([0f9f4b2](https://github.com/becem-gharbi/nuxt-auth/commit/0f9f4b2))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.3.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.2...v1.3.3)
