@@ -1,4 +1,17 @@
 # Changelog
+## v1.3.5
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.6...v1.3.5)
+
+
+### 🏡 Chore
+
+  - **release:** V1.3.6 ([8e1b409](https://github.com/becem-gharbi/nuxt-auth/commit/8e1b409))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.3.6
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.6...v1.3.6)
