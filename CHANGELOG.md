@@ -1,4 +1,26 @@
 # Changelog
+## v1.3.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.2...v1.3.3)
+
+
+### 🩹 Fixes
+
+  - Remove DATABASE_URL env check ([717c4b0](https://github.com/becem-gharbi/nuxt-auth/commit/717c4b0))
+
+### 📖 Documentation
+
+  - **readme:** Add oauth redirect URI note ([31e3681](https://github.com/becem-gharbi/nuxt-auth/commit/31e3681))
+
+### 🏡 Chore
+
+  - Upgrade dependencies ([c2ed65f](https://github.com/becem-gharbi/nuxt-auth/commit/c2ed65f))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+- Becem ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.3.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.1...v1.3.2)
