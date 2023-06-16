@@ -1,7 +1,4 @@
 {
   "private": true,
-  "name": "my-module-playground",
-  "devDependencies": {
-    "@nuxt/devtools": "^0.5.5"
-  }
+  "name": "my-module-playground"
 }
