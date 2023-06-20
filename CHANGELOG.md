@@ -1,4 +1,35 @@
 # Changelog
+## v1.4.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.5...v1.4.0)
+
+
+### 🚀 Enhancements
+
+  - Add uth:loggedIn hook ([0903edf](https://github.com/becem-gharbi/nuxt-auth/commit/0903edf))
+
+### 🔥 Performance
+
+  - Disable SSR on callback page ([2cfe78c](https://github.com/becem-gharbi/nuxt-auth/commit/2cfe78c))
+
+### 🩹 Fixes
+
+  - **middleware:** Replace redirect from.path to to.path in auth middleware ([cbac1dd](https://github.com/becem-gharbi/nuxt-auth/commit/cbac1dd))
+  - **useAuth:** Import useNuxtApp ([2256a65](https://github.com/becem-gharbi/nuxt-auth/commit/2256a65))
+
+### 📖 Documentation
+
+  - **readme:** Add hooks section ([4a63983](https://github.com/becem-gharbi/nuxt-auth/commit/4a63983))
+
+### 🏡 Chore
+
+  - Configure Renovate ([300048e](https://github.com/becem-gharbi/nuxt-auth/commit/300048e))
+  - Replace npm with pnpm ([1b39697](https://github.com/becem-gharbi/nuxt-auth/commit/1b39697))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.3.5
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.6...v1.3.5)
