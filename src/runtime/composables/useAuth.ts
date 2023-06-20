@@ -10,6 +10,7 @@ import {
   navigateTo,
   useFetch,
   clearNuxtData,
+  useNuxtApp,
 } from "#app";
 import useAuthSession from "./useAuthSession";
 
