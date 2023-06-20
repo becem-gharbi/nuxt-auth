@@ -264,6 +264,12 @@ export default defineNuxtModule<ModuleOptions>({
       });
     });
 
+    // Disable SSR on oauth callback page
+    nuxt.options.nitro.routeRules = nuxt.options.nitro.routeRules || {};
+    nuxt.options.nitro.routeRules[options.redirect.callback as string] = {
+      ssr: false,
+    };
+
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       app: {},
