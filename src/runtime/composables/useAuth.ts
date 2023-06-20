@@ -27,6 +27,7 @@ export default function () {
     password: string;
   }): FetchReturn<{ accessToken: string; user: User }> {
     const route = useRoute();
+    const nuxtApp = useNuxtApp();
 
     // The protected page the user has visited before redirect to login page
     const returnToPath = route.query.redirect?.toString();
@@ -45,6 +46,8 @@ export default function () {
 
         user.value = res.data.value?.user;
         accessToken.value = res.data.value?.accessToken;
+
+        await nuxtApp.callHook("auth:loggedIn", true);
 
         await navigateTo(returnToPath || publicConfig.redirect.home);
       }
@@ -87,6 +90,10 @@ export default function () {
     accessToken.value = null;
 
     clearNuxtData();
+
+    const nuxtApp = useNuxtApp();
+
+    await nuxtApp.callHook("auth:loggedIn", false);
 
     await navigateTo(publicConfig.redirect.logout);
 

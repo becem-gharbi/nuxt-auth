@@ -59,10 +59,9 @@ export default function () {
   async function refresh(): Promise<void> {
     const accessToken = useAccessToken();
     const user = useUser();
+    const cookies = useRequestHeaders(["cookie"]).cookie || "";
 
     try {
-      const cookies = useRequestHeaders(["cookie"]).cookie || "";
-
       // Check if access token available (exists and unexpired)
       if (process.client) {
         accessToken.value = isAccessTokenExpired() ? null : accessToken.value;

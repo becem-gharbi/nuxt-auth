@@ -311,3 +311,9 @@ export default defineNuxtModule<ModuleOptions>({
     });
   },
 });
+
+declare module "#app" {
+  interface RuntimeNuxtHooks {
+    "auth:loggedIn": (state: boolean) => void;
+  }
+}

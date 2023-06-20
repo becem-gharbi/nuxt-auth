@@ -3,6 +3,7 @@ import {
   addRouteMiddleware,
   useRuntimeConfig,
   useRoute,
+  useNuxtApp,
 } from "#app";
 import common from "./middleware/common.global";
 import auth from "./middleware/auth";
@@ -26,6 +27,8 @@ export default defineNuxtPlugin(async () => {
 
   const accessToken = useAccessToken();
 
+  const nuxtApp = useNuxtApp();
+
   if (
     process.client &&
     route.path !== publicConfig.redirect.callback &&
@@ -35,4 +38,8 @@ export default defineNuxtPlugin(async () => {
   }
 
   await refresh();
+
+  if (accessToken.value) {
+    await nuxtApp.callHook("auth:loggedIn", true);
+  }
 });

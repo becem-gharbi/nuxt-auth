@@ -4,7 +4,7 @@ import useAuthSession from "../composables/useAuthSession";
 /**
  * Handles redirects when hitting `login` and `callback` pages
  */
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   const publicConfig = useRuntimeConfig().public.auth;
 
   if (
