@@ -299,8 +299,6 @@ export default defineEventHandler((event) => {
 For data fetching with Graphql, you can use [nuxt-apollo](https://github.com/nuxt-modules/apollo) module. Add a Nuxt plugin to get into `apollo:auth` hook, get an auto refreshed access token via `getAccessToken` and set the client's token.
 
 ```js
-// plugins/apollo.ts
-
 export default defineNuxtPlugin((nuxtApp) => {
   const { getAccessToken } = useAuthSession();
 
@@ -309,6 +307,19 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     token.value = accessToken || null;
   });
+});
+```
+
+## Hooks
+
+The module provides `auth:loggedIn` hook for implementing custom login on user login and logout events:
+
+```js
+export default defineNuxtPlugin({
+  enforce: "pre", // Should run first (before the built-in plugin)
+  hooks: {
+    "auth:loggedIn": async (loggedIn) => {},
+  },
 });
 ```
 
@@ -323,6 +334,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 - For security reasons, it's recommended to add rate limiting and CORS policy.
 
 - The redirect URI for oauth providers should be
+
 ```bash
 {baseUrl}/api/auth/login/{provider}/callback
 ```

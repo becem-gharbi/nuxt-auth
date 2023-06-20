@@ -11,7 +11,7 @@
   ],
   "publishConfig": {
     "access": "public",
-    "tag": "edge"
+    "tag": "latest"
   },
   "exports": {
     ".": {
