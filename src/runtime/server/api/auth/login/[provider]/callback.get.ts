@@ -67,55 +67,59 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    if (userInfo.email) {
-      let user: User | undefined = undefined;
+    if (!userInfo.name) {
+      throw new Error("name-not-accessible");
+    }
 
-      user = await findUser({ email: userInfo.email });
-
-      if (!user) {
-        if (privateConfig.registration?.enable === false) {
-          throw new Error("registration-disabled");
-        }
-
-        const picture_key = Object.keys(userInfo).find((el) =>
-          [
-            "avatar",
-            "avatar_url",
-            "picture",
-            "picture_url",
-            "photo",
-            "photo_url",
-          ].includes(el)
-        );
-
-        const picture = picture_key ? userInfo[picture_key] : null;
-
-        const newUser = await createUser({
-          email: userInfo.email,
-          name: userInfo.name,
-          provider: provider,
-          picture,
-          verified: true,
-        });
-
-        user = Object.assign(newUser);
-      }
-
-      if (user) {
-        if (user.provider !== provider) {
-          throw new Error(`email-used-with-${user.provider}`);
-        }
-
-        if (user.suspended) {
-          throw new Error("account-suspended");
-        }
-
-        const payload = await createRefreshToken(event, user);
-
-        setRefreshTokenCookie(event, signRefreshToken(payload));
-      }
-    } else {
+    if (!userInfo.email) {
       throw new Error("email-not-accessible");
+    }
+
+    let user: User | undefined = undefined;
+
+    user = await findUser({ email: userInfo.email });
+
+    if (!user) {
+      if (privateConfig.registration?.enable === false) {
+        throw new Error("registration-disabled");
+      }
+
+      const picture_key = Object.keys(userInfo).find((el) =>
+        [
+          "avatar",
+          "avatar_url",
+          "picture",
+          "picture_url",
+          "photo",
+          "photo_url",
+        ].includes(el)
+      );
+
+      const picture = picture_key ? userInfo[picture_key] : null;
+
+      const newUser = await createUser({
+        email: userInfo.email,
+        name: userInfo.name,
+        provider: provider,
+        picture,
+        verified: true,
+      });
+
+      user = Object.assign(newUser);
+    }
+
+    if (user) {
+      if (user.provider !== provider) {
+        throw new Error(`email-used-with-${user.provider}`);
+      }
+
+      if (user.suspended) {
+        throw new Error("account-suspended");
+      }
+
+      const payload = await createRefreshToken(event, user);
+
+      setRefreshTokenCookie(event, signRefreshToken(payload));
     }
 
     await sendRedirect(
