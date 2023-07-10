@@ -19,7 +19,10 @@ export async function handleError(
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
     logger.error("[nuxt-auth] Database connection failed");
-  } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  }
+
+  //
+  else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //Query engine related issues
     if (error.code.startsWith("P2")) {
       h3Error.message = error.message;
@@ -35,17 +38,33 @@ export async function handleError(
       h3Error.message = "Server error";
       h3Error.statusCode = 500;
     }
-  } else if (error instanceof ZodError) {
+  }
+
+  //
+  else if (error instanceof Prisma.PrismaClientValidationError) {
+    h3Error.message = "Validation Error";
+    h3Error.statusCode = 400;
+    logger.error(`[nuxt-auth] ${error.message}`);
+  }
+
+  //
+  else if (error instanceof ZodError) {
     h3Error.message = error.issues[0].path + " | " + error.issues[0].message;
     h3Error.statusCode = 400;
-  } else if (
+  }
+
+  //
+  else if (
     error instanceof jwt.JsonWebTokenError ||
     error instanceof jwt.TokenExpiredError ||
     error.message === "unauthorized"
   ) {
     h3Error.message = "unauthorized";
     h3Error.statusCode = 401;
-  } else {
+  }
+
+  //
+  else {
     h3Error.message = error.message;
     h3Error.statusCode = 400;
   }
