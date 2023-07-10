@@ -1,4 +1,24 @@
 # Changelog
+## v1.4.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.0...v1.4.1)
+
+### 🩹 Fixes
+
+- **oauth:** Check name on oauth user fetch ([ed65013](https://github.com/becem-gharbi/nuxt-auth/commit/ed65013))
+
+### 💅 Refactors
+
+- Remove prisma validation errors from response ([6c197ec](https://github.com/becem-gharbi/nuxt-auth/commit/6c197ec))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([296ceb0](https://github.com/becem-gharbi/nuxt-auth/commit/296ceb0))
+
+### ❤️  Contributors
+
+- Becem Gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v1.4.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.3.5...v1.4.0)
