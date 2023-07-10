@@ -36,11 +36,11 @@
     "release": "npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.5.3",
-    "@prisma/client": "^4.15.0",
+    "@nuxt/kit": "^3.6.2",
+    "@prisma/client": "^4.16.2",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.2",
-    "jsonwebtoken": "^9.0.0",
+    "jsonwebtoken": "^9.0.1",
     "jwt-decode": "^3.1.2",
     "mustache": "^4.2.0",
     "nodemailer": "^6.9.3",
@@ -49,17 +49,17 @@
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.4.0",
-    "@nuxt/schema": "^3.5.3",
+    "@nuxt/schema": "^3.6.2",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mustache": "^4.2.2",
     "@types/nodemailer": "^6.4.8",
     "@types/uuid": "^9.0.2",
-    "changelogen": "^0.5.3",
-    "eslint": "^8.42.0",
-    "nuxt": "^3.5.3",
-    "prisma": "^4.15.0"
+    "changelogen": "^0.5.4",
+    "eslint": "^8.44.0",
+    "nuxt": "^3.6.2",
+    "prisma": "^4.16.2"
   },
   "repository": "https://github.com/becem-gharbi/nuxt-auth.git"
 }
