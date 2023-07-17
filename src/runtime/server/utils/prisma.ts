@@ -1,12 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import Prisma from "@prisma/client";
 import { privateConfig } from "./config";
 
 declare global {
-  var prisma: PrismaClient | undefined;
+  var prisma: Prisma.PrismaClient | undefined;
 }
 
-const prisma: PrismaClient =
-  globalThis.prisma || new PrismaClient(privateConfig.prisma);
+const prisma: Prisma.PrismaClient =
+  globalThis.prisma || new Prisma.PrismaClient(privateConfig.prisma);
 if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
 
 export { prisma };

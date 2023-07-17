@@ -1,7 +1,7 @@
 import { ZodError } from "zod";
 import { createError, H3Error, sendRedirect } from "h3";
 import type { H3Event } from "h3";
-import { Prisma } from "@prisma/client";
+import Prisma from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { logger } from "@nuxt/kit";
 import { withQuery } from "ufo";
@@ -15,14 +15,14 @@ export async function handleError(
 ) {
   const h3Error = new H3Error();
 
-  if (error instanceof Prisma.PrismaClientInitializationError) {
+  if (error instanceof Prisma.Prisma.PrismaClientInitializationError) {
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
     logger.error("[nuxt-auth] Database connection failed");
   }
 
   //
-  else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  else if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
     //Query engine related issues
     if (error.code.startsWith("P2")) {
       h3Error.message = error.message;
@@ -41,7 +41,7 @@ export async function handleError(
   }
 
   //
-  else if (error instanceof Prisma.PrismaClientValidationError) {
+  else if (error instanceof Prisma.Prisma.PrismaClientValidationError) {
     h3Error.message = "Validation Error";
     h3Error.statusCode = 400;
     logger.error(`[nuxt-auth] ${error.message}`);

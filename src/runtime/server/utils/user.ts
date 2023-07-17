@@ -1,5 +1,5 @@
 import { prisma } from "./prisma";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { privateConfig } from "./config";
 import { withQuery } from "ufo";
