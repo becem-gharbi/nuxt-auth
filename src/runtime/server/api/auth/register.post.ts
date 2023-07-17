@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       name,
     });
 
-    return {};
+    return "ok";
   } catch (error) {
     await handleError(error);
   }

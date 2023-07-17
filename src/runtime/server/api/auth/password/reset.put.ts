@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
 
     await deleteManyRefreshTokenByUser(payload.userId);
 
-    return {};
+    return "ok";
   } catch (error) {
     await handleError(error);
   }

@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     await deleteManyRefreshTokenExpired();
 
-    return {};
+    return "ok";
   } catch (error) {
     await handleError(error);
   }

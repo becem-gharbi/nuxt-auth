@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
 
     await deleteRefreshToken(id);
 
-    return {};
+    return "ok";
   } catch (error) {
     await handleError(error);
   }

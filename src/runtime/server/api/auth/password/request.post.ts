@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    return {};
+    return "ok";
   } catch (error) {
     await handleError(error);
   }
