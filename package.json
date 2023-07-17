@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.6.2",
-    "@prisma/client": "^4.16.2",
+    "@prisma/client": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.2",
     "jsonwebtoken": "^9.0.1",
@@ -58,8 +58,8 @@
     "@types/uuid": "^9.0.2",
     "changelogen": "^0.5.4",
     "eslint": "^8.44.0",
-    "nuxt": "^3.6.2",
-    "prisma": "^4.16.2"
+    "nuxt": "^3.6.3",
+    "prisma": "^5.0.0"
   },
   "repository": "https://github.com/becem-gharbi/nuxt-auth.git"
 }
