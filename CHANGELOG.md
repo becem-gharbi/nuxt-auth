@@ -1,4 +1,27 @@
 # Changelog
+## v1.4.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.1...v1.4.2)
+
+### 💅 Refactors
+
+- Return <ok> instead of <{}> on REST success ([d40e227](https://github.com/becem-gharbi/nuxt-auth/commit/d40e227))
+- Use default import from @prisma/client ([28fd331](https://github.com/becem-gharbi/nuxt-auth/commit/28fd331))
+
+### 📖 Documentation
+
+- Replace serverless with edge ([738c1d1](https://github.com/becem-gharbi/nuxt-auth/commit/738c1d1))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([38eb02a](https://github.com/becem-gharbi/nuxt-auth/commit/38eb02a))
+- Create dev package version ([4359929](https://github.com/becem-gharbi/nuxt-auth/commit/4359929))
+- Update package keywords ([b44afe3](https://github.com/becem-gharbi/nuxt-auth/commit/b44afe3))
+
+### ❤️  Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v1.4.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.0...v1.4.1)
