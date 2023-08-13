@@ -5,6 +5,9 @@ import {
   useFetch,
   useAuthSession,
   useAuthFetch,
+  navigateTo,
+  clearNuxtData,
+  useNuxtApp,
 } from "#imports";
 
 import type { User, Provider, PublicConfig } from "../types";
