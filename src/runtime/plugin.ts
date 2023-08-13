@@ -8,7 +8,7 @@ import {
   useAuthSession,
   useNuxtApp,
 } from "#imports";
-import common from "./middleware/common.global";
+import common from "./middleware/common";
 import auth from "./middleware/auth";
 import guest from "./middleware/guest";
 
