@@ -312,7 +312,7 @@ export default defineNuxtPlugin({
 
 ## Hooks
 
-The module provides `auth:loggedIn` hook for implementing custom login on user login and logout events:
+The module provides `auth:loggedIn` hook for implementing custom login on user login and logout events
 
 ```js
 export default defineNuxtPlugin({

@@ -57,7 +57,7 @@ export default defineNuxtModule<ModuleOptions>({
     },
 
     admin: {
-      enable: true,
+      enable: false,
     },
   },
 
