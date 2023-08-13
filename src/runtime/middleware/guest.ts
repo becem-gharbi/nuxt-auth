@@ -1,11 +1,14 @@
-import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
-import useAuthSession from "../composables/useAuthSession";
+import {
+  defineNuxtRouteMiddleware,
+  useRuntimeConfig,
+  navigateTo,
+  useAuthSession,
+} from "#imports";
 
-/**
- * Handles redirect when authorized and hitting an unprotected page
- */
+import type { PublicConfig } from "../types";
+
 export default defineNuxtRouteMiddleware((to) => {
-  const publicConfig = useRuntimeConfig().public.auth;
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
 
   if (
     to.path === publicConfig.redirect.login ||
@@ -14,11 +17,9 @@ export default defineNuxtRouteMiddleware((to) => {
     return;
   }
 
-  const { useAccessToken } = useAuthSession();
+  const { useUser } = useAuthSession();
 
-  const accessToken = useAccessToken();
-
-  if (accessToken.value) {
+  if (useUser().value) {
     return navigateTo(publicConfig.redirect.home);
   }
 });

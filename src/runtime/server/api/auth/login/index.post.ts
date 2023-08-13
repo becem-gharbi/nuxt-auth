@@ -51,9 +51,7 @@ export default defineEventHandler(async (event) => {
 
     const accessToken = createAccessToken(user, sessionId);
 
-    delete user.password;
-
-    return { accessToken, user };
+    return { accessToken };
   } catch (error) {
     await handleError(error);
   }

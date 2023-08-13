@@ -1,17 +1,23 @@
-import type { User, Provider } from "../types";
+import { resolveURL, withQuery } from "ufo";
+import {
+  useRuntimeConfig,
+  useRoute,
+  useFetch,
+  useAuthSession,
+  useAuthFetch,
+} from "#imports";
+
+import type { User, Provider, PublicConfig } from "../types";
 import type { AsyncData } from "#app";
 import type { FetchError } from "ofetch";
 import type { H3Error } from "h3";
-import { resolveURL, withQuery } from "ufo";
-import useAuthFetch from "./useAuthFetch";
-import { useRuntimeConfig, useRoute, useFetch } from "#app";
-import useAuthSession from "./useAuthSession";
 
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
   const { useUser } = useAuthSession();
-  const publicConfig = useRuntimeConfig().public.auth;
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
+  const { accessToken, loggedIn } = useAuthSession();
 
   /**
    * Login with email/password
@@ -19,7 +25,36 @@ export default function () {
   async function login(credentials: {
     email: string;
     password: string;
-  }): FetchReturn<{ accessToken: string; user: User }> {}
+  }): FetchReturn<{ accessToken: string }> {
+    const route = useRoute();
+    const { callHook } = useNuxtApp();
+
+    return useFetch("/api/auth/login", {
+      method: "POST",
+      credentials: "include",
+      body: {
+        email: credentials.email,
+        password: credentials.password,
+      },
+    }).then(async (res) => {
+      if (!res.error.value && res.data.value) {
+        const returnToPath = route.query.redirect?.toString();
+        const redirectTo = returnToPath || publicConfig.redirect.home;
+
+        accessToken.set(res.data.value.accessToken);
+        loggedIn.set(true);
+
+        // A workaround to insure access token cookie is set
+        setTimeout(async () => {
+          await fetchUser();
+          await callHook("auth:loggedIn", true);
+          await navigateTo(redirectTo);
+        }, 100);
+      }
+
+      return res;
+    });
+  }
 
   /**
    * Login via oauth provider
@@ -47,7 +82,23 @@ export default function () {
     user.value = await useAuthFetch<User>("/api/auth/me");
   }
 
-  async function logout(): Promise<void> {}
+  async function logout(): Promise<void> {
+    const { callHook } = useNuxtApp();
+
+    await callHook("auth:loggedIn", false);
+
+    await $fetch("/api/auth/logout", {
+      baseURL: publicConfig.baseUrl,
+      method: "POST",
+      credentials: "include",
+    }).finally(async () => {
+      accessToken.clear();
+      loggedIn.set(false);
+      useUser().value = null;
+      clearNuxtData();
+      await navigateTo(publicConfig.redirect.logout);
+    });
+  }
 
   async function register(userInfo: {
     email: string;

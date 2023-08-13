@@ -1,25 +1,25 @@
-import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from "#app";
-import useAuthSession from "../composables/useAuthSession";
+import {
+  defineNuxtRouteMiddleware,
+  useRuntimeConfig,
+  navigateTo,
+  useAuthSession,
+} from "#imports";
 
-/**
- * Handles redirects when hitting `login` and `callback` pages
- */
+import type { PublicConfig } from "../types";
+
 export default defineNuxtRouteMiddleware((to, from) => {
-  const publicConfig = useRuntimeConfig().public.auth;
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
 
   if (
     to.path === publicConfig.redirect.login ||
     to.path === publicConfig.redirect.callback
   ) {
-    const { useAccessToken } = useAuthSession();
+    const { useUser } = useAuthSession();
 
-    const accessToken = useAccessToken();
-
-    if (accessToken.value) {
-      // The protected page the user has visited before redirect to login page
+    if (useUser().value) {
       const returnToPath = from.query.redirect?.toString();
-
-      return navigateTo(returnToPath || publicConfig.redirect.home);
+      const redirectTo = returnToPath || publicConfig.redirect.home;
+      return navigateTo(redirectTo);
     }
   }
 });
