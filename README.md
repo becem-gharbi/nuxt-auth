@@ -93,7 +93,7 @@ export default defineNuxtConfig({
       emailVerify: "", // Path to redirect to after email verification
     },
     admin: {
-      enable: true, // Enable admin API
+      enable: false, // Enable admin API
     }
   },.
 });
