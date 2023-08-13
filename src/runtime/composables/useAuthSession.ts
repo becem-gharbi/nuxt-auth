@@ -30,12 +30,12 @@ export default function () {
   const privateConfig = useRuntimeConfig().auth as PrivateConfig;
   const baseURL = publicConfig.baseUrl;
   const refreshPath = "/api/auth/session/refresh";
-  const accessTokenCookieName = "access_token";
+  const accessTokenCookieName = "auth_access_token";
   const refreshTokenCookieName =
-    privateConfig?.refreshToken.cookieName || "refresh_token";
+    privateConfig?.refreshToken.cookieName || "auth_refresh_token";
   const msRefreshBeforeExpires = 3000;
   const logoutRedirectPath = publicConfig.redirect.logout;
-  const loggedInName = "logged_in";
+  const loggedInName = "auth_logged_in";
 
   const accessToken = {
     get: () =>
