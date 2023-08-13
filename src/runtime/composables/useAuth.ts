@@ -4,20 +4,13 @@ import type { FetchError } from "ofetch";
 import type { H3Error } from "h3";
 import { resolveURL, withQuery } from "ufo";
 import useAuthFetch from "./useAuthFetch";
-import {
-  useRuntimeConfig,
-  useRoute,
-  navigateTo,
-  useFetch,
-  clearNuxtData,
-  useNuxtApp,
-} from "#app";
+import { useRuntimeConfig, useRoute, useFetch } from "#app";
 import useAuthSession from "./useAuthSession";
 
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
-  const { useAccessToken, useUser } = useAuthSession();
+  const { useUser } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth;
 
   /**
@@ -26,36 +19,7 @@ export default function () {
   async function login(credentials: {
     email: string;
     password: string;
-  }): FetchReturn<{ accessToken: string; user: User }> {
-    const route = useRoute();
-    const nuxtApp = useNuxtApp();
-
-    // The protected page the user has visited before redirect to login page
-    const returnToPath = route.query.redirect?.toString();
-
-    return useFetch("/api/auth/login", {
-      method: "POST",
-      credentials: "include",
-      body: {
-        email: credentials.email,
-        password: credentials.password,
-      },
-    }).then(async (res) => {
-      if (!res.error.value) {
-        const user = useUser();
-        const accessToken = useAccessToken();
-
-        user.value = res.data.value?.user;
-        accessToken.value = res.data.value?.accessToken;
-
-        await nuxtApp.callHook("auth:loggedIn", true);
-
-        await navigateTo(returnToPath || publicConfig.redirect.home);
-      }
-
-      return res;
-    });
-  }
+  }): FetchReturn<{ accessToken: string; user: User }> {}
 
   /**
    * Login via oauth provider
@@ -83,26 +47,7 @@ export default function () {
     user.value = await useAuthFetch<User>("/api/auth/me");
   }
 
-  async function logout(): Promise<void> {
-    const user = useUser();
-    const accessToken = useAccessToken();
-
-    user.value = null;
-    accessToken.value = null;
-
-    clearNuxtData();
-
-    const nuxtApp = useNuxtApp();
-
-    await nuxtApp.callHook("auth:loggedIn", false);
-
-    await navigateTo(publicConfig.redirect.logout);
-
-    await $fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    }).catch((e) => {});
-  }
+  async function logout(): Promise<void> {}
 
   async function register(userInfo: {
     email: string;
