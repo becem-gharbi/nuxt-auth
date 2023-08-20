@@ -82,7 +82,11 @@ export default function () {
    */
   async function fetchUser(): Promise<void> {
     const user = useUser();
-    user.value = await useAuthFetch<User>("/api/auth/me");
+    try {
+      user.value = await useAuthFetch<User>("/api/auth/me");
+    } catch (e) {
+      user.value = null;
+    }
   }
 
   async function logout(): Promise<void> {
