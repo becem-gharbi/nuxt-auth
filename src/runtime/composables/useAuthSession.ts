@@ -86,6 +86,7 @@ export default function () {
 
   async function refresh() {
     const isRefreshOn = useState("auth-refresh-loading", () => false);
+    const user = useUser();
 
     if (isRefreshOn.value) {
       return;
@@ -124,8 +125,10 @@ export default function () {
         isRefreshOn.value = false;
         accessToken.clear();
         loggedIn.set(false);
-        useUser().value = null;
-        await navigateTo(logoutRedirectPath);
+        user.value = null;
+        if (process.client) {
+          await navigateTo(logoutRedirectPath);
+        }
       });
   }
 
