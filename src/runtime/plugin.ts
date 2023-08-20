@@ -63,6 +63,6 @@ export default defineNuxtPlugin(async () => {
       loggedIn.set(false);
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 });
