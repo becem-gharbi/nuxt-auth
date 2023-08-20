@@ -1,4 +1,34 @@
 # Changelog
+## v1.4.4
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.2...v1.4.4)
+
+### 🩹 Fixes
+
+- **useAuthFetch:** Remove logout when access token not found ([a96e471](https://github.com/becem-gharbi/nuxt-auth/commit/a96e471))
+- Reset user state on fetchUser fail ([83f3130](https://github.com/becem-gharbi/nuxt-auth/commit/83f3130))
+- Fix nuxt instance not available on SSR ([fa336cb](https://github.com/becem-gharbi/nuxt-auth/commit/fa336cb))
+
+### 💅 Refactors
+
+- Implement same session handling from nuxt-directus ([961670c](https://github.com/becem-gharbi/nuxt-auth/commit/961670c))
+
+### 📖 Documentation
+
+- Update Readme ([f661642](https://github.com/becem-gharbi/nuxt-auth/commit/f661642))
+
+### 🏡 Chore
+
+- Remove client-side session handling code ([93e69b8](https://github.com/becem-gharbi/nuxt-auth/commit/93e69b8))
+- Disable admin API by default ([fab901a](https://github.com/becem-gharbi/nuxt-auth/commit/fab901a))
+- Rename middleware common.global to common ([8732ff1](https://github.com/becem-gharbi/nuxt-auth/commit/8732ff1))
+- **release:** V1.4.3 ([a398950](https://github.com/becem-gharbi/nuxt-auth/commit/a398950))
+- Use console.error to log errors ([8bfd0ef](https://github.com/becem-gharbi/nuxt-auth/commit/8bfd0ef))
+
+### ❤️  Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v1.4.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.2...v1.4.3)
