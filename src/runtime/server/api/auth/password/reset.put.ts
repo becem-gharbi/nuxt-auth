@@ -4,11 +4,13 @@ import {
   verifyResetPasswordToken,
   changePassword,
   handleError,
-  privateConfig,
+  getConfig,
 } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
     const { password, token } = await readBody(event);
 
@@ -16,12 +18,12 @@ export default defineEventHandler(async (event) => {
       token: z.string(),
       password: z
         .string()
-        .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
+        .regex(RegExp(config.private.registration?.passwordValidationRegex)),
     });
 
     schema.parse({ password, token });
 
-    const payload = verifyResetPasswordToken(token);
+    const payload = verifyResetPasswordToken(event, token);
 
     await changePassword(event, payload.userId, password);
 

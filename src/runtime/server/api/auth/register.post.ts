@@ -1,8 +1,10 @@
 import { defineEventHandler, readBody } from "h3";
-import { createUser, findUser, handleError, privateConfig } from "#auth";
+import { createUser, findUser, handleError, getConfig } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
     const { email, password, name } = await readBody(event);
 
@@ -11,12 +13,12 @@ export default defineEventHandler(async (event) => {
       email: z.string().email(),
       password: z
         .string()
-        .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
+        .regex(RegExp(config.private.registration?.passwordValidationRegex)),
     });
 
     schema.parse({ email, password, name });
 
-    if (privateConfig.registration?.enable === false) {
+    if (config.private.registration?.enable === false) {
       throw new Error("registration-disabled");
     }
 

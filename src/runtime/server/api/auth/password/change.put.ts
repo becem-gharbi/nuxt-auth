@@ -7,11 +7,13 @@ import {
   findUser,
   verifyPassword,
   handleError,
-  privateConfig,
+  getConfig,
 } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
     const { currentPassword, newPassword } = await readBody(event);
 
@@ -19,7 +21,7 @@ export default defineEventHandler(async (event) => {
       currentPassword: z.string(),
       newPassword: z
         .string()
-        .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
+        .regex(RegExp(config.private.registration?.passwordValidationRegex)),
     });
 
     schema.parse({ currentPassword, newPassword });
@@ -30,7 +32,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = verifyAccessToken(event, accessToken);
 
     const user = await findUser(event, { id: payload.userId });
 

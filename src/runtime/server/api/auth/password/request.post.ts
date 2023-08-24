@@ -3,8 +3,7 @@ import {
   sendMail,
   createResetPasswordToken,
   findUser,
-  publicConfig,
-  privateConfig,
+  getConfig,
   handleError,
 } from "#auth";
 import Mustache from "mustache";
@@ -12,12 +11,14 @@ import { resolveURL, withQuery } from "ufo";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
-    if (!publicConfig.redirect.passwordReset) {
+    if (!config.public.redirect.passwordReset) {
       throw new Error("Please make sure to set passwordReset redirect path");
     }
 
-    if (!privateConfig.smtp) {
+    if (!config.private.smtp) {
       throw new Error("Please make sure to configure smtp option");
     }
 
@@ -32,26 +33,26 @@ export default defineEventHandler(async (event) => {
     const user = await findUser(event, { email: email });
 
     if (user && user.provider === "default") {
-      const resetPasswordToken = createResetPasswordToken({
+      const resetPasswordToken = createResetPasswordToken(event, {
         userId: user.id,
       });
 
       const redirectUrl = resolveURL(
-        publicConfig.baseUrl,
-        publicConfig.redirect.passwordReset
+        config.public.baseUrl,
+        config.public.redirect.passwordReset
       );
       const link = withQuery(redirectUrl, { token: resetPasswordToken });
 
-      await sendMail({
+      await sendMail(event, {
         to: user.email,
         subject: "Password Reset",
         html: Mustache.render(
-          privateConfig.emailTemplates?.passwordReset || passwordResetTemplate,
+          config.private.emailTemplates?.passwordReset || passwordResetTemplate,
           {
             ...user,
             link,
             validityInMinutes: Math.round(
-              privateConfig.accessToken.maxAge / 60
+              config.private.accessToken.maxAge / 60
             ),
           }
         ),

@@ -7,11 +7,13 @@ import {
   findUser,
   verifyPassword,
   handleError,
-  privateConfig,
+  getConfig,
   signRefreshToken,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
     const { email, password } = await readBody(event);
 
@@ -34,7 +36,7 @@ export default defineEventHandler(async (event) => {
 
     if (
       !user.verified &&
-      privateConfig.registration?.requireEmailVerification
+      config.private.registration?.requireEmailVerification
     ) {
       throw new Error("account-not-verified");
     }
@@ -45,11 +47,11 @@ export default defineEventHandler(async (event) => {
 
     const payload = await createRefreshToken(event, user);
 
-    setRefreshTokenCookie(event, signRefreshToken(payload));
+    setRefreshTokenCookie(event, signRefreshToken(event, payload));
 
     const sessionId = payload.id;
 
-    const accessToken = createAccessToken(user, sessionId);
+    const accessToken = createAccessToken(event, user, sessionId);
 
     return { accessToken };
   } catch (error) {

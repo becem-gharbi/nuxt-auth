@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = verifyAccessToken(event, accessToken);
 
     await deleteManyRefreshTokenByUser(event, payload.userId);
 

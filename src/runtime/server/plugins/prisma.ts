@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { defineNitroPlugin } from "#imports";
-import { privateConfig } from "#auth";
+import { getConfig } from "#auth";
 
 export default defineNitroPlugin((nitroApp) => {
-  const prisma = new PrismaClient(privateConfig.prisma);
+  const config = getConfig();
+  const prisma = new PrismaClient(config.private.prisma);
 
   nitroApp.hooks.hook("request", (event) => {
     event.context.prisma = prisma;

@@ -1,22 +1,32 @@
 import jwt from "jsonwebtoken";
-import { privateConfig } from "../config";
+import { getConfig } from "../config";
 import type { ResetPasswordPayload } from "../../../types";
+import type { H3Event } from "h3";
 
-export function createResetPasswordToken(payload: ResetPasswordPayload) {
+export function createResetPasswordToken(
+  event: H3Event,
+  payload: ResetPasswordPayload
+) {
+  const config = getConfig(event);
   const resetPasswordToken = jwt.sign(
     payload,
-    privateConfig.accessToken.jwtSecret + "reset-password",
+    config.private.accessToken.jwtSecret + "reset-password",
     {
-      expiresIn: privateConfig.accessToken.maxAge,
+      expiresIn: config.private.accessToken.maxAge,
     }
   );
   return resetPasswordToken;
 }
 
-export function verifyResetPasswordToken(resetPasswordToken: string) {
+export function verifyResetPasswordToken(
+  event: H3Event,
+  resetPasswordToken: string
+) {
+  const config = getConfig(event);
+
   const payload = jwt.verify(
     resetPasswordToken,
-    privateConfig.accessToken.jwtSecret + "reset-password"
+    config.private.accessToken.jwtSecret + "reset-password"
   ) as ResetPasswordPayload;
   return payload;
 }

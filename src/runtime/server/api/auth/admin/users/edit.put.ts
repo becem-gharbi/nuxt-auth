@@ -4,12 +4,14 @@ import {
   verifyAccessToken,
   editUser,
   handleError,
-  privateConfig,
+  getConfig,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
-    if (!privateConfig.admin?.enable) {
+    if (!config.private.admin?.enable) {
       throw new Error("Admin API is disabled");
     }
 
@@ -21,7 +23,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = verifyAccessToken(event, accessToken);
 
     if (payload.userRole !== "admin") {
       throw new Error("unauthorized");

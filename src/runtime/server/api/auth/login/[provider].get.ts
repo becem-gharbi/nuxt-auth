@@ -1,11 +1,12 @@
 import { defineEventHandler, sendRedirect, getQuery } from "h3";
-import { privateConfig, publicConfig, handleError } from "#auth";
+import { getConfig, handleError } from "#auth";
 import { resolveURL, withQuery } from "ufo";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
   const provider = event.context.params!.provider;
 
-  if (!privateConfig.oauth || !privateConfig.oauth[provider]) {
+  if (!config.private.oauth || !config.private.oauth[provider]) {
     throw new Error("oauth-not-configured");
   }
 
@@ -14,19 +15,19 @@ export default defineEventHandler(async (event) => {
 
   try {
     const redirectUri = resolveURL(
-      publicConfig.baseUrl,
+      config.public.baseUrl,
       "/api/auth/login",
       provider,
       "callback"
     );
 
     const authorizationUrl = withQuery(
-      privateConfig.oauth[provider].authorizeUrl,
+      config.private.oauth[provider].authorizeUrl,
       {
         response_type: "code",
-        scope: privateConfig.oauth[provider].scopes,
+        scope: config.private.oauth[provider].scopes,
         redirect_uri: redirectUri,
-        client_id: privateConfig.oauth[provider].clientId,
+        client_id: config.private.oauth[provider].clientId,
         state: returnToPath,
       }
     );

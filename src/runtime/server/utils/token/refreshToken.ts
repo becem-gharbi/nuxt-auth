@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
-import { privateConfig } from "../config";
+import { getConfig } from "../config";
 import type { RefreshTokenPayload, User, RefreshToken } from "../../../types";
 import type { PrismaClient } from "@prisma/client";
 import type { H3Event } from "h3";
@@ -28,9 +28,10 @@ export async function createRefreshToken(event: H3Event, user: User) {
   return payload;
 }
 
-export function signRefreshToken(payload: RefreshTokenPayload) {
-  return jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
-    expiresIn: privateConfig.refreshToken.maxAge,
+export function signRefreshToken(event: H3Event, payload: RefreshTokenPayload) {
+  const config = getConfig(event);
+  return jwt.sign(payload, config.private.refreshToken.jwtSecret, {
+    expiresIn: config.private.refreshToken.maxAge,
   });
 }
 
@@ -55,24 +56,35 @@ export async function updateRefreshToken(
     userId: refreshTokenEntity.userId,
   };
 
-  const refreshToken = jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
-    expiresIn: privateConfig.refreshToken.maxAge,
-  });
+  const config = getConfig(event);
+
+  const refreshToken = jwt.sign(
+    payload,
+    config.private.refreshToken.jwtSecret,
+    {
+      expiresIn: config.private.refreshToken.maxAge,
+    }
+  );
 
   return refreshToken;
 }
 
 export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
-  setCookie(event, privateConfig.refreshToken.cookieName!, refreshToken, {
+  const config = getConfig(event);
+  setCookie(event, config.private.refreshToken.cookieName!, refreshToken, {
     httpOnly: true,
     secure: true,
-    maxAge: privateConfig.refreshToken.maxAge,
+    maxAge: config.private.refreshToken.maxAge,
     sameSite: "lax",
   });
 }
 
 export function getRefreshTokenFromCookie(event: H3Event) {
-  const refreshToken = getCookie(event, privateConfig.refreshToken.cookieName!);
+  const config = getConfig(event);
+  const refreshToken = getCookie(
+    event,
+    config.private.refreshToken.cookieName!
+  );
   return refreshToken;
 }
 
@@ -91,10 +103,11 @@ export async function findRefreshTokenById(
 }
 
 export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
+  const config = getConfig(event);
   //check if the refreshToken is issued by the auth server && if it's not expired
   const payload = jwt.verify(
     refreshToken,
-    privateConfig.refreshToken.jwtSecret
+    config.private.refreshToken.jwtSecret
   ) as RefreshTokenPayload;
 
   const refreshTokenEntity = await findRefreshTokenById(event, payload.id);
@@ -139,9 +152,10 @@ export async function findManyRefreshTokenByUser(
   event: H3Event,
   userId: User["id"]
 ) {
+  const config = getConfig(event);
   const now = new Date();
   const minDate = new Date(
-    now.getTime() - privateConfig.refreshToken.maxAge! * 1000
+    now.getTime() - config.private.refreshToken.maxAge! * 1000
   );
 
   const prisma = event.context.prisma as PrismaClient;
@@ -167,13 +181,15 @@ export async function findManyRefreshTokenByUser(
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {
-  deleteCookie(event, privateConfig.refreshToken.cookieName!);
+  const config = getConfig(event);
+  deleteCookie(event, config.private.refreshToken.cookieName!);
 }
 
 export async function deleteManyRefreshTokenExpired(event: H3Event) {
+  const config = getConfig(event);
   const now = new Date();
   const minDate = new Date(
-    now.getTime() - privateConfig.refreshToken.maxAge! * 1000
+    now.getTime() - config.private.refreshToken.maxAge! * 1000
   );
 
   const prisma = event.context.prisma as PrismaClient;

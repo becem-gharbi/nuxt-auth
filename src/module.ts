@@ -253,6 +253,10 @@ export default defineNuxtModule<ModuleOptions>({
             runtimeDir,
             "server/utils"
           )}').handleError`,
+          `  const getConfig: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').getConfig`,
           "}",
         ].join("\n"),
     });

@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { privateConfig } from "./config";
+import { getConfig } from "./config";
 import { withQuery } from "ufo";
 import type { User } from "../../types";
 import type { H3Event } from "h3";
@@ -25,13 +25,14 @@ export async function createUser(
     ? bcrypt.hashSync(input.password, 12)
     : undefined;
 
+  const config = getConfig(event);
   const prisma = event.context.prisma as PrismaClient;
 
   const user = await prisma.user.create({
     data: {
       ...input,
       password: hashedPassword,
-      role: privateConfig.registration?.defaultRole || "user",
+      role: config.private.registration?.defaultRole || "user",
       provider: input.provider || "default",
       picture:
         input.picture ||

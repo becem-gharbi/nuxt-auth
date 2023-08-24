@@ -3,8 +3,7 @@ import {
   sendMail,
   createEmailVerifyToken,
   findUser,
-  publicConfig,
-  privateConfig,
+  getConfig,
   handleError,
 } from "#auth";
 import Mustache from "mustache";
@@ -12,12 +11,14 @@ import { resolveURL, withQuery } from "ufo";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig(event);
+
   try {
-    if (!publicConfig.redirect.emailVerify) {
+    if (!config.public.redirect.emailVerify) {
       throw new Error("Please make sure to set emailVerify redirect path");
     }
 
-    if (!privateConfig.smtp) {
+    if (!config.private.smtp) {
       throw new Error("Please make sure to configure smtp option");
     }
 
@@ -29,30 +30,30 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email });
 
-    const user = await findUser({ email: email });
+    const user = await findUser(event, { email: email });
 
     if (user && !user.verified) {
-      const emailVerifyToken = createEmailVerifyToken({
+      const emailVerifyToken = createEmailVerifyToken(event, {
         userId: user.id,
       });
 
       const redirectUrl = resolveURL(
-        publicConfig.baseUrl,
+        config.public.baseUrl,
         "/api/auth/email/verify"
       );
 
       const link = withQuery(redirectUrl, { token: emailVerifyToken });
 
-      await sendMail({
+      await sendMail(event, {
         to: user.email,
         subject: "Email verification",
         html: Mustache.render(
-          privateConfig.emailTemplates?.emailVerify || emailVerifyTemplate,
+          config.private.emailTemplates?.emailVerify || emailVerifyTemplate,
           {
             ...user,
             link,
             validityInMinutes: Math.round(
-              privateConfig.accessToken.maxAge / 60
+              config.private.accessToken.maxAge / 60
             ),
           }
         ),

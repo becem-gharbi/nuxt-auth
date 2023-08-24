@@ -1,29 +1,32 @@
 import nodemailer from "nodemailer";
 import type { MailMessage } from "../../types";
-import { privateConfig } from "./config";
+import { getConfig } from "./config";
+import type { H3Event } from "h3";
 
-export function sendMail(msg: MailMessage) {
-  if (!privateConfig.smtp) {
+export function sendMail(event: H3Event, msg: MailMessage) {
+  const config = getConfig(event);
+
+  if (!config.private.smtp) {
     throw new Error("Please make sure to configure smtp option");
   }
 
   let transporter = nodemailer.createTransport({
-    host: privateConfig.smtp.host,
-    port: privateConfig.smtp.port,
+    host: config.private.smtp.host,
+    port: config.private.smtp.port,
     auth: {
-      user: privateConfig.smtp.user,
-      pass: privateConfig.smtp.pass,
+      user: config.private.smtp.user,
+      pass: config.private.smtp.pass,
     },
   });
 
   return new Promise((resolve, reject) => {
-    if (!privateConfig.smtp) {
+    if (!config.private.smtp) {
       throw new Error("Please make sure to configure smtp option");
     }
 
     transporter.sendMail(
       {
-        from: privateConfig.smtp.from,
+        from: config.private.smtp.from,
         to: msg.to,
         subject: msg.subject,
         html: msg.html,

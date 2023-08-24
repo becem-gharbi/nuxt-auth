@@ -1,12 +1,18 @@
 import jwt from "jsonwebtoken";
 import { getRequestHeader } from "h3";
 import type { H3Event } from "h3";
-import { privateConfig } from "../config";
+import { getConfig } from "../config";
 import type { AccessTokenPayload, User, Session } from "../../../types";
 import Mustache from "mustache";
 
-export function createAccessToken(user: User, sessionId: Session["id"]) {
-  let customClaims = privateConfig.accessToken.customClaims || {};
+export function createAccessToken(
+  event: H3Event,
+  user: User,
+  sessionId: Session["id"]
+) {
+  const config = getConfig(event);
+
+  let customClaims = config.private.accessToken.customClaims || {};
 
   if (customClaims) {
     const output = Mustache.render(JSON.stringify(customClaims), user);
@@ -20,8 +26,8 @@ export function createAccessToken(user: User, sessionId: Session["id"]) {
     ...customClaims,
   };
 
-  const accessToken = jwt.sign(payload, privateConfig.accessToken.jwtSecret, {
-    expiresIn: privateConfig.accessToken.maxAge,
+  const accessToken = jwt.sign(payload, config.private.accessToken.jwtSecret, {
+    expiresIn: config.private.accessToken.maxAge,
   });
 
   return accessToken;
@@ -45,10 +51,12 @@ export function getAccessTokenFromHeader(event: H3Event) {
  * @param accessToken
  * @returns accessTokenPayload
  */
-export function verifyAccessToken(accessToken: string) {
+export function verifyAccessToken(event: H3Event, accessToken: string) {
+  const config = getConfig(event);
+
   const payload = jwt.verify(
     accessToken,
-    privateConfig.accessToken.jwtSecret
+    config.private.accessToken.jwtSecret
   ) as AccessTokenPayload;
   return payload;
 }
