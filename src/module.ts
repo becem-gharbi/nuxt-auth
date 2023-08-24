@@ -11,7 +11,7 @@ import {
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import { defu } from "defu";
-import { isProduction } from "std-env";
+import { isDevelopment } from "std-env";
 import type { PublicConfig, PrivateConfig } from "./runtime/types";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
@@ -117,7 +117,7 @@ export default defineNuxtModule<ModuleOptions>({
     const preset = nuxt.options.nitro.preset as string;
     const isEdge = supportedEdges.includes(preset);
 
-    if (preset && isEdge && isProduction) {
+    if (preset && isEdge && !isDevelopment) {
       logger.info(`[${name}] Detected edge environment <${preset}>`);
       const prisma = resolve(runtimeDir, "server/plugins/prisma.edge");
       addServerPlugin(prisma);
