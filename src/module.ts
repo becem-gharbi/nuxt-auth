@@ -133,23 +133,27 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/login/index.post"),
     });
 
-    addServerHandler({
-      route: "/api/auth/login/:provider",
-      handler: resolve(runtimeDir, "server/api/auth/login/[provider].get"),
-    });
+    if (options.oauth) {
+      addServerHandler({
+        route: "/api/auth/login/:provider",
+        handler: resolve(runtimeDir, "server/api/auth/login/[provider].get"),
+      });
 
-    addServerHandler({
-      route: "/api/auth/login/:provider/callback",
-      handler: resolve(
-        runtimeDir,
-        "server/api/auth/login/[provider]/callback.get"
-      ),
-    });
+      addServerHandler({
+        route: "/api/auth/login/:provider/callback",
+        handler: resolve(
+          runtimeDir,
+          "server/api/auth/login/[provider]/callback.get"
+        ),
+      });
+    }
 
-    addServerHandler({
-      route: "/api/auth/register",
-      handler: resolve(runtimeDir, "server/api/auth/register.post"),
-    });
+    if (options.registration.enable) {
+      addServerHandler({
+        route: "/api/auth/register",
+        handler: resolve(runtimeDir, "server/api/auth/register.post"),
+      });
+    }
 
     addServerHandler({
       route: "/api/auth/me",
@@ -161,29 +165,31 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/logout.post"),
     });
 
-    addServerHandler({
-      route: "/api/auth/password/request",
-      handler: resolve(runtimeDir, "server/api/auth/password/request.post"),
-    });
+    if (options.smtp) {
+      addServerHandler({
+        route: "/api/auth/password/request",
+        handler: resolve(runtimeDir, "server/api/auth/password/request.post"),
+      });
 
-    addServerHandler({
-      route: "/api/auth/password/reset",
-      handler: resolve(runtimeDir, "server/api/auth/password/reset.put"),
-    });
+      addServerHandler({
+        route: "/api/auth/email/request",
+        handler: resolve(runtimeDir, "server/api/auth/email/request.post"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/email/verify",
+        handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/password/reset",
+        handler: resolve(runtimeDir, "server/api/auth/password/reset.put"),
+      });
+    }
 
     addServerHandler({
       route: "/api/auth/password/change",
       handler: resolve(runtimeDir, "server/api/auth/password/change.put"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/email/request",
-      handler: resolve(runtimeDir, "server/api/auth/email/request.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/email/verify",
-      handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
     });
 
     addServerHandler({
@@ -209,28 +215,32 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/session/index.get"),
     });
 
-    addServerHandler({
-      route: "/api/auth/session/revoke/expired",
-      handler: resolve(
-        runtimeDir,
-        "server/api/auth/session/revoke/expired.delete"
-      ),
-    });
+    if (options.webhookKey) {
+      addServerHandler({
+        route: "/api/auth/session/revoke/expired",
+        handler: resolve(
+          runtimeDir,
+          "server/api/auth/session/revoke/expired.delete"
+        ),
+      });
+    }
 
-    addServerHandler({
-      route: "/api/auth/admin/users/list",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),
-    });
+    if (options.admin.enable) {
+      addServerHandler({
+        route: "/api/auth/admin/users/list",
+        handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),
+      });
 
-    addServerHandler({
-      route: "/api/auth/admin/users/edit",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
-    });
+      addServerHandler({
+        route: "/api/auth/admin/users/edit",
+        handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
+      });
 
-    addServerHandler({
-      route: "/api/auth/admin/users/count",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
-    });
+      addServerHandler({
+        route: "/api/auth/admin/users/count",
+        handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
+      });
+    }
 
     //Create virtual imports for server-side
     nuxt.hook("nitro:config", (nitroConfig) => {
