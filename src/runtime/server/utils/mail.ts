@@ -1,5 +1,5 @@
 import { createTransport } from "nodemailer";
-import { getConfig } from "./config";
+import { getConfig } from "#auth";
 import type { H3Event } from "h3";
 import type { MailMessage } from "../../types";
 

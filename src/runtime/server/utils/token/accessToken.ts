@@ -1,6 +1,6 @@
 import { sign, verify } from "jsonwebtoken";
 import { getRequestHeader } from "h3";
-import { getConfig } from "../config";
+import { getConfig } from "#auth";
 import mustache from "mustache";
 import type { H3Event } from "h3";
 import type { AccessTokenPayload, User, Session } from "../../../types";

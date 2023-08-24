@@ -1,5 +1,5 @@
 import { sign, verify } from "jsonwebtoken";
-import { getConfig } from "../config";
+import { getConfig } from "#auth";
 import type { EmailVerifyPayload } from "../../../types";
 import type { H3Event } from "h3";
 

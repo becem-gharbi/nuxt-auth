@@ -1,7 +1,7 @@
 import { sign, verify } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
-import { getConfig } from "../config";
+import { getConfig } from "#auth";
 import type { RefreshTokenPayload, User, RefreshToken } from "../../../types";
 import type { PrismaClient } from "@prisma/client";
 import type { H3Event } from "h3";

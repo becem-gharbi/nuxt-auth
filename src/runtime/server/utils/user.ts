@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 import { hashSync, compareSync } from "bcryptjs";
-import { getConfig } from "./config";
+import { getConfig } from "#auth";
 import { withQuery } from "ufo";
 import type { User } from "../../types";
 import type { H3Event } from "h3";
