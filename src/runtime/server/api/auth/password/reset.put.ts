@@ -1,10 +1,10 @@
 import { defineEventHandler, readBody } from "h3";
 import {
+  getConfig,
   deleteManyRefreshTokenByUser,
   verifyResetPasswordToken,
   changePassword,
   handleError,
-  getConfig,
 } from "#auth";
 import { z } from "zod";
 

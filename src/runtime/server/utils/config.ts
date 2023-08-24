@@ -1,4 +1,3 @@
-//@ts-ignore
 import { useRuntimeConfig } from "#imports";
 import type { PrivateConfig, PublicConfig } from "../../types";
 import type { H3Event } from "h3";

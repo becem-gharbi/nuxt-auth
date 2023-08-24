@@ -1,5 +1,5 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { hashSync, compareSync } from "bcryptjs";
 import { getConfig } from "./config";
 import { withQuery } from "ufo";
 import type { User } from "../../types";
@@ -22,7 +22,7 @@ export async function createUser(
   input: Prisma.UserCreateInput
 ) {
   const hashedPassword = input.password
-    ? bcrypt.hashSync(input.password, 12)
+    ? hashSync(input.password, 12)
     : undefined;
 
   const config = getConfig(event);
@@ -51,7 +51,7 @@ export async function changePassword(
   userId: User["id"],
   password: string
 ) {
-  const hashedPassword = bcrypt.hashSync(password, 12);
+  const hashedPassword = hashSync(password, 12);
 
   const prisma = event.context.prisma as PrismaClient;
 
@@ -79,7 +79,7 @@ export async function setUserEmailVerified(event: H3Event, userId: User["id"]) {
 }
 
 export function verifyPassword(password: string, hashedPassword: string) {
-  return bcrypt.compareSync(password, hashedPassword);
+  return compareSync(password, hashedPassword);
 }
 
 export async function findUsers(event: H3Event, args: Prisma.UserFindManyArgs) {

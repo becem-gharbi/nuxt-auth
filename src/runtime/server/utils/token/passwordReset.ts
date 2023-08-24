@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { getConfig } from "../config";
 import type { ResetPasswordPayload } from "../../../types";
 import type { H3Event } from "h3";
@@ -8,7 +8,7 @@ export function createResetPasswordToken(
   payload: ResetPasswordPayload
 ) {
   const config = getConfig(event);
-  const resetPasswordToken = jwt.sign(
+  const resetPasswordToken = sign(
     payload,
     config.private.accessToken.jwtSecret + "reset-password",
     {
@@ -24,7 +24,7 @@ export function verifyResetPasswordToken(
 ) {
   const config = getConfig(event);
 
-  const payload = jwt.verify(
+  const payload = verify(
     resetPasswordToken,
     config.private.accessToken.jwtSecret + "reset-password"
   ) as ResetPasswordPayload;

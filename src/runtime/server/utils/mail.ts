@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer";
-import type { MailMessage } from "../../types";
+import { createTransport } from "nodemailer";
 import { getConfig } from "./config";
 import type { H3Event } from "h3";
+import type { MailMessage } from "../../types";
 
 export function sendMail(event: H3Event, msg: MailMessage) {
   const config = getConfig(event);
@@ -10,7 +10,7 @@ export function sendMail(event: H3Event, msg: MailMessage) {
     throw new Error("Please make sure to configure smtp option");
   }
 
-  let transporter = nodemailer.createTransport({
+  let transporter = createTransport({
     host: config.private.smtp.host,
     port: config.private.smtp.port,
     auth: {

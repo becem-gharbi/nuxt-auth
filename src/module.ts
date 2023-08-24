@@ -1,6 +1,4 @@
 import { fileURLToPath } from "url";
-import type { PublicConfig, PrivateConfig } from "./runtime/types";
-
 import {
   defineNuxtModule,
   addPlugin,
@@ -14,6 +12,7 @@ import {
 import { name, version } from "../package.json";
 import { defu } from "defu";
 import { isProduction } from "std-env";
+import type { PublicConfig, PrivateConfig } from "./runtime/types";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
@@ -98,12 +97,12 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn(`[${name}] Please make sure to set smtp`);
     }
 
+    //Transpile CJS dependencies
+    nuxt.options.build.transpile.push("bcryptjs", "jsonwebtoken");
+
     //Get the runtime directory
     const { resolve } = createResolver(import.meta.url);
     const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
-
-    //Transpile the runtime directory
-    nuxt.options.build.transpile.push(runtimeDir);
 
     //Add vue plugins
     const plugin = resolve(runtimeDir, "plugin");
@@ -148,7 +147,7 @@ export default defineNuxtModule<ModuleOptions>({
       });
     }
 
-    if (options.registration.enable) {
+    if (options.registration.enable === true) {
       addServerHandler({
         route: "/api/auth/register",
         handler: resolve(runtimeDir, "server/api/auth/register.post"),
@@ -225,7 +224,7 @@ export default defineNuxtModule<ModuleOptions>({
       });
     }
 
-    if (options.admin.enable) {
+    if (options.admin.enable === true) {
       addServerHandler({
         route: "/api/auth/admin/users/list",
         handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),

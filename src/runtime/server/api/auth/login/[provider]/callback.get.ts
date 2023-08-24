@@ -2,16 +2,16 @@ import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { z } from "zod";
 import { $fetch } from "ofetch";
 import {
+  getConfig,
   createRefreshToken,
   setRefreshTokenCookie,
   createUser,
   findUser,
   handleError,
   signRefreshToken,
-  getConfig,
 } from "#auth";
 import { resolveURL, withQuery } from "ufo";
-import { User } from "../../../../../types";
+import type { User } from "../../../../../types";
 
 export default defineEventHandler(async (event) => {
   const config = getConfig(event);

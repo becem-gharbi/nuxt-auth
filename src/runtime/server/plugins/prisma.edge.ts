@@ -1,6 +1,6 @@
+import { getConfig } from "#auth";
 import { PrismaClient } from "@prisma/client/edge";
 import { defineNitroPlugin } from "#imports";
-import { getConfig } from "#auth";
 
 export default defineNitroPlugin((nitroApp) => {
   const config = getConfig();

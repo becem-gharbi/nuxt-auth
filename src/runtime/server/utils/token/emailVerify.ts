@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { getConfig } from "../config";
 import type { EmailVerifyPayload } from "../../../types";
 import type { H3Event } from "h3";
@@ -9,7 +9,7 @@ export function createEmailVerifyToken(
 ) {
   const config = getConfig(event);
 
-  const emailVerifyToken = jwt.sign(
+  const emailVerifyToken = sign(
     payload,
     config.private.accessToken.jwtSecret + "email-verify",
     {
@@ -25,7 +25,7 @@ export function verifyEmailVerifyToken(
 ) {
   const config = getConfig(event);
 
-  const payload = jwt.verify(
+  const payload = verify(
     emailVerifyToken,
     config.private.accessToken.jwtSecret + "email-verify"
   ) as EmailVerifyPayload;

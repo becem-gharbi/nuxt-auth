@@ -1,13 +1,13 @@
 import { defineEventHandler, readBody } from "h3";
 import { z } from "zod";
 import {
+  getConfig,
   createRefreshToken,
   setRefreshTokenCookie,
   createAccessToken,
   findUser,
   verifyPassword,
   handleError,
-  getConfig,
   signRefreshToken,
 } from "#auth";
 

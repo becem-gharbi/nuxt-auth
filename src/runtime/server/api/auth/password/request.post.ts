@@ -1,12 +1,12 @@
 import { defineEventHandler, readBody } from "h3";
 import {
+  getConfig,
   sendMail,
   createResetPasswordToken,
   findUser,
-  getConfig,
   handleError,
 } from "#auth";
-import Mustache from "mustache";
+import mustache from "mustache";
 import { resolveURL, withQuery } from "ufo";
 import { z } from "zod";
 
@@ -55,10 +55,6 @@ export default defineEventHandler(async (event) => {
       throw new Error("Please make sure to set passwordReset redirect path");
     }
 
-    if (!config.private.smtp) {
-      throw new Error("Please make sure to configure smtp option");
-    }
-
     const { email } = await readBody(event);
 
     const schema = z.object({
@@ -83,7 +79,7 @@ export default defineEventHandler(async (event) => {
       await sendMail(event, {
         to: user.email,
         subject: "Password Reset",
-        html: Mustache.render(
+        html: mustache.render(
           config.private.emailTemplates?.passwordReset || passwordResetTemplate,
           {
             ...user,

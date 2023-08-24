@@ -4,17 +4,10 @@ import {
   verifyAccessToken,
   countUsers,
   handleError,
-  getConfig,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
-
   try {
-    if (!config.private.admin?.enable) {
-      throw new Error("Admin API is disabled");
-    }
-
     const args = await readBody(event);
 
     const accessToken = getAccessTokenFromHeader(event);

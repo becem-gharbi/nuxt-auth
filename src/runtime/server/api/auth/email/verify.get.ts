@@ -1,8 +1,8 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import {
+  getConfig,
   verifyEmailVerifyToken,
   setUserEmailVerified,
-  getConfig,
   handleError,
 } from "#auth";
 import { z } from "zod";

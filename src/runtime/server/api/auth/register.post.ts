@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody } from "h3";
-import { createUser, findUser, handleError, getConfig } from "#auth";
+import { getConfig, createUser, findUser, handleError } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
@@ -17,10 +17,6 @@ export default defineEventHandler(async (event) => {
     });
 
     schema.parse({ email, password, name });
-
-    if (config.private.registration?.enable === false) {
-      throw new Error("registration-disabled");
-    }
 
     const user = await findUser(event, { email: email });
 

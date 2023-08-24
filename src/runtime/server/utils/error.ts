@@ -1,10 +1,10 @@
 import { ZodError } from "zod";
 import { createError, H3Error, sendRedirect } from "h3";
-import type { H3Event } from "h3";
-import Prisma from "@prisma/client";
-import jwt from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { logger } from "@nuxt/kit";
 import { withQuery } from "ufo";
+import { Prisma } from "@prisma/client";
+import type { H3Event } from "h3";
 
 /**
  * Checks error type and set status code accordingly
@@ -13,16 +13,16 @@ export async function handleError(
   error: any,
   redirect?: { event: H3Event; url: string }
 ) {
-  const h3Error = new H3Error();
+  const h3Error = new H3Error("");
 
-  if (error instanceof Prisma.Prisma.PrismaClientInitializationError) {
+  if (error instanceof Prisma.PrismaClientInitializationError) {
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
     logger.error("[nuxt-auth] Database connection failed");
   }
 
   //
-  else if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
+  else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //Query engine related issues
     if (error.code.startsWith("P2")) {
       h3Error.message = error.message;
@@ -41,7 +41,7 @@ export async function handleError(
   }
 
   //
-  else if (error instanceof Prisma.Prisma.PrismaClientValidationError) {
+  else if (error instanceof Prisma.PrismaClientValidationError) {
     h3Error.message = "Validation Error";
     h3Error.statusCode = 400;
     logger.error(`[nuxt-auth] ${error.message}`);
@@ -55,8 +55,8 @@ export async function handleError(
 
   //
   else if (
-    error instanceof jwt.JsonWebTokenError ||
-    error instanceof jwt.TokenExpiredError ||
+    error instanceof JsonWebTokenError ||
+    error instanceof TokenExpiredError ||
     error.message === "unauthorized"
   ) {
     h3Error.message = "unauthorized";
