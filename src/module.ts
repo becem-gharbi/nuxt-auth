@@ -13,7 +13,7 @@ import {
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import { defu } from "defu";
-import { isWorkerd } from "std-env";
+import { isProduction } from "std-env";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
@@ -114,14 +114,15 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(composables);
 
     //Add server plugins
-    const isEdge = isWorkerd;
+    const supportedEdges = ["cloudflare-pages", "netlify-edge", "vercel-edge"];
+    const preset = nuxt.options.nitro.preset as string;
+    const isEdge = supportedEdges.includes(preset);
 
-    if (isEdge) {
-      console.log(`[${name}] Detected Edge Environment`);
-      const prismaEdge = resolve(runtimeDir, "server/plugins/prisma.edge");
-      addServerPlugin(prismaEdge);
+    if (preset && isEdge && isProduction) {
+      logger.info(`[${name}] Detected edge environment <${preset}>`);
+      const prisma = resolve(runtimeDir, "server/plugins/prisma.edge");
+      addServerPlugin(prisma);
     } else {
-      console.log(`[${name}] Detected Non-Edge Environment`);
       const prisma = resolve(runtimeDir, "server/plugins/prisma");
       addServerPlugin(prisma);
     }

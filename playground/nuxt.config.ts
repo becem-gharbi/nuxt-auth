@@ -4,6 +4,10 @@ import myModule from "..";
 export default defineNuxtConfig({
   ssr: true,
 
+  nitro: {
+    preset: process.env.NITRO_PRESET,
+  },
+
   app: {
     head: {
       title: "Nuxt Auth",
