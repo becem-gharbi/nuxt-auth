@@ -112,6 +112,52 @@ export default defineNuxtModule<ModuleOptions>({
     const composables = resolve(runtimeDir, "composables");
     addImportsDir(composables);
 
+    //Add server utils
+    nuxt.options.nitro = defu(
+      {
+        alias: {
+          "#auth": resolve("./runtime/server/utils"),
+        },
+      },
+      nuxt.options.nitro
+    );
+
+    addTemplate({
+      filename: "types/auth.d.ts",
+      getContents: () =>
+        [
+          "declare module '#auth' {",
+          `  const verifyAccessToken: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').verifyAccessToken`,
+          `  const getAccessTokenFromHeader: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').getAccessTokenFromHeader`,
+          `  const sendMail: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').sendMail`,
+          `  const handleError: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').handleError`,
+          `  const getConfig: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').getConfig`,
+          "}",
+        ].join("\n"),
+    });
+
+    // Register module types
+    nuxt.hook("prepare:types", (options) => {
+      options.references.push({
+        path: resolve(nuxt.options.buildDir, "types/auth.d.ts"),
+      });
+    });
+
     //Add server plugins
     const supportedEdges = ["cloudflare-pages", "netlify-edge", "vercel-edge"];
     const preset = nuxt.options.nitro.preset as string;
@@ -240,56 +286,6 @@ export default defineNuxtModule<ModuleOptions>({
         handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
       });
     }
-
-    //Create virtual imports for server-side
-    nuxt.hook("nitro:config", (nitroConfig) => {
-      nitroConfig.alias = nitroConfig.alias || {};
-
-      // Inline module runtime in Nitro bundle
-      nitroConfig.externals = defu(
-        typeof nitroConfig.externals === "object" ? nitroConfig.externals : {},
-        {
-          inline: [resolve(runtimeDir)],
-        }
-      );
-      nitroConfig.alias["#auth"] = resolve(runtimeDir, "server/utils");
-    });
-
-    addTemplate({
-      filename: "types/auth.d.ts",
-      getContents: () =>
-        [
-          "declare module '#auth' {",
-          `  const verifyAccessToken: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').verifyAccessToken`,
-          `  const getAccessTokenFromHeader: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').getAccessTokenFromHeader`,
-          `  const sendMail: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').sendMail`,
-          `  const handleError: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').handleError`,
-          `  const getConfig: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').getConfig`,
-          "}",
-        ].join("\n"),
-    });
-
-    // Register module types
-    nuxt.hook("prepare:types", (options) => {
-      options.references.push({
-        path: resolve(nuxt.options.buildDir, "types/auth.d.ts"),
-      });
-    });
 
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
