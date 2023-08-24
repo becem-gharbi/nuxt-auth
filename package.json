@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "1.4.8-edge",
+  "version": "1.4.9-edge",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -62,7 +62,8 @@
     "changelogen": "^0.5.5",
     "eslint": "^8.47.0",
     "nuxt": "^3.6.5",
-    "prisma": "^5.2.0"
+    "prisma": "^5.2.0",
+    "unenv": "^1.7.1"
   },
   "repository": "https://github.com/becem-gharbi/nuxt-auth.git"
 }

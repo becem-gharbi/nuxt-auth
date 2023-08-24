@@ -1,4 +1,5 @@
-import { defineEventHandler, readBody } from "h3";
+import { defineEventHandler } from "#imports";
+import { readBody } from "h3";
 import { z } from "zod";
 import {
   getConfig,
@@ -16,12 +17,10 @@ export default defineEventHandler(async (event) => {
 
   try {
     const { email, password } = await readBody(event);
-
     const schema = z.object({
       email: z.string().email(),
       password: z.string(),
     });
-
     schema.parse({ email, password });
 
     const user = await findUser(event, { email });
@@ -46,11 +45,9 @@ export default defineEventHandler(async (event) => {
     }
 
     const payload = await createRefreshToken(event, user);
-
-    setRefreshTokenCookie(event, signRefreshToken(event, payload));
-
+    const refreshToken = signRefreshToken(event, payload);
+    setRefreshTokenCookie(event, refreshToken);
     const sessionId = payload.id;
-
     const accessToken = createAccessToken(event, user, sessionId);
 
     return { accessToken };

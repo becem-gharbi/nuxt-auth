@@ -1,7 +1,6 @@
 import { ZodError } from "zod";
 import { createError, H3Error, sendRedirect } from "h3";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import { logger } from "@nuxt/kit";
 import { withQuery } from "ufo";
 import { Prisma } from "@prisma/client";
 import type { H3Event } from "h3";
@@ -18,7 +17,7 @@ export async function handleError(
   if (error instanceof Prisma.PrismaClientInitializationError) {
     h3Error.message = "Server error";
     h3Error.statusCode = 500;
-    logger.error("[nuxt-auth] Database connection failed");
+    console.error("[nuxt-auth] Database connection failed");
   }
 
   //
@@ -28,7 +27,7 @@ export async function handleError(
       h3Error.message = error.message;
       h3Error.statusCode = 400;
       if (["P2021", "P2022"].includes(error.code)) {
-        logger.error(
+        console.error(
           "[nuxt-auth] Table or column not defined. Please make sure to run prisma migration"
         );
       }
@@ -44,7 +43,7 @@ export async function handleError(
   else if (error instanceof Prisma.PrismaClientValidationError) {
     h3Error.message = "Validation Error";
     h3Error.statusCode = 400;
-    logger.error(`[nuxt-auth] ${error.message}`);
+    console.error(`[nuxt-auth] ${error.message}`);
   }
 
   //
