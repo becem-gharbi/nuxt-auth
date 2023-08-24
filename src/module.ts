@@ -97,6 +97,46 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn(`[${name}] Please make sure to set smtp`);
     }
 
+    //Initialize the module options
+    nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
+      app: {},
+
+      auth: {
+        accessToken: options.accessToken,
+
+        refreshToken: options.refreshToken,
+
+        emailTemplates: options.emailTemplates,
+
+        oauth: options.oauth,
+
+        smtp: options.smtp,
+
+        prisma: options.prisma,
+
+        registration: options.registration,
+
+        webhookKey: options.webhookKey,
+
+        admin: options.admin,
+      },
+
+      public: {
+        auth: {
+          baseUrl: options.baseUrl,
+          enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
+          redirect: {
+            login: options.redirect.login,
+            logout: options.redirect.logout,
+            home: options.redirect.home,
+            callback: options.redirect.callback,
+            passwordReset: options.redirect.passwordReset,
+            emailVerify: options.redirect.emailVerify,
+          },
+        },
+      },
+    });
+
     //Transpile CJS dependencies
     nuxt.options.build.transpile.push("bcryptjs", "jsonwebtoken");
 
@@ -286,46 +326,6 @@ export default defineNuxtModule<ModuleOptions>({
         handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
       });
     }
-
-    //Initialize the module options
-    nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
-      app: {},
-
-      auth: {
-        accessToken: options.accessToken,
-
-        refreshToken: options.refreshToken,
-
-        emailTemplates: options.emailTemplates,
-
-        oauth: options.oauth,
-
-        smtp: options.smtp,
-
-        prisma: options.prisma,
-
-        registration: options.registration,
-
-        webhookKey: options.webhookKey,
-
-        admin: options.admin,
-      },
-
-      public: {
-        auth: {
-          baseUrl: options.baseUrl,
-          enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
-          redirect: {
-            login: options.redirect.login,
-            logout: options.redirect.logout,
-            home: options.redirect.home,
-            callback: options.redirect.callback,
-            passwordReset: options.redirect.passwordReset,
-            emailVerify: options.redirect.emailVerify,
-          },
-        },
-      },
-    });
   },
 });
 
