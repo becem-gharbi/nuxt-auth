@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { getConfig } from "#auth";
+import { getConfig } from "./config";
 import type { H3Event } from "h3";
 import type { MailMessage } from "../../types";
 

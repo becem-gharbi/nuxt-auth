@@ -54,13 +54,13 @@ export default defineNuxtConfig({
       },
     },
 
-    smtp: {
-      host: process.env.AUTH_SMTP_HOST || "",
-      port: parseInt(process.env.AUTH_SMTP_PORT!),
-      user: process.env.AUTH_SMTP_USER || "",
-      pass: process.env.AUTH_SMTP_PASS || "",
-      from: process.env.AUTH_SMTP_FROM || "",
-    },
+    // smtp: {
+    //   host: process.env.AUTH_SMTP_HOST || "",
+    //   port: parseInt(process.env.AUTH_SMTP_PORT!),
+    //   user: process.env.AUTH_SMTP_USER || "",
+    //   pass: process.env.AUTH_SMTP_PASS || "",
+    //   from: process.env.AUTH_SMTP_FROM || "",
+    // },
 
     registration: {
       defaultRole: "user",
