@@ -114,10 +114,17 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(composables);
 
     //Add server plugins
-    const prisma = resolve(runtimeDir, "server/plugins/prisma");
-    const prismaEdge = resolve(runtimeDir, "server/plugins/prisma.edge");
     const isEdge = isWorkerd;
-    addServerPlugin(isEdge ? prismaEdge : prisma);
+
+    if (isEdge) {
+      console.log(`[${name}] Detected Edge Environment`);
+      const prismaEdge = resolve(runtimeDir, "server/plugins/prisma.edge");
+      addServerPlugin(prismaEdge);
+    } else {
+      console.log(`[${name}] Detected Non-Edge Environment`);
+      const prisma = resolve(runtimeDir, "server/plugins/prisma");
+      addServerPlugin(prisma);
+    }
 
     //Add server routes
     addServerHandler({
