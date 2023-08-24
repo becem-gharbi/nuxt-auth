@@ -13,6 +13,7 @@ import {
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import { defu } from "defu";
+import { isWorkerd } from "std-env";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
@@ -104,14 +105,19 @@ export default defineNuxtModule<ModuleOptions>({
     //Transpile the runtime directory
     nuxt.options.build.transpile.push(runtimeDir);
 
-    //Add plugins
+    //Add vue plugins
     const plugin = resolve(runtimeDir, "plugin");
     addPlugin(plugin);
-    addServerPlugin(resolve(runtimeDir, "server/plugins/prisma"));
 
     //Add composables directory
     const composables = resolve(runtimeDir, "composables");
     addImportsDir(composables);
+
+    //Add server plugins
+    const prisma = resolve(runtimeDir, "server/plugins/prisma");
+    const prismaEdge = resolve(runtimeDir, "server/plugins/prisma.edge");
+    const isEdge = isWorkerd;
+    addServerPlugin(isEdge ? prismaEdge : prisma);
 
     //Add server routes
     addServerHandler({
