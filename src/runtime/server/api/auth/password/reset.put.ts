@@ -23,9 +23,9 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyResetPasswordToken(token);
 
-    await changePassword(payload.userId, password);
+    await changePassword(event, payload.userId, password);
 
-    await deleteManyRefreshTokenByUser(payload.userId);
+    await deleteManyRefreshTokenByUser(event, payload.userId);
 
     return "ok";
   } catch (error) {

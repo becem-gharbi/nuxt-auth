@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyAccessToken(accessToken);
 
-    await deleteManyRefreshTokenByUser(payload.userId);
+    await deleteManyRefreshTokenByUser(event, payload.userId);
 
     return "ok";
   } catch (error) {

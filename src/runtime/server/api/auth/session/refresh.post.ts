@@ -14,9 +14,9 @@ export default defineEventHandler(async (event) => {
   try {
     const refreshToken = getRefreshTokenFromCookie(event);
 
-    const payload = await verifyRefreshToken(refreshToken);
+    const payload = await verifyRefreshToken(event, refreshToken);
 
-    const user = await findUser({ id: payload.userId });
+    const user = await findUser(event, { id: payload.userId });
 
     if (!user) {
       throw new Error("unauthorized");
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("account-suspended");
     }
 
-    const newRefreshToken = await updateRefreshToken(payload.id);
+    const newRefreshToken = await updateRefreshToken(event, payload.id);
 
     setRefreshTokenCookie(event, newRefreshToken);
 

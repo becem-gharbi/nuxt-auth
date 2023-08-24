@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email, password });
 
-    const user = await findUser({ email });
+    const user = await findUser(event, { email });
 
     if (
       !user ||

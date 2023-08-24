@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = verifyAccessToken(accessToken);
 
-    const user = await findUser({ id: payload.userId });
+    const user = await findUser(event, { id: payload.userId });
 
     if (
       !user ||
@@ -42,9 +42,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("wrong-password");
     }
 
-    await changePassword(user.id, newPassword);
+    await changePassword(event, user.id, newPassword);
 
-    await deleteManyRefreshTokenByUser(payload.userId);
+    await deleteManyRefreshTokenByUser(event, payload.userId);
 
     return "ok";
   } catch (error) {

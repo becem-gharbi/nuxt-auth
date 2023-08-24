@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    await deleteManyRefreshTokenExpired();
+    await deleteManyRefreshTokenExpired(event);
 
     return "ok";
   } catch (error) {

@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const users = await findUsers(args);
+    const users = await findUsers(event, args);
 
     return users.map((user) => {
       const { password, ...sanitizedUser } = user;

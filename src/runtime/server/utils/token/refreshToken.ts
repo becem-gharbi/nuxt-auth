@@ -1,12 +1,14 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
-import type { H3Event } from "h3";
-import { prisma } from "../prisma";
 import { privateConfig } from "../config";
 import type { RefreshTokenPayload, User, RefreshToken } from "../../../types";
+import type { PrismaClient } from "@prisma/client";
+import type { H3Event } from "h3";
 
 export async function createRefreshToken(event: H3Event, user: User) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const userAgent = getHeader(event, "user-agent");
 
   const refreshTokenEntity = await prisma.refreshToken.create({
@@ -32,7 +34,12 @@ export function signRefreshToken(payload: RefreshTokenPayload) {
   });
 }
 
-export async function updateRefreshToken(refreshTokenId: RefreshToken["id"]) {
+export async function updateRefreshToken(
+  event: H3Event,
+  refreshTokenId: RefreshToken["id"]
+) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const refreshTokenEntity = await prisma.refreshToken.update({
     where: {
       id: refreshTokenId,
@@ -69,7 +76,12 @@ export function getRefreshTokenFromCookie(event: H3Event) {
   return refreshToken;
 }
 
-export async function findRefreshTokenById(id: RefreshToken["id"]) {
+export async function findRefreshTokenById(
+  event: H3Event,
+  id: RefreshToken["id"]
+) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const refreshTokenEntity = await prisma.refreshToken.findUnique({
     where: {
       id,
@@ -78,14 +90,14 @@ export async function findRefreshTokenById(id: RefreshToken["id"]) {
   return refreshTokenEntity;
 }
 
-export async function verifyRefreshToken(refreshToken: string) {
+export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   //check if the refreshToken is issued by the auth server && if it's not expired
   const payload = jwt.verify(
     refreshToken,
     privateConfig.refreshToken.jwtSecret
   ) as RefreshTokenPayload;
 
-  const refreshTokenEntity = await findRefreshTokenById(payload.id);
+  const refreshTokenEntity = await findRefreshTokenById(event, payload.id);
 
   if (
     !refreshTokenEntity || //check if the refresh token is revoked (deleted from database)
@@ -97,7 +109,12 @@ export async function verifyRefreshToken(refreshToken: string) {
   return payload;
 }
 
-export async function deleteRefreshToken(refreshTokenId: RefreshToken["id"]) {
+export async function deleteRefreshToken(
+  event: H3Event,
+  refreshTokenId: RefreshToken["id"]
+) {
+  const prisma = event.context.prisma as PrismaClient;
+
   await prisma.refreshToken.delete({
     where: {
       id: refreshTokenId,
@@ -105,7 +122,12 @@ export async function deleteRefreshToken(refreshTokenId: RefreshToken["id"]) {
   });
 }
 
-export async function deleteManyRefreshTokenByUser(userId: User["id"]) {
+export async function deleteManyRefreshTokenByUser(
+  event: H3Event,
+  userId: User["id"]
+) {
+  const prisma = event.context.prisma as PrismaClient;
+
   await prisma.refreshToken.deleteMany({
     where: {
       userId,
@@ -113,11 +135,16 @@ export async function deleteManyRefreshTokenByUser(userId: User["id"]) {
   });
 }
 
-export async function findManyRefreshTokenByUser(userId: User["id"]) {
+export async function findManyRefreshTokenByUser(
+  event: H3Event,
+  userId: User["id"]
+) {
   const now = new Date();
   const minDate = new Date(
     now.getTime() - privateConfig.refreshToken.maxAge! * 1000
   );
+
+  const prisma = event.context.prisma as PrismaClient;
 
   const refreshTokens = await prisma.refreshToken.findMany({
     where: {
@@ -143,11 +170,13 @@ export function deleteRefreshTokenCookie(event: H3Event) {
   deleteCookie(event, privateConfig.refreshToken.cookieName!);
 }
 
-export async function deleteManyRefreshTokenExpired() {
+export async function deleteManyRefreshTokenExpired(event: H3Event) {
   const now = new Date();
   const minDate = new Date(
     now.getTime() - privateConfig.refreshToken.maxAge! * 1000
   );
+
+  const prisma = event.context.prisma as PrismaClient;
 
   await prisma.refreshToken.deleteMany({
     where: {

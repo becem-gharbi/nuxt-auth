@@ -1,21 +1,31 @@
-import { prisma } from "./prisma";
-import type { Prisma } from "@prisma/client";
+import type { Prisma, PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { privateConfig } from "./config";
 import { withQuery } from "ufo";
 import type { User } from "../../types";
+import type { H3Event } from "h3";
 
-export async function findUser(where: Prisma.UserWhereUniqueInput) {
+export async function findUser(
+  event: H3Event,
+  where: Prisma.UserWhereUniqueInput
+) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const user = await prisma.user.findUnique({
     where,
   });
   return user;
 }
 
-export async function createUser(input: Prisma.UserCreateInput) {
+export async function createUser(
+  event: H3Event,
+  input: Prisma.UserCreateInput
+) {
   const hashedPassword = input.password
     ? bcrypt.hashSync(input.password, 12)
     : undefined;
+
+  const prisma = event.context.prisma as PrismaClient;
 
   const user = await prisma.user.create({
     data: {
@@ -35,8 +45,14 @@ export async function createUser(input: Prisma.UserCreateInput) {
   return user;
 }
 
-export async function changePassword(userId: User["id"], password: string) {
+export async function changePassword(
+  event: H3Event,
+  userId: User["id"],
+  password: string
+) {
   const hashedPassword = bcrypt.hashSync(password, 12);
+
+  const prisma = event.context.prisma as PrismaClient;
 
   await prisma.user.update({
     where: {
@@ -48,7 +64,9 @@ export async function changePassword(userId: User["id"], password: string) {
   });
 }
 
-export async function setUserEmailVerified(userId: User["id"]) {
+export async function setUserEmailVerified(event: H3Event, userId: User["id"]) {
+  const prisma = event.context.prisma as PrismaClient;
+
   await prisma.user.update({
     where: {
       id: userId,
@@ -63,15 +81,20 @@ export function verifyPassword(password: string, hashedPassword: string) {
   return bcrypt.compareSync(password, hashedPassword);
 }
 
-export async function findUsers(args: Prisma.UserFindManyArgs) {
+export async function findUsers(event: H3Event, args: Prisma.UserFindManyArgs) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const users = await prisma.user.findMany(args);
   return users;
 }
 
 export async function editUser(
+  event: H3Event,
   userId: User["id"],
   data: Prisma.UserUpdateInput
 ) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const user = await prisma.user.update({
     where: {
       id: userId,
@@ -82,7 +105,9 @@ export async function editUser(
   return user;
 }
 
-export async function countUsers(args: Prisma.UserCountArgs) {
+export async function countUsers(event: H3Event, args: Prisma.UserCountArgs) {
+  const prisma = event.context.prisma as PrismaClient;
+
   const count = await prisma.user.count(args);
   return count;
 }

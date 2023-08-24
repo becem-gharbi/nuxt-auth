@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
     const accessTokenPayload = verifyAccessToken(accessToken);
 
     const refreshTokens = await findManyRefreshTokenByUser(
+      event,
       accessTokenPayload.userId
     );
 

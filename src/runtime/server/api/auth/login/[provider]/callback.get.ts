@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
 
     let user: User | undefined = undefined;
 
-    user = await findUser({ email: userInfo.email });
+    user = await findUser(event, { email: userInfo.email });
 
     if (!user) {
       if (privateConfig.registration?.enable === false) {
@@ -97,7 +97,7 @@ export default defineEventHandler(async (event) => {
 
       const picture = picture_key ? userInfo[picture_key] : null;
 
-      const newUser = await createUser({
+      const newUser = await createUser(event, {
         email: userInfo.email,
         name: userInfo.name,
         provider: provider,

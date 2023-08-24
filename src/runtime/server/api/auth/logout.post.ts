@@ -11,9 +11,9 @@ export default defineEventHandler(async (event) => {
   try {
     const refreshToken = getRefreshTokenFromCookie(event);
 
-    const payload = await verifyRefreshToken(refreshToken);
+    const payload = await verifyRefreshToken(event, refreshToken);
 
-    await deleteRefreshToken(payload.id);
+    await deleteRefreshToken(event, payload.id);
 
     deleteRefreshTokenCookie(event);
 

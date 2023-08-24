@@ -20,13 +20,13 @@ export default defineEventHandler(async (event) => {
       throw new Error("registration-disabled");
     }
 
-    const user = await findUser({ email: email });
+    const user = await findUser(event, { email: email });
 
     if (user) {
       throw new Error(`email-used-with-${user.provider}`);
     }
 
-    await createUser({
+    await createUser(event, {
       email,
       password,
       name,

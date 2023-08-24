@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const count = await countUsers(args);
+    const count = await countUsers(event, args);
 
     return count;
   } catch (error) {

@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const user = await editUser(id, data);
+    const user = await editUser(event, id, data);
 
     const { password, ...sanitizedUser } = user;
 

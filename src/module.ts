@@ -9,6 +9,7 @@ import {
   addServerHandler,
   addTemplate,
   logger,
+  addServerPlugin,
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import { defu } from "defu";
@@ -59,6 +60,8 @@ export default defineNuxtModule<ModuleOptions>({
     admin: {
       enable: false,
     },
+
+    prisma: {},
   },
 
   setup(options, nuxt) {
@@ -104,6 +107,7 @@ export default defineNuxtModule<ModuleOptions>({
     //Add plugins
     const plugin = resolve(runtimeDir, "plugin");
     addPlugin(plugin);
+    addServerPlugin(resolve(runtimeDir, "server/plugins/prisma"));
 
     //Add composables directory
     const composables = resolve(runtimeDir, "composables");
@@ -249,10 +253,6 @@ export default defineNuxtModule<ModuleOptions>({
             runtimeDir,
             "server/utils"
           )}').handleError`,
-          `  const prisma: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').prisma`,
           "}",
         ].join("\n"),
     });

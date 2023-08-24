@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email });
 
-    const user = await findUser({ email: email });
+    const user = await findUser(event, { email: email });
 
     if (user && user.provider === "default") {
       const resetPasswordToken = createResetPasswordToken({
