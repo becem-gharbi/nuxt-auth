@@ -55,6 +55,7 @@ export default defineNuxtModule<ModuleOptions>({
       enable: true,
       defaultRole: "user",
       requireEmailVerification: true,
+      passwordValidationRegex: "",
     },
 
     admin: {

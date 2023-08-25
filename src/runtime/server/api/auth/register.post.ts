@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       email: z.string().email(),
       password: z
         .string()
-        .regex(RegExp(config.private.registration?.passwordValidationRegex)),
+        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
     });
 
     schema.parse({ email, password, name });

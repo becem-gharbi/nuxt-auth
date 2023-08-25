@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
       currentPassword: z.string(),
       newPassword: z
         .string()
-        .regex(RegExp(config.private.registration?.passwordValidationRegex)),
+        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
     });
 
     schema.parse({ currentPassword, newPassword });

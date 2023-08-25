@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       token: z.string(),
       password: z
         .string()
-        .regex(RegExp(config.private.registration?.passwordValidationRegex)),
+        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
     });
 
     schema.parse({ password, token });
