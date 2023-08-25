@@ -139,7 +139,7 @@ export default defineNuxtModule<ModuleOptions>({
     });
 
     //Transpile CJS dependencies
-    nuxt.options.build.transpile.push("bcryptjs", "jsonwebtoken");
+    nuxt.options.build.transpile.push("bcryptjs", "jwt-simple");
 
     //Get the runtime directory
     const { resolve } = createResolver(import.meta.url);

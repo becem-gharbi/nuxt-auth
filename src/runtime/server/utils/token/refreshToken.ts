@@ -1,4 +1,4 @@
-import { sign, verify } from "jsonwebtoken";
+import { encode, decode } from "jwt-simple";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
 import { getConfig } from "#auth";
@@ -30,8 +30,10 @@ export async function createRefreshToken(event: H3Event, user: User) {
 
 export function signRefreshToken(event: H3Event, payload: RefreshTokenPayload) {
   const config = getConfig(event);
-  return sign(payload, config.private.refreshToken.jwtSecret, {
-    expiresIn: config.private.refreshToken.maxAge,
+  return encode(payload, config.private.refreshToken.jwtSecret, "HS256", {
+    header: {
+      expiresIn: config.private.refreshToken.maxAge,
+    },
   });
 }
 
@@ -58,9 +60,16 @@ export async function updateRefreshToken(
 
   const config = getConfig(event);
 
-  const refreshToken = sign(payload, config.private.refreshToken.jwtSecret, {
-    expiresIn: config.private.refreshToken.maxAge,
-  });
+  const refreshToken = encode(
+    payload,
+    config.private.refreshToken.jwtSecret,
+    "HS256",
+    {
+      header: {
+        expiresIn: config.private.refreshToken.maxAge,
+      },
+    }
+  );
 
   return refreshToken;
 }
@@ -101,7 +110,7 @@ export async function findRefreshTokenById(
 export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   const config = getConfig(event);
   //check if the refreshToken is issued by the auth server && if it's not expired
-  const payload = verify(
+  const payload = decode(
     refreshToken,
     config.private.refreshToken.jwtSecret
   ) as RefreshTokenPayload;

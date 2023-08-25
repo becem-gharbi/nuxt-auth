@@ -1,6 +1,6 @@
 import { ZodError } from "zod";
 import { createError, H3Error, sendRedirect } from "h3";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+// import { JsonWebTokenError, TokenExpiredError } from "jwt-simple";
 import { withQuery } from "ufo";
 import { Prisma } from "@prisma/client";
 import type { H3Event } from "h3";
@@ -54,14 +54,14 @@ export async function handleError(
     }
 
     //
-    else if (
-      error instanceof JsonWebTokenError ||
-      error instanceof TokenExpiredError ||
-      error.message === "unauthorized"
-    ) {
-      h3Error.message = "unauthorized";
-      h3Error.statusCode = 401;
-    }
+    // else if (
+    //   error instanceof JsonWebTokenError ||
+    //   error instanceof TokenExpiredError ||
+    //   error.message === "unauthorized"
+    // ) {
+    //   h3Error.message = "unauthorized";
+    //   h3Error.statusCode = 401;
+    // }
 
     //
     else {

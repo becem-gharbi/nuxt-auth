@@ -1,4 +1,4 @@
-import { sign, verify } from "jsonwebtoken";
+import { decode, encode } from "jwt-simple";
 import { getConfig } from "#auth";
 import type { EmailVerifyPayload } from "../../../types";
 import type { H3Event } from "h3";
@@ -9,11 +9,14 @@ export function createEmailVerifyToken(
 ) {
   const config = getConfig(event);
 
-  const emailVerifyToken = sign(
+  const emailVerifyToken = encode(
     payload,
     config.private.accessToken.jwtSecret + "email-verify",
+    "HS256",
     {
-      expiresIn: config.private.accessToken.maxAge,
+      header: {
+        expiresIn: config.private.accessToken.maxAge,
+      },
     }
   );
   return emailVerifyToken;
@@ -25,7 +28,7 @@ export function verifyEmailVerifyToken(
 ) {
   const config = getConfig(event);
 
-  const payload = verify(
+  const payload = decode(
     emailVerifyToken,
     config.private.accessToken.jwtSecret + "email-verify"
   ) as EmailVerifyPayload;

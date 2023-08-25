@@ -1,4 +1,4 @@
-import { sign, verify } from "jsonwebtoken";
+import { encode, decode } from "jwt-simple";
 import { getRequestHeader } from "h3";
 import { getConfig } from "#auth";
 import mustache from "mustache";
@@ -26,9 +26,14 @@ export function createAccessToken(
     ...customClaims,
   };
 
-  const accessToken = sign(payload, config.private.accessToken.jwtSecret, {
-    expiresIn: config.private.accessToken.maxAge,
-  });
+  const accessToken = encode(
+    payload,
+    config.private.accessToken.jwtSecret,
+    "HS256",
+    {
+      header: { expiresIn: config.private.accessToken.maxAge },
+    }
+  );
 
   return accessToken;
 }
@@ -54,7 +59,7 @@ export function getAccessTokenFromHeader(event: H3Event) {
 export function verifyAccessToken(event: H3Event, accessToken: string) {
   const config = getConfig(event);
 
-  const payload = verify(
+  const payload = decode(
     accessToken,
     config.private.accessToken.jwtSecret
   ) as AccessTokenPayload;
