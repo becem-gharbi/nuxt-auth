@@ -76,9 +76,6 @@ devDependencies:
   prisma:
     specifier: ^5.2.0
     version: 5.2.0
-  unenv:
-    specifier: ^1.7.1
-    version: 1.7.1
 
 packages:
 
