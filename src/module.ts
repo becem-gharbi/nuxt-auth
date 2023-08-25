@@ -137,12 +137,12 @@ export default defineNuxtModule<ModuleOptions>({
       },
     });
 
-    //Transpile CJS dependencies
-    nuxt.options.build.transpile.push("bcryptjs", "jwt-simple");
-
     //Get the runtime directory
     const { resolve } = createResolver(import.meta.url);
     const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
+
+    //Transpile CJS dependencies
+    nuxt.options.build.transpile.push(runtimeDir, "bcryptjs", "jwt-simple");
 
     //Add vue plugins
     const plugin = resolve(runtimeDir, "plugin");
