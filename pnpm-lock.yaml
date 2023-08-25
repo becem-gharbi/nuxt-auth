@@ -29,9 +29,6 @@ dependencies:
   nodemailer:
     specifier: ^6.9.4
     version: 6.9.4
-  std-env:
-    specifier: ^3.4.3
-    version: 3.4.3
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
