@@ -49,5 +49,9 @@ export default defineNuxtConfig({
         apiKey: process.env.AUTH_EMAIL_SENDGRID_API_KEY!,
       },
     },
+
+    prisma: {
+      datasourceUrl: process.env.DATABASE_URL, //only for cloudflare
+    },
   },
 });
