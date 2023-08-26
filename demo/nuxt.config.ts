@@ -32,7 +32,7 @@ export default defineNuxtConfig({
 
     registration: {
       defaultRole: "user",
-      requireEmailVerification: true,
+      requireEmailVerification: false,
     },
 
     redirect: {
