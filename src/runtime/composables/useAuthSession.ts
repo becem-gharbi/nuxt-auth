@@ -101,9 +101,6 @@ export default function () {
         baseURL,
         method: "POST",
         credentials: "include",
-        body: {
-          mode: "cookie",
-        },
         headers: {
           cookie,
         },
