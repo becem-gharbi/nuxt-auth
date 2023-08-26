@@ -23,9 +23,6 @@ dependencies:
   mustache:
     specifier: ^4.2.0
     version: 4.2.0
-  nodemailer:
-    specifier: ^6.9.4
-    version: 6.9.4
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
@@ -49,9 +46,6 @@ devDependencies:
   '@types/mustache':
     specifier: ^4.2.2
     version: 4.2.2
-  '@types/nodemailer':
-    specifier: ^6.4.9
-    version: 6.4.9
   '@types/uuid':
     specifier: ^9.0.2
     version: 9.0.2
@@ -1655,12 +1649,6 @@ packages:
 
   /@types/node@20.5.4:
     resolution: {integrity: sha512-Y9vbIAoM31djQZrPYjpTLo0XlaSwOIsrlfE3LpulZeRblttsLQRFRlBAppW0LOxyT3ALj2M5vU1ucQQayQH3jA==}
-    dev: true
-
-  /@types/nodemailer@6.4.9:
-    resolution: {integrity: sha512-XYG8Gv+sHjaOtUpiuytahMy2mM3rectgroNbs6R3djZEKmPNiIJwe9KqOJBGzKKnNZNKvnuvmugBgpq3w/S0ig==}
-    dependencies:
-      '@types/node': 20.5.4
     dev: true
 
   /@types/normalize-package-data@2.4.1:
@@ -4893,11 +4881,6 @@ packages:
 
   /node-releases@2.0.13:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==}
-
-  /nodemailer@6.9.4:
-    resolution: {integrity: sha512-CXjQvrQZV4+6X5wP6ZIgdehJamI63MFoYFGGPtHudWym9qaEHDNdPzaj5bfMCvxG1vhAileSWW90q7nL0N36mA==}
-    engines: {node: '>=6.0.0'}
-    dev: false
 
   /nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}

@@ -80,7 +80,8 @@ export default defineEventHandler(async (event) => {
         to: user.email,
         subject: "Password Reset",
         html: mustache.render(
-          config.private.emailTemplates?.passwordReset || passwordResetTemplate,
+          config.private.email.templates?.passwordReset ||
+            passwordResetTemplate,
           {
             ...user,
             link,

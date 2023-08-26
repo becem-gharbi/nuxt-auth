@@ -1,43 +1,53 @@
-import nodemailer from "nodemailer";
 import { getConfig } from "./config";
 import type { H3Event } from "h3";
 import type { MailMessage } from "../../types";
 
-export function sendMail(event: H3Event, msg: MailMessage) {
+export async function sendMail(event: H3Event, msg: MailMessage) {
   const config = getConfig(event);
 
-  if (!config.private.smtp) {
-    throw new Error("Please make sure to configure smtp option");
+  if (!config.private.email) {
+    throw new Error("Please make sure to configure email option");
   }
 
-  let transporter = nodemailer.createTransport({
-    host: config.private.smtp.host,
-    port: config.private.smtp.port,
-    auth: {
-      user: config.private.smtp.user,
-      pass: config.private.smtp.pass,
-    },
-  });
+  const settings = config.private.email;
 
-  return new Promise((resolve, reject) => {
-    if (!config.private.smtp) {
-      throw new Error("Please make sure to configure smtp option");
-    }
+  switch (settings.provider.name) {
+    case "custom":
+      return withCustom(settings.provider.url, settings.provider.authorization);
+    case "sendgrid":
+      return withSendgrid(settings.provider.apiKey);
+  }
 
-    transporter.sendMail(
-      {
-        from: config.private.smtp.from,
-        to: msg.to,
-        subject: msg.subject,
-        html: msg.html,
-        text: msg.text,
+  function withSendgrid(apiKey: string) {
+    return $fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${apiKey}`,
       },
-      (err, info) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(info);
-      }
-    );
-  });
+      body: {
+        personalizations: [
+          {
+            to: [{ email: msg.to }],
+            subject: msg.subject,
+          },
+        ],
+        content: [{ type: "text/html", value: msg.html }],
+        from: { email: settings.from },
+        reply_to: { email: settings.from },
+      },
+    });
+  }
+
+  function withCustom(url: string, authorization: string) {
+    return $fetch(url, {
+      method: "POST",
+      headers: {
+        authorization,
+      },
+      body: {
+        ...msg,
+        from: settings.from,
+      },
+    });
+  }
 }

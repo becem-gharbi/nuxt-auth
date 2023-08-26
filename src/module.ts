@@ -93,8 +93,8 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn(`[${name}] Registration is disabled`);
     }
 
-    if (!options.oauth && !options.smtp) {
-      logger.warn(`[${name}] Please make sure to set smtp`);
+    if (!options.oauth && !options.email) {
+      logger.warn(`[${name}] Please make sure to set email option`);
     }
 
     //Initialize the module options
@@ -106,11 +106,9 @@ export default defineNuxtModule<ModuleOptions>({
 
         refreshToken: options.refreshToken,
 
-        emailTemplates: options.emailTemplates,
+        email: options.email,
 
         oauth: options.oauth,
-
-        smtp: options.smtp,
 
         prisma: options.prisma,
 
@@ -255,7 +253,7 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, "server/api/auth/logout.post"),
     });
 
-    if (options.smtp) {
+    if (options.email) {
       addServerHandler({
         route: "/api/auth/password/request",
         handler: resolve(runtimeDir, "server/api/auth/password/request.post"),

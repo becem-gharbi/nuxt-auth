@@ -85,7 +85,7 @@ export default defineEventHandler(async (event) => {
         to: user.email,
         subject: "Email verification",
         html: mustache.render(
-          config.private.emailTemplates?.emailVerify || emailVerifyTemplate,
+          config.private.email.templates?.emailVerify || emailVerifyTemplate,
           {
             ...user,
             link,
