@@ -34,7 +34,6 @@ export default function () {
 
     return useFetch("/api/auth/login", {
       method: "POST",
-      credentials: "include",
       body: {
         email: credentials.email,
         password: credentials.password,
@@ -97,7 +96,6 @@ export default function () {
     await $fetch("/api/auth/logout", {
       baseURL: publicConfig.baseUrl,
       method: "POST",
-      credentials: "include",
     }).finally(async () => {
       accessToken.clear();
       loggedIn.set(false);

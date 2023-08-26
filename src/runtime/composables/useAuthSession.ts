@@ -40,7 +40,7 @@ export default function () {
   const accessToken = {
     get: () =>
       process.server
-        ? event.context[accessTokenCookieName]
+        ? event.context[accessTokenCookieName] // OR getCookie !!!!!!!!!!!!
         : useCookie(accessTokenCookieName).value,
     set: (value: string) => {
       if (process.server) {
@@ -100,17 +100,19 @@ export default function () {
       .raw<{ accessToken: string }>(refreshPath, {
         baseURL,
         method: "POST",
-        credentials: "include",
         headers: {
           cookie,
         },
       })
       .then((res) => {
         const setCookie = res.headers.get("set-cookie") || "";
+
         const cookies = splitCookiesString(setCookie);
+
         for (const cookie of cookies) {
           appendResponseHeader(event, "set-cookie", cookie);
         }
+
         if (res._data) {
           accessToken.set(res._data.accessToken);
           loggedIn.set(true);
@@ -149,7 +151,6 @@ export default function () {
   async function revokeAllSessions(): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke/all", {
       method: "DELETE",
-      credentials: "omit",
     });
   }
 
@@ -159,7 +160,6 @@ export default function () {
   async function revokeSession(id: Session["id"]): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke", {
       method: "DELETE",
-      credentials: "omit",
       body: {
         id,
       },
