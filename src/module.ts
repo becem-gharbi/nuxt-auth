@@ -20,7 +20,7 @@ export default defineNuxtModule<ModuleOptions>({
     name,
     version,
     compatibility: {
-      nuxt: "^3.0.0",
+      nuxt: "^3.7.0",
     },
     configKey: "auth",
   },
