@@ -2,6 +2,8 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
+  ssr: false,
+
   modules: ["@bg-dev/nuxt-auth"],
 
   nitro: { preset: process.env.NITRO_PRESET },
