@@ -11,7 +11,6 @@ export default defineNuxtConfig({
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET!,
-      maxAge: 10,
     },
 
     refreshToken: {

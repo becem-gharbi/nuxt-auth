@@ -16,7 +16,7 @@ async function handleLogin() {
 }
 
 async function handleRequestPasswordReset() {
-    const { error } = await requestPasswordReset("becem.gharbi96@gmail.com")
+    const { error } = await requestPasswordReset("tester1@test.com")
     console.log(error.value?.data?.message)
 }
 </script>
