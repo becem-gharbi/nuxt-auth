@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  ssr: false,
+  ssr: true,
 
   modules: ["@bg-dev/nuxt-auth"],
 
