@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   email         String         @unique
   picture       String
@@ -16,21 +16,20 @@ model User {
   provider      Provider       @default(default)
   password      String?
   verified      Boolean        @default(false)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  birthday      DateTime?
   suspended     Boolean        @default(false)
   refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model RefreshToken {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   uid       String
-  userId    Int
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
   userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
