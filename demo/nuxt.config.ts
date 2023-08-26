@@ -51,7 +51,7 @@ export default defineNuxtConfig({
     },
 
     prisma: {
-      datasourceUrl: process.env.DATABASE_URL, //only for cloudflare
+      datasourceUrl: process.env.DATABASE_URL, //cloudflare
     },
   },
 });
