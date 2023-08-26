@@ -2,7 +2,12 @@ import { encode, decode } from "./jwt";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
 import { getConfig } from "#auth";
-import type { RefreshTokenPayload, User, RefreshToken } from "../../../types";
+import type {
+  RefreshTokenPayload,
+  User,
+  RefreshToken,
+  Session,
+} from "../../../types";
 import type { PrismaClient } from "@prisma/client";
 import type { H3Event } from "h3";
 
@@ -142,13 +147,17 @@ export async function deleteRefreshToken(
 
 export async function deleteManyRefreshTokenByUser(
   event: H3Event,
-  userId: User["id"]
+  userId: User["id"],
+  exclude?: Session["id"]
 ) {
   const prisma = event.context.prisma as PrismaClient;
 
   await prisma.refreshToken.deleteMany({
     where: {
       userId,
+      id: {
+        not: exclude,
+      },
     },
   });
 }

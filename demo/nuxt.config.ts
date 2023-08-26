@@ -11,6 +11,7 @@ export default defineNuxtConfig({
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET!,
+      maxAge: 10,
     },
 
     refreshToken: {
@@ -30,7 +31,7 @@ export default defineNuxtConfig({
 
     registration: {
       defaultRole: "user",
-      requireEmailVerification: false,
+      requireEmailVerification: true,
     },
 
     redirect: {
@@ -40,6 +41,14 @@ export default defineNuxtConfig({
       callback: "/auth/callback",
       passwordReset: "/auth/password-reset",
       emailVerify: "/auth/email-verify",
+    },
+
+    smtp: {
+      host: process.env.AUTH_SMTP_HOST!,
+      port: parseInt(process.env.AUTH_SMTP_PORT!),
+      user: process.env.AUTH_SMTP_USER!,
+      pass: process.env.AUTH_SMTP_PASS!,
+      from: process.env.AUTH_SMTP_FROM!,
     },
   },
 });

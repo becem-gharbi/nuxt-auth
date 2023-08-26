@@ -46,7 +46,11 @@ export default defineEventHandler(async (event) => {
 
     await changePassword(event, user.id, newPassword);
 
-    await deleteManyRefreshTokenByUser(event, payload.userId);
+    await deleteManyRefreshTokenByUser(
+      event,
+      payload.userId,
+      payload.sessionId
+    );
 
     return "ok";
   } catch (error) {
