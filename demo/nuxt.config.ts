@@ -43,12 +43,12 @@ export default defineNuxtConfig({
       emailVerify: "/auth/email-verify",
     },
 
-    smtp: {
-      host: process.env.AUTH_SMTP_HOST!,
-      port: parseInt(process.env.AUTH_SMTP_PORT!),
-      user: process.env.AUTH_SMTP_USER!,
-      pass: process.env.AUTH_SMTP_PASS!,
-      from: process.env.AUTH_SMTP_FROM!,
+    email: {
+      from: process.env.AUTH_EMAIL_FROM!,
+      provider: {
+        name: "sendgrid",
+        apiKey: process.env.AUTH_EMAIL_SENDGRID_API_KEY!,
+      },
     },
   },
 });
