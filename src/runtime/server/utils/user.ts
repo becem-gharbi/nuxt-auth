@@ -34,16 +34,23 @@ export async function createUser(
       password: hashedPassword,
       role: config.private.registration?.defaultRole || "user",
       provider: input.provider || "default",
-      picture:
-        input.picture ||
-        withQuery("https://ui-avatars.com/api", {
-          name: input.name,
-          background: "random",
-        }),
+      picture: input.picture || generateAvatar(input.name),
     },
   });
 
   return user;
+}
+
+function generateAvatar(name: string) {
+  const url = withQuery("https://ui-avatars.com/api", {
+    name: name,
+    background: "random",
+    length: 1,
+    bold: true,
+    "font-size": 0.6,
+  });
+
+  return url;
 }
 
 export async function changePassword(
