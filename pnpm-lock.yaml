@@ -17,12 +17,9 @@ dependencies:
   defu:
     specifier: ^6.1.2
     version: 6.1.2
-  jwt-decode:
-    specifier: ^3.1.2
-    version: 3.1.2
-  jwt-simple:
-    specifier: ^0.5.6
-    version: 0.5.6
+  jose:
+    specifier: ^4.14.4
+    version: 4.14.4
   mustache:
     specifier: ^4.2.0
     version: 4.2.0
@@ -49,9 +46,6 @@ devDependencies:
   '@types/bcryptjs':
     specifier: ^2.4.2
     version: 2.4.2
-  '@types/jsonwebtoken':
-    specifier: ^9.0.2
-    version: 9.0.2
   '@types/mustache':
     specifier: ^4.2.2
     version: 4.2.2
@@ -1653,12 +1647,6 @@ packages:
 
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-    dev: true
-
-  /@types/jsonwebtoken@9.0.2:
-    resolution: {integrity: sha512-drE6uz7QBKq1fYqqoFKTDRdFCPHd5TCub75BM+D+cMx7NU9hUz7SESLfC2fSCXVFMO5Yj8sOWHuGqPgjc+fz0Q==}
-    dependencies:
-      '@types/node': 20.5.4
     dev: true
 
   /@types/mustache@4.2.2:
@@ -4370,6 +4358,10 @@ packages:
     resolution: {integrity: sha512-5eEbBDQT/jF1xg6l36P+mWGGoH9Spuy0PCdSr2dtWRDGC6ph/w9ZCL4lmESW8f8F7MwT3XKescfP0wnZWAKL9w==}
     hasBin: true
 
+  /jose@4.14.4:
+    resolution: {integrity: sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==}
+    dev: false
+
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -4419,15 +4411,6 @@ packages:
     optionalDependencies:
       graceful-fs: 4.2.11
     dev: true
-
-  /jwt-decode@3.1.2:
-    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
-    dev: false
-
-  /jwt-simple@0.5.6:
-    resolution: {integrity: sha512-40aUybvhH9t2h71ncA1/1SbtTNCVZHgsTsTgqPUxGWDmUDrXyDf2wMNQKEbdBjbf4AI+fQhbECNTV6lWxQKUzg==}
-    engines: {node: '>= 0.4.0'}
-    dev: false
 
   /kleur@3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}

@@ -1,35 +1,32 @@
-import { encode, decode } from "jwt-simple";
+import { encode, decode } from "./jwt";
 import { getConfig } from "#auth";
 import type { ResetPasswordPayload } from "../../../types";
 import type { H3Event } from "h3";
 
-export function createResetPasswordToken(
+export async function createResetPasswordToken(
   event: H3Event,
   payload: ResetPasswordPayload
 ) {
   const config = getConfig(event);
-  const resetPasswordToken = encode(
+  const resetPasswordToken = await encode(
     payload,
     config.private.accessToken.jwtSecret + "reset-password",
-    "HS256",
-    {
-      header: {
-        expiresIn: config.private.accessToken.maxAge,
-      },
-    }
+    config.private.accessToken.maxAge!
   );
+
   return resetPasswordToken;
 }
 
-export function verifyResetPasswordToken(
+export async function verifyResetPasswordToken(
   event: H3Event,
   resetPasswordToken: string
 ) {
   const config = getConfig(event);
 
-  const payload = decode(
+  const payload = await decode<ResetPasswordPayload>(
     resetPasswordToken,
     config.private.accessToken.jwtSecret + "reset-password"
-  ) as ResetPasswordPayload;
+  );
+
   return payload;
 }

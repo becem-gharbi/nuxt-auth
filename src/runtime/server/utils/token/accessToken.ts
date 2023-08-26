@@ -1,11 +1,11 @@
-import { encode, decode } from "jwt-simple";
+import { encode, decode } from "./jwt";
 import { getRequestHeader } from "h3";
 import { getConfig } from "#auth";
 import mustache from "mustache";
 import type { H3Event } from "h3";
 import type { AccessTokenPayload, User, Session } from "../../../types";
 
-export function createAccessToken(
+export async function createAccessToken(
   event: H3Event,
   user: User,
   sessionId: Session["id"]
@@ -26,13 +26,10 @@ export function createAccessToken(
     ...customClaims,
   };
 
-  const accessToken = encode(
+  const accessToken = await encode(
     payload,
     config.private.accessToken.jwtSecret,
-    "HS256",
-    {
-      header: { expiresIn: config.private.accessToken.maxAge },
-    }
+    config.private.accessToken.maxAge!
   );
 
   return accessToken;
@@ -56,12 +53,13 @@ export function getAccessTokenFromHeader(event: H3Event) {
  * @param accessToken
  * @returns accessTokenPayload
  */
-export function verifyAccessToken(event: H3Event, accessToken: string) {
+export async function verifyAccessToken(event: H3Event, accessToken: string) {
   const config = getConfig(event);
 
-  const payload = decode(
+  const payload = await decode<AccessTokenPayload>(
     accessToken,
     config.private.accessToken.jwtSecret
-  ) as AccessTokenPayload;
+  );
+
   return payload;
 }

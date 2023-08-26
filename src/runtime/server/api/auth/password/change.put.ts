@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(event, accessToken);
+    const payload = await verifyAccessToken(event, accessToken);
 
     const user = await findUser(event, { id: payload.userId });
 

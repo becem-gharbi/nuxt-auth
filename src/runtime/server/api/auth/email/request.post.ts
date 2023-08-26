@@ -70,7 +70,7 @@ export default defineEventHandler(async (event) => {
     const user = await findUser(event, { email: email });
 
     if (user && !user.verified) {
-      const emailVerifyToken = createEmailVerifyToken(event, {
+      const emailVerifyToken = await createEmailVerifyToken(event, {
         userId: user.id,
       });
 

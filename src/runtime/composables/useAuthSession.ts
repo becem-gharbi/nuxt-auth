@@ -1,4 +1,4 @@
-import jwtDecode from "jwt-decode";
+import { decodeJwt } from "jose";
 import {
   useRequestEvent,
   useRuntimeConfig,
@@ -79,8 +79,8 @@ export default function () {
     useState<User | null | undefined>("auth-user", () => null);
 
   function isTokenExpired(token: string) {
-    const decoded = jwtDecode(token) as { exp: number };
-    const expires = decoded.exp * 1000 - msRefreshBeforeExpires;
+    const { exp } = decodeJwt(token);
+    const expires = exp! * 1000 - msRefreshBeforeExpires;
     return expires < Date.now();
   }
 

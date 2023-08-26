@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ password, token });
 
-    const payload = verifyResetPasswordToken(event, token);
+    const payload = await verifyResetPasswordToken(event, token);
 
     await changePassword(event, payload.userId, password);
 
