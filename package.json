@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "1.4.32-edge",
+  "version": "1.4.36-edge",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
