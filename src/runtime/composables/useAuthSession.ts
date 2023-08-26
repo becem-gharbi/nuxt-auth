@@ -28,14 +28,10 @@ export default function () {
   const event = useRequestEvent();
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
   const privateConfig = useRuntimeConfig().auth as PrivateConfig;
-  const baseURL = publicConfig.baseUrl;
-  const refreshPath = "/api/auth/session/refresh";
-  const accessTokenCookieName = "auth_access_token";
-  const refreshTokenCookieName =
-    privateConfig?.refreshToken.cookieName || "auth_refresh_token";
-  const msRefreshBeforeExpires = 3000;
-  const logoutRedirectPath = publicConfig.redirect.logout;
   const loggedInName = "auth_logged_in";
+  const accessTokenCookieName = "auth_access_token";
+  const refreshTokenCookieName = privateConfig?.refreshToken.cookieName!;
+  const msRefreshBeforeExpires = 3000;
 
   const accessToken = {
     get: () =>
@@ -98,8 +94,8 @@ export default function () {
     const cookie = useRequestHeaders(["cookie"]).cookie || "";
 
     await $fetch
-      .raw<{ accessToken: string }>(refreshPath, {
-        baseURL,
+      .raw<{ accessToken: string }>("/api/auth/session/refresh", {
+        baseURL: publicConfig.baseUrl,
         method: "POST",
         headers: {
           cookie,
@@ -127,7 +123,7 @@ export default function () {
         loggedIn.set(false);
         user.value = null;
         if (process.client) {
-          await navigateTo(logoutRedirectPath);
+          await navigateTo(publicConfig.redirect.logout);
         }
       });
   }
