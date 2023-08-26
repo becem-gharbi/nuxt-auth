@@ -40,7 +40,8 @@ export default function () {
   const accessToken = {
     get: () =>
       process.server
-        ? event.context[accessTokenCookieName] // OR getCookie !!!!!!!!!!!!
+        ? event.context[accessTokenCookieName] ||
+          getCookie(event, accessTokenCookieName)
         : useCookie(accessTokenCookieName).value,
     set: (value: string) => {
       if (process.server) {
