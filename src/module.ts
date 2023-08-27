@@ -350,6 +350,6 @@ declare module "#app" {
 declare module "h3" {
   interface H3EventContext {
     prisma: PrismaClient;
-    auth?: AccessTokenPayload;
+    auth: AccessTokenPayload | undefined;
   }
 }
