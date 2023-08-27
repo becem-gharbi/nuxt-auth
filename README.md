@@ -5,6 +5,8 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
+**Version 2 is coming soon, you can check `edge-deploy` branch**
+
 A fairly complete solution to handle authentication for your Nuxt 3 project
 
 ## Features
