@@ -22,10 +22,13 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Admin management via `useAuthAdmin` composable
 - ✔️ Edge deployment on Vercel, Netlify, Cloudflare ...
 
-## Documentation 
-A documentation website is on development.
+## Documentation
+
+A documentation website is on development
+https://nuxt-auth-docs.netlify.app
 
 You can check demo running on edge workers.
+
 - Vercel edge https://nuxt-auth-demo.vercel.app
 - Netlify edge https://nuxt-auth-demo.netlify.app
 - Cloudflare pages https://nuxt-auth-c35.pages.dev
