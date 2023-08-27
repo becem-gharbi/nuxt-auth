@@ -1,6 +1,6 @@
 {
-  "name": "@bg-dev/nuxt-auth-rc",
-  "version": "2.0.1",
+  "name": "@bg-dev/nuxt-auth",
+  "version": "2.0.1-rc",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -35,7 +35,7 @@
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
     "prisma:push": "cd playground && prisma db push",
-    "release": "npm run prepack && changelogen --release --nameSuffix rc && npm publish && git push --follow-tags"
+    "release": "npm run prepack && changelogen --release --versionSuffix rc && npm publish && git push --follow-tags"
   },
   "dependencies": {
     "@nuxt/kit": "^3.6.5",
