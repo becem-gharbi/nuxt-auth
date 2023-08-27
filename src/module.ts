@@ -11,7 +11,12 @@ import {
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import { defu } from "defu";
-import type { PublicConfig, PrivateConfig } from "./runtime/types";
+
+import type {
+  PublicConfig,
+  PrivateConfig,
+  AccessTokenPayload,
+} from "./runtime/types";
 import type { PrismaClient } from "@prisma/client";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
@@ -216,6 +221,9 @@ export default defineNuxtModule<ModuleOptions>({
       addServerPlugin(prisma);
     }
 
+    const middleware = resolve(runtimeDir, "server/plugins/middleware");
+    addServerPlugin(middleware);
+
     //Add server routes
     addServerHandler({
       route: "/api/auth/login",
@@ -342,5 +350,6 @@ declare module "#app" {
 declare module "h3" {
   interface H3EventContext {
     prisma: PrismaClient;
+    auth?: AccessTokenPayload;
   }
 }
