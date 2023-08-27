@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@bg-dev/nuxt-auth": "^1.4.44-edge",
+    "@bg-dev/nuxt-auth": "^1.4.45-edge",
     "@nuxt/devtools": "latest",
     "@types/node": "^18.17.3",
     "nuxt": "^3.7.0"
