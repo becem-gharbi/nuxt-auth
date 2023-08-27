@@ -10,7 +10,7 @@ export async function createAccessToken(
   user: User,
   sessionId: Session["id"]
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
 
   let customClaims = config.private.accessToken.customClaims || {};
 
@@ -54,7 +54,7 @@ export function getAccessTokenFromHeader(event: H3Event) {
  * @returns accessTokenPayload
  */
 export async function verifyAccessToken(event: H3Event, accessToken: string) {
-  const config = getConfig(event);
+  const config = getConfig();
 
   const payload = await decode<AccessTokenPayload>(
     accessToken,

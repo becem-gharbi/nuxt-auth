@@ -3,7 +3,7 @@ import type { H3Event } from "h3";
 import type { MailMessage } from "../../types";
 
 export async function sendMail(event: H3Event, msg: MailMessage) {
-  const config = getConfig(event);
+  const config = getConfig();
 
   if (!config.private.email) {
     throw new Error("Please make sure to configure email option");

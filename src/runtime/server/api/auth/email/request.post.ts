@@ -20,7 +20,7 @@ const emailVerifyTemplate = `
 `;
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
 
   try {
     if (!config.public.redirect.emailVerify) {

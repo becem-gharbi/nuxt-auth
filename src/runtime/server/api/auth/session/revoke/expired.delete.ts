@@ -3,7 +3,7 @@ import { getConfig, handleError, deleteManyRefreshTokenExpired } from "#auth";
 import { getRequestHeader } from "h3";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
 
   try {
     const webhookKey = config.private.webhookKey;

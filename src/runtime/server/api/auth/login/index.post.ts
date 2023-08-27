@@ -13,7 +13,7 @@ import {
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
 
   try {
     const { email, password } = await readBody(event);

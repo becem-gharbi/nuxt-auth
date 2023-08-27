@@ -3,7 +3,7 @@ import { getConfig, handleError } from "#auth";
 import { resolveURL, withQuery } from "ufo";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
   const provider = event.context.params!.provider;
 
   if (!config.private.oauth || !config.private.oauth[provider]) {

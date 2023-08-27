@@ -25,7 +25,7 @@ export async function createUser(
     ? hashSync(input.password, 12)
     : undefined;
 
-  const config = getConfig(event);
+  const config = getConfig();
   const prisma = event.context.prisma;
 
   const user = await prisma.user.create({

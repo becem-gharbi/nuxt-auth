@@ -36,7 +36,7 @@ export async function signRefreshToken(
   event: H3Event,
   payload: RefreshTokenPayload
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
   const refreshToken = await encode(
     payload,
     config.private.refreshToken.jwtSecret,
@@ -67,7 +67,7 @@ export async function updateRefreshToken(
     userId: refreshTokenEntity.userId,
   };
 
-  const config = getConfig(event);
+  const config = getConfig();
 
   const refreshToken = await encode(
     payload,
@@ -79,7 +79,7 @@ export async function updateRefreshToken(
 }
 
 export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
-  const config = getConfig(event);
+  const config = getConfig();
   setCookie(event, config.private.refreshToken.cookieName!, refreshToken, {
     httpOnly: true,
     secure: true,
@@ -89,7 +89,7 @@ export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
 }
 
 export function getRefreshTokenFromCookie(event: H3Event) {
-  const config = getConfig(event);
+  const config = getConfig();
   const refreshToken = getCookie(
     event,
     config.private.refreshToken.cookieName!
@@ -112,7 +112,7 @@ export async function findRefreshTokenById(
 }
 
 export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
-  const config = getConfig(event);
+  const config = getConfig();
   //check if the refreshToken is issued by the auth server && if it's not expired
   const payload = await decode<RefreshTokenPayload>(
     refreshToken,
@@ -165,7 +165,7 @@ export async function findManyRefreshTokenByUser(
   event: H3Event,
   userId: User["id"]
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
   const now = new Date();
   const minDate = new Date(
     now.getTime() - config.private.refreshToken.maxAge! * 1000
@@ -194,12 +194,12 @@ export async function findManyRefreshTokenByUser(
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {
-  const config = getConfig(event);
+  const config = getConfig();
   deleteCookie(event, config.private.refreshToken.cookieName!);
 }
 
 export async function deleteManyRefreshTokenExpired(event: H3Event) {
-  const config = getConfig(event);
+  const config = getConfig();
   const now = new Date();
   const minDate = new Date(
     now.getTime() - config.private.refreshToken.maxAge! * 1000

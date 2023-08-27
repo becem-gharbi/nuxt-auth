@@ -12,7 +12,7 @@ import {
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
 
   try {
     const { currentPassword, newPassword } = await readBody(event);

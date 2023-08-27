@@ -14,7 +14,7 @@ import { resolveURL, withQuery } from "ufo";
 import type { User } from "../../../../../types";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
 
   try {
     if (!config.public.redirect.callback) {

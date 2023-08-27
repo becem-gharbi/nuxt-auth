@@ -7,7 +7,7 @@ export async function createEmailVerifyToken(
   event: H3Event,
   payload: EmailVerifyPayload
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
 
   const emailVerifyToken = await encode(
     payload,
@@ -22,7 +22,7 @@ export async function verifyEmailVerifyToken(
   event: H3Event,
   emailVerifyToken: string
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
 
   const payload = await decode<EmailVerifyPayload>(
     emailVerifyToken,

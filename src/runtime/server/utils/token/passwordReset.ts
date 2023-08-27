@@ -7,7 +7,7 @@ export async function createResetPasswordToken(
   event: H3Event,
   payload: ResetPasswordPayload
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
   const resetPasswordToken = await encode(
     payload,
     config.private.accessToken.jwtSecret + "reset-password",
@@ -21,7 +21,7 @@ export async function verifyResetPasswordToken(
   event: H3Event,
   resetPasswordToken: string
 ) {
-  const config = getConfig(event);
+  const config = getConfig();
 
   const payload = await decode<ResetPasswordPayload>(
     resetPasswordToken,

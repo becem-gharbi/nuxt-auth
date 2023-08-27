@@ -8,7 +8,7 @@ import {
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig(event);
+  const config = getConfig();
 
   try {
     if (!config.public.redirect.emailVerify) {
