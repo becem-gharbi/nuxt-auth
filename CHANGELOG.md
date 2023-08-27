@@ -1,4 +1,96 @@
 # Changelog
+## v2.0.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.4...v2.0.1)
+
+### 🔥 Performance
+
+- Register server handlers conditionally ([dd789ab](https://github.com/becem-gharbi/nuxt-auth/commit/dd789ab))
+- Use named imports ([cb1ef03](https://github.com/becem-gharbi/nuxt-auth/commit/cb1ef03))
+
+### 🩹 Fixes
+
+- Import prisma edge client on edge environments (support for cloudflare) ([dbf14e5](https://github.com/becem-gharbi/nuxt-auth/commit/dbf14e5))
+- Detect edge env from nitro preset ([bd2d48a](https://github.com/becem-gharbi/nuxt-auth/commit/bd2d48a))
+- Disable environment detection only on dev ([b8f48a8](https://github.com/becem-gharbi/nuxt-auth/commit/b8f48a8))
+- **handleError:** Check if error exists ([cbea95d](https://github.com/becem-gharbi/nuxt-auth/commit/cbea95d))
+- Use default import from nodemailer ([759cde1](https://github.com/becem-gharbi/nuxt-auth/commit/759cde1))
+- Assign default value to passwordValidationRegex ([eca323e](https://github.com/becem-gharbi/nuxt-auth/commit/eca323e))
+- **refresh:** Remove request body ([5af0fd4](https://github.com/becem-gharbi/nuxt-auth/commit/5af0fd4))
+- Exclude current session on delete all sessions ([a3715f2](https://github.com/becem-gharbi/nuxt-auth/commit/a3715f2))
+- Fix get accessToken on server side ([eba964f](https://github.com/becem-gharbi/nuxt-auth/commit/eba964f))
+
+### 💅 Refactors
+
+- Pass prisma instance via event context (support cloudflare) ([9b3a612](https://github.com/becem-gharbi/nuxt-auth/commit/9b3a612))
+- Retreive config object on event lifecycle (support for cloudflare) ([508462c](https://github.com/becem-gharbi/nuxt-auth/commit/508462c))
+- Move email default templates to event handlers ([2bb43d9](https://github.com/becem-gharbi/nuxt-auth/commit/2bb43d9))
+- Always import getConfig from #auth ([2be2471](https://github.com/becem-gharbi/nuxt-auth/commit/2be2471))
+- Replace logger with console on error handler ([66b8e18](https://github.com/becem-gharbi/nuxt-auth/commit/66b8e18))
+- Create #auth on setup scope ([bcc4360](https://github.com/becem-gharbi/nuxt-auth/commit/bcc4360))
+- Start setup with setting runtime config ([5b4cee8](https://github.com/becem-gharbi/nuxt-auth/commit/5b4cee8))
+- Use relative import between server utils ([13efb59](https://github.com/becem-gharbi/nuxt-auth/commit/13efb59))
+- **handleError:** Remove Prisma & JWT instance check ([7907466](https://github.com/becem-gharbi/nuxt-auth/commit/7907466))
+- **sendEmail:** Replace nodemailer with HTTP client ([9e68078](https://github.com/becem-gharbi/nuxt-auth/commit/9e68078))
+- Change default password reset email template ([87fd699](https://github.com/becem-gharbi/nuxt-auth/commit/87fd699))
+- Change default email verification template ([2ef7b16](https://github.com/becem-gharbi/nuxt-auth/commit/2ef7b16))
+- Remove extra credentials include from fetch calls ([21f46ab](https://github.com/becem-gharbi/nuxt-auth/commit/21f46ab))
+- Refactor useAuthSession ([55c5191](https://github.com/becem-gharbi/nuxt-auth/commit/55c5191))
+- Change fallback avatar properties ([4f8cd31](https://github.com/becem-gharbi/nuxt-auth/commit/4f8cd31))
+- Replace useUser method with user reactive state ([9d2d34d](https://github.com/becem-gharbi/nuxt-auth/commit/9d2d34d))
+- Expose auth session on event context ([05df8ea](https://github.com/becem-gharbi/nuxt-auth/commit/05df8ea))
+- Remove unused event arg from getConfig utility ([623fb5d](https://github.com/becem-gharbi/nuxt-auth/commit/623fb5d))
+
+### 📖 Documentation
+
+- Create docus app ([121af26](https://github.com/becem-gharbi/nuxt-auth/commit/121af26))
+- Define architecture ([3dec8dc](https://github.com/becem-gharbi/nuxt-auth/commit/3dec8dc))
+- Update README ([631b22d](https://github.com/becem-gharbi/nuxt-auth/commit/631b22d))
+- Update README ([7352172](https://github.com/becem-gharbi/nuxt-auth/commit/7352172))
+- Add docs website to README ([8cea913](https://github.com/becem-gharbi/nuxt-auth/commit/8cea913))
+
+### 🌊 Types
+
+- Add prisma type to event context ([426ef45](https://github.com/becem-gharbi/nuxt-auth/commit/426ef45))
+- Change auth type on event context ([6aa738b](https://github.com/becem-gharbi/nuxt-auth/commit/6aa738b))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([d0ee118](https://github.com/becem-gharbi/nuxt-auth/commit/d0ee118))
+- Upgrade prisma to latest ([1209bd3](https://github.com/becem-gharbi/nuxt-auth/commit/1209bd3))
+- Add edge tag ([b34e444](https://github.com/becem-gharbi/nuxt-auth/commit/b34e444))
+- Add environment detection log ([521b1a3](https://github.com/becem-gharbi/nuxt-auth/commit/521b1a3))
+- Migrate from jsonwebtoken to jwt-simple ([f544c81](https://github.com/becem-gharbi/nuxt-auth/commit/f544c81))
+- Set prisma as peer-dependency ([a89fbc8](https://github.com/becem-gharbi/nuxt-auth/commit/a89fbc8))
+- Add cloudflare to edge supported presets ([bd8b3a5](https://github.com/becem-gharbi/nuxt-auth/commit/bd8b3a5))
+- Fix signRefreshToken call ([24b5cf4](https://github.com/becem-gharbi/nuxt-auth/commit/24b5cf4))
+- Create demo app ([175f8d4](https://github.com/becem-gharbi/nuxt-auth/commit/175f8d4))
+- **demo:** Prepare first deployment ([39acdfd](https://github.com/becem-gharbi/nuxt-auth/commit/39acdfd))
+- **demo:** Add auth pages ([1fa57b6](https://github.com/becem-gharbi/nuxt-auth/commit/1fa57b6))
+- **demo:** Trigger new deployment ([31160b2](https://github.com/becem-gharbi/nuxt-auth/commit/31160b2))
+- Migrate from jwt-simple to jose ([0758e11](https://github.com/becem-gharbi/nuxt-auth/commit/0758e11))
+- **demo:** Add login form ([d31cf6e](https://github.com/becem-gharbi/nuxt-auth/commit/d31cf6e))
+- **demo:** Upgrade dependencies ([e21ea5b](https://github.com/becem-gharbi/nuxt-auth/commit/e21ea5b))
+- **demo:** Add register form ([47a6534](https://github.com/becem-gharbi/nuxt-auth/commit/47a6534))
+- **demo:** Add reset password form ([7802e4d](https://github.com/becem-gharbi/nuxt-auth/commit/7802e4d))
+- **demo:** Upgrade dependencies ([80214c0](https://github.com/becem-gharbi/nuxt-auth/commit/80214c0))
+- **demo:** Upgrade dependencies ([14bc652](https://github.com/becem-gharbi/nuxt-auth/commit/14bc652))
+- **demo:** Set prisma datasourceUrl ([d66a4de](https://github.com/becem-gharbi/nuxt-auth/commit/d66a4de))
+- **demo:** Upgrade to nuxt v3.7 ([87f6cba](https://github.com/becem-gharbi/nuxt-auth/commit/87f6cba))
+- **demo:** Disable SSR ([97bdec1](https://github.com/becem-gharbi/nuxt-auth/commit/97bdec1))
+- **demo:** Enable ssr ([81d4196](https://github.com/becem-gharbi/nuxt-auth/commit/81d4196))
+- **demo:** Upgrade dependencies ([29b3d27](https://github.com/becem-gharbi/nuxt-auth/commit/29b3d27))
+- Remove logs ([dd15758](https://github.com/becem-gharbi/nuxt-auth/commit/dd15758))
+- **demo:** Upgrade dependencies ([254f326](https://github.com/becem-gharbi/nuxt-auth/commit/254f326))
+- THE MODULE IS EDGE COMPATIBLE ([4206c5c](https://github.com/becem-gharbi/nuxt-auth/commit/4206c5c))
+- Strict nuxt compatibility to >=3.7 ([498e176](https://github.com/becem-gharbi/nuxt-auth/commit/498e176))
+- Remove test api route ([c9f412e](https://github.com/becem-gharbi/nuxt-auth/commit/c9f412e))
+- Set tag to latest ([68049b9](https://github.com/becem-gharbi/nuxt-auth/commit/68049b9))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v1.4.4
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.2...v1.4.4)
