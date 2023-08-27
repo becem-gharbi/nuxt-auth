@@ -72,8 +72,10 @@ export default function () {
       process.client && localStorage.setItem(loggedInName, value.toString()),
   };
 
-  const useUser: () => Ref<User | null | undefined> = () =>
-    useState<User | null | undefined>("auth-user", () => null);
+  const user: Ref<User | null | undefined> = useState<User | null | undefined>(
+    "auth-user",
+    () => null
+  );
 
   function isTokenExpired(token: string) {
     const { exp } = decodeJwt(token);
@@ -83,7 +85,6 @@ export default function () {
 
   async function refresh() {
     const isRefreshOn = useState("auth-refresh-loading", () => false);
-    const user = useUser();
 
     if (isRefreshOn.value) {
       return;
@@ -190,8 +191,8 @@ export default function () {
     accessToken,
     refreshToken,
     loggedIn,
+    user,
     refresh,
-    useUser,
     getAccessToken,
     revokeAllSessions,
     revokeSession,

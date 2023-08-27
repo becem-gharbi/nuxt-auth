@@ -17,9 +17,9 @@ export default defineNuxtRouteMiddleware((to) => {
     return;
   }
 
-  const { useUser } = useAuthSession();
+  const { user } = useAuthSession();
 
-  if (useUser().value) {
+  if (user.value) {
     return navigateTo(publicConfig.redirect.home);
   }
 });
