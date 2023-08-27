@@ -1,5 +1,5 @@
 # Changelog
-## v2.0.1
+## v2.0.1-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.4...v2.0.1)
 

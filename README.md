@@ -22,6 +22,18 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Admin management via `useAuthAdmin` composable
 - ✔️ Edge deployment on Vercel, Netlify, Cloudflare ...
 
+## Installation
+
+Add `@bg-dev/nuxt-auth` dependency to your project
+
+```bash
+# Using npm
+npm install --save-dev @bg-dev/nuxt-auth
+
+# Using yarn
+yarn add --dev @bg-dev/nuxt-auth
+```
+
 ## Documentation
 
 A documentation website is on development
@@ -32,36 +44,6 @@ You can check demo running on edge workers.
 - Vercel edge https://nuxt-auth-demo.vercel.app
 - Netlify edge https://nuxt-auth-demo.netlify.app
 - Cloudflare pages https://nuxt-auth-c35.pages.dev
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Generate type stubs
-npm run dev:prepare
-
-# Develop with the playground
-npm run dev
-
-# Build the playground
-npm run dev:build
-
-# Run ESLint
-npm run lint
-
-# Run Vitest
-npm run test
-npm run test:watch
-
-# Release new version
-npm run release
-```
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contribution you make is greatly appreciated.
 
 ## License
 
