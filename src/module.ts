@@ -12,6 +12,7 @@ import {
 import { name, version } from "../package.json";
 import { defu } from "defu";
 import type { PublicConfig, PrivateConfig } from "./runtime/types";
+import type { PrismaClient } from "@prisma/client";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
@@ -335,5 +336,11 @@ export default defineNuxtModule<ModuleOptions>({
 declare module "#app" {
   interface RuntimeNuxtHooks {
     "auth:loggedIn": (state: boolean) => void;
+  }
+}
+
+declare module "h3" {
+  interface H3EventContext {
+    prisma: PrismaClient;
   }
 }

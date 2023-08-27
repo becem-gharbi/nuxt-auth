@@ -3,13 +3,13 @@ import { getConfig } from "./config";
 import { withQuery } from "ufo";
 import type { User } from "../../types";
 import type { H3Event } from "h3";
-import type { Prisma, PrismaClient } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 export async function findUser(
   event: H3Event,
   where: Prisma.UserWhereUniqueInput
 ) {
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   const user = await prisma.user.findUnique({
     where,
@@ -26,7 +26,7 @@ export async function createUser(
     : undefined;
 
   const config = getConfig(event);
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   const user = await prisma.user.create({
     data: {
@@ -60,7 +60,7 @@ export async function changePassword(
 ) {
   const hashedPassword = hashSync(password, 12);
 
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   await prisma.user.update({
     where: {
@@ -73,7 +73,7 @@ export async function changePassword(
 }
 
 export async function setUserEmailVerified(event: H3Event, userId: User["id"]) {
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   await prisma.user.update({
     where: {
@@ -90,7 +90,7 @@ export function verifyPassword(password: string, hashedPassword: string) {
 }
 
 export async function findUsers(event: H3Event, args: Prisma.UserFindManyArgs) {
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   const users = await prisma.user.findMany(args);
   return users;
@@ -101,7 +101,7 @@ export async function editUser(
   userId: User["id"],
   data: Prisma.UserUpdateInput
 ) {
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   const user = await prisma.user.update({
     where: {
@@ -114,7 +114,7 @@ export async function editUser(
 }
 
 export async function countUsers(event: H3Event, args: Prisma.UserCountArgs) {
-  const prisma = event.context.prisma as PrismaClient;
+  const prisma = event.context.prisma;
 
   const count = await prisma.user.count(args);
   return count;
