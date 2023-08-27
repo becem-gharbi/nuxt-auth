@@ -1,28 +1,29 @@
-import { defineEventHandler, readBody } from "h3";
+import { defineEventHandler } from "#imports";
+import { readBody } from "h3";
 import { z } from "zod";
 import {
+  getConfig,
   createRefreshToken,
   setRefreshTokenCookie,
   createAccessToken,
   findUser,
   verifyPassword,
   handleError,
-  privateConfig,
   signRefreshToken,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig();
+
   try {
     const { email, password } = await readBody(event);
-
     const schema = z.object({
       email: z.string().email(),
       password: z.string(),
     });
-
     schema.parse({ email, password });
 
-    const user = await findUser({ email });
+    const user = await findUser(event, { email });
 
     if (
       !user ||
@@ -34,7 +35,7 @@ export default defineEventHandler(async (event) => {
 
     if (
       !user.verified &&
-      privateConfig.registration?.requireEmailVerification
+      config.private.registration?.requireEmailVerification
     ) {
       throw new Error("account-not-verified");
     }
@@ -44,12 +45,10 @@ export default defineEventHandler(async (event) => {
     }
 
     const payload = await createRefreshToken(event, user);
-
-    setRefreshTokenCookie(event, signRefreshToken(payload));
-
+    const refreshToken = await signRefreshToken(event, payload);
+    setRefreshTokenCookie(event, refreshToken);
     const sessionId = payload.id;
-
-    const accessToken = createAccessToken(user, sessionId);
+    const accessToken = await createAccessToken(event, user, sessionId);
 
     return { accessToken };
   } catch (error) {

@@ -18,7 +18,7 @@ import type { H3Error } from "h3";
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export default function () {
-  const { useUser } = useAuthSession();
+  const { user } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
   const { accessToken, loggedIn } = useAuthSession();
 
@@ -34,7 +34,6 @@ export default function () {
 
     return useFetch("/api/auth/login", {
       method: "POST",
-      credentials: "include",
       body: {
         email: credentials.email,
         password: credentials.password,
@@ -81,7 +80,6 @@ export default function () {
    * Fetch active user, usefull to update `user` state
    */
   async function fetchUser(): Promise<void> {
-    const user = useUser();
     try {
       user.value = await useAuthFetch<User>("/api/auth/me");
     } catch (e) {
@@ -97,11 +95,10 @@ export default function () {
     await $fetch("/api/auth/logout", {
       baseURL: publicConfig.baseUrl,
       method: "POST",
-      credentials: "include",
     }).finally(async () => {
       accessToken.clear();
       loggedIn.set(false);
-      useUser().value = null;
+      user.value = null;
       clearNuxtData();
       await navigateTo(publicConfig.redirect.logout);
     });

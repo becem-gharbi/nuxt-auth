@@ -1,12 +1,18 @@
-import jwt from "jsonwebtoken";
+import { encode, decode } from "./jwt";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie, getCookie, deleteCookie, getHeader } from "h3";
+import { getConfig } from "#auth";
+import type {
+  RefreshTokenPayload,
+  User,
+  RefreshToken,
+  Session,
+} from "../../../types";
 import type { H3Event } from "h3";
-import { prisma } from "../prisma";
-import { privateConfig } from "../config";
-import type { RefreshTokenPayload, User, RefreshToken } from "../../../types";
 
 export async function createRefreshToken(event: H3Event, user: User) {
+  const prisma = event.context.prisma;
+
   const userAgent = getHeader(event, "user-agent");
 
   const refreshTokenEntity = await prisma.refreshToken.create({
@@ -26,13 +32,26 @@ export async function createRefreshToken(event: H3Event, user: User) {
   return payload;
 }
 
-export function signRefreshToken(payload: RefreshTokenPayload) {
-  return jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
-    expiresIn: privateConfig.refreshToken.maxAge,
-  });
+export async function signRefreshToken(
+  event: H3Event,
+  payload: RefreshTokenPayload
+) {
+  const config = getConfig();
+  const refreshToken = await encode(
+    payload,
+    config.private.refreshToken.jwtSecret,
+    config.private.refreshToken.maxAge!
+  );
+
+  return refreshToken;
 }
 
-export async function updateRefreshToken(refreshTokenId: RefreshToken["id"]) {
+export async function updateRefreshToken(
+  event: H3Event,
+  refreshTokenId: RefreshToken["id"]
+) {
+  const prisma = event.context.prisma;
+
   const refreshTokenEntity = await prisma.refreshToken.update({
     where: {
       id: refreshTokenId,
@@ -48,28 +67,42 @@ export async function updateRefreshToken(refreshTokenId: RefreshToken["id"]) {
     userId: refreshTokenEntity.userId,
   };
 
-  const refreshToken = jwt.sign(payload, privateConfig.refreshToken.jwtSecret, {
-    expiresIn: privateConfig.refreshToken.maxAge,
-  });
+  const config = getConfig();
+
+  const refreshToken = await encode(
+    payload,
+    config.private.refreshToken.jwtSecret,
+    config.private.refreshToken.maxAge!
+  );
 
   return refreshToken;
 }
 
 export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
-  setCookie(event, privateConfig.refreshToken.cookieName!, refreshToken, {
+  const config = getConfig();
+  setCookie(event, config.private.refreshToken.cookieName!, refreshToken, {
     httpOnly: true,
     secure: true,
-    maxAge: privateConfig.refreshToken.maxAge,
+    maxAge: config.private.refreshToken.maxAge,
     sameSite: "lax",
   });
 }
 
 export function getRefreshTokenFromCookie(event: H3Event) {
-  const refreshToken = getCookie(event, privateConfig.refreshToken.cookieName!);
+  const config = getConfig();
+  const refreshToken = getCookie(
+    event,
+    config.private.refreshToken.cookieName!
+  );
   return refreshToken;
 }
 
-export async function findRefreshTokenById(id: RefreshToken["id"]) {
+export async function findRefreshTokenById(
+  event: H3Event,
+  id: RefreshToken["id"]
+) {
+  const prisma = event.context.prisma;
+
   const refreshTokenEntity = await prisma.refreshToken.findUnique({
     where: {
       id,
@@ -78,14 +111,15 @@ export async function findRefreshTokenById(id: RefreshToken["id"]) {
   return refreshTokenEntity;
 }
 
-export async function verifyRefreshToken(refreshToken: string) {
+export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
+  const config = getConfig();
   //check if the refreshToken is issued by the auth server && if it's not expired
-  const payload = jwt.verify(
+  const payload = await decode<RefreshTokenPayload>(
     refreshToken,
-    privateConfig.refreshToken.jwtSecret
-  ) as RefreshTokenPayload;
+    config.private.refreshToken.jwtSecret
+  );
 
-  const refreshTokenEntity = await findRefreshTokenById(payload.id);
+  const refreshTokenEntity = await findRefreshTokenById(event, payload.id);
 
   if (
     !refreshTokenEntity || //check if the refresh token is revoked (deleted from database)
@@ -97,7 +131,12 @@ export async function verifyRefreshToken(refreshToken: string) {
   return payload;
 }
 
-export async function deleteRefreshToken(refreshTokenId: RefreshToken["id"]) {
+export async function deleteRefreshToken(
+  event: H3Event,
+  refreshTokenId: RefreshToken["id"]
+) {
+  const prisma = event.context.prisma;
+
   await prisma.refreshToken.delete({
     where: {
       id: refreshTokenId,
@@ -105,19 +144,34 @@ export async function deleteRefreshToken(refreshTokenId: RefreshToken["id"]) {
   });
 }
 
-export async function deleteManyRefreshTokenByUser(userId: User["id"]) {
+export async function deleteManyRefreshTokenByUser(
+  event: H3Event,
+  userId: User["id"],
+  exclude?: Session["id"]
+) {
+  const prisma = event.context.prisma;
+
   await prisma.refreshToken.deleteMany({
     where: {
       userId,
+      id: {
+        not: exclude,
+      },
     },
   });
 }
 
-export async function findManyRefreshTokenByUser(userId: User["id"]) {
+export async function findManyRefreshTokenByUser(
+  event: H3Event,
+  userId: User["id"]
+) {
+  const config = getConfig();
   const now = new Date();
   const minDate = new Date(
-    now.getTime() - privateConfig.refreshToken.maxAge! * 1000
+    now.getTime() - config.private.refreshToken.maxAge! * 1000
   );
+
+  const prisma = event.context.prisma;
 
   const refreshTokens = await prisma.refreshToken.findMany({
     where: {
@@ -140,14 +194,18 @@ export async function findManyRefreshTokenByUser(userId: User["id"]) {
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {
-  deleteCookie(event, privateConfig.refreshToken.cookieName!);
+  const config = getConfig();
+  deleteCookie(event, config.private.refreshToken.cookieName!);
 }
 
-export async function deleteManyRefreshTokenExpired() {
+export async function deleteManyRefreshTokenExpired(event: H3Event) {
+  const config = getConfig();
   const now = new Date();
   const minDate = new Date(
-    now.getTime() - privateConfig.refreshToken.maxAge! * 1000
+    now.getTime() - config.private.refreshToken.maxAge! * 1000
   );
+
+  const prisma = event.context.prisma;
 
   await prisma.refreshToken.deleteMany({
     where: {

@@ -1,22 +1,33 @@
-import jwt from "jsonwebtoken";
-import { privateConfig } from "../config";
+import { decode, encode } from "./jwt";
+import { getConfig } from "#auth";
 import type { EmailVerifyPayload } from "../../../types";
+import type { H3Event } from "h3";
 
-export function createEmailVerifyToken(payload: EmailVerifyPayload) {
-  const emailVerifyToken = jwt.sign(
+export async function createEmailVerifyToken(
+  event: H3Event,
+  payload: EmailVerifyPayload
+) {
+  const config = getConfig();
+
+  const emailVerifyToken = await encode(
     payload,
-    privateConfig.accessToken.jwtSecret + "email-verify",
-    {
-      expiresIn: privateConfig.accessToken.maxAge,
-    }
+    config.private.accessToken.jwtSecret + "email-verify",
+    config.private.accessToken.maxAge!
   );
+
   return emailVerifyToken;
 }
 
-export function verifyEmailVerifyToken(emailVerifyToken: string) {
-  const payload = jwt.verify(
+export async function verifyEmailVerifyToken(
+  event: H3Event,
+  emailVerifyToken: string
+) {
+  const config = getConfig();
+
+  const payload = await decode<EmailVerifyPayload>(
     emailVerifyToken,
-    privateConfig.accessToken.jwtSecret + "email-verify"
-  ) as EmailVerifyPayload;
+    config.private.accessToken.jwtSecret + "email-verify"
+  );
+
   return payload;
 }

@@ -1,4 +1,4 @@
-import useAuthFetch from "./useAuthFetch";
+import { useAuthFetch } from "#imports";
 import type { Prisma } from "@prisma/client";
 import type { User } from "../types";
 

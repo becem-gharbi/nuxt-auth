@@ -1,6 +1,9 @@
-//@ts-ignore
 import { useRuntimeConfig } from "#imports";
 import type { PrivateConfig, PublicConfig } from "../../types";
 
-export const privateConfig = useRuntimeConfig().auth as PrivateConfig;
-export const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
+export function getConfig() {
+  const privateConfig = useRuntimeConfig().auth as PrivateConfig;
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
+
+  return { private: privateConfig, public: publicConfig };
+}

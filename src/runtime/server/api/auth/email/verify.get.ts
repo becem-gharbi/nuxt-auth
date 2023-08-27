@@ -1,15 +1,17 @@
 import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import {
+  getConfig,
   verifyEmailVerifyToken,
   setUserEmailVerified,
-  publicConfig,
   handleError,
 } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig();
+
   try {
-    if (!publicConfig.redirect.emailVerify) {
+    if (!config.public.redirect.emailVerify) {
       throw new Error("Please make sure to set emailVerify redirect path");
     }
 
@@ -22,18 +24,18 @@ export default defineEventHandler(async (event) => {
     schema.parse({ token });
 
     if (token) {
-      const payload = verifyEmailVerifyToken(token);
+      const payload = await verifyEmailVerifyToken(event, token);
 
-      await setUserEmailVerified(payload.userId);
+      await setUserEmailVerified(event, payload.userId);
 
-      await sendRedirect(event, publicConfig.redirect.emailVerify);
+      await sendRedirect(event, config.public.redirect.emailVerify);
     } else {
       throw new Error("token-not-found");
     }
   } catch (error) {
     await handleError(error, {
       event: event,
-      url: publicConfig.redirect.emailVerify,
+      url: config.public.redirect.emailVerify,
     });
   }
 });

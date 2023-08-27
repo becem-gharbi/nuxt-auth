@@ -14,9 +14,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = await verifyAccessToken(event, accessToken);
 
-    const user = await findUser({ id: payload.userId });
+    const user = await findUser(event, { id: payload.userId });
 
     if (!user) {
       throw new Error("unauthorized");

@@ -1,14 +1,16 @@
 import { defineEventHandler, readBody } from "h3";
 import {
+  getConfig,
   deleteManyRefreshTokenByUser,
   verifyResetPasswordToken,
   changePassword,
   handleError,
-  privateConfig,
 } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig();
+
   try {
     const { password, token } = await readBody(event);
 
@@ -16,16 +18,16 @@ export default defineEventHandler(async (event) => {
       token: z.string(),
       password: z
         .string()
-        .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
+        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
     });
 
     schema.parse({ password, token });
 
-    const payload = verifyResetPasswordToken(token);
+    const payload = await verifyResetPasswordToken(event, token);
 
-    await changePassword(payload.userId, password);
+    await changePassword(event, payload.userId, password);
 
-    await deleteManyRefreshTokenByUser(payload.userId);
+    await deleteManyRefreshTokenByUser(event, payload.userId);
 
     return "ok";
   } catch (error) {

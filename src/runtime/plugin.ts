@@ -53,9 +53,9 @@ export default defineNuxtPlugin(async () => {
 
     initialized.value = true;
 
-    const { useUser } = useAuthSession();
+    const { user } = useAuthSession();
 
-    if (useUser().value) {
+    if (user.value) {
       loggedIn.set(true);
       const { callHook } = useNuxtApp();
       await callHook("auth:loggedIn", true);

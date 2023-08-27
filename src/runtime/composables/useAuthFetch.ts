@@ -1,4 +1,4 @@
-import useAuthSession from "./useAuthSession";
+import { useAuthSession } from "#imports";
 import { defu } from "defu";
 import type { NitroFetchRequest, NitroFetchOptions } from "nitropack";
 

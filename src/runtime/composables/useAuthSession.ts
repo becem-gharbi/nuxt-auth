@@ -1,4 +1,4 @@
-import jwtDecode from "jwt-decode";
+import { decodeJwt } from "jose";
 import {
   useRequestEvent,
   useRuntimeConfig,
@@ -28,19 +28,16 @@ export default function () {
   const event = useRequestEvent();
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
   const privateConfig = useRuntimeConfig().auth as PrivateConfig;
-  const baseURL = publicConfig.baseUrl;
-  const refreshPath = "/api/auth/session/refresh";
-  const accessTokenCookieName = "auth_access_token";
-  const refreshTokenCookieName =
-    privateConfig?.refreshToken.cookieName || "auth_refresh_token";
-  const msRefreshBeforeExpires = 3000;
-  const logoutRedirectPath = publicConfig.redirect.logout;
   const loggedInName = "auth_logged_in";
+  const accessTokenCookieName = "auth_access_token";
+  const refreshTokenCookieName = privateConfig?.refreshToken.cookieName!;
+  const msRefreshBeforeExpires = 3000;
 
   const accessToken = {
     get: () =>
       process.server
-        ? event.context[accessTokenCookieName]
+        ? event.context[accessTokenCookieName] ||
+          getCookie(event, accessTokenCookieName)
         : useCookie(accessTokenCookieName).value,
     set: (value: string) => {
       if (process.server) {
@@ -75,18 +72,19 @@ export default function () {
       process.client && localStorage.setItem(loggedInName, value.toString()),
   };
 
-  const useUser: () => Ref<User | null | undefined> = () =>
-    useState<User | null | undefined>("auth-user", () => null);
+  const user: Ref<User | null | undefined> = useState<User | null | undefined>(
+    "auth-user",
+    () => null
+  );
 
   function isTokenExpired(token: string) {
-    const decoded = jwtDecode(token) as { exp: number };
-    const expires = decoded.exp * 1000 - msRefreshBeforeExpires;
+    const { exp } = decodeJwt(token);
+    const expires = exp! * 1000 - msRefreshBeforeExpires;
     return expires < Date.now();
   }
 
   async function refresh() {
     const isRefreshOn = useState("auth-refresh-loading", () => false);
-    const user = useUser();
 
     if (isRefreshOn.value) {
       return;
@@ -97,23 +95,22 @@ export default function () {
     const cookie = useRequestHeaders(["cookie"]).cookie || "";
 
     await $fetch
-      .raw<{ accessToken: string }>(refreshPath, {
-        baseURL,
+      .raw<{ accessToken: string }>("/api/auth/session/refresh", {
+        baseURL: publicConfig.baseUrl,
         method: "POST",
-        credentials: "include",
-        body: {
-          mode: "cookie",
-        },
         headers: {
           cookie,
         },
       })
       .then((res) => {
         const setCookie = res.headers.get("set-cookie") || "";
+
         const cookies = splitCookiesString(setCookie);
+
         for (const cookie of cookies) {
           appendResponseHeader(event, "set-cookie", cookie);
         }
+
         if (res._data) {
           accessToken.set(res._data.accessToken);
           loggedIn.set(true);
@@ -127,7 +124,7 @@ export default function () {
         loggedIn.set(false);
         user.value = null;
         if (process.client) {
-          await navigateTo(logoutRedirectPath);
+          await navigateTo(publicConfig.redirect.logout);
         }
       });
   }
@@ -152,7 +149,6 @@ export default function () {
   async function revokeAllSessions(): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke/all", {
       method: "DELETE",
-      credentials: "omit",
     });
   }
 
@@ -162,7 +158,6 @@ export default function () {
   async function revokeSession(id: Session["id"]): Promise<void> {
     return useAuthFetch<void>("/api/auth/session/revoke", {
       method: "DELETE",
-      credentials: "omit",
       body: {
         id,
       },
@@ -196,8 +191,8 @@ export default function () {
     accessToken,
     refreshToken,
     loggedIn,
+    user,
     refresh,
-    useUser,
     getAccessToken,
     revokeAllSessions,
     revokeSession,

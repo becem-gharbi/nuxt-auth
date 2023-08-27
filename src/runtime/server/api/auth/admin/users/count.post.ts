@@ -4,15 +4,10 @@ import {
   verifyAccessToken,
   countUsers,
   handleError,
-  privateConfig,
 } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {
-    if (!privateConfig.admin?.enable) {
-      throw new Error("Admin API is disabled");
-    }
-
     const args = await readBody(event);
 
     const accessToken = getAccessTokenFromHeader(event);
@@ -21,13 +16,13 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = await verifyAccessToken(event, accessToken);
 
     if (payload.userRole !== "admin") {
       throw new Error("unauthorized");
     }
 
-    const count = await countUsers(args);
+    const count = await countUsers(event, args);
 
     return count;
   } catch (error) {

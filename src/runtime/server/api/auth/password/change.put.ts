@@ -1,5 +1,6 @@
 import { defineEventHandler, readBody } from "h3";
 import {
+  getConfig,
   deleteManyRefreshTokenByUser,
   getAccessTokenFromHeader,
   verifyAccessToken,
@@ -7,11 +8,12 @@ import {
   findUser,
   verifyPassword,
   handleError,
-  privateConfig,
 } from "#auth";
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig();
+
   try {
     const { currentPassword, newPassword } = await readBody(event);
 
@@ -19,7 +21,7 @@ export default defineEventHandler(async (event) => {
       currentPassword: z.string(),
       newPassword: z
         .string()
-        .regex(RegExp(privateConfig.registration?.passwordValidationRegex)),
+        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
     });
 
     schema.parse({ currentPassword, newPassword });
@@ -30,9 +32,9 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = await verifyAccessToken(event, accessToken);
 
-    const user = await findUser({ id: payload.userId });
+    const user = await findUser(event, { id: payload.userId });
 
     if (
       !user ||
@@ -42,9 +44,13 @@ export default defineEventHandler(async (event) => {
       throw new Error("wrong-password");
     }
 
-    await changePassword(user.id, newPassword);
+    await changePassword(event, user.id, newPassword);
 
-    await deleteManyRefreshTokenByUser(payload.userId);
+    await deleteManyRefreshTokenByUser(
+      event,
+      payload.userId,
+      payload.sessionId
+    );
 
     return "ok";
   } catch (error) {

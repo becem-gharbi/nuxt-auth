@@ -1,6 +1,4 @@
 import { fileURLToPath } from "url";
-import type { PublicConfig, PrivateConfig } from "./runtime/types";
-
 import {
   defineNuxtModule,
   addPlugin,
@@ -9,9 +7,17 @@ import {
   addServerHandler,
   addTemplate,
   logger,
+  addServerPlugin,
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import { defu } from "defu";
+
+import type {
+  PublicConfig,
+  PrivateConfig,
+  AccessTokenPayload,
+} from "./runtime/types";
+import type { PrismaClient } from "@prisma/client";
 
 export interface ModuleOptions extends PrivateConfig, PublicConfig {}
 
@@ -20,7 +26,7 @@ export default defineNuxtModule<ModuleOptions>({
     name,
     version,
     compatibility: {
-      nuxt: "^3.0.0",
+      nuxt: "^3.7.0",
     },
     configKey: "auth",
   },
@@ -54,11 +60,14 @@ export default defineNuxtModule<ModuleOptions>({
       enable: true,
       defaultRole: "user",
       requireEmailVerification: true,
+      passwordValidationRegex: "",
     },
 
     admin: {
       enable: false,
     },
+
+    prisma: {},
   },
 
   setup(options, nuxt) {
@@ -90,179 +99,9 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn(`[${name}] Registration is disabled`);
     }
 
-    if (!options.oauth && !options.smtp) {
-      logger.warn(`[${name}] Please make sure to set smtp`);
+    if (!options.oauth && !options.email) {
+      logger.warn(`[${name}] Please make sure to set email option`);
     }
-
-    //Get the runtime directory
-    const { resolve } = createResolver(import.meta.url);
-    const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
-
-    //Transpile the runtime directory
-    nuxt.options.build.transpile.push(runtimeDir);
-
-    //Add plugins
-    const plugin = resolve(runtimeDir, "plugin");
-    addPlugin(plugin);
-
-    //Add composables directory
-    const composables = resolve(runtimeDir, "composables");
-    addImportsDir(composables);
-
-    //Add server routes
-    addServerHandler({
-      route: "/api/auth/login",
-      handler: resolve(runtimeDir, "server/api/auth/login/index.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/login/:provider",
-      handler: resolve(runtimeDir, "server/api/auth/login/[provider].get"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/login/:provider/callback",
-      handler: resolve(
-        runtimeDir,
-        "server/api/auth/login/[provider]/callback.get"
-      ),
-    });
-
-    addServerHandler({
-      route: "/api/auth/register",
-      handler: resolve(runtimeDir, "server/api/auth/register.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/me",
-      handler: resolve(runtimeDir, "server/api/auth/me.get"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/logout",
-      handler: resolve(runtimeDir, "server/api/auth/logout.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/password/request",
-      handler: resolve(runtimeDir, "server/api/auth/password/request.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/password/reset",
-      handler: resolve(runtimeDir, "server/api/auth/password/reset.put"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/password/change",
-      handler: resolve(runtimeDir, "server/api/auth/password/change.put"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/email/request",
-      handler: resolve(runtimeDir, "server/api/auth/email/request.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/email/verify",
-      handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/session/revoke",
-      handler: resolve(
-        runtimeDir,
-        "server/api/auth/session/revoke/index.delete"
-      ),
-    });
-
-    addServerHandler({
-      route: "/api/auth/session/revoke/all",
-      handler: resolve(runtimeDir, "server/api/auth/session/revoke/all.delete"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/session/refresh",
-      handler: resolve(runtimeDir, "server/api/auth/session/refresh.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/session",
-      handler: resolve(runtimeDir, "server/api/auth/session/index.get"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/session/revoke/expired",
-      handler: resolve(
-        runtimeDir,
-        "server/api/auth/session/revoke/expired.delete"
-      ),
-    });
-
-    addServerHandler({
-      route: "/api/auth/admin/users/list",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/admin/users/edit",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
-    });
-
-    addServerHandler({
-      route: "/api/auth/admin/users/count",
-      handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
-    });
-
-    //Create virtual imports for server-side
-    nuxt.hook("nitro:config", (nitroConfig) => {
-      nitroConfig.alias = nitroConfig.alias || {};
-
-      // Inline module runtime in Nitro bundle
-      nitroConfig.externals = defu(
-        typeof nitroConfig.externals === "object" ? nitroConfig.externals : {},
-        {
-          inline: [resolve(runtimeDir)],
-        }
-      );
-      nitroConfig.alias["#auth"] = resolve(runtimeDir, "server/utils");
-    });
-
-    addTemplate({
-      filename: "types/auth.d.ts",
-      getContents: () =>
-        [
-          "declare module '#auth' {",
-          `  const verifyAccessToken: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').verifyAccessToken`,
-          `  const getAccessTokenFromHeader: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').getAccessTokenFromHeader`,
-          `  const sendMail: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').sendMail`,
-          `  const handleError: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').handleError`,
-          `  const prisma: typeof import('${resolve(
-            runtimeDir,
-            "server/utils"
-          )}').prisma`,
-          "}",
-        ].join("\n"),
-    });
-
-    // Register module types
-    nuxt.hook("prepare:types", (options) => {
-      options.references.push({
-        path: resolve(nuxt.options.buildDir, "types/auth.d.ts"),
-      });
-    });
 
     //Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
@@ -273,11 +112,9 @@ export default defineNuxtModule<ModuleOptions>({
 
         refreshToken: options.refreshToken,
 
-        emailTemplates: options.emailTemplates,
+        email: options.email,
 
         oauth: options.oauth,
-
-        smtp: options.smtp,
 
         prisma: options.prisma,
 
@@ -303,11 +140,216 @@ export default defineNuxtModule<ModuleOptions>({
         },
       },
     });
+
+    //Get the runtime directory
+    const { resolve } = createResolver(import.meta.url);
+    const runtimeDir = fileURLToPath(new URL("./runtime", import.meta.url));
+
+    //Transpile CJS dependencies
+    nuxt.options.build.transpile.push(runtimeDir, "bcryptjs");
+
+    //Add vue plugins
+    const plugin = resolve(runtimeDir, "plugin");
+    addPlugin(plugin);
+
+    //Add composables directory
+    const composables = resolve(runtimeDir, "composables");
+    addImportsDir(composables);
+
+    //Add server utils
+    nuxt.options.nitro = defu(
+      {
+        alias: {
+          "#auth": resolve("./runtime/server/utils"),
+        },
+      },
+      nuxt.options.nitro
+    );
+
+    addTemplate({
+      filename: "types/auth.d.ts",
+      getContents: () =>
+        [
+          "declare module '#auth' {",
+          `  const verifyAccessToken: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').verifyAccessToken`,
+          `  const getAccessTokenFromHeader: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').getAccessTokenFromHeader`,
+          `  const sendMail: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').sendMail`,
+          `  const handleError: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').handleError`,
+          `  const getConfig: typeof import('${resolve(
+            runtimeDir,
+            "server/utils"
+          )}').getConfig`,
+          "}",
+        ].join("\n"),
+    });
+
+    // Register module types
+    nuxt.hook("prepare:types", (options) => {
+      options.references.push({
+        path: resolve(nuxt.options.buildDir, "types/auth.d.ts"),
+      });
+    });
+
+    //Add server plugins
+    const supportedEdges = [
+      "cloudflare-pages",
+      "netlify-edge",
+      "vercel-edge",
+      "cloudflare",
+    ];
+    const preset = nuxt.options.nitro.preset as string;
+    const isEdge = supportedEdges.includes(preset);
+
+    if (preset && isEdge) {
+      logger.info(`[${name}] Detected edge environment <${preset}>`);
+      const prisma = resolve(runtimeDir, "server/plugins/prisma.edge");
+      addServerPlugin(prisma);
+    } else {
+      const prisma = resolve(runtimeDir, "server/plugins/prisma");
+      addServerPlugin(prisma);
+    }
+
+    const middleware = resolve(runtimeDir, "server/plugins/middleware");
+    addServerPlugin(middleware);
+
+    //Add server routes
+    addServerHandler({
+      route: "/api/auth/login",
+      handler: resolve(runtimeDir, "server/api/auth/login/index.post"),
+    });
+
+    if (options.oauth) {
+      addServerHandler({
+        route: "/api/auth/login/:provider",
+        handler: resolve(runtimeDir, "server/api/auth/login/[provider].get"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/login/:provider/callback",
+        handler: resolve(
+          runtimeDir,
+          "server/api/auth/login/[provider]/callback.get"
+        ),
+      });
+    }
+
+    if (options.registration.enable === true) {
+      addServerHandler({
+        route: "/api/auth/register",
+        handler: resolve(runtimeDir, "server/api/auth/register.post"),
+      });
+    }
+
+    addServerHandler({
+      route: "/api/auth/me",
+      handler: resolve(runtimeDir, "server/api/auth/me.get"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/logout",
+      handler: resolve(runtimeDir, "server/api/auth/logout.post"),
+    });
+
+    if (options.email) {
+      addServerHandler({
+        route: "/api/auth/password/request",
+        handler: resolve(runtimeDir, "server/api/auth/password/request.post"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/email/request",
+        handler: resolve(runtimeDir, "server/api/auth/email/request.post"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/email/verify",
+        handler: resolve(runtimeDir, "server/api/auth/email/verify.get"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/password/reset",
+        handler: resolve(runtimeDir, "server/api/auth/password/reset.put"),
+      });
+    }
+
+    addServerHandler({
+      route: "/api/auth/password/change",
+      handler: resolve(runtimeDir, "server/api/auth/password/change.put"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session/revoke",
+      handler: resolve(
+        runtimeDir,
+        "server/api/auth/session/revoke/index.delete"
+      ),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session/revoke/all",
+      handler: resolve(runtimeDir, "server/api/auth/session/revoke/all.delete"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session/refresh",
+      handler: resolve(runtimeDir, "server/api/auth/session/refresh.post"),
+    });
+
+    addServerHandler({
+      route: "/api/auth/session",
+      handler: resolve(runtimeDir, "server/api/auth/session/index.get"),
+    });
+
+    if (options.webhookKey) {
+      addServerHandler({
+        route: "/api/auth/session/revoke/expired",
+        handler: resolve(
+          runtimeDir,
+          "server/api/auth/session/revoke/expired.delete"
+        ),
+      });
+    }
+
+    if (options.admin.enable === true) {
+      addServerHandler({
+        route: "/api/auth/admin/users/list",
+        handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/admin/users/edit",
+        handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
+      });
+
+      addServerHandler({
+        route: "/api/auth/admin/users/count",
+        handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
+      });
+    }
   },
 });
 
 declare module "#app" {
   interface RuntimeNuxtHooks {
     "auth:loggedIn": (state: boolean) => void;
+  }
+}
+
+declare module "h3" {
+  interface H3EventContext {
+    prisma: PrismaClient;
+    auth: AccessTokenPayload | undefined;
   }
 }

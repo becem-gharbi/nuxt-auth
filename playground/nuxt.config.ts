@@ -4,6 +4,10 @@ import myModule from "..";
 export default defineNuxtConfig({
   ssr: true,
 
+  nitro: {
+    preset: process.env.NITRO_PRESET,
+  },
+
   app: {
     head: {
       title: "Nuxt Auth",
@@ -17,7 +21,7 @@ export default defineNuxtConfig({
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || "",
-      maxAge: 10,
+      //maxAge: 10,
       customClaims: {
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": ["user", "admin"],
@@ -50,12 +54,12 @@ export default defineNuxtConfig({
       },
     },
 
-    smtp: {
-      host: process.env.AUTH_SMTP_HOST || "",
-      port: parseInt(process.env.AUTH_SMTP_PORT!),
-      user: process.env.AUTH_SMTP_USER || "",
-      pass: process.env.AUTH_SMTP_PASS || "",
-      from: process.env.AUTH_SMTP_FROM || "",
+    email: {
+      from: process.env.AUTH_EMAIL_FROM!,
+      provider: {
+        name: "sendgrid",
+        apiKey: process.env.AUTH_EMAIL_SENDGRID_API_KEY!,
+      },
     },
 
     registration: {

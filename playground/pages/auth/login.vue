@@ -12,7 +12,7 @@
 const { login, requestPasswordReset, loginWithProvider } = useAuth()
 
 async function handleLogin() {
-    const { data, error } = await login({ email: "tester1@test.com", password: "abc123" })
+    const { data, error } = await login({ email: "becem.gharbi96@gmail.com", password: "abc123" })
 }
 
 async function handleRequestPasswordReset() {

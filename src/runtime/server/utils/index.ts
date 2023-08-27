@@ -13,5 +13,3 @@ export * from "./token/passwordReset";
 export * from "./user";
 
 export * from "./error";
-
-export * from "./prisma";

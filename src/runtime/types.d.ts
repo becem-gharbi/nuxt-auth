@@ -25,7 +25,6 @@ export type MailMessage = {
   to: string;
   subject: string;
   html: string;
-  text?: string;
 };
 
 export type ResetPasswordPayload = {
@@ -47,6 +46,18 @@ export type RefreshTokenPayload = {
   uid: string;
   userId: number | string;
 };
+
+interface MailCustomProvider {
+  name: "custom";
+  url: string;
+  method: string;
+  authorization: string;
+}
+
+interface MailSendgridProvider {
+  name: "sendgrid";
+  apiKey: string;
+}
 
 export type PrivateConfig = {
   accessToken: {
@@ -75,17 +86,13 @@ export type PrivateConfig = {
     >
   >;
 
-  emailTemplates?: {
-    passwordReset?: string;
-    emailVerify?: string;
-  };
-
-  smtp?: {
-    host: string;
-    port: number;
-    user: string;
-    pass: string;
+  email?: {
     from: string;
+    provider: MailCustomProvider | MailSendgridProvider;
+    templates?: {
+      passwordReset?: string;
+      emailVerify?: string;
+    };
   };
 
   prisma?: Prisma.PrismaClientOptions;

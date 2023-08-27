@@ -2,21 +2,22 @@ import { defineEventHandler, getQuery, sendRedirect } from "h3";
 import { z } from "zod";
 import { $fetch } from "ofetch";
 import {
+  getConfig,
   createRefreshToken,
   setRefreshTokenCookie,
-  privateConfig,
   createUser,
   findUser,
-  publicConfig,
   handleError,
   signRefreshToken,
 } from "#auth";
 import { resolveURL, withQuery } from "ufo";
-import { User } from "../../../../../types";
+import type { User } from "../../../../../types";
 
 export default defineEventHandler(async (event) => {
+  const config = getConfig();
+
   try {
-    if (!publicConfig.redirect.callback) {
+    if (!config.public.redirect.callback) {
       throw new Error("Please make sure to set callback redirect path");
     }
 
@@ -33,25 +34,25 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ code });
 
-    if (!privateConfig.oauth || !privateConfig.oauth[provider]) {
+    if (!config.private.oauth || !config.private.oauth[provider]) {
       throw new Error("oauth-not-configured");
     }
 
     const formData = new FormData();
     formData.append("grant_type", "authorization_code");
     formData.append("code", code);
-    formData.append("client_id", privateConfig.oauth[provider].clientId);
+    formData.append("client_id", config.private.oauth[provider].clientId);
     formData.append(
       "client_secret",
-      privateConfig.oauth[provider].clientSecret
+      config.private.oauth[provider].clientSecret
     );
     formData.append(
       "redirect_uri",
-      resolveURL(publicConfig.baseUrl, "/api/auth/login", provider, "callback")
+      resolveURL(config.public.baseUrl, "/api/auth/login", provider, "callback")
     );
 
     const { access_token } = await $fetch(
-      privateConfig.oauth[provider].tokenUrl,
+      config.private.oauth[provider].tokenUrl,
       {
         method: "POST",
         body: formData,
@@ -61,7 +62,7 @@ export default defineEventHandler(async (event) => {
       }
     );
 
-    const userInfo = await $fetch(privateConfig.oauth[provider].userUrl, {
+    const userInfo = await $fetch(config.private.oauth[provider].userUrl, {
       headers: {
         Authorization: "Bearer " + access_token,
       },
@@ -77,10 +78,10 @@ export default defineEventHandler(async (event) => {
 
     let user: User | undefined = undefined;
 
-    user = await findUser({ email: userInfo.email });
+    user = await findUser(event, { email: userInfo.email });
 
     if (!user) {
-      if (privateConfig.registration?.enable === false) {
+      if (config.private.registration?.enable === false) {
         throw new Error("registration-disabled");
       }
 
@@ -97,7 +98,7 @@ export default defineEventHandler(async (event) => {
 
       const picture = picture_key ? userInfo[picture_key] : null;
 
-      const newUser = await createUser({
+      const newUser = await createUser(event, {
         email: userInfo.email,
         name: userInfo.name,
         provider: provider,
@@ -119,17 +120,19 @@ export default defineEventHandler(async (event) => {
 
       const payload = await createRefreshToken(event, user);
 
-      setRefreshTokenCookie(event, signRefreshToken(payload));
+      const refreshToken = await signRefreshToken(event, payload);
+
+      setRefreshTokenCookie(event, refreshToken);
     }
 
     await sendRedirect(
       event,
-      withQuery(publicConfig.redirect.callback, { redirect: returnToPath })
+      withQuery(config.public.redirect.callback, { redirect: returnToPath })
     );
   } catch (error) {
     await handleError(error, {
       event,
-      url: publicConfig.redirect.callback,
+      url: config.public.redirect.callback,
     });
   }
 });

@@ -24,15 +24,15 @@ export default defineEventHandler(async (event) => {
       throw new Error("unauthorized");
     }
 
-    const payload = verifyAccessToken(accessToken);
+    const payload = await verifyAccessToken(event, accessToken);
 
-    const refreshTokenEntity = await findRefreshTokenById(id);
+    const refreshTokenEntity = await findRefreshTokenById(event, id);
 
     if (!refreshTokenEntity || refreshTokenEntity.userId !== payload.userId) {
       throw new Error("unauthorized");
     }
 
-    await deleteRefreshToken(id);
+    await deleteRefreshToken(event, id);
 
     return "ok";
   } catch (error) {

@@ -23,9 +23,9 @@ export default defineNuxtRouteMiddleware((to) => {
     }
   }
 
-  const { useUser } = useAuthSession();
+  const { user } = useAuthSession();
 
-  if (!useUser().value) {
+  if (!user.value) {
     return navigateTo({
       path: publicConfig.redirect.login,
       query: { redirect: to.path },
