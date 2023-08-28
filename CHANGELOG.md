@@ -1,4 +1,20 @@
 # Changelog
+## v2.0.2-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.1-rc...v2.0.2-rc)
+
+### 💅 Refactors
+
+- Remove admin API ([3c749cb](https://github.com/becem-gharbi/nuxt-auth/commit/3c749cb))
+
+### 📖 Documentation
+
+- **readme:** Add installation section ([aa713b7](https://github.com/becem-gharbi/nuxt-auth/commit/aa713b7))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v2.0.1-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v1.4.4...v2.0.1)
