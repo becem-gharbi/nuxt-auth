@@ -63,10 +63,6 @@ export default defineNuxtModule<ModuleOptions>({
       passwordValidationRegex: "",
     },
 
-    admin: {
-      enable: false,
-    },
-
     prisma: {},
   },
 
@@ -121,8 +117,6 @@ export default defineNuxtModule<ModuleOptions>({
         registration: options.registration,
 
         webhookKey: options.webhookKey,
-
-        admin: options.admin,
       },
 
       public: {
@@ -319,23 +313,6 @@ export default defineNuxtModule<ModuleOptions>({
           runtimeDir,
           "server/api/auth/session/revoke/expired.delete"
         ),
-      });
-    }
-
-    if (options.admin.enable === true) {
-      addServerHandler({
-        route: "/api/auth/admin/users/list",
-        handler: resolve(runtimeDir, "server/api/auth/admin/users/list.post"),
-      });
-
-      addServerHandler({
-        route: "/api/auth/admin/users/edit",
-        handler: resolve(runtimeDir, "server/api/auth/admin/users/edit.put"),
-      });
-
-      addServerHandler({
-        route: "/api/auth/admin/users/count",
-        handler: resolve(runtimeDir, "server/api/auth/admin/users/count.post"),
       });
     }
   },
