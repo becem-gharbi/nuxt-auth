@@ -19,8 +19,8 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Add dynamic custom claims to access token
 - ✔️ Customizable email templates
 - ✔️ User session management via `useAuthSession` composable
-- ✔️ Admin management via `useAuthAdmin` composable
 - ✔️ Edge deployment on Vercel, Netlify, Cloudflare ...
+- ✔️ Ready to use [starter](https://github.com/becem-gharbi/nuxt-starter)
 
 ## Installation
 
