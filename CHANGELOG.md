@@ -1,4 +1,24 @@
 # Changelog
+## v2.0.3-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.2-rc...v2.0.3-rc)
+
+### 🩹 Fixes
+
+- Remove method from email custom config ([ef99be2](https://github.com/becem-gharbi/nuxt-auth/commit/ef99be2))
+
+### 📖 Documentation
+
+- **readme:** Update features ([55a3e56](https://github.com/becem-gharbi/nuxt-auth/commit/55a3e56))
+- Update docs website ([4cb80ff](https://github.com/becem-gharbi/nuxt-auth/commit/4cb80ff))
+- Add oauth redirect url setting ([d16b3a1](https://github.com/becem-gharbi/nuxt-auth/commit/d16b3a1))
+- Update docs website ([88a0006](https://github.com/becem-gharbi/nuxt-auth/commit/88a0006))
+- Update docs website ([aaa7c3e](https://github.com/becem-gharbi/nuxt-auth/commit/aaa7c3e))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v2.0.2-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.1-rc...v2.0.2-rc)
