@@ -50,7 +50,6 @@ export type RefreshTokenPayload = {
 interface MailCustomProvider {
   name: "custom";
   url: string;
-  method: string;
   authorization: string;
 }
 
