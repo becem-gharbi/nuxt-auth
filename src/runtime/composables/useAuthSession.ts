@@ -33,7 +33,7 @@ export default function () {
   const refreshTokenCookieName = privateConfig?.refreshToken.cookieName!;
   const msRefreshBeforeExpires = 3000;
 
-  const accessToken = {
+  const _accessToken = {
     get: () =>
       process.server
         ? event.context[accessTokenCookieName] ||
@@ -62,11 +62,11 @@ export default function () {
     },
   };
 
-  const refreshToken = {
+  const _refreshToken = {
     get: () => process.server && getCookie(event, refreshTokenCookieName),
   };
 
-  const loggedIn = {
+  const _loggedIn = {
     get: () => process.client && localStorage.getItem(loggedInName),
     set: (value: boolean) =>
       process.client && localStorage.setItem(loggedInName, value.toString()),
@@ -83,7 +83,7 @@ export default function () {
     return expires < Date.now();
   }
 
-  async function refresh() {
+  async function _refresh() {
     const isRefreshOn = useState("auth-refresh-loading", () => false);
 
     if (isRefreshOn.value) {
@@ -112,16 +112,16 @@ export default function () {
         }
 
         if (res._data) {
-          accessToken.set(res._data.accessToken);
-          loggedIn.set(true);
+          _accessToken.set(res._data.accessToken);
+          _loggedIn.set(true);
         }
         isRefreshOn.value = false;
         return res;
       })
       .catch(async () => {
         isRefreshOn.value = false;
-        accessToken.clear();
-        loggedIn.set(false);
+        _accessToken.clear();
+        _loggedIn.set(false);
         user.value = null;
         if (process.client) {
           await navigateTo(publicConfig.redirect.logout);
@@ -134,13 +134,13 @@ export default function () {
    * @returns Fresh access token (refreshed if expired)
    */
   async function getAccessToken() {
-    const access_token = accessToken.get();
+    const access_token = _accessToken.get();
 
     if (access_token && isTokenExpired(access_token)) {
-      await refresh();
+      await _refresh();
     }
 
-    return accessToken.get();
+    return _accessToken.get();
   }
 
   /**
@@ -188,11 +188,11 @@ export default function () {
   }
 
   return {
-    accessToken,
-    refreshToken,
-    loggedIn,
+    _accessToken,
+    _refreshToken,
+    _loggedIn,
     user,
-    refresh,
+    _refresh,
     getAccessToken,
     revokeAllSessions,
     revokeSession,

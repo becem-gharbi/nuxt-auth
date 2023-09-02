@@ -20,7 +20,7 @@ type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 export default function () {
   const { user } = useAuthSession();
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
-  const { accessToken, loggedIn } = useAuthSession();
+  const { _accessToken, _loggedIn } = useAuthSession();
 
   /**
    * Login with email/password
@@ -43,8 +43,8 @@ export default function () {
         const returnToPath = route.query.redirect?.toString();
         const redirectTo = returnToPath || publicConfig.redirect.home;
 
-        accessToken.set(res.data.value.accessToken);
-        loggedIn.set(true);
+        _accessToken.set(res.data.value.accessToken);
+        _loggedIn.set(true);
 
         // A workaround to insure access token cookie is set
         setTimeout(async () => {
@@ -96,8 +96,8 @@ export default function () {
       baseURL: publicConfig.baseUrl,
       method: "POST",
     }).finally(async () => {
-      accessToken.clear();
-      loggedIn.set(false);
+      _accessToken.clear();
+      _loggedIn.set(false);
       user.value = null;
       clearNuxtData();
       await navigateTo(publicConfig.redirect.logout);

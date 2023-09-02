@@ -28,23 +28,23 @@ export default defineNuxtPlugin(async () => {
 
     const initialized = useState("auth-initialized", () => false);
 
-    const { loggedIn } = useAuthSession();
+    const { _loggedIn } = useAuthSession();
 
     if (initialized.value === false) {
       const { path } = useRoute();
 
       const { fetchUser } = useAuth();
-      const { refreshToken, accessToken, refresh } = useAuthSession();
+      const { _refreshToken, _accessToken, _refresh } = useAuthSession();
 
-      if (accessToken.get()) {
+      if (_accessToken.get()) {
         await fetchUser();
       } else {
         const isCallback = path === publicConfig.redirect.callback;
-        const isLoggedIn = loggedIn.get() === "true";
+        const isLoggedIn = _loggedIn.get() === "true";
 
-        if (isCallback || isLoggedIn || refreshToken.get()) {
-          await refresh();
-          if (accessToken.get()) {
+        if (isCallback || isLoggedIn || _refreshToken.get()) {
+          await _refresh();
+          if (_accessToken.get()) {
             await fetchUser();
           }
         }
@@ -56,11 +56,11 @@ export default defineNuxtPlugin(async () => {
     const { user } = useAuthSession();
 
     if (user.value) {
-      loggedIn.set(true);
+      _loggedIn.set(true);
       const { callHook } = useNuxtApp();
       await callHook("auth:loggedIn", true);
     } else {
-      loggedIn.set(false);
+      _loggedIn.set(false);
     }
   } catch (e) {
     console.error(e);
