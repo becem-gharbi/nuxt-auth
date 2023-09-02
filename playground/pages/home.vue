@@ -32,7 +32,7 @@
 definePageMeta({ middleware: "auth" })
 
 const { logout, fetchUser, changePassword } = useAuth()
-const { user, revokeAllSessions, getAllSessions, revokeSession, } = useAuthSession()
+const { user, revokeAllSessions, getAllSessions, revokeSession } = useAuthSession()
 
 async function handleLogout() {
     await logout()

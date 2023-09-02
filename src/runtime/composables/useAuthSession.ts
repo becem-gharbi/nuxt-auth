@@ -72,10 +72,9 @@ export default function () {
       process.client && localStorage.setItem(loggedInName, value.toString()),
   };
 
-  const user: Ref<User | null | undefined> = useState<User | null | undefined>(
-    "auth-user",
-    () => null
-  );
+  const user: Ref<Readonly<User | null | undefined>> = useState<
+    User | null | undefined
+  >("auth-user", () => null);
 
   function isTokenExpired(token: string) {
     const { exp } = decodeJwt(token);
