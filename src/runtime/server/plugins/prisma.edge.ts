@@ -1,12 +1,12 @@
-import { getConfig } from "#auth";
-import { PrismaClient } from "@prisma/client/edge";
-import { defineNitroPlugin } from "#imports";
+import { PrismaClient } from '@prisma/client/edge'
+import { getConfig } from '#auth'
+import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp) => {
-  const config = getConfig();
-  const prisma = new PrismaClient(config.private.prisma);
+  const config = getConfig()
+  const prisma = new PrismaClient(config.private.prisma)
 
-  nitroApp.hooks.hook("request", (event) => {
-    event.context.prisma = prisma;
-  });
-});
+  nitroApp.hooks.hook('request', (event) => {
+    event.context.prisma = prisma
+  })
+})

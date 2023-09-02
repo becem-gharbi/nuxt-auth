@@ -1,4 +1,4 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler } from 'h3'
 import {
   createAccessToken,
   getRefreshTokenFromCookie,
@@ -7,37 +7,37 @@ import {
   verifyRefreshToken,
   deleteRefreshTokenCookie,
   findUser,
-  handleError,
-} from "#auth";
+  handleError
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const refreshToken = getRefreshTokenFromCookie(event);
+    const refreshToken = getRefreshTokenFromCookie(event)
 
-    const payload = await verifyRefreshToken(event, refreshToken);
+    const payload = await verifyRefreshToken(event, refreshToken)
 
-    const user = await findUser(event, { id: payload.userId });
+    const user = await findUser(event, { id: payload.userId })
 
     if (!user) {
-      throw new Error("unauthorized");
+      throw new Error('unauthorized')
     }
 
     if (user.suspended) {
-      throw new Error("account-suspended");
+      throw new Error('account-suspended')
     }
 
-    const newRefreshToken = await updateRefreshToken(event, payload.id);
+    const newRefreshToken = await updateRefreshToken(event, payload.id)
 
-    setRefreshTokenCookie(event, newRefreshToken);
+    setRefreshTokenCookie(event, newRefreshToken)
 
-    const sessionId = payload.id;
+    const sessionId = payload.id
 
-    const accessToken = await createAccessToken(user, sessionId);
+    const accessToken = await createAccessToken(user, sessionId)
 
-    return { accessToken };
+    return { accessToken }
   } catch (error) {
-    deleteRefreshTokenCookie(event);
+    deleteRefreshTokenCookie(event)
 
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

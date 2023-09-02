@@ -1,3 +1,8 @@
+import common from './middleware/common'
+import auth from './middleware/auth'
+import guest from './middleware/guest'
+
+import type { PublicConfig } from './types'
 import {
   defineNuxtPlugin,
   addRouteMiddleware,
@@ -6,63 +11,58 @@ import {
   useAuth,
   useRoute,
   useAuthSession,
-  useNuxtApp,
-} from "#imports";
-import common from "./middleware/common";
-import auth from "./middleware/auth";
-import guest from "./middleware/guest";
-
-import type { PublicConfig } from "./types";
+  useNuxtApp
+} from '#imports'
 
 export default defineNuxtPlugin(async () => {
   try {
-    const publicConfig = useRuntimeConfig().public.auth as PublicConfig;
+    const publicConfig = useRuntimeConfig().public.auth as PublicConfig
 
-    addRouteMiddleware("common", common, { global: true });
+    addRouteMiddleware('common', common, { global: true })
 
-    addRouteMiddleware("auth", auth, {
-      global: publicConfig.enableGlobalAuthMiddleware,
-    });
+    addRouteMiddleware('auth', auth, {
+      global: publicConfig.enableGlobalAuthMiddleware
+    })
 
-    addRouteMiddleware("guest", guest);
+    addRouteMiddleware('guest', guest)
 
-    const initialized = useState("auth-initialized", () => false);
+    const initialized = useState('auth-initialized', () => false)
 
-    const { _loggedIn } = useAuthSession();
+    const { _loggedIn } = useAuthSession()
 
     if (initialized.value === false) {
-      const { path } = useRoute();
+      const { path } = useRoute()
 
-      const { fetchUser } = useAuth();
-      const { _refreshToken, _accessToken, _refresh } = useAuthSession();
+      const { fetchUser } = useAuth()
+      const { _refreshToken, _accessToken, _refresh } = useAuthSession()
 
       if (_accessToken.get()) {
-        await fetchUser();
+        await fetchUser()
       } else {
-        const isCallback = path === publicConfig.redirect.callback;
-        const isLoggedIn = _loggedIn.get() === "true";
+        const isCallback = path === publicConfig.redirect.callback
+        const isLoggedIn = _loggedIn.get() === 'true'
 
         if (isCallback || isLoggedIn || _refreshToken.get()) {
-          await _refresh();
+          await _refresh()
           if (_accessToken.get()) {
-            await fetchUser();
+            await fetchUser()
           }
         }
       }
     }
 
-    initialized.value = true;
+    initialized.value = true
 
-    const { user } = useAuthSession();
+    const { user } = useAuthSession()
 
     if (user.value) {
-      _loggedIn.set(true);
-      const { callHook } = useNuxtApp();
-      await callHook("auth:loggedIn", true);
+      _loggedIn.set(true)
+      const { callHook } = useNuxtApp()
+      await callHook('auth:loggedIn', true)
     } else {
-      _loggedIn.set(false);
+      _loggedIn.set(false)
     }
   } catch (e) {
-    console.error(e);
+    // console.error(e)
   }
-});
+})

@@ -1,41 +1,41 @@
-import { defineEventHandler, getQuery, sendRedirect } from "h3";
+import { defineEventHandler, getQuery, sendRedirect } from 'h3'
+import { z } from 'zod'
 import {
   getConfig,
   verifyEmailVerifyToken,
   setUserEmailVerified,
-  handleError,
-} from "#auth";
-import { z } from "zod";
+  handleError
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig();
+  const config = getConfig()
 
   try {
     if (!config.public.redirect.emailVerify) {
-      throw new Error("Please make sure to set emailVerify redirect path");
+      throw new Error('Please make sure to set emailVerify redirect path')
     }
 
-    const token = getQuery(event).token?.toString();
+    const token = getQuery(event).token?.toString()
 
     const schema = z.object({
-      token: z.string(),
-    });
+      token: z.string()
+    })
 
-    schema.parse({ token });
+    schema.parse({ token })
 
     if (!token) {
-      throw new Error("token-not-found");
+      throw new Error('token-not-found')
     }
 
-    const payload = await verifyEmailVerifyToken(token);
+    const payload = await verifyEmailVerifyToken(token)
 
-    await setUserEmailVerified(event, payload.userId);
+    await setUserEmailVerified(event, payload.userId)
 
-    await sendRedirect(event, config.public.redirect.emailVerify);
+    await sendRedirect(event, config.public.redirect.emailVerify)
   } catch (error) {
     await handleError(error, {
-      event: event,
-      url: config.public.redirect.emailVerify,
-    });
+      event,
+      url: config.public.redirect.emailVerify
+    })
   }
-});
+})

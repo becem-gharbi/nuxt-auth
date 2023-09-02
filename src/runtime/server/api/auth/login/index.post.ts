@@ -1,6 +1,6 @@
-import { defineEventHandler } from "#imports";
-import { readBody } from "h3";
-import { z } from "zod";
+import { readBody } from 'h3'
+import { z } from 'zod'
+import { defineEventHandler } from '#imports'
 import {
   getConfig,
   createRefreshToken,
@@ -9,49 +9,49 @@ import {
   findUser,
   verifyPassword,
   handleError,
-  signRefreshToken,
-} from "#auth";
+  signRefreshToken
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig();
+  const config = getConfig()
 
   try {
-    const { email, password } = await readBody(event);
+    const { email, password } = await readBody(event)
     const schema = z.object({
       email: z.string().email(),
-      password: z.string(),
-    });
-    schema.parse({ email, password });
+      password: z.string()
+    })
+    schema.parse({ email, password })
 
-    const user = await findUser(event, { email });
+    const user = await findUser(event, { email })
 
     if (
       !user ||
-      user.provider !== "default" ||
+      user.provider !== 'default' ||
       !verifyPassword(password, user.password)
     ) {
-      throw new Error("wrong-credentials");
+      throw new Error('wrong-credentials')
     }
 
     if (
       !user.verified &&
       config.private.registration?.requireEmailVerification
     ) {
-      throw new Error("account-not-verified");
+      throw new Error('account-not-verified')
     }
 
     if (user.suspended) {
-      throw new Error("account-suspended");
+      throw new Error('account-suspended')
     }
 
-    const payload = await createRefreshToken(event, user);
-    const refreshToken = await signRefreshToken(payload);
-    setRefreshTokenCookie(event, refreshToken);
-    const sessionId = payload.id;
-    const accessToken = await createAccessToken(user, sessionId);
+    const payload = await createRefreshToken(event, user)
+    const refreshToken = await signRefreshToken(payload)
+    setRefreshTokenCookie(event, refreshToken)
+    const sessionId = payload.id
+    const accessToken = await createAccessToken(user, sessionId)
 
-    return { accessToken };
+    return { accessToken }
   } catch (error) {
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

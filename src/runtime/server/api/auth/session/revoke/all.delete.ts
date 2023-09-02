@@ -1,29 +1,29 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler } from 'h3'
 import {
   handleError,
   getAccessTokenFromHeader,
   verifyAccessToken,
-  deleteManyRefreshTokenByUser,
-} from "#auth";
+  deleteManyRefreshTokenByUser
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const accessToken = getAccessTokenFromHeader(event);
+    const accessToken = getAccessTokenFromHeader(event)
 
     if (!accessToken) {
-      throw new Error("unauthorized");
+      throw new Error('unauthorized')
     }
 
-    const payload = await verifyAccessToken(accessToken);
+    const payload = await verifyAccessToken(accessToken)
 
     await deleteManyRefreshTokenByUser(
       event,
       payload.userId,
       payload.sessionId
-    );
+    )
 
-    return "ok";
+    return 'ok'
   } catch (error) {
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

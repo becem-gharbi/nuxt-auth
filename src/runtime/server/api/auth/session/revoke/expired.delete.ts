@@ -1,21 +1,20 @@
-import { defineEventHandler } from "h3";
-import { getConfig, handleError, deleteManyRefreshTokenExpired } from "#auth";
-import { getRequestHeader } from "h3";
+import { defineEventHandler, getRequestHeader } from 'h3'
+import { getConfig, handleError, deleteManyRefreshTokenExpired } from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig();
+  const config = getConfig()
 
   try {
-    const webhookKey = config.private.webhookKey;
+    const webhookKey = config.private.webhookKey
 
-    if (getRequestHeader(event, "Webhook-Key") !== webhookKey) {
-      throw new Error("unauthorized");
+    if (getRequestHeader(event, 'Webhook-Key') !== webhookKey) {
+      throw new Error('unauthorized')
     }
 
-    await deleteManyRefreshTokenExpired(event);
+    await deleteManyRefreshTokenExpired(event)
 
-    return "ok";
+    return 'ok'
   } catch (error) {
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

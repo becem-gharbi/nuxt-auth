@@ -1,26 +1,26 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler } from 'h3'
 import {
   deleteRefreshTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
   deleteRefreshToken,
-  handleError,
-} from "#auth";
+  handleError
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const refreshToken = getRefreshTokenFromCookie(event);
+    const refreshToken = getRefreshTokenFromCookie(event)
 
-    const payload = await verifyRefreshToken(event, refreshToken);
+    const payload = await verifyRefreshToken(event, refreshToken)
 
-    await deleteRefreshToken(event, payload.id);
+    await deleteRefreshToken(event, payload.id)
 
-    deleteRefreshTokenCookie(event);
+    deleteRefreshTokenCookie(event)
 
-    return "ok";
+    return 'ok'
   } catch (error) {
-    deleteRefreshTokenCookie(event);
+    deleteRefreshTokenCookie(event)
 
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

@@ -1,4 +1,5 @@
-import { defineEventHandler, readBody } from "h3";
+import { defineEventHandler, readBody } from 'h3'
+import { z } from 'zod'
 import {
   getConfig,
   deleteManyRefreshTokenByUser,
@@ -6,41 +7,40 @@ import {
   changePassword,
   handleError,
   setUserRequestedPasswordReset,
-  findUser,
-} from "#auth";
-import { z } from "zod";
+  findUser
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig();
+  const config = getConfig()
 
   try {
-    const { password, token } = await readBody(event);
+    const { password, token } = await readBody(event)
 
     const schema = z.object({
       token: z.string(),
       password: z
         .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
-    });
+        .regex(new RegExp(config.private.registration.passwordValidationRegex))
+    })
 
-    schema.parse({ password, token });
+    schema.parse({ password, token })
 
-    const payload = await verifyResetPasswordToken(token);
+    const payload = await verifyResetPasswordToken(token)
 
-    const user = await findUser(event, { id: payload.userId });
+    const user = await findUser(event, { id: payload.userId })
 
     if (!user.requestedPasswordReset) {
-      throw new Error("reset-not-requested");
+      throw new Error('reset-not-requested')
     }
 
-    await changePassword(event, payload.userId, password);
+    await changePassword(event, payload.userId, password)
 
-    await deleteManyRefreshTokenByUser(event, payload.userId);
+    await deleteManyRefreshTokenByUser(event, payload.userId)
 
-    await setUserRequestedPasswordReset(event, payload.userId, false);
+    await setUserRequestedPasswordReset(event, payload.userId, false)
 
-    return "ok";
+    return 'ok'
   } catch (error) {
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

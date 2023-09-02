@@ -1,8 +1,8 @@
 export default defineNuxtPlugin({
-  enforce: "pre",
+  enforce: 'pre',
   hooks: {
-    "auth:loggedIn": async (state) => {
-      console.log("AUTH LOGGED IN", state);
-    },
-  },
-});
+    'auth:loggedIn': (state) => {
+      // console.log('AUTH LOGGED IN', state)
+    }
+  }
+})

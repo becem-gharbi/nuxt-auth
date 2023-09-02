@@ -1,31 +1,31 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler } from 'h3'
 import {
   getAccessTokenFromHeader,
   verifyAccessToken,
   findUser,
-  handleError,
-} from "#auth";
+  handleError
+} from '#auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const accessToken = getAccessTokenFromHeader(event);
+    const accessToken = getAccessTokenFromHeader(event)
 
     if (!accessToken) {
-      throw new Error("unauthorized");
+      throw new Error('unauthorized')
     }
 
-    const payload = await verifyAccessToken(accessToken);
+    const payload = await verifyAccessToken(accessToken)
 
-    const user = await findUser(event, { id: payload.userId });
+    const user = await findUser(event, { id: payload.userId })
 
     if (!user) {
-      throw new Error("unauthorized");
+      throw new Error('unauthorized')
     }
 
-    const { password, ...sanitizedUser } = user;
+    const { password, ...sanitizedUser } = user
 
-    return { ...sanitizedUser };
+    return { ...sanitizedUser }
   } catch (error) {
-    await handleError(error);
+    await handleError(error)
   }
-});
+})

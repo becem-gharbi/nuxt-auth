@@ -1,3 +1,3 @@
 <template>
-    <h1>Callback</h1>
+  <h1>Callback</h1>
 </template>
