@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     const user = await findUser(event, { email: email });
 
     if (user && user.provider === "default") {
-      const resetPasswordToken = await createResetPasswordToken(event, {
+      const resetPasswordToken = await createResetPasswordToken({
         userId: user.id,
       });
 
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
       );
       const link = withQuery(redirectUrl, { token: resetPasswordToken });
 
-      await sendMail(event, {
+      await sendMail({
         to: user.email,
         subject: "Password Reset",
         html: mustache.render(

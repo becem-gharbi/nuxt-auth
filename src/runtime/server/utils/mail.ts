@@ -1,8 +1,7 @@
 import { getConfig } from "./config";
-import type { H3Event } from "h3";
 import type { MailMessage } from "../../types";
 
-export async function sendMail(event: H3Event, msg: MailMessage) {
+export async function sendMail(msg: MailMessage) {
   const config = getConfig();
 
   if (!config.private.email) {

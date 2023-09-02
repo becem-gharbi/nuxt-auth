@@ -32,10 +32,7 @@ export async function createRefreshToken(event: H3Event, user: User) {
   return payload;
 }
 
-export async function signRefreshToken(
-  event: H3Event,
-  payload: RefreshTokenPayload
-) {
+export async function signRefreshToken(payload: RefreshTokenPayload) {
   const config = getConfig();
   const refreshToken = await encode(
     payload,

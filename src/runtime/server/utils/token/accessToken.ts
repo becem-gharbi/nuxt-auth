@@ -5,11 +5,7 @@ import mustache from "mustache";
 import type { H3Event } from "h3";
 import type { AccessTokenPayload, User, Session } from "../../../types";
 
-export async function createAccessToken(
-  event: H3Event,
-  user: User,
-  sessionId: Session["id"]
-) {
+export async function createAccessToken(user: User, sessionId: Session["id"]) {
   const config = getConfig();
 
   let customClaims = config.private.accessToken.customClaims || {};
@@ -53,7 +49,7 @@ export function getAccessTokenFromHeader(event: H3Event) {
  * @param accessToken
  * @returns accessTokenPayload
  */
-export async function verifyAccessToken(event: H3Event, accessToken: string) {
+export async function verifyAccessToken(accessToken: string) {
   const config = getConfig();
 
   const payload = await decode<AccessTokenPayload>(

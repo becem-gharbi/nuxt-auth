@@ -120,7 +120,7 @@ export default defineEventHandler(async (event) => {
 
       const payload = await createRefreshToken(event, user);
 
-      const refreshToken = await signRefreshToken(event, payload);
+      const refreshToken = await signRefreshToken(payload);
 
       setRefreshTokenCookie(event, refreshToken);
     }

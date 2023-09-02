@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
     const sessionId = payload.id;
 
-    const accessToken = await createAccessToken(event, user, sessionId);
+    const accessToken = await createAccessToken(user, sessionId);
 
     return { accessToken };
   } catch (error) {

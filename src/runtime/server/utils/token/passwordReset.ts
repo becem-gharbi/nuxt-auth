@@ -3,10 +3,7 @@ import { getConfig } from "#auth";
 import type { ResetPasswordPayload } from "../../../types";
 import type { H3Event } from "h3";
 
-export async function createResetPasswordToken(
-  event: H3Event,
-  payload: ResetPasswordPayload
-) {
+export async function createResetPasswordToken(payload: ResetPasswordPayload) {
   const config = getConfig();
   const resetPasswordToken = await encode(
     payload,
@@ -17,10 +14,7 @@ export async function createResetPasswordToken(
   return resetPasswordToken;
 }
 
-export async function verifyResetPasswordToken(
-  event: H3Event,
-  resetPasswordToken: string
-) {
+export async function verifyResetPasswordToken(resetPasswordToken: string) {
   const config = getConfig();
 
   const payload = await decode<ResetPasswordPayload>(

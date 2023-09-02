@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     const user = await findUser(event, { email: email });
 
     if (user && !user.verified) {
-      const emailVerifyToken = await createEmailVerifyToken(event, {
+      const emailVerifyToken = await createEmailVerifyToken({
         userId: user.id,
       });
 
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
 
       const link = withQuery(redirectUrl, { token: emailVerifyToken });
 
-      await sendMail(event, {
+      await sendMail({
         to: user.email,
         subject: "Email verification",
         html: mustache.render(

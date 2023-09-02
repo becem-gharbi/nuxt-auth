@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     schema.parse({ token });
 
     if (token) {
-      const payload = await verifyEmailVerifyToken(event, token);
+      const payload = await verifyEmailVerifyToken(token);
 
       await setUserEmailVerified(event, payload.userId);
 
