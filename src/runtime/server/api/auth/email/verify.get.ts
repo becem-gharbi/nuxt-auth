@@ -23,15 +23,15 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ token });
 
-    if (token) {
-      const payload = await verifyEmailVerifyToken(token);
-
-      await setUserEmailVerified(event, payload.userId);
-
-      await sendRedirect(event, config.public.redirect.emailVerify);
-    } else {
+    if (!token) {
       throw new Error("token-not-found");
     }
+
+    const payload = await verifyEmailVerifyToken(token);
+
+    await setUserEmailVerified(event, payload.userId);
+
+    await sendRedirect(event, config.public.redirect.emailVerify);
   } catch (error) {
     await handleError(error, {
       event: event,
