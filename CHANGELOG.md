@@ -1,4 +1,35 @@
 # Changelog
+## v2.0.4-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.3-rc...v2.0.4-rc)
+
+### 💅 Refactors
+
+- **generateAvatar:** Select background color from predefined colors ([70cacfc](https://github.com/becem-gharbi/nuxt-auth/commit/70cacfc))
+- Remove extra vent argument ([6f54dc2](https://github.com/becem-gharbi/nuxt-auth/commit/6f54dc2))
+- **useAuthSession:** Prefix internal apis with underscore ([c15013d](https://github.com/becem-gharbi/nuxt-auth/commit/c15013d))
+- **defaults:** Set access token default maxAge to 15 min ([21d402a](https://github.com/becem-gharbi/nuxt-auth/commit/21d402a))
+
+### 📖 Documentation
+
+- Update docs link ([c89f7f9](https://github.com/becem-gharbi/nuxt-auth/commit/c89f7f9))
+- Update 2.middlewares.md ([7328747](https://github.com/becem-gharbi/nuxt-auth/commit/7328747))
+- Update composables content ([0eafadb](https://github.com/becem-gharbi/nuxt-auth/commit/0eafadb))
+- Fix typo ([65ba2f0](https://github.com/becem-gharbi/nuxt-auth/commit/65ba2f0))
+
+### 🌊 Types
+
+- Mark user state as read-only ([402db04](https://github.com/becem-gharbi/nuxt-auth/commit/402db04))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([3933115](https://github.com/becem-gharbi/nuxt-auth/commit/3933115))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.0.3-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.2-rc...v2.0.3-rc)
