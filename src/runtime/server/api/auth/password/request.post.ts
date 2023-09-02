@@ -5,6 +5,7 @@ import {
   createResetPasswordToken,
   findUser,
   handleError,
+  setUserRequestedPasswordReset,
 } from "#auth";
 import mustache from "mustache";
 import { resolveURL, withQuery } from "ufo";
@@ -63,6 +64,8 @@ export default defineEventHandler(async (event) => {
           }
         ),
       });
+
+      await setUserRequestedPasswordReset(event, user.id, true);
     }
 
     return "ok";

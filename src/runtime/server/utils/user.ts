@@ -139,3 +139,20 @@ export async function countUsers(event: H3Event, args: Prisma.UserCountArgs) {
   const count = await prisma.user.count(args);
   return count;
 }
+
+export async function setUserRequestedPasswordReset(
+  event: H3Event,
+  userId: User["id"],
+  state: boolean
+) {
+  const prisma = event.context.prisma;
+
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      requestedPasswordReset: state,
+    },
+  });
+}

@@ -5,6 +5,8 @@ import {
   verifyResetPasswordToken,
   changePassword,
   handleError,
+  setUserRequestedPasswordReset,
+  findUser,
 } from "#auth";
 import { z } from "zod";
 
@@ -25,9 +27,17 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyResetPasswordToken(token);
 
+    const user = await findUser(event, { id: payload.userId });
+
+    if (!user.requestedPasswordReset) {
+      throw new Error("reset-not-requested");
+    }
+
     await changePassword(event, payload.userId, password);
 
     await deleteManyRefreshTokenByUser(event, payload.userId);
+
+    await setUserRequestedPasswordReset(event, payload.userId, false);
 
     return "ok";
   } catch (error) {

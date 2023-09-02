@@ -49,4 +49,5 @@ async function handleChangePassword() {
 }
 
 const { data, refresh, error } = await useAsyncData(getAllSessions)
+
 </script>
