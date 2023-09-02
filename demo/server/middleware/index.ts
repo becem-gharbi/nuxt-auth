@@ -1,3 +1,3 @@
 export default defineEventHandler((event) => {
-  console.log(event.context.auth?.userId);
+  // console.log(event.context.auth?.userId);
 });
