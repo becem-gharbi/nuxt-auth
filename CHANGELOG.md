@@ -1,4 +1,30 @@
 # Changelog
+## v2.0.5-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.4-rc...v2.0.5-rc)
+
+### 🩹 Fixes
+
+- **passwordReset:** Allow only one password reset per password request ([0309a64](https://github.com/becem-gharbi/nuxt-auth/commit/0309a64))
+
+### 💅 Refactors
+
+- Remove unused server-side user utilities ([4fbdbf0](https://github.com/becem-gharbi/nuxt-auth/commit/4fbdbf0))
+
+### 📖 Documentation
+
+- Update composables content ([6ec56e6](https://github.com/becem-gharbi/nuxt-auth/commit/6ec56e6))
+- Update setup content ([d828593](https://github.com/becem-gharbi/nuxt-auth/commit/d828593))
+- Update setup content ([6821263](https://github.com/becem-gharbi/nuxt-auth/commit/6821263))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([47ba2b0](https://github.com/becem-gharbi/nuxt-auth/commit/47ba2b0))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v2.0.4-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.3-rc...v2.0.4-rc)
