@@ -36,7 +36,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     accessToken: {
       jwtSecret: "",
-      maxAge: 30 * 60,
+      maxAge: 15 * 60,
     },
 
     refreshToken: {
