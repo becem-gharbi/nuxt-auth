@@ -109,37 +109,6 @@ export function verifyPassword(password: string, hashedPassword: string) {
   return compareSync(password, hashedPassword);
 }
 
-export async function findUsers(event: H3Event, args: Prisma.UserFindManyArgs) {
-  const prisma = event.context.prisma;
-
-  const users = await prisma.user.findMany(args);
-  return users;
-}
-
-export async function editUser(
-  event: H3Event,
-  userId: User["id"],
-  data: Prisma.UserUpdateInput
-) {
-  const prisma = event.context.prisma;
-
-  const user = await prisma.user.update({
-    where: {
-      id: userId,
-    },
-    data,
-  });
-
-  return user;
-}
-
-export async function countUsers(event: H3Event, args: Prisma.UserCountArgs) {
-  const prisma = event.context.prisma;
-
-  const count = await prisma.user.count(args);
-  return count;
-}
-
 export async function setUserRequestedPasswordReset(
   event: H3Event,
   userId: User["id"],
