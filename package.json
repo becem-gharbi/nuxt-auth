@@ -36,7 +36,7 @@
     "prisma:migrate": "cd playground && prisma migrate dev",
     "prisma:push": "cd playground && prisma db push",
     "release": "npm run lint && npm run prepack && changelogen --release --versionSuffix rc && npm publish && git push --follow-tags",
-    "lint": "eslint ./src"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@nuxt/kit": "^3.6.5",
