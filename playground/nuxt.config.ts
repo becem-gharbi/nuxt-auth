@@ -1,6 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import myModule from '..'
-
+ 
 export default defineNuxtConfig({
   ssr: true,
 
@@ -14,14 +13,14 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: [myModule],
+  modules: ["../src/module"],
 
   auth: {
     baseUrl: 'http://localhost:3000',
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || '',
-      maxAge: 10,
+     // maxAge: 60,
       customClaims: {
         'https://hasura.io/jwt/claims': {
           'x-hasura-allowed-roles': ['user', 'admin'],
@@ -77,9 +76,5 @@ export default defineNuxtConfig({
     },
 
     webhookKey: 'abc',
-
-    admin: {
-      enable: true
-    }
   }
 })
