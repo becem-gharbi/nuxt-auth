@@ -21,8 +21,11 @@ export async function handleError(
     } else if (error.message === "unauthorized") {
       h3Error.message = "unauthorized";
       h3Error.statusCode = 401;
-    } else {
+    } else if (error.message.includes("prisma")) {
       console.error(error.message);
+    } else {
+      h3Error.message = error.message;
+      h3Error.statusCode = 400;
     }
   }
 
