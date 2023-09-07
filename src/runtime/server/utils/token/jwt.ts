@@ -1,23 +1,25 @@
-import { jwtVerify, SignJWT } from 'jose'
-import type { JWTPayload } from 'jose'
+import { jwtVerify, SignJWT } from "jose";
+import type { JWTPayload } from "jose";
 
-async function encode (payload: JWTPayload, key: string, maxAge: number) {
-  const secret = new TextEncoder().encode(key)
-  const exp = `${maxAge}s`
+async function encode(payload: JWTPayload, key: string, maxAge: number) {
+  const secret = new TextEncoder().encode(key);
+  const exp = `${maxAge}s`;
 
   return await new SignJWT(payload)
     .setExpirationTime(exp)
-    .setIssuer('nuxt-auth')
-    .setProtectedHeader({ alg: 'HS256' })
-    .sign(secret)
+    .setIssuer("nuxt-auth")
+    .setProtectedHeader({ alg: "HS256" })
+    .sign(secret);
 }
 
-async function decode<T> (token: string, key: string) {
-  const secret = new TextEncoder().encode(key)
+async function decode<T>(token: string, key: string) {
+  const secret = new TextEncoder().encode(key);
 
-  const { payload } = await jwtVerify(token, secret)
+  const { payload } = await jwtVerify(token, secret).catch(() => {
+    throw new Error("unauthorized");
+  });
 
-  return payload as T
+  return payload as T;
 }
 
-export { encode, decode }
+export { encode, decode };
