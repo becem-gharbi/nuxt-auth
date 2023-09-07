@@ -1,10 +1,10 @@
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler } from 'h3'
 import { z } from 'zod'
 import { handleError, findRefreshTokenById, deleteRefreshToken } from '#auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { id } = await readBody(event)
+    const id = event.context.params?.id
 
     const schema = z.object({
       id: z.number().or(z.string())

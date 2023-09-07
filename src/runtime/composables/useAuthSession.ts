@@ -30,7 +30,9 @@ export default function () {
   const privateConfig = useRuntimeConfig().auth as PrivateConfig
   const loggedInName = 'auth_logged_in'
   const accessTokenCookieName = 'auth_access_token'
-  const refreshTokenCookieName = process.server ? privateConfig.refreshToken.cookieName! : ''
+  const refreshTokenCookieName = process.server
+    ? privateConfig.refreshToken.cookieName!
+    : ''
   const msRefreshBeforeExpires = 3000
 
   const _accessToken = {
@@ -155,11 +157,8 @@ export default function () {
    * Removes a single stored session of the active user
    */
   async function revokeSession (id: Session['id']): Promise<void> {
-    return await useAuthFetch<void>('/api/auth/session/revoke', {
-      method: 'DELETE',
-      body: {
-        id
-      }
+    return await useAuthFetch<void>(`/api/auth/session/revoke/${id}`, {
+      method: 'DELETE'
     })
   }
 
