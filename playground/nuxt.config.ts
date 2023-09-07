@@ -56,8 +56,8 @@ export default defineNuxtConfig({
     email: {
       from: process.env.AUTH_EMAIL_FROM!,
       provider: {
-        name: 'sendgrid',
-        apiKey: process.env.AUTH_EMAIL_SENDGRID_API_KEY!
+        name: 'resend',
+        apiKey: process.env.AUTH_EMAIL_RESEND_API_KEY!
       }
     },
 
