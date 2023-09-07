@@ -1,4 +1,44 @@
 # Changelog
+## v2.1.0-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.5-rc...v2.1.0-rc)
+
+### 🚀 Enhancements
+
+- Add Resend email provider ([b881cbc](https://github.com/becem-gharbi/nuxt-auth/commit/b881cbc))
+
+### 🩹 Fixes
+
+- **handleError:** Avoid returning server errors instead log them to console ([560dffe](https://github.com/becem-gharbi/nuxt-auth/commit/560dffe))
+- **handleError:** Return all errors except for Prisma errors ([8c48120](https://github.com/becem-gharbi/nuxt-auth/commit/8c48120))
+
+### 💅 Refactors
+
+- Use vent.context.auth to check authorization on internal protected endpoints ([5adf8be](https://github.com/becem-gharbi/nuxt-auth/commit/5adf8be))
+- Pass id as param on revoke single session endpoint ([e441c46](https://github.com/becem-gharbi/nuxt-auth/commit/e441c46))
+
+### 📖 Documentation
+
+- Add development domain should be 127.0.0.1 warning ([eda21a9](https://github.com/becem-gharbi/nuxt-auth/commit/eda21a9))
+- Add Resend configuration to email section ([ae55731](https://github.com/becem-gharbi/nuxt-auth/commit/ae55731))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([dd722e9](https://github.com/becem-gharbi/nuxt-auth/commit/dd722e9))
+- Fix ESlint issues ([ea9a546](https://github.com/becem-gharbi/nuxt-auth/commit/ea9a546))
+- **playground:** Set access token max age to 10 sec ([d7915d7](https://github.com/becem-gharbi/nuxt-auth/commit/d7915d7))
+- Upgrade dependencies ([dd9d9ce](https://github.com/becem-gharbi/nuxt-auth/commit/dd9d9ce))
+- **playground:** Add forms ([560826a](https://github.com/becem-gharbi/nuxt-auth/commit/560826a))
+- **playground:** Update config ([b2d991e](https://github.com/becem-gharbi/nuxt-auth/commit/b2d991e))
+- **playground:** Change baseUrl host to 127.0.0.1 ([bc16f65](https://github.com/becem-gharbi/nuxt-auth/commit/bc16f65))
+- Fix ESLint issues ([df9b281](https://github.com/becem-gharbi/nuxt-auth/commit/df9b281))
+- **playground:** Switch email provider to Resend ([68d72a6](https://github.com/becem-gharbi/nuxt-auth/commit/68d72a6))
+- Set tag to latest ([a253093](https://github.com/becem-gharbi/nuxt-auth/commit/a253093))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v2.0.5-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.4-rc...v2.0.5-rc)
