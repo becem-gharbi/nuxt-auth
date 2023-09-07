@@ -117,8 +117,7 @@ export default function () {
         isRefreshOn.value = false
         return res
       })
-      .catch(async (e) => {
-        console.error(e)
+      .catch(async () => {
         isRefreshOn.value = false
         _accessToken.clear()
         _loggedIn.set(false)

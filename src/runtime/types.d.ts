@@ -58,6 +58,11 @@ interface MailSendgridProvider {
   apiKey: string;
 }
 
+interface MailResendProvider {
+  name: "resend",
+  apiKey: string
+}
+
 export type PrivateConfig = {
   accessToken: {
     jwtSecret: string;
@@ -87,7 +92,7 @@ export type PrivateConfig = {
 
   email?: {
     from: string;
-    provider: MailCustomProvider | MailSendgridProvider;
+    provider: MailCustomProvider | MailSendgridProvider | MailResendProvider;
     templates?: {
       passwordReset?: string;
       emailVerify?: string;
