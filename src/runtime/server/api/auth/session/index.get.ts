@@ -1,28 +1,18 @@
-import { defineEventHandler } from 'h3'
-import {
-  getAccessTokenFromHeader,
-  verifyAccessToken,
-  handleError,
-  findManyRefreshTokenByUser
-} from '#auth'
+import { defineEventHandler } from "h3";
+import { handleError, findManyRefreshTokenByUser } from "#auth";
 
 export default defineEventHandler(async (event) => {
   try {
-    const accessToken = getAccessTokenFromHeader(event)
+    const auth = event.context.auth;
 
-    if (!accessToken) {
-      throw new Error('unauthorized')
+    if (!auth) {
+      throw new Error("unauthorized");
     }
 
-    const accessTokenPayload = await verifyAccessToken(accessToken)
+    const refreshTokens = await findManyRefreshTokenByUser(event, auth.userId);
 
-    const refreshTokens = await findManyRefreshTokenByUser(
-      event,
-      accessTokenPayload.userId
-    )
-
-    return { refreshTokens, current: accessTokenPayload.sessionId }
+    return { refreshTokens, current: auth.sessionId };
   } catch (error) {
-    await handleError(error)
+    await handleError(error);
   }
-})
+});

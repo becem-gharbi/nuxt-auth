@@ -1,59 +1,51 @@
-import { defineEventHandler, readBody } from 'h3'
-import { z } from 'zod'
+import { defineEventHandler, readBody } from "h3";
+import { z } from "zod";
 import {
   getConfig,
   deleteManyRefreshTokenByUser,
-  getAccessTokenFromHeader,
-  verifyAccessToken,
   changePassword,
   findUser,
   verifyPassword,
-  handleError
-} from '#auth'
+  handleError,
+} from "#auth";
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig()
+  const config = getConfig();
 
   try {
-    const { currentPassword, newPassword } = await readBody(event)
+    const { currentPassword, newPassword } = await readBody(event);
 
     const schema = z.object({
       currentPassword: z.string(),
       newPassword: z
         .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex))
-    })
+        .regex(new RegExp(config.private.registration.passwordValidationRegex)),
+    });
 
-    schema.parse({ currentPassword, newPassword })
+    schema.parse({ currentPassword, newPassword });
 
-    const accessToken = getAccessTokenFromHeader(event)
+    const auth = event.context.auth;
 
-    if (!accessToken) {
-      throw new Error('unauthorized')
+    if (!auth) {
+      throw new Error("unauthorized");
     }
 
-    const payload = await verifyAccessToken(accessToken)
-
-    const user = await findUser(event, { id: payload.userId })
+    const user = await findUser(event, { id: auth.userId });
 
     if (
       !user ||
-      user.provider !== 'default' ||
+      user.provider !== "default" ||
       !verifyPassword(currentPassword, user.password)
     ) {
-      throw new Error('wrong-password')
+      throw new Error("wrong-password");
     }
 
-    await changePassword(event, user.id, newPassword)
+    await changePassword(event, user.id, newPassword);
 
-    await deleteManyRefreshTokenByUser(
-      event,
-      payload.userId,
-      payload.sessionId
-    )
+    await deleteManyRefreshTokenByUser(event, auth.userId, auth.sessionId);
 
-    return 'ok'
+    return "ok";
   } catch (error) {
-    await handleError(error)
+    await handleError(error);
   }
-})
+});
