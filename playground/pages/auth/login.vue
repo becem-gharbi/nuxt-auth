@@ -1,17 +1,20 @@
 <template>
   <div>
     <h1>Login</h1>
-    <button @click="handleLogin">
-      Login
-    </button>
+
+    <form @submit.prevent="handleLogin">
+      <input v-model="email" placeholder="email" type="email" autocomplete="email">
+      <input v-model="password" placeholder="password" type="password" autocomplete="current-password">
+      <button type="submit">
+        Login
+      </button>
+    </form>
+
     <button @click="handleRequestPasswordReset">
       Forgot password
     </button>
     <button @click="() => loginWithProvider('google')">
       Login with google
-    </button>
-    <button @click="() => loginWithProvider('github')">
-      Login with github
     </button>
   </div>
 </template>
@@ -19,12 +22,15 @@
 <script setup lang="ts">
 const { login, requestPasswordReset, loginWithProvider } = useAuth()
 
-async function handleLogin () {
-  const { data, error } = await login({ email: 'becem.gharbi96@gmail.com', password: 'abc123' })
+const email = ref()
+const password = ref()
+
+async function handleLogin() {
+  const { data, error } = await login({ email: email.value, password: password.value })
 }
 
-async function handleRequestPasswordReset () {
-  const { error } = await requestPasswordReset('becem.gharbi96@gmail.com')
+async function handleRequestPasswordReset() {
+  const { error } = await requestPasswordReset(email.value)
   // console.log(error.value?.data?.message)
 }
 </script>

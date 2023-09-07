@@ -1,9 +1,13 @@
 <template>
   <div>
     <h1>Reset password</h1>
-    <button @click="handleResetPassword">
-      Reset password
-    </button>
+
+    <form @submit.prevent="handleResetPassword">
+      <input v-model="password" placeholder="new password" autocomplete="new-password">
+      <button type="submit">
+        Reset password
+      </button>
+    </form>
   </div>
 </template>
 
@@ -12,8 +16,10 @@ definePageMeta({ middleware: 'guest' })
 
 const { resetPassword } = useAuth()
 
-async function handleResetPassword () {
-  const { error } = await resetPassword('efg123')
+const password = ref()
+
+async function handleResetPassword() {
+  const { error } = await resetPassword(password.value)
   // console.log(error.value?.data.message)
 }
 

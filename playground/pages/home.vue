@@ -46,14 +46,14 @@ definePageMeta({ middleware: 'auth' })
 const { logout, fetchUser, changePassword } = useAuth()
 const { user, revokeAllSessions, getAllSessions, revokeSession } = useAuthSession()
 
-async function handleLogout () {
+async function handleLogout() {
   await logout()
 }
 
 const currentPassword = ref('')
 const newPassword = ref('')
 
-async function handleChangePassword () {
+async function handleChangePassword() {
   await changePassword({
     currentPassword: currentPassword.value,
     newPassword: newPassword.value
@@ -61,4 +61,5 @@ async function handleChangePassword () {
 }
 
 const { data, refresh, error } = await useAsyncData(getAllSessions)
+
 </script>
