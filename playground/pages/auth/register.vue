@@ -26,7 +26,7 @@ const email = ref()
 const password = ref()
 const name = ref()
 
-async function handleRegister() {
+async function handleRegister () {
   const { data, error } = await register({
     email: email.value,
     password: password.value,
@@ -34,7 +34,7 @@ async function handleRegister() {
   })
 }
 
-async function requestEmailVerifyHandler() {
+async function requestEmailVerifyHandler () {
   const { error } = await requestEmailVerify(email.value)
   // console.log(error.value?.data.message)
 }
