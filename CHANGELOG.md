@@ -1,4 +1,27 @@
 # Changelog
+## v2.1.1-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.0-rc...v2.1.1-rc)
+
+### 🔥 Performance
+
+- Remove baseURL on internal $fetch ([3ef64c9](https://github.com/becem-gharbi/nuxt-auth/commit/3ef64c9))
+
+### 📖 Documentation
+
+- Update 4.email.md ([fb7b2cb](https://github.com/becem-gharbi/nuxt-auth/commit/fb7b2cb))
+- Remove domain should be 127.0.0.1 warning ([b0e9e3e](https://github.com/becem-gharbi/nuxt-auth/commit/b0e9e3e))
+
+### 🏡 Chore
+
+- **demo:** Display module version ([034a271](https://github.com/becem-gharbi/nuxt-auth/commit/034a271))
+- Fix lint issues ([cfa2097](https://github.com/becem-gharbi/nuxt-auth/commit/cfa2097))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.1.0-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.5-rc...v2.1.0-rc)
