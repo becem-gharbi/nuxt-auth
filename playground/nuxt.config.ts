@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   modules: ['../src/module'],
 
   auth: {
-    baseUrl: 'http://127.0.0.1:3000',
+    baseUrl: 'http://localhost:3000',
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || '',

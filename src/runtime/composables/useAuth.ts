@@ -93,7 +93,6 @@ export default function () {
     await callHook('auth:loggedIn', false)
 
     await $fetch('/api/auth/logout', {
-      baseURL: publicConfig.baseUrl,
       method: 'POST'
     }).finally(async () => {
       _accessToken.clear()

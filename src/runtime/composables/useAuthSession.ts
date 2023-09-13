@@ -97,7 +97,6 @@ export default function () {
 
     await $fetch
       .raw<{ accessToken: string }>('/api/auth/session/refresh', {
-        baseURL: publicConfig.baseUrl,
         method: 'POST',
         headers: {
           cookie
