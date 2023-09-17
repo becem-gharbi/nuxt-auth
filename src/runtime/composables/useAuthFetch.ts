@@ -27,5 +27,6 @@ export default async function <DataT> (
     )
   }
 
+  //@ts-ignore
   return $fetch(request, options)
 }
