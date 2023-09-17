@@ -1,4 +1,23 @@
 # Changelog
+## v2.0.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.1-rc...v2.0.1)
+
+### 📖 Documentation
+
+- **readme:** Remove V2 from title ([c974f0c](https://github.com/becem-gharbi/nuxt-auth/commit/c974f0c))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([072ae09](https://github.com/becem-gharbi/nuxt-auth/commit/072ae09))
+- Add typecheck to release workflow ([f0860a9](https://github.com/becem-gharbi/nuxt-auth/commit/f0860a9))
+- Remove rc suffix ([730948b](https://github.com/becem-gharbi/nuxt-auth/commit/730948b))
+- Fix lint issues ([03ee52f](https://github.com/becem-gharbi/nuxt-auth/commit/03ee52f))
+
+### ❤️ Contributors
+
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v2.1.1-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.0-rc...v2.1.1-rc)
