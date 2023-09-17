@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import { setRandomFallback, hashSync, compareSync } from 'bcryptjs'
 
 if (!globalThis.crypto) {
-  //@ts-ignore
+  // @ts-ignore
   globalThis.crypto = crypto
 }
 
