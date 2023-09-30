@@ -165,14 +165,22 @@ export default defineNuxtModule<ModuleOptions>({
       getContents: () =>
         [
           "declare module '#auth' {",
-          `  const verifyAccessToken: typeof import('${resolve(
+          `  const encode: typeof import('${resolve(
             runtimeDir,
             'server/utils'
-          )}').verifyAccessToken`,
-          `  const getAccessTokenFromHeader: typeof import('${resolve(
+          )}').encode`,
+          `  const decode: typeof import('${resolve(
             runtimeDir,
             'server/utils'
-          )}').getAccessTokenFromHeader`,
+          )}').decode`,
+          `  const compareSync: typeof import('${resolve(
+            runtimeDir,
+            'server/utils'
+          )}').compareSync`,
+          `  const hashSync: typeof import('${resolve(
+            runtimeDir,
+            'server/utils'
+          )}').hashSync`,
           `  const sendMail: typeof import('${resolve(
             runtimeDir,
             'server/utils'
