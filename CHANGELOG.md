@@ -1,4 +1,34 @@
 # Changelog
+## v2.0.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.1-rc...v2.0.2)
+
+### 📖 Documentation
+
+- **readme:** Remove V2 from title ([c974f0c](https://github.com/becem-gharbi/nuxt-auth/commit/c974f0c))
+- Add utils page ([389f6f2](https://github.com/becem-gharbi/nuxt-auth/commit/389f6f2))
+
+### 🌊 Types
+
+- Add types for bcrypt and jwt server utilities ([7f158c8](https://github.com/becem-gharbi/nuxt-auth/commit/7f158c8))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([072ae09](https://github.com/becem-gharbi/nuxt-auth/commit/072ae09))
+- Add typecheck to release workflow ([f0860a9](https://github.com/becem-gharbi/nuxt-auth/commit/f0860a9))
+- Remove rc suffix ([730948b](https://github.com/becem-gharbi/nuxt-auth/commit/730948b))
+- Fix lint issues ([03ee52f](https://github.com/becem-gharbi/nuxt-auth/commit/03ee52f))
+- **release:** V2.0.1 ([6578540](https://github.com/becem-gharbi/nuxt-auth/commit/6578540))
+- Add funding btn ([cc609e1](https://github.com/becem-gharbi/nuxt-auth/commit/cc609e1))
+- Expose bcrypt and jwt server utilities via #auth ([683e2e9](https://github.com/becem-gharbi/nuxt-auth/commit/683e2e9))
+- Upgrade dependencies ([c720a1f](https://github.com/becem-gharbi/nuxt-auth/commit/c720a1f))
+- Fix lint issues ([dfce5c8](https://github.com/becem-gharbi/nuxt-auth/commit/dfce5c8))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem Gharbi <becem.gharbi@live.com>
+
 ## v2.0.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.1-rc...v2.0.1)
