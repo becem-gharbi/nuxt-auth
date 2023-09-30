@@ -1,6 +1,7 @@
 import { resolveURL, withQuery } from 'ufo'
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
+import type { AsyncData } from '#app'
 import type { User, Provider, PublicConfig } from '../types'
 import {
   useRuntimeConfig,
@@ -12,8 +13,6 @@ import {
   clearNuxtData,
   useNuxtApp
 } from '#imports'
-
-import type { AsyncData } from '#app'
 
 type FetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
