@@ -34,9 +34,9 @@ export default function () {
         email: credentials.email,
         password: credentials.password
       }
-    }).then((res) => {
+    }).then(async (res) => {
       if (!res.error.value && res.data.value) {
-        _onLogin(res.data.value.accessToken)
+        await _onLogin(res.data.value.accessToken)
       }
 
       return res
@@ -78,7 +78,7 @@ export default function () {
     }).finally(_onLogout)
   }
 
-  function _onLogin (accessToken:string) {
+  function _onLogin (accessToken: string) {
     const route = useRoute()
     const { callHook } = useNuxtApp()
 
@@ -89,11 +89,14 @@ export default function () {
     _loggedIn.set(true)
 
     // A workaround to insure access token cookie is set
-    setTimeout(async () => {
-      await fetchUser()
-      await callHook('auth:loggedIn', true)
-      await navigateTo(redirectTo)
-    }, 100)
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        await fetchUser()
+        await callHook('auth:loggedIn', true)
+        await navigateTo(redirectTo)
+        resolve(true)
+      }, 100)
+    })
   }
 
   async function _onLogout () {
