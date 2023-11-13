@@ -15,11 +15,11 @@ async function encode (payload: JWTPayload, key: string, maxAge: number) {
 async function decode<T> (token: string, key: string) {
   const secret = new TextEncoder().encode(key)
 
-  const { payload } = await jwtVerify(token, secret).catch(() => {
+  const { payload } = await jwtVerify<T>(token, secret).catch(() => {
     throw new Error('unauthorized')
   })
 
-  return payload as T
+  return payload
 }
 
 export { encode, decode }
