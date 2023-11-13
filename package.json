@@ -57,7 +57,7 @@
     "@types/uuid": "^9.0.3",
     "changelogen": "^0.5.5",
     "eslint": "^8.48.0",
-    "nuxt": "^3.7.1",
+    "nuxt": "^3.8.1",
     "prisma": "^5.2.0"
   },
   "peerDependencies": {
