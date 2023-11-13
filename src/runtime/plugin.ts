@@ -10,11 +10,11 @@ import {
   useAuth,
   useRoute,
   useAuthSession,
-  useNuxtApp,
-  useCookie
+  useCookie,
+  watch
 } from '#imports'
 
-export default defineNuxtPlugin(async () => {
+export default defineNuxtPlugin(async (nuxtApp) => {
   try {
     const publicConfig = useRuntimeConfig().public.auth
 
@@ -57,26 +57,24 @@ export default defineNuxtPlugin(async () => {
 
     if (user.value) {
       _loggedIn.set(true)
-      const { callHook } = useNuxtApp()
-      await callHook('auth:loggedIn', true)
+      await nuxtApp.callHook('auth:loggedIn', true)
     } else {
       _loggedIn.set(false)
     }
 
-    if (process.client) {
+    nuxtApp.hook('app:mounted', () => {
       const { _onLogout } = useAuth()
       const { user } = useAuthSession()
-      const accessTokenCookieName = publicConfig.accessTokenCookieName
-
-      const accessTokenCookie = useCookie(accessTokenCookieName)
+      const accessTokenCookie = useCookie(publicConfig.accessTokenCookieName)
 
       watch(accessTokenCookie, (newValue, oldValue) => {
         if (user.value && !newValue && oldValue) {
           _onLogout()
         }
       })
-    }
+    })
   } catch (e) {
     // console.error(e)
   }
-})
+}
+)
