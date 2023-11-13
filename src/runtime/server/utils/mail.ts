@@ -4,8 +4,8 @@ import { getConfig } from './config'
 export async function sendMail (msg: MailMessage) {
   const config = getConfig()
 
-  if (!config.private.email) {
-    throw new Error('Please make sure to configure email option')
+  if (!config.private.email?.provider) {
+    throw new Error('Please make sure to configure email provider')
   }
 
   const settings = config.private.email
