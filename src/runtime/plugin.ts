@@ -72,7 +72,7 @@ export default defineNuxtPlugin(async () => {
 
       watch(accessTokenCookie, (newValue, oldValue) => {
         if (!newValue && oldValue) {
-          logout()
+          // logout()
         }
       })
     }

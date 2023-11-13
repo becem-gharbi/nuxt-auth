@@ -28,9 +28,6 @@ export default function () {
     email: string;
     password: string;
   }): FetchReturn<{ accessToken: string }> {
-    const route = useRoute()
-    const { callHook } = useNuxtApp()
-
     return await useFetch('/api/auth/login', {
       method: 'POST',
       body: {
@@ -39,18 +36,7 @@ export default function () {
       }
     }).then((res) => {
       if (!res.error.value && res.data.value) {
-        const returnToPath = route.query.redirect?.toString()
-        const redirectTo = returnToPath || publicConfig.redirect.home
-
-        _accessToken.set(res.data.value.accessToken)
-        _loggedIn.set(true)
-
-        // A workaround to insure access token cookie is set
-        setTimeout(async () => {
-          await fetchUser()
-          await callHook('auth:loggedIn', true)
-          await navigateTo(redirectTo)
-        }, 100)
+        _onLogin(res.data.value.accessToken)
       }
 
       return res
@@ -87,19 +73,37 @@ export default function () {
   }
 
   async function logout (): Promise<void> {
-    const { callHook } = useNuxtApp()
-
-    await callHook('auth:loggedIn', false)
-
     await $fetch('/api/auth/logout', {
       method: 'POST'
-    }).finally(async () => {
-      _accessToken.clear()
-      _loggedIn.set(false)
-      user.value = null
-      clearNuxtData()
-      await navigateTo(publicConfig.redirect.logout)
-    })
+    }).finally(_onLogout)
+  }
+
+  function _onLogin (accessToken:string) {
+    const route = useRoute()
+    const { callHook } = useNuxtApp()
+
+    const returnToPath = route.query.redirect?.toString()
+    const redirectTo = returnToPath ?? publicConfig.redirect.home
+
+    _accessToken.set(accessToken)
+    _loggedIn.set(true)
+
+    // A workaround to insure access token cookie is set
+    setTimeout(async () => {
+      await fetchUser()
+      await callHook('auth:loggedIn', true)
+      await navigateTo(redirectTo)
+    }, 100)
+  }
+
+  async function _onLogout () {
+    const { callHook } = useNuxtApp()
+    await callHook('auth:loggedIn', false)
+    _accessToken.clear()
+    _loggedIn.set(false)
+    user.value = null
+    clearNuxtData()
+    await navigateTo(publicConfig.redirect.logout)
   }
 
   async function register (userInfo: {
