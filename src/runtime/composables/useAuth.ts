@@ -95,7 +95,7 @@ export default function () {
         await callHook('auth:loggedIn', true)
         await navigateTo(redirectTo)
         resolve(true)
-      }, 100)
+      }, 0)
     })
   }
 
