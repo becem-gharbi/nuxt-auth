@@ -1,6 +1,5 @@
-import { readBody } from 'h3'
+import { readBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { defineEventHandler } from '#imports'
 import {
   getConfig,
   createRefreshToken,

@@ -1,5 +1,5 @@
-import { defineNitroPlugin } from '#imports'
 import { getAccessTokenFromHeader, verifyAccessToken } from '#auth'
+import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp) => {
   nitroApp.hooks.hook('request', async (event) => {

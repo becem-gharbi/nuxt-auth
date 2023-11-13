@@ -2,7 +2,6 @@ import common from './middleware/common'
 import auth from './middleware/auth'
 import guest from './middleware/guest'
 
-import type { PublicConfig } from './types'
 import {
   defineNuxtPlugin,
   addRouteMiddleware,
