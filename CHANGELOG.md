@@ -1,4 +1,46 @@
 # Changelog
+## v2.1.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.2...v2.1.0)
+
+### 🚀 Enhancements
+
+- **deps:** Upgrade jose to v5 ([0ff01d1](https://github.com/becem-gharbi/nuxt-auth/commit/0ff01d1))
+
+### 🔥 Performance
+
+- Move default email templates to module setup ([bbf875c](https://github.com/becem-gharbi/nuxt-auth/commit/bbf875c))
+- **login:** Reduce timeout to zero ([e775eb6](https://github.com/becem-gharbi/nuxt-auth/commit/e775eb6))
+
+### 🩹 Fixes
+
+- Auto logout when multiple tabs opened ([eae8f4f](https://github.com/becem-gharbi/nuxt-auth/commit/eae8f4f))
+
+### 💅 Refactors
+
+- Remove nuxt logo from default email templates ([990ef5e](https://github.com/becem-gharbi/nuxt-auth/commit/990ef5e))
+- Minor refactoring ([7acadc5](https://github.com/becem-gharbi/nuxt-auth/commit/7acadc5))
+- **useAuth:** Create _onlogin and _onLogout handlers ([cefe150](https://github.com/becem-gharbi/nuxt-auth/commit/cefe150))
+- Avoid fetch on auto logout ([c81edda](https://github.com/becem-gharbi/nuxt-auth/commit/c81edda))
+- **configOptions:** Add accessToken cookieName option ([b1c267b](https://github.com/becem-gharbi/nuxt-auth/commit/b1c267b))
+- **login:** Resolve after redirection ([a7e7dec](https://github.com/becem-gharbi/nuxt-auth/commit/a7e7dec))
+- Watch access token cookie on mounted ([1c853d8](https://github.com/becem-gharbi/nuxt-auth/commit/1c853d8))
+
+### 📖 Documentation
+
+- Change social card ([24b2929](https://github.com/becem-gharbi/nuxt-auth/commit/24b2929))
+- Add cookieName to accessToken default config ([c9d097f](https://github.com/becem-gharbi/nuxt-auth/commit/c9d097f))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([d76e02c](https://github.com/becem-gharbi/nuxt-auth/commit/d76e02c))
+- No significant change ([3a098e1](https://github.com/becem-gharbi/nuxt-auth/commit/3a098e1))
+- Set tag to latest ([e032b0e](https://github.com/becem-gharbi/nuxt-auth/commit/e032b0e))
+
+### ❤️ Contributors
+
+- Becem-gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v2.0.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.1-rc...v2.0.2)
