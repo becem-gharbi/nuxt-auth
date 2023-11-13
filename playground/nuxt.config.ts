@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     baseUrl: 'http://localhost:3000',
 
     accessToken: {
+      cookieName: 'access_token',
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || '',
       // maxAge: 15,
       customClaims: {

@@ -26,10 +26,10 @@ import {
 
 export default function () {
   const event = useRequestEvent()
-  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const privateConfig = useRuntimeConfig().auth as PrivateConfig
+  const publicConfig = useRuntimeConfig().public.auth
+  const privateConfig = useRuntimeConfig().auth
   const loggedInName = 'auth_logged_in'
-  const accessTokenCookieName = 'auth_access_token'
+  const accessTokenCookieName = publicConfig.accessTokenCookieName
   const refreshTokenCookieName = process.server
     ? privateConfig.refreshToken.cookieName!
     : ''

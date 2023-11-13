@@ -17,7 +17,7 @@ import {
 
 export default defineNuxtPlugin(async () => {
   try {
-    const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+    const publicConfig = useRuntimeConfig().public.auth
 
     addRouteMiddleware('common', common, { global: true })
 
@@ -67,7 +67,7 @@ export default defineNuxtPlugin(async () => {
     if (process.client) {
       const { _onLogout } = useAuth()
       const { user } = useAuthSession()
-      const accessTokenCookieName = 'auth_access_token'
+      const accessTokenCookieName = publicConfig.accessTokenCookieName
 
       const accessTokenCookie = useCookie(accessTokenCookieName)
 
