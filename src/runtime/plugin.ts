@@ -11,7 +11,8 @@ import {
   useAuth,
   useRoute,
   useAuthSession,
-  useNuxtApp
+  useNuxtApp,
+  useCookie
 } from '#imports'
 
 export default defineNuxtPlugin(async () => {
@@ -61,6 +62,19 @@ export default defineNuxtPlugin(async () => {
       await callHook('auth:loggedIn', true)
     } else {
       _loggedIn.set(false)
+    }
+
+    if (process.client) {
+      const { logout } = useAuth()
+      const accessTokenCookieName = 'auth_access_token'
+
+      const accessTokenCookie = useCookie(accessTokenCookieName)
+
+      watch(accessTokenCookie, (newValue, oldValue) => {
+        if (!newValue && oldValue) {
+          logout()
+        }
+      })
     }
   } catch (e) {
     // console.error(e)
