@@ -65,14 +65,15 @@ export default defineNuxtPlugin(async () => {
     }
 
     if (process.client) {
-      const { logout } = useAuth()
+      const { _onLogout } = useAuth()
+      const { user } = useAuthSession()
       const accessTokenCookieName = 'auth_access_token'
 
       const accessTokenCookie = useCookie(accessTokenCookieName)
 
       watch(accessTokenCookie, (newValue, oldValue) => {
-        if (!newValue && oldValue) {
-          // logout()
+        if (user.value && !newValue && oldValue) {
+          _onLogout()
         }
       })
     }

@@ -99,9 +99,9 @@ export default function () {
   async function _onLogout () {
     const { callHook } = useNuxtApp()
     await callHook('auth:loggedIn', false)
+    user.value = null
     _accessToken.clear()
     _loggedIn.set(false)
-    user.value = null
     clearNuxtData()
     await navigateTo(publicConfig.redirect.logout)
   }
@@ -173,6 +173,7 @@ export default function () {
     requestPasswordReset,
     resetPassword,
     requestEmailVerify,
-    changePassword
+    changePassword,
+    _onLogout
   }
 }
