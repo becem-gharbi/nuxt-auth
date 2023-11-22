@@ -44,7 +44,7 @@ export type AccessTokenPayload = {
 export type RefreshTokenPayload = {
   id: RefreshToken["id"];
   uid: string;
-  userId: number | string;
+  userId: User["id"];
 };
 
 interface MailCustomProvider {
