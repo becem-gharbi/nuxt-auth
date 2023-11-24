@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     await deleteManyRefreshTokenExpired(event)
 
-    return 'ok'
+    return { status: 'ok' }
   } catch (error) {
     await handleError(error)
   }

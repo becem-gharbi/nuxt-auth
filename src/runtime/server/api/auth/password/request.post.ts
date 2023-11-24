@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
       await setUserRequestedPasswordReset(event, user.id, true)
     }
 
-    return 'ok'
+    return { status: 'ok' }
   } catch (error) {
     await handleError(error)
   }

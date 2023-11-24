@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
 
     await deleteRefreshToken(event, id)
 
-    return 'ok'
+    return { status: 'ok' }
   } catch (error) {
     await handleError(error)
   }

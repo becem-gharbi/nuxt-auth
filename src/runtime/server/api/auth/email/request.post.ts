@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    return 'ok'
+    return { status: 'ok' }
   } catch (error) {
     await handleError(error)
   }
