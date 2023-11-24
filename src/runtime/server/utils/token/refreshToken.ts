@@ -125,6 +125,12 @@ export async function verifyRefreshToken (event: H3Event, refreshToken: string) 
     throw new Error('unauthorized')
   }
 
+  const userAgent = getHeader(event, 'user-agent')
+
+  if (refreshTokenEntity.userAgent !== userAgent) {
+    throw new Error('unauthorized')
+  }
+
   return payload
 }
 
