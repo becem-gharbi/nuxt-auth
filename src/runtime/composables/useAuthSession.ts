@@ -1,4 +1,5 @@
 import { decodeJwt } from 'jose'
+import Cookies from 'js-cookie'
 import {
   deleteCookie,
   getCookie,
@@ -10,15 +11,12 @@ import type { Ref } from 'vue'
 import type {
   User,
   RefreshToken,
-  Session,
-  PublicConfig,
-  PrivateConfig
+  Session
 } from '../types'
 import {
   useRequestEvent,
   useRuntimeConfig,
   useState,
-  useCookie,
   useRequestHeaders,
   navigateTo,
   useAuthFetch
@@ -40,7 +38,7 @@ export default function () {
       process.server
         ? event.context[accessTokenCookieName] ||
           getCookie(event, accessTokenCookieName)
-        : useCookie(accessTokenCookieName).value,
+        : Cookies.get(accessTokenCookieName),
     set: (value: string) => {
       if (process.server) {
         event.context[accessTokenCookieName] = value
@@ -49,17 +47,17 @@ export default function () {
           secure: true
         })
       } else {
-        useCookie(accessTokenCookieName, {
+        Cookies.set(accessTokenCookieName, value, {
           sameSite: 'lax',
           secure: true
-        }).value = value
+        })
       }
     },
     clear: () => {
       if (process.server) {
         deleteCookie(event, accessTokenCookieName)
       } else {
-        useCookie(accessTokenCookieName).value = null
+        Cookies.remove(accessTokenCookieName)
       }
     }
   }
