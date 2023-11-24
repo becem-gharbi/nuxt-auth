@@ -9,7 +9,7 @@ import {
   findUser,
   handleError,
   setUserRequestedPasswordReset
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -44,12 +44,12 @@ export default defineEventHandler(async (event) => {
         to: user.email,
         subject: 'Password Reset',
         html: mustache.render(
-          config.private.email.templates.passwordReset,
+          config.private.email!.templates!.passwordReset!,
           {
             ...user,
             link,
             validityInMinutes: Math.round(
-              config.private.accessToken.maxAge / 60
+              config.private.accessToken.maxAge! / 60
             )
           }
         )

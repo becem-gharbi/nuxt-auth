@@ -7,8 +7,8 @@ import type {
   RefreshToken,
   Session
 } from '../../../types'
+import { getConfig } from '../config'
 import { encode, decode } from './jwt'
-import { getConfig } from '#auth'
 
 export async function createRefreshToken (event: H3Event, user: User) {
   const prisma = event.context.prisma

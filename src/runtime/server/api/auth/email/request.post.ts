@@ -8,7 +8,7 @@ import {
   createEmailVerifyToken,
   findUser,
   handleError
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -44,12 +44,12 @@ export default defineEventHandler(async (event) => {
         to: user.email,
         subject: 'Email verification',
         html: mustache.render(
-          config.private.email.templates.emailVerify,
+          config.private.email!.templates!.emailVerify!,
           {
             ...user,
             link,
             validityInMinutes: Math.round(
-              config.private.accessToken.maxAge / 60
+              config.private.accessToken.maxAge! / 60
             )
           }
         )

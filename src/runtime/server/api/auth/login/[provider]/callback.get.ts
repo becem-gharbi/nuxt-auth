@@ -2,7 +2,7 @@ import { defineEventHandler, getQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import type { User } from '../../../../../types'
+import type { User, Provider } from '../../../../../types'
 import {
   getConfig,
   createRefreshToken,
@@ -11,7 +11,7 @@ import {
   findUser,
   handleError,
   signRefreshToken
-} from '#auth'
+} from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -21,12 +21,9 @@ export default defineEventHandler(async (event) => {
       throw new Error('Please make sure to set callback redirect path')
     }
 
-    const provider = event.context.params!.provider
+    const provider = event.context.params!.provider as Provider
 
-    const { state: returnToPath, code } = getQuery(event) as {
-      state?: string;
-      code: string;
-    }
+    const { state: returnToPath, code } = getQuery<{ code: string, state: string }>(event)
 
     const schema = z.object({
       code: z.string()
@@ -34,17 +31,19 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ code })
 
-    if (!config.private.oauth || !config.private.oauth[provider]) {
+    const oauthProvider = config.private.oauth?.[provider]
+
+    if (!oauthProvider) {
       throw new Error('oauth-not-configured')
     }
 
     const formData = new FormData()
     formData.append('grant_type', 'authorization_code')
     formData.append('code', code)
-    formData.append('client_id', config.private.oauth[provider].clientId)
+    formData.append('client_id', oauthProvider.clientId)
     formData.append(
       'client_secret',
-      config.private.oauth[provider].clientSecret
+      oauthProvider.clientSecret
     )
     formData.append(
       'redirect_uri',
@@ -52,7 +51,7 @@ export default defineEventHandler(async (event) => {
     )
 
     const { access_token: accessToken } = await $fetch(
-      config.private.oauth[provider].tokenUrl,
+      oauthProvider.tokenUrl,
       {
         method: 'POST',
         body: formData,
@@ -62,7 +61,7 @@ export default defineEventHandler(async (event) => {
       }
     )
 
-    const userInfo = await $fetch(config.private.oauth[provider].userUrl, {
+    const userInfo = await $fetch(oauthProvider.userUrl, {
       headers: {
         Authorization: 'Bearer ' + accessToken
       }
@@ -76,7 +75,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('email-not-accessible')
     }
 
-    let user: User | undefined
+    let user: User | null = null
 
     user = await findUser(event, { email: userInfo.email })
 
@@ -132,7 +131,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     await handleError(error, {
       event,
-      url: config.public.redirect.callback
+      url: config.public.redirect.callback!
     })
   }
 })

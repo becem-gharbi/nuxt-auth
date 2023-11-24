@@ -5,7 +5,7 @@ import {
   verifyEmailVerifyToken,
   setUserEmailVerified,
   handleError
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     await handleError(error, {
       event,
-      url: config.public.redirect.emailVerify
+      url: config.public.redirect.emailVerify!
     })
   }
 })

@@ -1,9 +1,8 @@
-import type { PrivateConfig, PublicConfig } from '../../types'
 import { useRuntimeConfig } from '#imports'
 
 export function getConfig () {
-  const privateConfig = useRuntimeConfig().auth as PrivateConfig
-  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+  const privateConfig = useRuntimeConfig().auth
+  const publicConfig = useRuntimeConfig().public.auth
 
   return { private: privateConfig, public: publicConfig }
 }

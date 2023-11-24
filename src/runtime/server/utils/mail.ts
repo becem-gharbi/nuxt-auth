@@ -12,8 +12,8 @@ export async function sendMail (msg: MailMessage) {
 
   switch (settings.provider.name) {
     case 'custom':
-      return await withCustom(
-        settings.provider.url,
+      return await withCustom(// @ts-ignore
+        settings.provider.url, // @ts-ignore
         settings.provider.authorization
       )
     case 'sendgrid':

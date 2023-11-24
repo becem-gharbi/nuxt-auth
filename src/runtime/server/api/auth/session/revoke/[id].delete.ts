@@ -1,10 +1,10 @@
 import { defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { handleError, findRefreshTokenById, deleteRefreshToken } from '#auth'
+import { handleError, findRefreshTokenById, deleteRefreshToken } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
-    const id = event.context.params?.id
+    const id = event.context.params?.id as string
 
     const schema = z.object({
       id: z.number().or(z.string())

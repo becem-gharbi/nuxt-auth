@@ -7,7 +7,7 @@ import {
   findUser,
   verifyPassword,
   handleError
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       currentPassword: z.string(),
       newPassword: z
         .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex))
+        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? ''))
     })
 
     schema.parse({ currentPassword, newPassword })
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     if (
       !user ||
       user.provider !== 'default' ||
-      !verifyPassword(currentPassword, user.password)
+      !verifyPassword(currentPassword, user.password!)
     ) {
       throw new Error('wrong-password')
     }

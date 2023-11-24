@@ -1,7 +1,6 @@
-import type { H3Event } from 'h3'
 import type { ResetPasswordPayload } from '../../../types'
+import { getConfig } from '../config'
 import { encode, decode } from './jwt'
-import { getConfig } from '#auth'
 
 export async function createResetPasswordToken (payload: ResetPasswordPayload) {
   const config = getConfig()

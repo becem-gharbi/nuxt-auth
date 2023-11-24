@@ -9,7 +9,7 @@ import {
   verifyPassword,
   handleError,
   signRefreshToken
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     if (
       !user ||
       user.provider !== 'default' ||
-      !verifyPassword(password, user.password)
+      !verifyPassword(password, user.password!)
     ) {
       throw new Error('wrong-credentials')
     }

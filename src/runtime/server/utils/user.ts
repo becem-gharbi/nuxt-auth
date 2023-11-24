@@ -32,8 +32,8 @@ export async function createUser (
     data: {
       ...input,
       password: hashedPassword,
-      role: config.private.registration?.defaultRole || 'user',
-      provider: input.provider || 'default',
+      role: config.private.registration.defaultRole as User['role'] ?? 'user',
+      provider: input.provider ?? 'default',
       picture: input.picture || generateAvatar(input.name)
     }
   })

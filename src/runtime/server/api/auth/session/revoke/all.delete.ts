@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { handleError, deleteManyRefreshTokenByUser } from '#auth'
+import { handleError, deleteManyRefreshTokenByUser } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {

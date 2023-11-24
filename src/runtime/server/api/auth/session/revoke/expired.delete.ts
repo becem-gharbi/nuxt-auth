@@ -1,5 +1,5 @@
 import { defineEventHandler, getRequestHeader } from 'h3'
-import { getConfig, handleError, deleteManyRefreshTokenExpired } from '#auth'
+import { getConfig, handleError, deleteManyRefreshTokenExpired } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

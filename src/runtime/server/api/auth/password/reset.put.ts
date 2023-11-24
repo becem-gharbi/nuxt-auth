@@ -8,7 +8,7 @@ import {
   handleError,
   setUserRequestedPasswordReset,
   findUser
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
       token: z.string(),
       password: z
         .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex))
+        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? ''))
     })
 
     schema.parse({ password, token })
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await findUser(event, { id: payload.userId })
 
-    if (!user.requestedPasswordReset) {
+    if (!user?.requestedPasswordReset) {
       throw new Error('reset-not-requested')
     }
 

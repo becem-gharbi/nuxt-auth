@@ -1,7 +1,6 @@
-import type { H3Event } from 'h3'
 import type { EmailVerifyPayload } from '../../../types'
+import { getConfig } from '../config'
 import { decode, encode } from './jwt'
-import { getConfig } from '#auth'
 
 export async function createEmailVerifyToken (payload: EmailVerifyPayload) {
   const config = getConfig()

@@ -8,13 +8,13 @@ import {
   deleteRefreshTokenCookie,
   findUser,
   handleError
-} from '#auth'
+} from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
     const refreshToken = getRefreshTokenFromCookie(event)
 
-    const payload = await verifyRefreshToken(event, refreshToken)
+    const payload = await verifyRefreshToken(event, refreshToken ?? '')
 
     const user = await findUser(event, { id: payload.userId })
 
