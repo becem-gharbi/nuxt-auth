@@ -1,4 +1,50 @@
 # Changelog
+## v2.2.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.0...v2.2.0)
+
+### 🚀 Enhancements
+
+- Add fingerprint check on access token verification ([6a9c604](https://github.com/becem-gharbi/nuxt-auth/commit/6a9c604))
+
+### 🔥 Performance
+
+- Avoid relying on useCookie for multi-tabs auto logout ([7865639](https://github.com/becem-gharbi/nuxt-auth/commit/7865639))
+- Avoid access token check on non API requests ([e9b98e3](https://github.com/becem-gharbi/nuxt-auth/commit/e9b98e3))
+
+### 💅 Refactors
+
+- **useAuthSession:** Replace useCookie with js-cookie ([cc2ea24](https://github.com/becem-gharbi/nuxt-auth/commit/cc2ea24))
+- **useAuth:** Remove delay on login ([ed7e39b](https://github.com/becem-gharbi/nuxt-auth/commit/ed7e39b))
+- Create client-only plugin for Broadcast channel ([4d5050a](https://github.com/becem-gharbi/nuxt-auth/commit/4d5050a))
+- Verify userAgent on token refresh ([5495a8f](https://github.com/becem-gharbi/nuxt-auth/commit/5495a8f))
+- **refresh:** Pass user-agent to API ([cfe9bb6](https://github.com/becem-gharbi/nuxt-auth/commit/cfe9bb6))
+- **fetch:** Pass user-agent to API ([827cdf7](https://github.com/becem-gharbi/nuxt-auth/commit/827cdf7))
+- Add event argument to verifyAccessToken and createAccessToken ([1a2f6fc](https://github.com/becem-gharbi/nuxt-auth/commit/1a2f6fc))
+- Create fingerprint server utility ([6438610](https://github.com/becem-gharbi/nuxt-auth/commit/6438610))
+- Always return json on API response (or redirect) ([feeed74](https://github.com/becem-gharbi/nuxt-auth/commit/feeed74))
+- **fingerprint:** Use h3 built-in hash option ([7dc51c6](https://github.com/becem-gharbi/nuxt-auth/commit/7dc51c6))
+- Minor refactoring ([7fceab1](https://github.com/becem-gharbi/nuxt-auth/commit/7fceab1))
+
+### 🌊 Types
+
+- Update types.d.ts ([9153b39](https://github.com/becem-gharbi/nuxt-auth/commit/9153b39))
+
+### 🏡 Chore
+
+- **demo:** Upgrade dependencies ([42b4825](https://github.com/becem-gharbi/nuxt-auth/commit/42b4825))
+- **demo:** Sync lock ([0c0f473](https://github.com/becem-gharbi/nuxt-auth/commit/0c0f473))
+- **demo:** Upgrade nuxt to 3.8.2 ([7b6fb55](https://github.com/becem-gharbi/nuxt-auth/commit/7b6fb55))
+- Set nuxt compatibility to 3.8.2 ([50ff905](https://github.com/becem-gharbi/nuxt-auth/commit/50ff905))
+- **demo:** Set access token max age to 20 sec ([cb174c9](https://github.com/becem-gharbi/nuxt-auth/commit/cb174c9))
+- **demo:** Upgrade deps ([4535cd7](https://github.com/becem-gharbi/nuxt-auth/commit/4535cd7))
+- Set tag to latest ([5712684](https://github.com/becem-gharbi/nuxt-auth/commit/5712684))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.1.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.0.2...v2.1.0)
