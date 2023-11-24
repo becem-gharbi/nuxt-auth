@@ -3,6 +3,7 @@ import mustache from 'mustache'
 import type { H3Event } from 'h3'
 import type { AccessTokenPayload, User, Session } from '../../../types'
 import { encode, decode } from './jwt'
+import { getFingerprintHash, verifyFingerprint } from './fingerprint'
 import { getConfig } from '#auth'
 
 export async function createAccessToken (event: H3Event, user: User, sessionId: Session['id']) {
@@ -15,11 +16,14 @@ export async function createAccessToken (event: H3Event, user: User, sessionId: 
     customClaims = Object.assign(JSON.parse(output))
   }
 
+  const fingerprint = await getFingerprintHash(event)
+
   const payload: AccessTokenPayload = {
+    ...customClaims,
     sessionId,
     userId: user.id,
     userRole: user.role,
-    ...customClaims
+    fingerprint
   }
 
   const accessToken = await encode(
@@ -56,6 +60,8 @@ export async function verifyAccessToken (event:H3Event, accessToken: string) {
     accessToken,
     config.private.accessToken.jwtSecret
   )
+
+  await verifyFingerprint(event, payload.fingerprint)
 
   return payload
 }
