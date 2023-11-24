@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     baseUrl: process.env.AUTH_BASE_URL,
 
     accessToken: {
+      maxAge: 20,
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET!
     },
 
