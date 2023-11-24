@@ -167,9 +167,11 @@ export default defineNuxtModule<ModuleOptions>({
     // Transpile CJS dependencies
     nuxt.options.build.transpile.push(runtimeDir, 'bcryptjs')
 
-    // Add vue plugins
-    const plugin = resolve(runtimeDir, 'plugin')
-    addPlugin(plugin)
+    // Add nuxt plugins
+    const universalPlugin = resolve(runtimeDir, 'plugins/index')
+    const clientPlugin = resolve(runtimeDir, 'plugins/index.client')
+    addPlugin(clientPlugin)
+    addPlugin(universalPlugin)
 
     // Add composables directory
     const composables = resolve(runtimeDir, 'composables')

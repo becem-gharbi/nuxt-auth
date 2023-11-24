@@ -1,6 +1,6 @@
-import common from './middleware/common'
-import auth from './middleware/auth'
-import guest from './middleware/guest'
+import common from '../middleware/common'
+import auth from '../middleware/auth'
+import guest from '../middleware/guest'
 
 import {
   defineNuxtPlugin,
@@ -13,8 +13,6 @@ import {
 } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('nuxt-auth')
-
   try {
     const publicConfig = useRuntimeConfig().public.auth
 
@@ -61,23 +59,5 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     } else {
       _loggedIn.set(false)
     }
-
-    nuxtApp.hook('app:mounted', () => {
-      if (channel) {
-        channel.onmessage = (event) => {
-          if (event.data === 'logout' && user.value) {
-            useAuth()._onLogout()
-          }
-        }
-      }
-    })
   } catch (e) {}
-
-  return {
-    provide: {
-      auth: {
-        channel
-      }
-    }
-  }
 })
