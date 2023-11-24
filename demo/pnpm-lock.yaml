@@ -6,8 +6,8 @@ settings:
 
 devDependencies:
   '@bg-dev/nuxt-auth':
-    specifier: 2.1.0-edge
-    version: 2.1.0-edge(prisma@5.6.0)
+    specifier: 2.1.1-edge
+    version: 2.1.1-edge(prisma@5.6.0)
   '@nuxt/devtools':
     specifier: latest
     version: 1.0.3(nuxt@3.8.2)(vite@4.5.0)
@@ -367,8 +367,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@bg-dev/nuxt-auth@2.1.0-edge(prisma@5.6.0):
-    resolution: {integrity: sha512-X+6EbU2eVXPBxYJWU4VYyv8ASkfHFHZ2snWUYtt5KtRcFMuTvK3zTHIFMXDLJqmGDrNO8MQSYXeenonV2JEoTQ==}
+  /@bg-dev/nuxt-auth@2.1.1-edge(prisma@5.6.0):
+    resolution: {integrity: sha512-0Q+l2fHu88Kwi8p9htuIiAKcgxXcFbtwVzwW97jSoof8H7nbu0kU/XEUwW7KL49asZJd7hpzzNuqqQDA8mGssw==}
     peerDependencies:
       prisma: ^5.2.0
     dependencies:
@@ -1317,6 +1317,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: true
     bundledDependencies:
       - napi-wasm
@@ -3964,6 +3965,10 @@ packages:
     resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
     engines: {node: ^14 || ^16 || >=18}
     hasBin: true
+    dev: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
     dev: true
 
   /negotiator@0.6.3:
