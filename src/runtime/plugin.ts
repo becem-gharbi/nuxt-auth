@@ -9,12 +9,12 @@ import {
   useState,
   useAuth,
   useRoute,
-  useAuthSession,
-  useCookie,
-  watch
+  useAuthSession
 } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
+  const channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('nuxt-auth')
+
   try {
     const publicConfig = useRuntimeConfig().public.auth
 
@@ -63,18 +63,21 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
 
     nuxtApp.hook('app:mounted', () => {
-      const { _onLogout } = useAuth()
-      const { user } = useAuthSession()
-      const accessTokenCookie = useCookie(publicConfig.accessTokenCookieName)
-
-      watch(accessTokenCookie, (newValue, oldValue) => {
-        if (user.value && !newValue && oldValue) {
-          _onLogout()
+      if (channel) {
+        channel.onmessage = (event) => {
+          if (event.data === 'logout' && user.value) {
+            useAuth()._onLogout()
+          }
         }
-      })
+      }
     })
-  } catch (e) {
-    // console.error(e)
+  } catch (e) {}
+
+  return {
+    provide: {
+      auth: {
+        channel
+      }
+    }
   }
-}
-)
+})
