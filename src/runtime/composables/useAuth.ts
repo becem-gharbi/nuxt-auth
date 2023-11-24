@@ -78,25 +78,16 @@ export default function () {
     }).finally(_onLogout)
   }
 
-  function _onLogin (accessToken: string) {
+  async function _onLogin (accessToken: string) {
     const route = useRoute()
     const { callHook } = useNuxtApp()
-
     const returnToPath = route.query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-
     _accessToken.set(accessToken)
     _loggedIn.set(true)
-
-    // A workaround to insure access token cookie is set
-    return new Promise((resolve) => {
-      setTimeout(async () => {
-        await fetchUser()
-        await callHook('auth:loggedIn', true)
-        await navigateTo(redirectTo)
-        resolve(true)
-      }, 0)
-    })
+    await fetchUser()
+    await callHook('auth:loggedIn', true)
+    await navigateTo(redirectTo)
   }
 
   async function _onLogout () {
