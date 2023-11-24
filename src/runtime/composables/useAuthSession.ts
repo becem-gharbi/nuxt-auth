@@ -91,14 +91,12 @@ export default function () {
 
     isRefreshOn.value = true
 
-    const cookie = useRequestHeaders(['cookie']).cookie || ''
+    const headers = useRequestHeaders(['cookie', 'user-agent'])
 
     await $fetch
       .raw<{ accessToken: string }>('/api/auth/session/refresh', {
         method: 'POST',
-        headers: {
-          cookie
-        }
+        headers
       })
       .then((res) => {
         const setCookie = res.headers.get('set-cookie') || ''
