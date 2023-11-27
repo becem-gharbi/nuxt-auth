@@ -67,7 +67,6 @@ export function useAuth () {
   async function fetchUser () {
     try {
       const data = await useAuthFetch('/api/auth/me')
-      // @ts-ignore
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),
@@ -156,7 +155,6 @@ export function useAuth () {
     currentPassword: string;
     newPassword: string;
   }): Promise<Response> {
-    // @ts-ignore
     return await useAuthFetch('/api/auth/password/change', {
       method: 'PUT',
       body: {
