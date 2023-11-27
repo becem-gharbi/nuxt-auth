@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { getConfig } from '#auth'
+import { getConfig } from '../utils'
 import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp) => {
