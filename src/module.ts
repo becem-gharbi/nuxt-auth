@@ -170,7 +170,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Add nuxt plugins
     addPlugin(resolve(runtimeDir, 'plugins/provider'), { append: true })
-    addPlugin(resolve(runtimeDir, 'plugins/flow'))
+    addPlugin(resolve(runtimeDir, 'plugins/flow'), { append: true })
 
     // Add composables directory
     const composables = resolve(runtimeDir, 'composables')
