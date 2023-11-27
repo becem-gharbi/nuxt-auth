@@ -13,7 +13,7 @@ import { encode, decode } from './jwt'
 export async function createRefreshToken (event: H3Event, user: User) {
   const prisma = event.context.prisma
 
-  const userAgent = getHeader(event, 'user-agent')
+  const userAgent = getHeader(event, 'user-agent') ?? null
 
   const refreshTokenEntity = await prisma.refreshToken.create({
     data: {
@@ -125,7 +125,7 @@ export async function verifyRefreshToken (event: H3Event, refreshToken: string) 
     throw new Error('unauthorized')
   }
 
-  const userAgent = getHeader(event, 'user-agent')
+  const userAgent = getHeader(event, 'user-agent') ?? null
 
   if (refreshTokenEntity.userAgent !== userAgent) {
     throw new Error('unauthorized')
