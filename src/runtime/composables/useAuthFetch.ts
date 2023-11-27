@@ -8,7 +8,7 @@ import { useAuthSession, useRequestHeaders } from '#imports'
 /**
  * A wrapper of `$fetch` API that auto passes authorization header
  */
-export default async function <T = unknown, R extends NitroFetchRequest = NitroFetchRequest, O extends NitroFetchOptions<R, AvailableRouterMethod<R>> = NitroFetchOptions<R, AvailableRouterMethod<R>>> (
+export async function useAuthFetch <T = unknown, R extends NitroFetchRequest = NitroFetchRequest, O extends NitroFetchOptions<R, AvailableRouterMethod<R>> = NitroFetchOptions<R, AvailableRouterMethod<R>>> (
   request: R,
   options?: O
 ): ReturnType<typeof $fetch<T, R, O>> {

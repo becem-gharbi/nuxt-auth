@@ -22,7 +22,7 @@ import {
   useAuthFetch
 } from '#imports'
 
-export default function () {
+export function useAuthSession () {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth
   const privateConfig = useRuntimeConfig().auth

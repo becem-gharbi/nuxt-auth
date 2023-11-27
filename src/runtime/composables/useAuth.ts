@@ -16,7 +16,7 @@ import {
 
 type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
-export default function () {
+export function useAuth () {
   const { user } = useAuthSession()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const { _accessToken, _loggedIn } = useAuthSession()
@@ -66,8 +66,8 @@ export default function () {
    */
   async function fetchUser () {
     try {
-      // @ts-ignore
       const data = await useAuthFetch('/api/auth/me')
+      // @ts-ignore
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),
