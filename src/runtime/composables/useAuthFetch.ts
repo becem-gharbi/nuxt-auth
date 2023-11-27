@@ -3,7 +3,7 @@ import type { NitroFetchRequest, NitroFetchOptions } from 'nitropack'
 import { useAuthSession, useRequestHeaders } from '#imports'
 
 /**
- * A wrapper of `$fetch` API that auto passes authorization header
+ * @deprecated since version 2.2.1, please use `useNuxtApp().$auth.fetch() instead`
  */
 export async function useAuthFetch <T> (
   request: NitroFetchRequest,
