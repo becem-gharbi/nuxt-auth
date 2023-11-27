@@ -10,29 +10,20 @@ import { useAuthSession, useRequestHeaders } from '#imports'
  */
 export default async function <T = unknown, R extends NitroFetchRequest = NitroFetchRequest, O extends NitroFetchOptions<R, AvailableRouterMethod<R>> = NitroFetchOptions<R, AvailableRouterMethod<R>>> (
   request: R,
-  options: O = {}
+  options?: O
 ): ReturnType<typeof $fetch<T, R, O>> {
   const { getAccessToken } = useAuthSession()
 
-  // Remove refresh token from request
-  options.credentials = options.credentials ?? 'omit'
-
-  // Pass user-agent on SSR requests
-  const clientHeaders = useRequestHeaders(['user-agent'])
-
-  // Get a freshed access token (refreshed if expired) or not
+  const userAgent = useRequestHeaders(['user-agent'])['user-agent']
   const accessToken = await getAccessToken()
 
-  // If the access token cannot be obtained, proceed to logout!
-  if (accessToken) {
-    options.headers = defu(
-      {
-        Authorization: 'Bearer ' + accessToken
-      },
-      clientHeaders,
-      options.headers
-    )
-  }
+  const _options = defu(options, {
+    credentials: 'omit',
+    headers: accessToken && {
+      authorization: 'Bearer ' + accessToken,
+      'user-agent': userAgent
+    }
+  }) as O
 
-  return $fetch<T, R, O>(request, options)
+  return $fetch<T, R, O>(request, _options)
 }
