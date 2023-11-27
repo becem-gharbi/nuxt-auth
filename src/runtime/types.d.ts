@@ -126,5 +126,4 @@ export type PublicConfig = {
   };
 };
 
-
-export interface Response { status: string }
+interface Response { status: string }

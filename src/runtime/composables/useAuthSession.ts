@@ -10,7 +10,8 @@ import {
 import type { Ref } from 'vue'
 import type {
   User,
-  Session
+  Session,
+  Response
 } from '../types'
 import {
   useRequestEvent,
@@ -141,9 +142,9 @@ export function useAuthSession () {
   /**
    * Removes all stored sessions of the active user
    */
-  function revokeAllSessions () {
+  function revokeAllSessions (): Promise<Response> {
     const { $auth } = useNuxtApp()
-    return $auth.fetch('/api/auth/session/revoke/all', {
+    return $auth.fetch<Response>('/api/auth/session/revoke/all', {
       method: 'DELETE'
     })
   }
@@ -151,9 +152,9 @@ export function useAuthSession () {
   /**
    * Removes a single stored session of the active user
    */
-  function revokeSession (id: Session['id']) {
+  function revokeSession (id: Session['id']): Promise<Response> {
     const { $auth } = useNuxtApp()
-    return $auth.fetch(`/api/auth/session/revoke/${id}`, {
+    return $auth.fetch<Response>(`/api/auth/session/revoke/${id}`, {
       method: 'DELETE'
     })
   }
@@ -161,7 +162,7 @@ export function useAuthSession () {
   /**
    * Get all stored sessions of the active user
    */
-  async function getAllSessions (): Promise<Session[]> {
+  async function getAllSessions () {
     const { $auth } = useNuxtApp()
     const { refreshTokens, current } = await $auth.fetch('/api/auth/session')
 

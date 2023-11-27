@@ -154,9 +154,9 @@ export function useAuth () {
   function changePassword (input: {
     currentPassword: string;
     newPassword: string;
-  }) {
+  }): Promise<Response> {
     const { $auth } = useNuxtApp()
-    return $auth.fetch('/api/auth/password/change', {
+    return $auth.fetch<Response>('/api/auth/password/change', {
       method: 'PUT',
       body: {
         currentPassword: input.currentPassword,
