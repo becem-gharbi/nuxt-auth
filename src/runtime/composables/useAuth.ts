@@ -2,7 +2,7 @@ import { resolveURL, withQuery } from 'ufo'
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { AsyncData } from '#app'
-import type { Provider, PublicConfig } from '../types'
+import type { Provider, PublicConfig, Response } from '../types'
 import {
   useRuntimeConfig,
   useRoute,
@@ -15,7 +15,6 @@ import {
 } from '#imports'
 
 type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
-interface Response { status: string }
 
 export default function () {
   const { user } = useAuthSession()

@@ -125,3 +125,6 @@ export type PublicConfig = {
     emailVerify?: string;
   };
 };
+
+
+export interface Response { status: string }

@@ -10,8 +10,8 @@ import {
 import type { Ref } from 'vue'
 import type {
   User,
-  RefreshToken,
-  Session
+  Session,
+  Response
 } from '../types'
 import {
   useRequestEvent,
@@ -34,7 +34,7 @@ export default function () {
   const msRefreshBeforeExpires = 3000
 
   const _accessToken = {
-    get: () =>
+    get: () : string | undefined =>
       process.server
         ? event.context[accessTokenCookieName] ||
           getCookie(event, accessTokenCookieName)
@@ -99,7 +99,7 @@ export default function () {
         headers
       })
       .then((res) => {
-        const setCookie = res.headers.get('set-cookie') || ''
+        const setCookie = res.headers.get('set-cookie') ?? ''
 
         const cookies = splitCookiesString(setCookie)
 
@@ -142,8 +142,8 @@ export default function () {
   /**
    * Removes all stored sessions of the active user
    */
-  async function revokeAllSessions (): Promise<void> {
-    return await useAuthFetch<void>('/api/auth/session/revoke/all', {
+  function revokeAllSessions (): Promise<Response> {
+    return useAuthFetch('/api/auth/session/revoke/all', {
       method: 'DELETE'
     })
   }
@@ -151,8 +151,8 @@ export default function () {
   /**
    * Removes a single stored session of the active user
    */
-  async function revokeSession (id: Session['id']): Promise<void> {
-    return await useAuthFetch<void>(`/api/auth/session/revoke/${id}`, {
+  function revokeSession (id: Session['id']): Promise<Response> {
+    return useAuthFetch(`/api/auth/session/revoke/${id}`, {
       method: 'DELETE'
     })
   }
@@ -161,10 +161,7 @@ export default function () {
    * Get all stored sessions of the active user
    */
   async function getAllSessions (): Promise<Session[]> {
-    const { refreshTokens, current } = await useAuthFetch<{
-      refreshTokens: RefreshToken[];
-      current: Session['id'];
-    }>('/api/auth/session')
+    const { refreshTokens, current } = await useAuthFetch('/api/auth/session')
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {
       return {
@@ -172,8 +169,8 @@ export default function () {
         current: refreshToken.id === current,
         userId: refreshToken.userId,
         ua: refreshToken.userAgent,
-        updatedAt: refreshToken.updatedAt,
-        createdAt: refreshToken.createdAt
+        updatedAt: new Date(refreshToken.updatedAt),
+        createdAt: new Date(refreshToken.createdAt)
       }
     })
 
