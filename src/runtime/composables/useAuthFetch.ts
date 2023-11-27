@@ -1,14 +1,17 @@
 import { defu } from 'defu'
-import type { NitroFetchRequest, NitroFetchOptions } from 'nitropack'
+import type {
+  NitroFetchRequest, NitroFetchOptions,
+  AvailableRouterMethod
+} from 'nitropack'
 import { useAuthSession, useRequestHeaders } from '#imports'
 
 /**
  * A wrapper of `$fetch` API that auto passes authorization header
  */
-export default async function <DataT> (
-  request: NitroFetchRequest,
-  options: NitroFetchOptions<NitroFetchRequest> = {}
-): Promise<DataT> {
+export default async function <T = unknown, R extends NitroFetchRequest = NitroFetchRequest, O extends NitroFetchOptions<R, AvailableRouterMethod<R>> = NitroFetchOptions<R, AvailableRouterMethod<R>>> (
+  request: R,
+  options: O = {}
+): ReturnType<typeof $fetch<T, R, O>> {
   const { getAccessToken } = useAuthSession()
 
   // Remove refresh token from request
@@ -31,6 +34,5 @@ export default async function <DataT> (
     )
   }
 
-  // @ts-ignore
-  return $fetch(request, options)
+  return $fetch<T, R, O>(request, options)
 }
