@@ -11,6 +11,7 @@ import {
 } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { PrismaClient } from '@prisma/client'
+import type { $Fetch } from 'nitropack'
 import { name, version } from '../package.json'
 
 import type {
@@ -354,6 +355,7 @@ export default defineNuxtModule<ModuleOptions>({
 declare module '#app' {
   interface NuxtApp {
     $auth: {
+      fetch: $Fetch,
       channel: BroadcastChannel | null;
     };
   }

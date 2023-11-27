@@ -1,7 +1,9 @@
+import { defu } from 'defu'
 import {
   defineNuxtPlugin,
   useAuth,
-  useAuthSession
+  useAuthSession,
+  useRequestHeaders
 } from '#imports'
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -20,10 +22,28 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   })
 
+  const userAgent = useRequestHeaders(['user-agent'])['user-agent']
+
+  const fetch = $fetch.create({
+    async onRequest ({ options }) {
+      const { getAccessToken } = useAuthSession()
+
+      const accessToken = await getAccessToken()
+
+      options.headers = defu(options.headers, accessToken && {
+        authorization: 'Bearer ' + accessToken,
+        'user-agent': userAgent
+      })
+
+      options.credentials ||= 'omit'
+    }
+  })
+
   return {
     provide: {
       auth: {
-        channel
+        channel,
+        fetch
       }
     }
   }

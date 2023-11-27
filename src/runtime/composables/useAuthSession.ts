@@ -10,8 +10,7 @@ import {
 import type { Ref } from 'vue'
 import type {
   User,
-  Session,
-  Response
+  Session
 } from '../types'
 import {
   useRequestEvent,
@@ -19,7 +18,7 @@ import {
   useState,
   useRequestHeaders,
   navigateTo,
-  useAuthFetch
+  useNuxtApp
 } from '#imports'
 
 export function useAuthSession () {
@@ -142,8 +141,9 @@ export function useAuthSession () {
   /**
    * Removes all stored sessions of the active user
    */
-  function revokeAllSessions (): Promise<Response> {
-    return useAuthFetch('/api/auth/session/revoke/all', {
+  function revokeAllSessions () {
+    const { $auth } = useNuxtApp()
+    return $auth.fetch('/api/auth/session/revoke/all', {
       method: 'DELETE'
     })
   }
@@ -151,8 +151,9 @@ export function useAuthSession () {
   /**
    * Removes a single stored session of the active user
    */
-  function revokeSession (id: Session['id']): Promise<Response> {
-    return useAuthFetch(`/api/auth/session/revoke/${id}`, {
+  function revokeSession (id: Session['id']) {
+    const { $auth } = useNuxtApp()
+    return $auth.fetch(`/api/auth/session/revoke/${id}`, {
       method: 'DELETE'
     })
   }
@@ -161,7 +162,8 @@ export function useAuthSession () {
    * Get all stored sessions of the active user
    */
   async function getAllSessions (): Promise<Session[]> {
-    const { refreshTokens, current } = await useAuthFetch('/api/auth/session')
+    const { $auth } = useNuxtApp()
+    const { refreshTokens, current } = await $auth.fetch('/api/auth/session')
 
     const sessions: Session[] = refreshTokens.map((refreshToken) => {
       return {

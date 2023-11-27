@@ -8,7 +8,6 @@ import {
   useRoute,
   useFetch,
   useAuthSession,
-  useAuthFetch,
   navigateTo,
   clearNuxtData,
   useNuxtApp
@@ -66,7 +65,8 @@ export function useAuth () {
    */
   async function fetchUser () {
     try {
-      const data = await useAuthFetch('/api/auth/me')
+      const { $auth } = useNuxtApp()
+      const data = await $auth.fetch('/api/auth/me')
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),
@@ -151,11 +151,12 @@ export function useAuth () {
     })
   }
 
-  async function changePassword (input: {
+  function changePassword (input: {
     currentPassword: string;
     newPassword: string;
-  }): Promise<Response> {
-    return await useAuthFetch('/api/auth/password/change', {
+  }) {
+    const { $auth } = useNuxtApp()
+    return $auth.fetch('/api/auth/password/change', {
       method: 'PUT',
       body: {
         currentPassword: input.currentPassword,
