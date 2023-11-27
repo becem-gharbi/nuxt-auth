@@ -66,6 +66,7 @@ export default function () {
    */
   async function fetchUser () {
     try {
+      // @ts-ignore
       const data = await useAuthFetch('/api/auth/me')
       user.value = {
         ...data,
@@ -155,6 +156,7 @@ export default function () {
     currentPassword: string;
     newPassword: string;
   }): Promise<Response> {
+    // @ts-ignore
     return await useAuthFetch('/api/auth/password/change', {
       method: 'PUT',
       body: {
