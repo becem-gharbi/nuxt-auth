@@ -168,10 +168,8 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile.push(runtimeDir, 'bcryptjs')
 
     // Add nuxt plugins
-    const universalPlugin = resolve(runtimeDir, 'plugins/index')
-    const clientPlugin = resolve(runtimeDir, 'plugins/index.client')
-    addPlugin(clientPlugin)
-    addPlugin(universalPlugin)
+    addPlugin(resolve(runtimeDir, 'plugins/provider'), { append: true })
+    addPlugin(resolve(runtimeDir, 'plugins/flow'))
 
     // Add composables directory
     const composables = resolve(runtimeDir, 'composables')
