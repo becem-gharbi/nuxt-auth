@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { getAccessTokenFromHeader, verifyAccessToken } from '../utils'
+// eslint-disable-next-line import/named
 import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp) => {
