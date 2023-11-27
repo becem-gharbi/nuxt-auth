@@ -72,7 +72,7 @@ export default function () {
       process.client && localStorage.setItem(loggedInName, value.toString())
   }
 
-  const user: Ref<Readonly<User | null | undefined>> = useState<
+  const user: Ref<User | null | undefined> = useState<
     User | null | undefined
   >('auth-user', () => null)
 
