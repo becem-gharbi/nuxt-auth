@@ -8,10 +8,10 @@ export async function getFingerprintHash (event:H3Event) {
     hash: 'SHA-1'
   })
 
-  return fingerprint ?? ''
+  return fingerprint
 }
 
-export async function verifyFingerprint (event: H3Event, hash:string) {
+export async function verifyFingerprint (event: H3Event, hash:string | null) {
   const fingerprintHash = await getFingerprintHash(event)
 
   if (fingerprintHash !== hash) {

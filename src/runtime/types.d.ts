@@ -39,7 +39,7 @@ export type AccessTokenPayload = {
   userId: User["id"];
   sessionId: Session["id"];
   userRole: string;
-  fingerprint: string;
+  fingerprint: string | null;
 };
 
 export type RefreshTokenPayload = {
