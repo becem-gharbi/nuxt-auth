@@ -1,4 +1,46 @@
 # Changelog
+## v2.2.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.2.0...v2.2.1)
+
+### 🩹 Fixes
+
+- Make sure provider plugin is registered first ([ba73ecf](https://github.com/becem-gharbi/nuxt-auth/commit/ba73ecf))
+
+### 💅 Refactors
+
+- **useAuthFetch:** Minor refactoring ([c40fcfb](https://github.com/becem-gharbi/nuxt-auth/commit/c40fcfb))
+- Remove path check on auth server middleware ([45e9633](https://github.com/becem-gharbi/nuxt-auth/commit/45e9633))
+- **composables:** Use named export ([095f689](https://github.com/becem-gharbi/nuxt-auth/commit/095f689))
+- Create custom $fetch instance as alternative to useAuthFetch ([38507b5](https://github.com/becem-gharbi/nuxt-auth/commit/38507b5))
+
+### 📖 Documentation
+
+- Add useAuthFetch deprecation alert ([1a8fa89](https://github.com/becem-gharbi/nuxt-auth/commit/1a8fa89))
+- Upgrade dependencies ([503cbe3](https://github.com/becem-gharbi/nuxt-auth/commit/503cbe3))
+
+### 🌊 Types
+
+- **useAuthFetch:** Set return type the same as $fetch ([b71bd79](https://github.com/becem-gharbi/nuxt-auth/commit/b71bd79))
+- **useAuth:** Refactor and add missing return types ([28de251](https://github.com/becem-gharbi/nuxt-auth/commit/28de251))
+- **useAuthSession:** Refactor and add missing types ([80b278d](https://github.com/becem-gharbi/nuxt-auth/commit/80b278d))
+- Ignore specific typechecks ([123e30c](https://github.com/becem-gharbi/nuxt-auth/commit/123e30c))
+- **accessToken:** Set fingerprint as null instead of empty string ([271c9f8](https://github.com/becem-gharbi/nuxt-auth/commit/271c9f8))
+- **refreshToken:** Set userAgent as null instead of undefined ([caf5f65](https://github.com/becem-gharbi/nuxt-auth/commit/caf5f65))
+- Set $auth.fetch type the same as $fetch ([d4cd4f1](https://github.com/becem-gharbi/nuxt-auth/commit/d4cd4f1))
+- **composables:** Explicitly set return types ([3dceb53](https://github.com/becem-gharbi/nuxt-auth/commit/3dceb53))
+
+### 🏡 Chore
+
+- **lint:** Ignore #imports not found ([64f64b6](https://github.com/becem-gharbi/nuxt-auth/commit/64f64b6))
+- **lint:** Check on release script ([44a6b69](https://github.com/becem-gharbi/nuxt-auth/commit/44a6b69))
+- Rename nuxt plugins ([440e1db](https://github.com/becem-gharbi/nuxt-auth/commit/440e1db))
+- **useAuthFetch:** Mark as deprecated ([5e131f5](https://github.com/becem-gharbi/nuxt-auth/commit/5e131f5))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.2.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.1.0...v2.2.0)
