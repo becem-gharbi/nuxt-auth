@@ -35,7 +35,7 @@
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
     "prisma:push": "cd playground && prisma db push",
-    "release": "nuxi typecheck && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "release": "npm run lint && nuxi typecheck && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint ."
   },
   "dependencies": {
