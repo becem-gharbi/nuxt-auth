@@ -354,8 +354,7 @@ export default defineNuxtModule<ModuleOptions>({
 declare module '#app' {
   interface NuxtApp {
     $auth: {
-      fetch: typeof $fetch,
-      channel: BroadcastChannel | null;
+      fetch: typeof $fetch
     };
   }
   interface RuntimeNuxtHooks {

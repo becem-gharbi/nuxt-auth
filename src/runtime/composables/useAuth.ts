@@ -96,13 +96,12 @@ export function useAuth () {
   }
 
   async function _onLogout () {
-    const { callHook, $auth } = useNuxtApp()
+    const { callHook } = useNuxtApp()
     await callHook('auth:loggedIn', false)
     user.value = null
     _accessToken.clear()
     _loggedIn.set(false)
     clearNuxtData()
-    $auth.channel?.postMessage('logout')
     await navigateTo(publicConfig.redirect.logout)
   }
 

@@ -7,19 +7,16 @@ import {
 } from '#imports'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('nuxt-auth')
-
   nuxtApp.hook('app:mounted', () => {
-    const { user } = useAuthSession()
-    const { _onLogout } = useAuth()
+    const loggedInName = 'auth_logged_in'
 
-    if (channel) {
-      channel.onmessage = (event) => {
-        if (event.data === 'logout' && user.value) {
-          _onLogout()
+    addEventListener('storage', (event) => {
+      if (event.key === loggedInName) {
+        if (event.oldValue === 'true' && event.newValue === 'false') {
+          useAuth()._onLogout()
         }
       }
-    }
+    })
   })
 
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
@@ -42,7 +39,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   return {
     provide: {
       auth: {
-        channel,
         fetch
       }
     }
