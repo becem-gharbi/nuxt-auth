@@ -20,6 +20,11 @@ export async function createRefreshToken (event: H3Event, user: User) {
       uid: uuidv4(),
       userId: user.id,
       userAgent
+    },
+    select: {
+      id: true,
+      uid: true,
+      userId: true
     }
   })
 
@@ -55,6 +60,11 @@ export async function updateRefreshToken (
     },
     data: {
       uid: uuidv4()
+    },
+    select: {
+      id: true,
+      uid: true,
+      userId: true
     }
   })
 
@@ -103,6 +113,11 @@ export async function findRefreshTokenById (
   const refreshTokenEntity = await prisma.refreshToken.findUnique({
     where: {
       id
+    },
+    select: {
+      userId: true,
+      uid: true,
+      userAgent: true
     }
   })
   return refreshTokenEntity
@@ -143,6 +158,9 @@ export async function deleteRefreshToken (
   await prisma.refreshToken.delete({
     where: {
       id: refreshTokenId
+    },
+    select: {
+      id: true
     }
   })
 }
@@ -185,7 +203,6 @@ export async function findManyRefreshTokenByUser (
     },
     select: {
       userId: true,
-      uid: false,
       createdAt: true,
       id: true,
       updatedAt: true,

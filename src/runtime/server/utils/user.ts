@@ -88,6 +88,9 @@ export async function changePassword (
     },
     data: {
       password: hashedPassword
+    },
+    select: {
+      id: true
     }
   })
 }
@@ -101,6 +104,9 @@ export async function setUserEmailVerified (event: H3Event, userId: User['id']) 
     },
     data: {
       verified: true
+    },
+    select: {
+      id: true
     }
   })
 }
@@ -122,6 +128,9 @@ export async function setUserRequestedPasswordReset (
     },
     data: {
       requestedPasswordReset: state
+    },
+    select: {
+      id: true
     }
   })
 }
