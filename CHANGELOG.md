@@ -1,4 +1,20 @@
 # Changelog
+## v2.3.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.0...v2.3.1)
+
+### 🩹 Fixes
+
+- **revoke session:** Fix id parser ([4529197](https://github.com/becem-gharbi/nuxt-auth/commit/4529197))
+
+### 🏡 Chore
+
+- **demo:** Upgrade deps ([17b3e0a](https://github.com/becem-gharbi/nuxt-auth/commit/17b3e0a))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.2.1...v2.3.0)
