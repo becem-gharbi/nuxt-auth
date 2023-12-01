@@ -1,4 +1,41 @@
 # Changelog
+## v2.3.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.2.1...v2.3.0)
+
+### 🚀 Enhancements
+
+- Add support for prisma accelerate on edge runtimes ([15acf8b](https://github.com/becem-gharbi/nuxt-auth/commit/15acf8b))
+
+### 🔥 Performance
+
+- Limit selection on DB queries ([eb8164d](https://github.com/becem-gharbi/nuxt-auth/commit/eb8164d))
+- Fix bfcache failed ([d588217](https://github.com/becem-gharbi/nuxt-auth/commit/d588217))
+
+### 🩹 Fixes
+
+- **session revoke:** Parse `id` to int when needed ([ba7b3ef](https://github.com/becem-gharbi/nuxt-auth/commit/ba7b3ef))
+
+### 💅 Refactors
+
+- Add loggedInFlagName config option ([011cf5f](https://github.com/becem-gharbi/nuxt-auth/commit/011cf5f))
+
+### 📖 Documentation
+
+- Update edge deployment section ([4a77bb8](https://github.com/becem-gharbi/nuxt-auth/commit/4a77bb8))
+
+### 🏡 Chore
+
+- **demo:** Upgrade deps ([cc19286](https://github.com/becem-gharbi/nuxt-auth/commit/cc19286))
+- **playground:** Update sql schema ([bf1a170](https://github.com/becem-gharbi/nuxt-auth/commit/bf1a170))
+- **demo:** Upgrade deps ([114068d](https://github.com/becem-gharbi/nuxt-auth/commit/114068d))
+- **demo:** Update prisma generate command in prod ([43491fd](https://github.com/becem-gharbi/nuxt-auth/commit/43491fd))
+- Set tag to latest ([d4d55ed](https://github.com/becem-gharbi/nuxt-auth/commit/d4d55ed))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.2.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.2.0...v2.2.1)
