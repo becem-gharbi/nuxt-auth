@@ -26,7 +26,7 @@ export function useAuthSession () {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth
   const privateConfig = useRuntimeConfig().auth
-  const loggedInName = 'auth_logged_in'
+  const loggedInName = publicConfig.loggedInFlagName
   const accessTokenCookieName = publicConfig.accessTokenCookieName
   const refreshTokenCookieName = process.server
     ? privateConfig.refreshToken.cookieName!

@@ -66,6 +66,8 @@ export default defineNuxtModule<ModuleOptions>({
 
     prisma: {},
 
+    loggedInFlagName: 'auth_logged_in',
+
     // @ts-ignore
     email: {
       from: 'nuxt-auth',
@@ -148,6 +150,7 @@ export default defineNuxtModule<ModuleOptions>({
           accessTokenCookieName: options.accessToken.cookieName,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
+          loggedInFlagName: options.loggedInFlagName,
           redirect: {
             login: options.redirect.login,
             logout: options.redirect.logout,

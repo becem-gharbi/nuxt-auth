@@ -116,6 +116,7 @@ export type PrivateConfig = {
 export type PublicConfig = {
   baseUrl: string;
   enableGlobalAuthMiddleware?: boolean;
+  loggedInFlagName?: string;
   redirect: {
     login: string;
     logout: string;

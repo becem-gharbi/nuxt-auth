@@ -3,14 +3,15 @@ import {
   defineNuxtPlugin,
   useAuth,
   useAuthSession,
-  useRequestHeaders
+  useRequestHeaders,
+  useRuntimeConfig
 } from '#imports'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('app:mounted', () => {
-    const loggedInName = 'auth_logged_in'
-
     addEventListener('storage', (event) => {
+      const loggedInName = useRuntimeConfig().public.auth.loggedInFlagName
+
       if (event.key === loggedInName) {
         if (event.oldValue === 'true' && event.newValue === 'false') {
           useAuth()._onLogout()
