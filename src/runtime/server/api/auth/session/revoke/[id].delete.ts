@@ -5,7 +5,7 @@ import type { RefreshToken } from '../../../../../types'
 
 export default defineEventHandler(async (event) => {
   try {
-    const id = parseInt(event.context.params!.id) || event.context.params!.id
+    const id = Number(event.context.params!.id) || event.context.params!.id
 
     const schema = z.object({
       id: z.number().or(z.string())
