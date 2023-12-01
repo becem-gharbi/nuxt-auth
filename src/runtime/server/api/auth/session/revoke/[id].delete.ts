@@ -1,10 +1,11 @@
 import { defineEventHandler } from 'h3'
 import { z } from 'zod'
 import { handleError, findRefreshTokenById, deleteRefreshToken } from '../../../../utils'
+import type { RefreshToken } from '../../../../../types'
 
 export default defineEventHandler(async (event) => {
   try {
-    const id = event.context.params?.id as string
+    const id = parseInt(event.context.params!.id) || event.context.params!.id
 
     const schema = z.object({
       id: z.number().or(z.string())
@@ -18,13 +19,13 @@ export default defineEventHandler(async (event) => {
       throw new Error('unauthorized')
     }
 
-    const refreshTokenEntity = await findRefreshTokenById(event, id)
+    const refreshTokenEntity = await findRefreshTokenById(event, id as RefreshToken['id'])
 
     if (!refreshTokenEntity || refreshTokenEntity.userId !== auth.userId) {
       throw new Error('unauthorized')
     }
 
-    await deleteRefreshToken(event, id)
+    await deleteRefreshToken(event, id as RefreshToken['id'])
 
     return { status: 'ok' }
   } catch (error) {
