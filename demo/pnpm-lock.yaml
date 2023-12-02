@@ -6,8 +6,8 @@ settings:
 
 devDependencies:
   '@bg-dev/nuxt-auth':
-    specifier: 2.3.0
-    version: 2.3.0(prisma@5.6.0)
+    specifier: 2.3.1
+    version: 2.3.1(prisma@5.6.0)
   '@nuxt/devtools':
     specifier: latest
     version: 1.0.4(nuxt@3.8.2)(vite@4.5.0)
@@ -367,8 +367,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@bg-dev/nuxt-auth@2.3.0(prisma@5.6.0):
-    resolution: {integrity: sha512-mCXrw5FqpJhiHxnLCeVBwCziZA2JEF3R/kioKrEuQZp5MPtUFi6hXn6wZoR3lYd6ys7tu+cvF6yZIgNkAPn35A==}
+  /@bg-dev/nuxt-auth@2.3.1(prisma@5.6.0):
+    resolution: {integrity: sha512-TKdkBq8cheDA5yHQzLszK//3VANr004sfjiB7cJRsjgiw+RdFLBEDhKREs5WKFYZyYGkoIopojwJBM6rE2qn3g==}
     peerDependencies:
       prisma: ^5.2.0
     dependencies:
