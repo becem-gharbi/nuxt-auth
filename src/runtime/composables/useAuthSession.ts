@@ -63,7 +63,8 @@ export function useAuthSession () {
   }
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event, refreshTokenCookieName)
+    get: () => process.server && getCookie(event, refreshTokenCookieName),
+    clear: () => process.server && deleteCookie(event, refreshTokenCookieName)
   }
 
   const _loggedIn = {
@@ -117,6 +118,7 @@ export function useAuthSession () {
       .catch(async () => {
         isRefreshOn.value = false
         _accessToken.clear()
+        _refreshToken.clear()
         _loggedIn.set(false)
         user.value = null
         if (process.client) {
