@@ -164,7 +164,19 @@ export function useAuthSession () {
    */
   function getAllSessions () {
     const { $auth } = useNuxtApp()
-    return $auth.fetch('/api/auth/session')
+    return $auth.fetch('/api/auth/session', {
+      onResponse ({ response }) {
+        // Move current session on top
+        const sessions = response._data as Session[]
+        if (response.ok && sessions.length > 0) {
+          const currentIndex = sessions.findIndex(el => el.current)
+          if (currentIndex > 0) {
+            const currentSession = sessions.splice(currentIndex, 1)[0]
+            sessions.unshift(currentSession)
+          }
+        }
+      }
+    })
   }
 
   return {
