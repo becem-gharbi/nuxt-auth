@@ -162,22 +162,9 @@ export function useAuthSession () {
   /**
    * Get all stored sessions of the active user
    */
-  async function getAllSessions () {
+  function getAllSessions () {
     const { $auth } = useNuxtApp()
-    const { refreshTokens, current } = await $auth.fetch('/api/auth/session')
-
-    const sessions: Session[] = refreshTokens.map((refreshToken) => {
-      return {
-        id: refreshToken.id,
-        current: refreshToken.id === current,
-        userId: refreshToken.userId,
-        ua: refreshToken.userAgent,
-        updatedAt: new Date(refreshToken.updatedAt),
-        createdAt: new Date(refreshToken.createdAt)
-      }
-    })
-
-    return sessions
+    return $auth.fetch('/api/auth/session')
   }
 
   return {

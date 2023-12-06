@@ -11,7 +11,10 @@ export default defineEventHandler(async (event) => {
 
     const refreshTokens = await findManyRefreshTokenByUser(event, auth.userId)
 
-    return { refreshTokens, current: auth.sessionId }
+    return refreshTokens.map(token => ({
+      ...token,
+      current: token.id === auth.sessionId
+    }))
   } catch (error) {
     await handleError(error)
   }
