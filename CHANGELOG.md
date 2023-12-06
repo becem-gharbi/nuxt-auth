@@ -1,4 +1,28 @@
 # Changelog
+## v2.3.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.1...v2.3.2)
+
+### 🩹 Fixes
+
+- Sync login on multiple tabs ([28c7c32](https://github.com/becem-gharbi/nuxt-auth/commit/28c7c32))
+- Delete refresh token cookie on server-side refresh fail ([7ae64bc](https://github.com/becem-gharbi/nuxt-auth/commit/7ae64bc))
+
+### 💅 Refactors
+
+- Verify user state on `_login` `_logout` handlers ([fa1b37f](https://github.com/becem-gharbi/nuxt-auth/commit/fa1b37f))
+- **getAllSessions:** Move formatting on server-side ([017c830](https://github.com/becem-gharbi/nuxt-auth/commit/017c830))
+- **getAllSessions:** Remove userId ([d94e1fa](https://github.com/becem-gharbi/nuxt-auth/commit/d94e1fa))
+- **getAllSessions:** Move current session on top ([809486e](https://github.com/becem-gharbi/nuxt-auth/commit/809486e))
+
+### 🏡 Chore
+
+- **demo:** Upgrade deps ([d178162](https://github.com/becem-gharbi/nuxt-auth/commit/d178162))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.0...v2.3.1)
