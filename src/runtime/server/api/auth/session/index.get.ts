@@ -1,5 +1,6 @@
 import { defineEventHandler } from 'h3'
 import { handleError, findManyRefreshTokenByUser } from '../../../utils'
+import type { Session } from '../../../../types'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -11,9 +12,12 @@ export default defineEventHandler(async (event) => {
 
     const refreshTokens = await findManyRefreshTokenByUser(event, auth.userId)
 
-    return refreshTokens.map(token => ({
-      ...token,
-      current: token.id === auth.sessionId
+    return refreshTokens.map<Session>(token => ({
+      id: token.id,
+      current: token.id === auth.sessionId,
+      ua: token.userAgent,
+      createdAt: token.createdAt,
+      updatedAt: token.updatedAt
     }))
   } catch (error) {
     await handleError(error)
