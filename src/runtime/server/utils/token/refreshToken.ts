@@ -202,11 +202,10 @@ export async function findManyRefreshTokenByUser (
       }
     },
     select: {
-      userId: true,
-      createdAt: true,
       id: true,
-      updatedAt: true,
-      userAgent: true
+      userAgent: true,
+      createdAt: true,
+      updatedAt: true
     }
   })
 
