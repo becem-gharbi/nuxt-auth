@@ -164,21 +164,18 @@ export function useAuthSession () {
   /**
    * Get all stored sessions of the active user
    */
-  function getAllSessions () {
+  async function getAllSessions (): Promise<Session[]> {
     const { $auth } = useNuxtApp()
-    return $auth.fetch('/api/auth/session', {
-      onResponse ({ response }) {
-        // Move current session on top
-        const sessions = response._data as Session[]
-        if (response.ok && sessions.length > 0) {
-          const currentIndex = sessions.findIndex(el => el.current)
-          if (currentIndex > 0) {
-            const currentSession = sessions.splice(currentIndex, 1)[0]
-            sessions.unshift(currentSession)
-          }
-        }
-      }
-    })
+    const sessions = await $auth.fetch<Session[]>('/api/auth/session')
+
+    // Move current session on top
+    const currentIndex = sessions.findIndex(el => el.current)
+    if (currentIndex > 0) {
+      const currentSession = sessions.splice(currentIndex, 1)[0]
+      sessions.unshift(currentSession)
+    }
+
+    return sessions
   }
 
   return {
