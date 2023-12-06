@@ -1,4 +1,20 @@
 # Changelog
+## v2.3.4
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.3...v2.3.4)
+
+### 🌊 Types
+
+- **getAllSessions:** Fix return type ([1fa06ed](https://github.com/becem-gharbi/nuxt-auth/commit/1fa06ed))
+
+### 🏡 Chore
+
+- **demo:** Upgrade deps ([a799763](https://github.com/becem-gharbi/nuxt-auth/commit/a799763))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.2...v2.3.3)
