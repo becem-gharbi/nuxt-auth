@@ -15,6 +15,11 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (event.key === loggedInName) {
         if (event.oldValue === 'true' && event.newValue === 'false') {
           useAuth()._onLogout()
+        } else if (event.oldValue === 'false' && event.newValue === 'true') {
+          const accessToken = useAuthSession()._accessToken.get()
+          if (accessToken) {
+            useAuth()._onLogin(accessToken)
+          }
         }
       }
     })

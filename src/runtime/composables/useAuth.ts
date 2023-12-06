@@ -174,6 +174,7 @@ export function useAuth () {
     resetPassword,
     requestEmailVerify,
     changePassword,
-    _onLogout
+    _onLogout,
+    _onLogin
   }
 }
