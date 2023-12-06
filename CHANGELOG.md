@@ -1,4 +1,20 @@
 # Changelog
+## v2.3.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.2...v2.3.3)
+
+### 🩹 Fixes
+
+- **getAllSessions:** Fix undefined `ua` property ([d04aa37](https://github.com/becem-gharbi/nuxt-auth/commit/d04aa37))
+
+### 🏡 Chore
+
+- **demo:** Upgrade deps ([702cec6](https://github.com/becem-gharbi/nuxt-auth/commit/702cec6))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.1...v2.3.2)
