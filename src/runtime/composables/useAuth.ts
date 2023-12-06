@@ -84,18 +84,20 @@ export function useAuth () {
   }
 
   async function _onLogin (accessToken: string) {
+    _accessToken.set(accessToken)
+    await fetchUser()
+    if (user.value === null) { return }
     const route = useRoute()
     const { callHook } = useNuxtApp()
     const returnToPath = route.query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-    _accessToken.set(accessToken)
     _loggedIn.set(true)
-    await fetchUser()
     await callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
 
   async function _onLogout () {
+    if (user.value === null) { return }
     const { callHook } = useNuxtApp()
     await callHook('auth:loggedIn', false)
     user.value = null
