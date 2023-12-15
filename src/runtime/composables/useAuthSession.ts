@@ -56,6 +56,7 @@ export function useAuthSession () {
     clear: () => {
       if (process.server) {
         deleteCookie(event, accessTokenCookieName)
+        deleteCookie(event, providerTokenCookieName)
       } else {
         Cookies.remove(accessTokenCookieName)
       }
