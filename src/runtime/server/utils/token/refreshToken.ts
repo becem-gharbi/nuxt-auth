@@ -95,6 +95,18 @@ export function setRefreshTokenCookie (event: H3Event, refreshToken: string) {
   })
 }
 
+export function setProviderTokenCookie (event: H3Event, providerToken: string) {
+  const config = getConfig()
+  setCookie(event, config.private.providerToken.cookieName!, providerToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: config.private.providerToken.maxAge,
+    sameSite: 'lax'
+  })
+}
+
+
+
 export function getRefreshTokenFromCookie (event: H3Event) {
   const config = getConfig()
   const refreshToken = getCookie(
@@ -215,6 +227,11 @@ export async function findManyRefreshTokenByUser (
 export function deleteRefreshTokenCookie (event: H3Event) {
   const config = getConfig()
   deleteCookie(event, config.private.refreshToken.cookieName!)
+}
+
+export function deleteProviderTokenCookie (event: H3Event) {
+  const config = getConfig()
+  deleteCookie(event, config.private.providerToken.cookieName!)
 }
 
 export async function deleteManyRefreshTokenExpired (event: H3Event) {

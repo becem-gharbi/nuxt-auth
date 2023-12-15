@@ -77,6 +77,16 @@ export type PrivateConfig = {
     maxAge?: number;
   };
 
+  providerToken: {
+    cookieName?: string;
+    jwtSecret: string;
+    maxAge?: number;
+  };
+
+  };
+
+
+
   oauth?: Partial<
     Record<
       Provider,

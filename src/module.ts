@@ -46,6 +46,12 @@ export default defineNuxtModule<ModuleOptions>({
       maxAge: 7 * 24 * 60 * 60
     },
 
+    providerToken: {
+      cookieName: 'auth_provider_token',
+      jwtSecret: '',
+      maxAge: 15 * 60
+    },
+
     enableGlobalAuthMiddleware: false,
 
     redirect: {
@@ -134,6 +140,8 @@ export default defineNuxtModule<ModuleOptions>({
 
         refreshToken: options.refreshToken,
 
+        providerToken: options.providerToken,
+
         email: options.email,
 
         oauth: options.oauth,
@@ -148,6 +156,7 @@ export default defineNuxtModule<ModuleOptions>({
       public: {
         auth: {
           accessTokenCookieName: options.accessToken.cookieName,
+          providerTokenCookieName: options.providerToken.cookieName,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,

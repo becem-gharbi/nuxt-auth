@@ -7,6 +7,7 @@ import {
   getConfig,
   createRefreshToken,
   setRefreshTokenCookie,
+  setProviderTokenCookie,
   createUser,
   findUser,
   handleError,
@@ -122,6 +123,8 @@ export default defineEventHandler(async (event) => {
       const refreshToken = await signRefreshToken(payload)
 
       setRefreshTokenCookie(event, refreshToken)
+
+      setProviderTokenCookie(event, accessToken)
     }
 
     await sendRedirect(

@@ -1,6 +1,7 @@
 import { defineEventHandler } from 'h3'
 import {
   deleteRefreshTokenCookie,
+  deleteProviderTokenCookie,
   getRefreshTokenFromCookie,
   verifyRefreshToken,
   deleteRefreshToken,
@@ -16,10 +17,12 @@ export default defineEventHandler(async (event) => {
     await deleteRefreshToken(event, payload.id)
 
     deleteRefreshTokenCookie(event)
+    deleteProviderTokenCookie(event)
 
     return { status: 'ok' }
   } catch (error) {
     deleteRefreshTokenCookie(event)
+    deleteProviderTokenCookie(event)
 
     await handleError(error)
   }
