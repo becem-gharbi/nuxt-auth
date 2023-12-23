@@ -26,28 +26,22 @@ export function useAuthSession () {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth
   const privateConfig = useRuntimeConfig().auth
-  const loggedInName = publicConfig.loggedInFlagName
-  const accessTokenCookieName = publicConfig.accessTokenCookieName
-  const refreshTokenCookieName = process.server
-    ? privateConfig.refreshToken.cookieName!
-    : ''
-  const msRefreshBeforeExpires = 3000
 
   const _accessToken = {
     get: () : string | undefined =>
       process.server
-        ? event.context[accessTokenCookieName] ||
-          getCookie(event, accessTokenCookieName)
-        : Cookies.get(accessTokenCookieName),
+        ? event.context[publicConfig.accessTokenCookieName] ||
+          getCookie(event, publicConfig.accessTokenCookieName)
+        : Cookies.get(publicConfig.accessTokenCookieName),
     set: (value: string) => {
       if (process.server) {
-        event.context[accessTokenCookieName] = value
-        setCookie(event, accessTokenCookieName, value, {
+        event.context[publicConfig.accessTokenCookieName] = value
+        setCookie(event, publicConfig.accessTokenCookieName, value, {
           sameSite: 'lax',
           secure: true
         })
       } else {
-        Cookies.set(accessTokenCookieName, value, {
+        Cookies.set(publicConfig.accessTokenCookieName, value, {
           sameSite: 'lax',
           secure: true
         })
@@ -55,29 +49,27 @@ export function useAuthSession () {
     },
     clear: () => {
       if (process.server) {
-        deleteCookie(event, accessTokenCookieName)
+        deleteCookie(event, publicConfig.accessTokenCookieName)
       } else {
-        Cookies.remove(accessTokenCookieName)
+        Cookies.remove(publicConfig.accessTokenCookieName)
       }
     }
   }
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event, refreshTokenCookieName),
-    clear: () => process.server && deleteCookie(event, refreshTokenCookieName)
+    get: () => process.server && getCookie(event, privateConfig.refreshToken.cookieName),
+    clear: () => process.server && deleteCookie(event, privateConfig.refreshToken.cookieName)
   }
 
   const _loggedIn = {
-    get: () => process.client && localStorage.getItem(loggedInName),
-    set: (value: boolean) =>
-      process.client && localStorage.setItem(loggedInName, value.toString())
+    get: () => process.client && localStorage.getItem(publicConfig.loggedInFlagName),
+    set: (value: boolean) => process.client && localStorage.setItem(publicConfig.loggedInFlagName, value.toString())
   }
 
-  const user: Ref<User | null | undefined> = useState<
-    User | null | undefined
-  >('auth-user', () => null)
+  const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
 
   function isTokenExpired (token: string) {
+    const msRefreshBeforeExpires = 3000
     const { exp } = decodeJwt(token)
     const expires = exp! * 1000 - msRefreshBeforeExpires
     return expires < Date.now()
@@ -86,10 +78,7 @@ export function useAuthSession () {
   async function _refresh () {
     const isRefreshOn = useState('auth-refresh-loading', () => false)
 
-    if (isRefreshOn.value) {
-      return
-    }
-
+    if (isRefreshOn.value) { return }
     isRefreshOn.value = true
 
     const headers = useRequestHeaders(['cookie', 'user-agent'])

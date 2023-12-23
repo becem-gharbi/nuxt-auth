@@ -36,7 +36,8 @@ export function useAuth () {
     })
 
     if (!res.error.value && res.data.value) {
-      await _onLogin(res.data.value.access_token)
+      _accessToken.set(res.data.value.access_token)
+      await _onLogin()
     }
     return res
   }
@@ -45,18 +46,18 @@ export function useAuth () {
    * Login via oauth provider
    */
   function loginWithProvider (provider: Provider) {
-    if (process.client) {
-      const route = useRoute()
+    if (process.server) { return }
 
-      // The protected page the user has visited before redirect to login page
-      const returnToPath = route.query.redirect?.toString()
+    const route = useRoute()
 
-      let redirectUrl = resolveURL('/api/auth/login', provider)
+    // The protected page the user has visited before redirect to login page
+    const returnToPath = route.query.redirect?.toString()
 
-      redirectUrl = withQuery(redirectUrl, { redirect: returnToPath })
+    let redirectUrl = resolveURL('/api/auth/login', provider)
 
-      window.location.replace(redirectUrl)
-    }
+    redirectUrl = withQuery(redirectUrl, { redirect: returnToPath })
+
+    window.location.replace(redirectUrl)
   }
 
   /**
@@ -82,8 +83,7 @@ export function useAuth () {
     }).finally(_onLogout)
   }
 
-  async function _onLogin (accessToken: string) {
-    _accessToken.set(accessToken)
+  async function _onLogin () {
     await fetchUser()
     if (user.value === null) { return }
     const route = useRoute()
@@ -175,7 +175,6 @@ export function useAuth () {
     resetPassword,
     requestEmailVerify,
     changePassword,
-    _onLogout,
-    _onLogin
+    _onLogout
   }
 }

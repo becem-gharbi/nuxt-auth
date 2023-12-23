@@ -17,11 +17,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const publicConfig = useRuntimeConfig().public.auth
 
     addRouteMiddleware('common', common, { global: true })
-
-    addRouteMiddleware('auth', auth, {
-      global: publicConfig.enableGlobalAuthMiddleware
-    })
-
+    addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
     addRouteMiddleware('guest', guest)
 
     const initialized = useState('auth-initialized', () => false)
@@ -29,6 +25,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const { _loggedIn } = useAuthSession()
 
     if (initialized.value === false) {
+      initialized.value = true
       const { path } = useRoute()
 
       const { fetchUser } = useAuth()
@@ -49,8 +46,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       }
     }
 
-    initialized.value = true
-
     const { user } = useAuthSession()
 
     if (user.value) {
@@ -59,5 +54,20 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     } else {
       _loggedIn.set(false)
     }
+
+    nuxtApp.hook('app:mounted', () => {
+      addEventListener('storage', (event) => {
+        if (event.key === publicConfig.loggedInFlagName) {
+          if (event.oldValue === 'true' && event.newValue === 'false') {
+            useAuth()._onLogout()
+          } else if (event.oldValue === 'false' && event.newValue === 'true') {
+            const accessToken = useAuthSession()._accessToken.get()
+            if (accessToken) {
+              location.reload()
+            }
+          }
+        }
+      })
+    })
   } catch (e) {}
 })
