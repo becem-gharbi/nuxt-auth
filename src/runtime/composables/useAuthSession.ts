@@ -95,7 +95,7 @@ export function useAuthSession () {
     const headers = useRequestHeaders(['cookie', 'user-agent'])
 
     await $fetch
-      .raw<{ accessToken: string }>('/api/auth/session/refresh', {
+      .raw<{ access_token: string, expires_in:number }>('/api/auth/session/refresh', {
         method: 'POST',
         headers
       })
@@ -109,7 +109,7 @@ export function useAuthSession () {
         }
 
         if (res._data) {
-          _accessToken.set(res._data.accessToken)
+          _accessToken.set(res._data.access_token)
           _loggedIn.set(true)
         }
         isRefreshOn.value = false

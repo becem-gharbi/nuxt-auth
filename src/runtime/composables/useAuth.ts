@@ -26,20 +26,19 @@ export function useAuth () {
   async function login (credentials: {
     email: string;
     password: string;
-  }): useFetchReturn<{ accessToken: string }> {
-    return await useFetch('/api/auth/login', {
+  }): useFetchReturn<{ access_token: string, expires_in:number }> {
+    const res = await useFetch('/api/auth/login', {
       method: 'POST',
       body: {
         email: credentials.email,
         password: credentials.password
       }
-    }).then(async (res) => {
-      if (!res.error.value && res.data.value) {
-        await _onLogin(res.data.value.accessToken)
-      }
-
-      return res
     })
+
+    if (!res.error.value && res.data.value) {
+      await _onLogin(res.data.value.access_token)
+    }
+    return res
   }
 
   /**
