@@ -35,7 +35,6 @@ export default defineNuxtModule<ModuleOptions>({
     baseUrl: '',
 
     accessToken: {
-      cookieName: 'auth_access_token',
       jwtSecret: '',
       maxAge: 15 * 60
     },
@@ -147,7 +146,6 @@ export default defineNuxtModule<ModuleOptions>({
 
       public: {
         auth: {
-          accessTokenCookieName: options.accessToken.cookieName,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,
