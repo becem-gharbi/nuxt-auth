@@ -32,7 +32,10 @@ export async function createAccessToken (event: H3Event, user: User, sessionId: 
     config.private.accessToken.maxAge!
   )
 
-  return accessToken
+  return {
+    access_token: accessToken,
+    expires_in: config.private.accessToken.maxAge
+  }
 }
 
 /**

@@ -65,7 +65,6 @@ interface MailResendProvider {
 
 export type PrivateConfig = {
   accessToken: {
-    cookieName?: string;
     jwtSecret: string;
     maxAge?: number;
     customClaims?: Record<string, any>;
@@ -126,4 +125,4 @@ export type PublicConfig = {
   };
 };
 
-interface Response { status: string }
+export interface Response { status: string }

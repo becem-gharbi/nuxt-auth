@@ -1,9 +1,6 @@
-import { decodeJwt } from 'jose'
-import Cookies from 'js-cookie'
 import {
   deleteCookie,
   getCookie,
-  setCookie,
   splitCookiesString,
   appendResponseHeader
 } from 'h3'
@@ -13,6 +10,7 @@ import type {
   Session,
   Response
 } from '../types'
+import { useAuthToken } from './useAuthToken'
 import {
   useRequestEvent,
   useRuntimeConfig,
@@ -26,82 +24,36 @@ export function useAuthSession () {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth
   const privateConfig = useRuntimeConfig().auth
-  const loggedInName = publicConfig.loggedInFlagName
-  const accessTokenCookieName = publicConfig.accessTokenCookieName
-  const refreshTokenCookieName = process.server
-    ? privateConfig.refreshToken.cookieName!
-    : ''
-  const msRefreshBeforeExpires = 3000
-
-  const _accessToken = {
-    get: () : string | undefined =>
-      process.server
-        ? event.context[accessTokenCookieName] ||
-          getCookie(event, accessTokenCookieName)
-        : Cookies.get(accessTokenCookieName),
-    set: (value: string) => {
-      if (process.server) {
-        event.context[accessTokenCookieName] = value
-        setCookie(event, accessTokenCookieName, value, {
-          sameSite: 'lax',
-          secure: true
-        })
-      } else {
-        Cookies.set(accessTokenCookieName, value, {
-          sameSite: 'lax',
-          secure: true
-        })
-      }
-    },
-    clear: () => {
-      if (process.server) {
-        deleteCookie(event, accessTokenCookieName)
-      } else {
-        Cookies.remove(accessTokenCookieName)
-      }
-    }
-  }
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event, refreshTokenCookieName),
-    clear: () => process.server && deleteCookie(event, refreshTokenCookieName)
+    get: () => process.server && getCookie(event, privateConfig.refreshToken.cookieName),
+    clear: () => process.server && deleteCookie(event, privateConfig.refreshToken.cookieName)
   }
 
   const _loggedIn = {
-    get: () => process.client && localStorage.getItem(loggedInName),
-    set: (value: boolean) =>
-      process.client && localStorage.setItem(loggedInName, value.toString())
+    get: () => process.client && localStorage.getItem(publicConfig.loggedInFlagName),
+    set: (value: boolean) => process.client && localStorage.setItem(publicConfig.loggedInFlagName, value.toString())
   }
 
-  const user: Ref<User | null | undefined> = useState<
-    User | null | undefined
-  >('auth-user', () => null)
-
-  function isTokenExpired (token: string) {
-    const { exp } = decodeJwt(token)
-    const expires = exp! * 1000 - msRefreshBeforeExpires
-    return expires < Date.now()
-  }
+  const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
 
   async function _refresh () {
     const isRefreshOn = useState('auth-refresh-loading', () => false)
 
-    if (isRefreshOn.value) {
-      return
-    }
-
+    if (isRefreshOn.value) { return }
     isRefreshOn.value = true
 
     const headers = useRequestHeaders(['cookie', 'user-agent'])
 
+    const accessToken = useAuthToken()
+
     await $fetch
-      .raw<{ accessToken: string }>('/api/auth/session/refresh', {
+      .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
         method: 'POST',
         headers
       })
       .then((res) => {
         const setCookie = res.headers.get('set-cookie') ?? ''
-
         const cookies = splitCookiesString(setCookie)
 
         for (const cookie of cookies) {
@@ -109,21 +61,24 @@ export function useAuthSession () {
         }
 
         if (res._data) {
-          _accessToken.set(res._data.accessToken)
+          accessToken.value = {
+            access_token: res._data.access_token,
+            expires: new Date().getTime() + res._data.expires_in * 1000
+          }
           _loggedIn.set(true)
         }
-        isRefreshOn.value = false
         return res
       })
       .catch(async () => {
-        isRefreshOn.value = false
-        _accessToken.clear()
+        accessToken.value = null
         _refreshToken.clear()
         _loggedIn.set(false)
         user.value = null
         if (process.client) {
           await navigateTo(publicConfig.redirect.logout)
         }
+      }).finally(() => {
+        isRefreshOn.value = false
       })
   }
 
@@ -131,14 +86,14 @@ export function useAuthSession () {
    * Async get access token
    * @returns Fresh access token (refreshed if expired)
    */
-  async function getAccessToken () {
-    const accessToken = _accessToken.get()
+  async function getAccessToken (): Promise<string | null | undefined> {
+    const accessToken = useAuthToken()
 
-    if (accessToken && isTokenExpired(accessToken)) {
+    if (accessToken.expired) {
       await _refresh()
     }
 
-    return _accessToken.get()
+    return accessToken.value?.access_token
   }
 
   /**
@@ -179,7 +134,6 @@ export function useAuthSession () {
   }
 
   return {
-    _accessToken,
     _refreshToken,
     _loggedIn,
     user,

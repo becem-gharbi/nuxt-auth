@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
 
     const accessToken = await createAccessToken(event, user, sessionId)
 
-    return { accessToken }
+    return accessToken
   } catch (error) {
     deleteRefreshTokenCookie(event)
 

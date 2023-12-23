@@ -3,7 +3,7 @@ import {
   defineNuxtModule,
   addPlugin,
   createResolver,
-  addImportsDir,
+  addImports,
   addServerHandler,
   addTemplate,
   logger,
@@ -35,7 +35,6 @@ export default defineNuxtModule<ModuleOptions>({
     baseUrl: '',
 
     accessToken: {
-      cookieName: 'auth_access_token',
       jwtSecret: '',
       maxAge: 15 * 60
     },
@@ -147,7 +146,6 @@ export default defineNuxtModule<ModuleOptions>({
 
       public: {
         auth: {
-          accessTokenCookieName: options.accessToken.cookieName,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,
@@ -174,9 +172,21 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolve(runtimeDir, 'plugins/provider'), { append: true })
     addPlugin(resolve(runtimeDir, 'plugins/flow'), { append: true })
 
-    // Add composables directory
-    const composables = resolve(runtimeDir, 'composables')
-    addImportsDir(composables)
+    // Add composables
+    addImports([
+      {
+        name: 'useAuth',
+        from: resolve(runtimeDir, 'composables/useAuth')
+      },
+      {
+        name: 'useAuthFetch',
+        from: resolve(runtimeDir, 'composables/useAuthFetch')
+      },
+      {
+        name: 'useAuthSession',
+        from: resolve(runtimeDir, 'composables/useAuthSession')
+      }
+    ])
 
     // Add server utils
     nuxt.options.nitro = defu(

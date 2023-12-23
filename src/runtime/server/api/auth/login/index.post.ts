@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
     const sessionId = payload.id
     const accessToken = await createAccessToken(event, user, sessionId)
 
-    return { accessToken }
+    return accessToken
   } catch (error) {
     await handleError(error)
   }

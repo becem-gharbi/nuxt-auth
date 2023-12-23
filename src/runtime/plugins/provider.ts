@@ -1,32 +1,16 @@
 import { defu } from 'defu'
 import {
   defineNuxtPlugin,
-  useAuth,
   useAuthSession,
-  useRequestHeaders,
-  useRuntimeConfig
+  useRequestHeaders
 } from '#imports'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.hook('app:mounted', () => {
-    addEventListener('storage', (event) => {
-      const loggedInName = useRuntimeConfig().public.auth.loggedInFlagName
-
-      if (event.key === loggedInName) {
-        if (event.oldValue === 'true' && event.newValue === 'false') {
-          useAuth()._onLogout()
-        } else if (event.oldValue === 'false' && event.newValue === 'true') {
-          const accessToken = useAuthSession()._accessToken.get()
-          if (accessToken) {
-            useAuth()._onLogin(accessToken)
-          }
-        }
-      }
-    })
-  })
-
+export default defineNuxtPlugin(() => {
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
 
+  /**
+   * A $fetch instance with auto authorization handler
+   */
   const fetch = $fetch.create({
     async onRequest ({ options }) {
       const { getAccessToken } = useAuthSession()
