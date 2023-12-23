@@ -20,6 +20,11 @@ function memoryStorage () {
 
 const memory = memoryStorage()
 
+/**
+ * This composable permits the storage of access token in memory
+ * On SSR, it's stored with `useState`. On SPA its stored in a scoped memory.
+ * Given that `useState` is accessible on global context, it's cleared on SPA.
+ */
 export function useAuthToken () {
   const state = useState<TokenStore | null>('auth-token', () => null)
 

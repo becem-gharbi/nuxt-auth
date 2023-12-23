@@ -17,7 +17,6 @@ import {
 type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export function useAuth () {
-  const { user } = useAuthSession()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
 
   /**
@@ -67,6 +66,7 @@ export function useAuth () {
    * Fetch active user, usefull to update `user` state
    */
   async function fetchUser () {
+    const { user } = useAuthSession()
     try {
       const { $auth } = useNuxtApp()
       const data = await $auth.fetch('/api/auth/me')
@@ -88,6 +88,7 @@ export function useAuth () {
 
   async function _onLogin () {
     await fetchUser()
+    const { user } = useAuthSession()
     if (user.value === null) { return }
     const route = useRoute()
     const { callHook } = useNuxtApp()
@@ -99,6 +100,7 @@ export function useAuth () {
   }
 
   async function _onLogout () {
+    const { user } = useAuthSession()
     if (user.value === null) { return }
     const { callHook } = useNuxtApp()
     await callHook('auth:loggedIn', false)

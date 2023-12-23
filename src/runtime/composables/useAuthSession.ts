@@ -54,7 +54,6 @@ export function useAuthSession () {
       })
       .then((res) => {
         const setCookie = res.headers.get('set-cookie') ?? ''
-
         const cookies = splitCookiesString(setCookie)
 
         for (const cookie of cookies) {
@@ -68,11 +67,9 @@ export function useAuthSession () {
           }
           _loggedIn.set(true)
         }
-        isRefreshOn.value = false
         return res
       })
       .catch(async () => {
-        isRefreshOn.value = false
         accessToken.value = null
         _refreshToken.clear()
         _loggedIn.set(false)
@@ -80,6 +77,8 @@ export function useAuthSession () {
         if (process.client) {
           await navigateTo(publicConfig.redirect.logout)
         }
+      }).finally(() => {
+        isRefreshOn.value = false
       })
   }
 

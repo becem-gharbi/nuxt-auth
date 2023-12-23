@@ -8,6 +8,9 @@ import {
 export default defineNuxtPlugin(() => {
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
 
+  /**
+   * A $fetch instance with auto authorization handler
+   */
   const fetch = $fetch.create({
     async onRequest ({ options }) {
       const { getAccessToken } = useAuthSession()

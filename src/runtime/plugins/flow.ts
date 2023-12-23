@@ -20,8 +20,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
     addRouteMiddleware('guest', guest)
 
-    const initialized = useState('auth-initialized', () => false)
     const { _loggedIn } = useAuthSession()
+
+    /**
+     * Makes sure to refresh access token and set user state if possible (run once)
+     */
+    const initialized = useState('auth-initialized', () => false)
 
     if (initialized.value === false) {
       initialized.value = true
@@ -46,15 +50,19 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       }
     }
 
-    const { user } = useAuthSession()
-
-    if (user.value) {
+    /**
+     * Calls loggedIn hook and sets the loggedIn flag in localStorage
+     */
+    if (useAuthSession().user.value) {
       _loggedIn.set(true)
       await nuxtApp.callHook('auth:loggedIn', true)
     } else {
       _loggedIn.set(false)
     }
 
+    /**
+     * Makes sure to sync login status between tabs
+     */
     nuxtApp.hook('app:mounted', () => {
       addEventListener('storage', (event) => {
         if (event.key === publicConfig.loggedInFlagName) {
