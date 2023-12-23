@@ -1,4 +1,30 @@
 # Changelog
+## v2.3.5
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.4...v2.3.5)
+
+### 💅 Refactors
+
+- Specify auto-imported composables ([00847bd](https://github.com/becem-gharbi/nuxt-auth/commit/00847bd))
+- Add `expires_in` to login & refresh response ([7f5a57e](https://github.com/becem-gharbi/nuxt-auth/commit/7f5a57e))
+- No significant change ([4f1f565](https://github.com/becem-gharbi/nuxt-auth/commit/4f1f565))
+- Create `useAuthToken` to handle access token storage ([cbd4508](https://github.com/becem-gharbi/nuxt-auth/commit/cbd4508))
+- Change access token storage from cookie to memory ([13c2b2b](https://github.com/becem-gharbi/nuxt-auth/commit/13c2b2b))
+- No significant change ([9632308](https://github.com/becem-gharbi/nuxt-auth/commit/9632308))
+- Remove unused `accessTokenCookieName` config option ([e99fc73](https://github.com/becem-gharbi/nuxt-auth/commit/e99fc73))
+
+### 📖 Documentation
+
+- **tokens:** Remove `accessTokenCookieName`  config option ([9a29219](https://github.com/becem-gharbi/nuxt-auth/commit/9a29219))
+
+### 🏡 Chore
+
+- **playground:** Remove accessTokenCookieName ([b41732c](https://github.com/becem-gharbi/nuxt-auth/commit/b41732c))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.4
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.3...v2.3.4)
