@@ -3,6 +3,7 @@ import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { AsyncData } from '#app'
 import type { Provider, PublicConfig, Response } from '../types'
+import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
   useRoute,
@@ -18,7 +19,6 @@ type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>
 export function useAuth () {
   const { user } = useAuthSession()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const { _accessToken, _loggedIn } = useAuthSession()
 
   /**
    * Login with email/password
@@ -36,7 +36,10 @@ export function useAuth () {
     })
 
     if (!res.error.value && res.data.value) {
-      _accessToken.set(res.data.value.access_token)
+      useAuthToken().value = {
+        access_token: res.data.value.access_token,
+        expires: new Date().getTime() + res.data.value.expires_in * 1000
+      }
       await _onLogin()
     }
     return res
@@ -90,7 +93,7 @@ export function useAuth () {
     const { callHook } = useNuxtApp()
     const returnToPath = route.query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-    _loggedIn.set(true)
+    useAuthSession()._loggedIn.set(true)
     await callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
@@ -100,8 +103,8 @@ export function useAuth () {
     const { callHook } = useNuxtApp()
     await callHook('auth:loggedIn', false)
     user.value = null
-    _accessToken.clear()
-    _loggedIn.set(false)
+    useAuthToken().value = null
+    useAuthSession()._loggedIn.set(false)
     clearNuxtData()
     await navigateTo(publicConfig.redirect.logout)
   }
