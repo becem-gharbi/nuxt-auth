@@ -3,7 +3,7 @@ import {
   defineNuxtModule,
   addPlugin,
   createResolver,
-  addImportsDir,
+  addImports,
   addServerHandler,
   addTemplate,
   logger,
@@ -174,9 +174,21 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolve(runtimeDir, 'plugins/provider'), { append: true })
     addPlugin(resolve(runtimeDir, 'plugins/flow'), { append: true })
 
-    // Add composables directory
-    const composables = resolve(runtimeDir, 'composables')
-    addImportsDir(composables)
+    // Add composables
+    addImports([
+      {
+        name: 'useAuth',
+        from: resolve(runtimeDir, 'composables/useAuth')
+      },
+      {
+        name: 'useAuthFetch',
+        from: resolve(runtimeDir, 'composables/useAuthFetch')
+      },
+      {
+        name: 'useAuthSession',
+        from: resolve(runtimeDir, 'composables/useAuthSession')
+      }
+    ])
 
     // Add server utils
     nuxt.options.nitro = defu(
