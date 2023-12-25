@@ -10,7 +10,6 @@ import {
   useFetch,
   useAuthSession,
   navigateTo,
-  clearNuxtData,
   useNuxtApp
 } from '#imports'
 
@@ -97,9 +96,7 @@ export function useAuth () {
     await useNuxtApp().callHook('auth:loggedIn', false)
     useAuthToken().value = null
     useAuthSession()._loggedInFlag.value = false
-    await navigateTo(publicConfig.redirect.logout)
-    clearNuxtData()
-    useAuthSession().user.value = null
+    await navigateTo(publicConfig.redirect.logout, { external: true })
   }
 
   async function register (userInfo: {
