@@ -6,7 +6,6 @@ import {
   defineNuxtPlugin,
   addRouteMiddleware,
   useRuntimeConfig,
-  useState,
   useAuth,
   useRoute,
   useAuthSession
@@ -25,11 +24,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     /**
      * Makes sure to refresh access token and set user state if possible (run once)
      */
-    const initialized = useState('auth-initialized', () => false)
+    const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
+    const isServerRendered = nuxtApp.payload.serverRendered
+    const firstTime = (process.server && !isPrerenderd) || (process.client && (!isServerRendered || isPrerenderd))
 
-    if (initialized.value === false) {
-      initialized.value = true
-
+    if (firstTime) {
       const { path } = useRoute()
       const { fetchUser } = useAuth()
       const token = useAuthToken()
