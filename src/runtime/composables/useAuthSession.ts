@@ -70,7 +70,6 @@ export function useAuthSession () {
             access_token: res._data.access_token,
             expires: new Date().getTime() + res._data.expires_in * 1000
           }
-          _loggedInFlag.value = true
         }
         return res
       })
