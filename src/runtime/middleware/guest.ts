@@ -1,9 +1,9 @@
 import type { PublicConfig } from '../types'
+import { useAuthToken } from '../composables/useAuthToken'
 import {
   defineNuxtRouteMiddleware,
   useRuntimeConfig,
-  navigateTo,
-  useAuthSession
+  navigateTo
 } from '#imports'
 
 export default defineNuxtRouteMiddleware((to) => {
@@ -16,9 +16,9 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
 
-  const { user } = useAuthSession()
+  const token = useAuthToken()
 
-  if (user.value) {
+  if (token.value) {
     return navigateTo(publicConfig.redirect.home)
   }
 })

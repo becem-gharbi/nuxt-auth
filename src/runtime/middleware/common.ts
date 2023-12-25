@@ -1,9 +1,9 @@
 import type { PublicConfig } from '../types'
+import { useAuthToken } from '../composables/useAuthToken'
 import {
   defineNuxtRouteMiddleware,
   useRuntimeConfig,
-  navigateTo,
-  useAuthSession
+  navigateTo
 } from '#imports'
 
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -13,9 +13,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
     to.path === publicConfig.redirect.login ||
     to.path === publicConfig.redirect.callback
   ) {
-    const { user } = useAuthSession()
+    const token = useAuthToken()
 
-    if (user.value) {
+    if (token.value) {
       const returnToPath = from.query.redirect?.toString()
       const redirectTo = returnToPath ?? publicConfig.redirect.home
       return navigateTo(redirectTo)

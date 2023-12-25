@@ -20,6 +20,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     addRouteMiddleware('guest', guest)
 
     const { _loggedIn } = useAuthSession()
+    const token = useAuthToken()
 
     /**
      * Makes sure to refresh access token and set user state if possible (run once)
@@ -31,7 +32,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     if (firstTime) {
       const { path } = useRoute()
       const { fetchUser } = useAuth()
-      const token = useAuthToken()
 
       if (token.value) {
         await fetchUser()
@@ -52,7 +52,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     /**
      * Calls loggedIn hook and sets the loggedIn flag in localStorage
      */
-    if (useAuthSession().user.value) {
+    if (token.value) {
       _loggedIn.set(true)
       await nuxtApp.callHook('auth:loggedIn', true)
     } else {
