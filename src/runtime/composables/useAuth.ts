@@ -104,11 +104,11 @@ export function useAuth () {
     if (user.value === null) { return }
     const { callHook } = useNuxtApp()
     await callHook('auth:loggedIn', false)
-    user.value = null
     useAuthToken().value = null
     useAuthSession()._loggedIn.set(false)
     clearNuxtData()
     await navigateTo(publicConfig.redirect.logout)
+    user.value = null
   }
 
   async function register (userInfo: {
