@@ -88,7 +88,7 @@ export function useAuth () {
     if (useAuthSession().user.value === null) { return }
     const returnToPath = useRoute().query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-    useAuthSession()._loggedIn.value = true
+    useAuthSession()._loggedInFlag.value = true
     await useNuxtApp().callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
@@ -96,7 +96,7 @@ export function useAuth () {
   async function _onLogout () {
     await useNuxtApp().callHook('auth:loggedIn', false)
     useAuthToken().value = null
-    useAuthSession()._loggedIn.value = false
+    useAuthSession()._loggedInFlag.value = false
     await navigateTo(publicConfig.redirect.logout)
     clearNuxtData()
     useAuthSession().user.value = null

@@ -19,7 +19,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
     addRouteMiddleware('guest', guest)
 
-    const { _loggedIn } = useAuthSession()
+    const { _loggedInFlag } = useAuthSession()
     const token = useAuthToken()
 
     /**
@@ -36,7 +36,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         const isCallback = useRoute().path === publicConfig.redirect.callback
         const { _refreshToken, _refresh } = useAuthSession()
 
-        if (isCallback || _loggedIn.value || _refreshToken.get()) {
+        if (isCallback || _loggedInFlag.value || _refreshToken.get()) {
           await _refresh()
           if (token.value) {
             await useAuth().fetchUser()
@@ -49,10 +49,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
      * Calls loggedIn hook and sets the loggedIn flag in localStorage
      */
     if (token.value) {
-      _loggedIn.value = true
+      _loggedInFlag.value = true
       await nuxtApp.callHook('auth:loggedIn', true)
     } else {
-      _loggedIn.value = false
+      _loggedInFlag.value = false
     }
 
     /**

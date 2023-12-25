@@ -29,7 +29,7 @@ export function useAuthSession () {
     clear: () => process.server && deleteCookie(event, privateConfig.refreshToken.cookieName)
   }
 
-  const _loggedIn = {
+  const _loggedInFlag = {
     get value () {
       if (process.client) {
         return localStorage.getItem(publicConfig.loggedInFlagName) === 'true'
@@ -70,7 +70,7 @@ export function useAuthSession () {
             access_token: res._data.access_token,
             expires: new Date().getTime() + res._data.expires_in * 1000
           }
-          _loggedIn.value = true
+          _loggedInFlag.value = true
         }
         return res
       })
@@ -134,7 +134,7 @@ export function useAuthSession () {
 
   return {
     _refreshToken,
-    _loggedIn,
+    _loggedInFlag,
     user,
     _refresh,
     getAccessToken,
