@@ -1,4 +1,31 @@
 # Changelog
+## v2.3.6
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.5...v2.3.6)
+
+### 🩹 Fixes
+
+- **_onLogout:** Clear user state after redirection ([30d544d](https://github.com/becem-gharbi/nuxt-auth/commit/30d544d))
+
+### 💅 Refactors
+
+- **plugin:** Implement new method for initialization check ([cfe6ebb](https://github.com/becem-gharbi/nuxt-auth/commit/cfe6ebb))
+- **middleware:** Replace user with access token to check logged in status ([a1b8432](https://github.com/becem-gharbi/nuxt-auth/commit/a1b8432))
+- No significant change ([c1d1c52](https://github.com/becem-gharbi/nuxt-auth/commit/c1d1c52))
+- **_loggedIn:** Use computed value instead of get/set methods ([d8dc8a2](https://github.com/becem-gharbi/nuxt-auth/commit/d8dc8a2))
+- **useAuthSession:** Rename _loggedIn to _loggedInFlag ([387c097](https://github.com/becem-gharbi/nuxt-auth/commit/387c097))
+- **_refresh:** Remove extra _loggedInFlag set ([96addfb](https://github.com/becem-gharbi/nuxt-auth/commit/96addfb))
+- Reload the page on logout ([97acee8](https://github.com/becem-gharbi/nuxt-auth/commit/97acee8))
+- Use navigateTo instead of location.replace ([a61db44](https://github.com/becem-gharbi/nuxt-auth/commit/a61db44))
+
+### 🏡 Chore
+
+- **demo:** Upgrade nuxt-auth to v2.3.5 ([12fe4d6](https://github.com/becem-gharbi/nuxt-auth/commit/12fe4d6))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.5
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.4...v2.3.5)
