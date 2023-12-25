@@ -30,8 +30,15 @@ export function useAuthSession () {
   }
 
   const _loggedIn = {
-    get: () => process.client && localStorage.getItem(publicConfig.loggedInFlagName),
-    set: (value: boolean) => process.client && localStorage.setItem(publicConfig.loggedInFlagName, value.toString())
+    get value () {
+      if (process.client) {
+        return localStorage.getItem(publicConfig.loggedInFlagName) === 'true'
+      }
+      return false
+    },
+    set value (value: boolean) {
+      process.client && localStorage.setItem(publicConfig.loggedInFlagName, value.toString())
+    }
   }
 
   const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
@@ -63,7 +70,7 @@ export function useAuthSession () {
             access_token: res._data.access_token,
             expires: new Date().getTime() + res._data.expires_in * 1000
           }
-          _loggedIn.set(true)
+          _loggedIn.value = true
         }
         return res
       })

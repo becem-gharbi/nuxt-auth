@@ -34,10 +34,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         await useAuth().fetchUser()
       } else {
         const isCallback = useRoute().path === publicConfig.redirect.callback
-        const isLoggedIn = _loggedIn.get() === 'true'
         const { _refreshToken, _refresh } = useAuthSession()
 
-        if (isCallback || isLoggedIn || _refreshToken.get()) {
+        if (isCallback || _loggedIn.value || _refreshToken.get()) {
           await _refresh()
           if (token.value) {
             await useAuth().fetchUser()
@@ -50,10 +49,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
      * Calls loggedIn hook and sets the loggedIn flag in localStorage
      */
     if (token.value) {
-      _loggedIn.set(true)
+      _loggedIn.value = true
       await nuxtApp.callHook('auth:loggedIn', true)
     } else {
-      _loggedIn.set(false)
+      _loggedIn.value = false
     }
 
     /**
