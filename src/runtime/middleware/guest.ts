@@ -16,9 +16,7 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
 
-  const token = useAuthToken()
-
-  if (token.value) {
+  if (useAuthToken().value) {
     return navigateTo(publicConfig.redirect.home)
   }
 })

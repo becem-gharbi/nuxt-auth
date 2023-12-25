@@ -50,10 +50,8 @@ export function useAuth () {
   function loginWithProvider (provider: Provider) {
     if (process.server) { return }
 
-    const route = useRoute()
-
     // The protected page the user has visited before redirect to login page
-    const returnToPath = route.query.redirect?.toString()
+    const returnToPath = useRoute().query.redirect?.toString()
 
     let redirectUrl = resolveURL('/api/auth/login', provider)
 
@@ -68,8 +66,7 @@ export function useAuth () {
   async function fetchUser () {
     const { user } = useAuthSession()
     try {
-      const { $auth } = useNuxtApp()
-      const data = await $auth.fetch('/api/auth/me')
+      const data = await useNuxtApp().$auth.fetch('/api/auth/me')
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),
@@ -88,27 +85,21 @@ export function useAuth () {
 
   async function _onLogin () {
     await fetchUser()
-    const { user } = useAuthSession()
-    if (user.value === null) { return }
-    const route = useRoute()
-    const { callHook } = useNuxtApp()
-    const returnToPath = route.query.redirect?.toString()
+    if (useAuthSession().user.value === null) { return }
+    const returnToPath = useRoute().query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
     useAuthSession()._loggedIn.set(true)
-    await callHook('auth:loggedIn', true)
+    await useNuxtApp().callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
 
   async function _onLogout () {
-    const { user } = useAuthSession()
-    if (user.value === null) { return }
-    const { callHook } = useNuxtApp()
-    await callHook('auth:loggedIn', false)
+    await useNuxtApp().callHook('auth:loggedIn', false)
     useAuthToken().value = null
     useAuthSession()._loggedIn.set(false)
-    clearNuxtData()
     await navigateTo(publicConfig.redirect.logout)
-    user.value = null
+    clearNuxtData()
+    useAuthSession().user.value = null
   }
 
   async function register (userInfo: {
@@ -134,14 +125,12 @@ export function useAuth () {
   }
 
   async function resetPassword (password: string): useFetchReturn<Response> {
-    const route = useRoute()
-
     return await useFetch('/api/auth/password/reset', {
       method: 'PUT',
       credentials: 'omit',
       body: {
         password,
-        token: route.query.token
+        token: useRoute().query.token
       }
     })
   }
@@ -160,8 +149,7 @@ export function useAuth () {
     currentPassword: string;
     newPassword: string;
   }): Promise<Response> {
-    const { $auth } = useNuxtApp()
-    return $auth.fetch<Response>('/api/auth/password/change', {
+    return useNuxtApp().$auth.fetch<Response>('/api/auth/password/change', {
       method: 'PUT',
       body: {
         currentPassword: input.currentPassword,

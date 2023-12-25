@@ -9,10 +9,8 @@ export async function useAuthFetch <T> (
   request: NitroFetchRequest,
   options?: NitroFetchOptions<NitroFetchRequest>
 ): Promise<T> {
-  const { getAccessToken } = useAuthSession()
-
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
-  const accessToken = await getAccessToken()
+  const accessToken = await useAuthSession().getAccessToken()
 
   const _options = defu(options, {
     credentials: 'omit',

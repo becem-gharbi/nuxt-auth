@@ -22,9 +22,7 @@ export default defineNuxtRouteMiddleware((to) => {
     }
   }
 
-  const token = useAuthToken()
-
-  if (!token.value) {
+  if (!useAuthToken().value) {
     return navigateTo({
       path: publicConfig.redirect.login,
       query: { redirect: to.path }

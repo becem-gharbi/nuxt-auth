@@ -16,7 +16,6 @@ import {
   useRuntimeConfig,
   useState,
   useRequestHeaders,
-  navigateTo,
   useNuxtApp
 } from '#imports'
 
@@ -44,7 +43,6 @@ export function useAuthSession () {
     isRefreshOn.value = true
 
     const headers = useRequestHeaders(['cookie', 'user-agent'])
-
     const accessToken = useAuthToken()
 
     await $fetch
@@ -70,14 +68,11 @@ export function useAuthSession () {
         return res
       })
       .catch(async () => {
-        accessToken.value = null
         _refreshToken.clear()
-        _loggedIn.set(false)
-        user.value = null
-        if (process.client) {
-          await navigateTo(publicConfig.redirect.logout)
-        }
-      }).finally(() => {
+        await useAuth()._onLogout()
+      }
+      )
+      .finally(() => {
         isRefreshOn.value = false
       })
   }
@@ -100,8 +95,7 @@ export function useAuthSession () {
    * Removes all stored sessions of the active user
    */
   function revokeAllSessions (): Promise<Response> {
-    const { $auth } = useNuxtApp()
-    return $auth.fetch<Response>('/api/auth/session/revoke/all', {
+    return useNuxtApp().$auth.fetch<Response>('/api/auth/session/revoke/all', {
       method: 'DELETE'
     })
   }
@@ -110,8 +104,7 @@ export function useAuthSession () {
    * Removes a single stored session of the active user
    */
   function revokeSession (id: Session['id']): Promise<Response> {
-    const { $auth } = useNuxtApp()
-    return $auth.fetch<Response>(`/api/auth/session/revoke/${id}`, {
+    return useNuxtApp().$auth.fetch<Response>(`/api/auth/session/revoke/${id}`, {
       method: 'DELETE'
     })
   }
@@ -120,8 +113,7 @@ export function useAuthSession () {
    * Get all stored sessions of the active user
    */
   async function getAllSessions (): Promise<Session[]> {
-    const { $auth } = useNuxtApp()
-    const sessions = await $auth.fetch<Session[]>('/api/auth/session')
+    const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/session')
 
     // Move current session on top
     const currentIndex = sessions.findIndex(el => el.current)

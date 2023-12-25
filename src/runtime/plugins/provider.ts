@@ -13,9 +13,7 @@ export default defineNuxtPlugin(() => {
    */
   const fetch = $fetch.create({
     async onRequest ({ options }) {
-      const { getAccessToken } = useAuthSession()
-
-      const accessToken = await getAccessToken()
+      const accessToken = await useAuthSession().getAccessToken()
 
       options.headers = defu(options.headers, accessToken && {
         authorization: 'Bearer ' + accessToken,

@@ -30,20 +30,17 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const firstTime = (process.server && !isPrerenderd) || (process.client && (!isServerRendered || isPrerenderd))
 
     if (firstTime) {
-      const { path } = useRoute()
-      const { fetchUser } = useAuth()
-
       if (token.value) {
-        await fetchUser()
+        await useAuth().fetchUser()
       } else {
-        const isCallback = path === publicConfig.redirect.callback
+        const isCallback = useRoute().path === publicConfig.redirect.callback
         const isLoggedIn = _loggedIn.get() === 'true'
         const { _refreshToken, _refresh } = useAuthSession()
 
         if (isCallback || isLoggedIn || _refreshToken.get()) {
           await _refresh()
           if (token.value) {
-            await fetchUser()
+            await useAuth().fetchUser()
           }
         }
       }
@@ -65,7 +62,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     nuxtApp.hook('app:mounted', () => {
       addEventListener('storage', (event) => {
         if (event.key === publicConfig.loggedInFlagName) {
-          if (event.oldValue === 'true' && event.newValue === 'false') {
+          if (event.oldValue === 'true' && event.newValue === 'false' && token.value) {
             useAuth()._onLogout()
           } else if (event.oldValue === 'false' && event.newValue === 'true') {
             location.reload()
