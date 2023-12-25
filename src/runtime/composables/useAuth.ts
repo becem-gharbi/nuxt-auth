@@ -1,4 +1,3 @@
-import { resolveURL, withQuery } from 'ufo'
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { AsyncData } from '#app'
@@ -47,16 +46,18 @@ export function useAuth () {
    * Login via oauth provider
    */
   function loginWithProvider (provider: Provider) {
-    if (process.server) { return }
-
     // The protected page the user has visited before redirect to login page
     const returnToPath = useRoute().query.redirect?.toString()
 
-    let redirectUrl = resolveURL('/api/auth/login', provider)
-
-    redirectUrl = withQuery(redirectUrl, { redirect: returnToPath })
-
-    window.location.replace(redirectUrl)
+    return navigateTo({
+      path: `/api/auth/login/${provider}`,
+      query: {
+        redirect: returnToPath
+      }
+    },
+    {
+      external: true
+    })
   }
 
   /**
