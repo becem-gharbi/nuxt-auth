@@ -1,4 +1,20 @@
 # Changelog
+## v2.3.7
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.6...v2.3.7)
+
+### 🩹 Fixes
+
+- **refresh:** Wait until previous refresh call is completed ([07afcf6](https://github.com/becem-gharbi/nuxt-auth/commit/07afcf6))
+
+### 💅 Refactors
+
+- **refresh:** Only pass cookies on SSR ([a73b9df](https://github.com/becem-gharbi/nuxt-auth/commit/a73b9df))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.6
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.5...v2.3.6)
