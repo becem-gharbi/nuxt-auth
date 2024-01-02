@@ -46,7 +46,16 @@ export function useAuthSession () {
   async function _refresh () {
     const isRefreshOn = useState('auth-refresh-loading', () => false)
 
-    if (isRefreshOn.value) { return }
+    if (isRefreshOn.value && process.client) {
+      // Wait until previous refresh call is completed
+      while (isRefreshOn.value) {
+        let timeoutId
+        await new Promise((resolve) => { timeoutId = setTimeout(resolve, 200) })
+        clearTimeout(timeoutId)
+      }
+      return
+    }
+
     isRefreshOn.value = true
 
     const accessToken = useAuthToken()
@@ -76,8 +85,7 @@ export function useAuthSession () {
       .catch(async () => {
         _refreshToken.clear()
         await useAuth()._onLogout()
-      }
-      )
+      })
       .finally(() => {
         isRefreshOn.value = false
       })
