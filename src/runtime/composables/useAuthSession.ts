@@ -49,20 +49,20 @@ export function useAuthSession () {
     if (isRefreshOn.value) { return }
     isRefreshOn.value = true
 
-    const headers = useRequestHeaders(['cookie', 'user-agent'])
     const accessToken = useAuthToken()
 
     await $fetch
       .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
         method: 'POST',
-        headers
+        headers: process.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
       })
       .then((res) => {
-        const setCookie = res.headers.get('set-cookie') ?? ''
-        const cookies = splitCookiesString(setCookie)
+        if (process.server) {
+          const cookies = splitCookiesString(res.headers.get('set-cookie') ?? '')
 
-        for (const cookie of cookies) {
-          appendResponseHeader(event, 'set-cookie', cookie)
+          for (const cookie of cookies) {
+            appendResponseHeader(event, 'set-cookie', cookie)
+          }
         }
 
         if (res._data) {
