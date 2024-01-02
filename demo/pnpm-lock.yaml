@@ -6,8 +6,8 @@ settings:
 
 devDependencies:
   '@bg-dev/nuxt-auth':
-    specifier: 2.3.5
-    version: 2.3.5(prisma@5.6.0)
+    specifier: 2.3.7
+    version: 2.3.7(prisma@5.6.0)
   '@nuxt/devtools':
     specifier: latest
     version: 1.0.6(nuxt@3.8.2)(vite@4.5.0)
@@ -367,8 +367,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@bg-dev/nuxt-auth@2.3.5(prisma@5.6.0):
-    resolution: {integrity: sha512-lEAKXLdYwBxdgyoelsAU8cQ6L0vAtO7Eb1lDYLAzu5WHLfuMWAmWFQ5l9tDwIM/NjtmXr/T4CIic69+A0Pzb5A==}
+  /@bg-dev/nuxt-auth@2.3.7(prisma@5.6.0):
+    resolution: {integrity: sha512-F+pXxXBOo1Dz6TNNk85IhACTwLkmGKLlLqmgYlSqK+xpMOJQ1iaqu/Y2pdGkXFaAwAQCaPEDOceSrpbVPcGUAQ==}
     peerDependencies:
       prisma: ^5.2.0
     dependencies:
@@ -4590,7 +4590,7 @@ packages:
       '@rollup/plugin-replace': 5.0.5(rollup@4.9.1)
       '@rollup/plugin-terser': 0.4.4(rollup@4.9.1)
       '@rollup/plugin-wasm': 6.2.2(rollup@4.9.1)
-      '@rollup/pluginutils': 5.0.5(rollup@4.9.1)
+      '@rollup/pluginutils': 5.1.0(rollup@4.9.1)
       '@types/http-proxy': 1.17.14
       '@vercel/nft': 0.24.3
       archiver: 6.0.1
@@ -6562,10 +6562,10 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.7
       '@nuxt/kit': 3.8.2
-      '@rollup/pluginutils': 5.0.5(rollup@4.5.2)
+      '@rollup/pluginutils': 5.1.0(rollup@4.9.1)
       debug: 4.3.4
       error-stack-parser-es: 0.1.1
-      fs-extra: 11.1.1
+      fs-extra: 11.2.0
       open: 9.1.0
       picocolors: 1.0.0
       sirv: 2.0.3
