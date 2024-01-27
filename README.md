@@ -36,13 +36,7 @@ yarn add --dev @bg-dev/nuxt-auth
 
 ## Documentation
 
-A documentation website can be found [here](https://nuxt-auth.bg.tn).
-
-You can check demo running on edge workers.
-
-- Vercel edge https://nuxt-auth-demo.vercel.app
-- Netlify edge https://nuxt-auth-demo.netlify.app
-- Cloudflare pages https://nuxt-auth-c35.pages.dev
+The documentation website can be found [here](https://nuxt-auth.bg.tn).
 
 ## License
 
