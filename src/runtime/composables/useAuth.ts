@@ -1,7 +1,7 @@
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { AsyncData } from '#app'
-import type { Provider, PublicConfig, Response } from '../types'
+import type { Provider, PublicConfig, Response, User } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
@@ -24,7 +24,7 @@ export function useAuth () {
     email: string;
     password: string;
   }): useFetchReturn<{ access_token: string, expires_in:number }> {
-    const res = await useFetch('/api/auth/login', {
+    const res = await useFetch<{ access_token: string, expires_in:number }>('/api/auth/login', {
       method: 'POST',
       body: {
         email: credentials.email,
@@ -66,7 +66,7 @@ export function useAuth () {
   async function fetchUser () {
     const { user } = useAuthSession()
     try {
-      const data = await useNuxtApp().$auth.fetch('/api/auth/me')
+      const data = await useNuxtApp().$auth.fetch<User>('/api/auth/me')
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),

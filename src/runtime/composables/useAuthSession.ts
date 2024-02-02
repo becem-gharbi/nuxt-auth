@@ -25,8 +25,8 @@ export function useAuthSession () {
   const privateConfig = useRuntimeConfig().auth
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event, privateConfig.refreshToken.cookieName),
-    clear: () => process.server && deleteCookie(event, privateConfig.refreshToken.cookieName)
+    get: () => process.server && getCookie(event!, privateConfig.refreshToken.cookieName),
+    clear: () => process.server && deleteCookie(event!, privateConfig.refreshToken.cookieName)
   }
 
   const _loggedInFlag = {
@@ -70,7 +70,7 @@ export function useAuthSession () {
           const cookies = splitCookiesString(res.headers.get('set-cookie') ?? '')
 
           for (const cookie of cookies) {
-            appendResponseHeader(event, 'set-cookie', cookie)
+            appendResponseHeader(event!, 'set-cookie', cookie)
           }
         }
 
