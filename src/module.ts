@@ -12,14 +12,13 @@ import {
 import { defu } from 'defu'
 import type { PrismaClient } from '@prisma/client'
 import { name, version } from '../package.json'
-
 import type {
   PublicConfig,
   PrivateConfig,
   AccessTokenPayload
 } from './runtime/types'
 
-export interface ModuleOptions extends PrivateConfig, PublicConfig {}
+export type ModuleOptions = PrivateConfig & PublicConfig
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -32,6 +31,10 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   defaults: {
+    backendEnabled: true,
+
+    backendBaseUrl: '',
+
     baseUrl: '',
 
     accessToken: {
@@ -92,14 +95,6 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   setup (options, nuxt) {
-    if (!options.refreshToken.jwtSecret) {
-      logger.warn(`[${name}] Please make sure to set refresh token's secret`)
-    }
-
-    if (!options.accessToken.jwtSecret) {
-      logger.warn(`[${name}] Please make sure to set access token's secret`)
-    }
-
     if (!options.redirect.login) {
       logger.warn(`[${name}] Please make sure to set login redirect path`)
     }
@@ -116,36 +111,17 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn(`[${name}] Please make sure to set baseUrl`)
     }
 
-    if (!options.registration?.enable) {
-      logger.warn(`[${name}] Registration is disabled`)
-    }
-
-    if (!options.oauth && !options.email?.provider) {
-      logger.warn(`[${name}] Please make sure to set email provider`)
-    }
-
     // Initialize the module options
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       app: {},
 
       auth: {
-        accessToken: options.accessToken,
-
-        refreshToken: options.refreshToken,
-
-        email: options.email,
-
-        oauth: options.oauth,
-
-        prisma: options.prisma,
-
-        registration: options.registration,
-
-        webhookKey: options.webhookKey
+        backendEnabled: options.backendEnabled
       },
 
       public: {
         auth: {
+          backendBaseUrl: options.backendBaseUrl,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,
@@ -164,9 +140,6 @@ export default defineNuxtModule<ModuleOptions>({
     // Get the runtime directory
     const { resolve } = createResolver(import.meta.url)
     const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
-
-    // Transpile CJS dependencies
-    nuxt.options.build.transpile.push(runtimeDir, 'bcryptjs')
 
     // Add nuxt plugins
     addPlugin(resolve(runtimeDir, 'plugins/provider'), { append: true })
@@ -187,6 +160,55 @@ export default defineNuxtModule<ModuleOptions>({
         from: resolve(runtimeDir, 'composables/useAuthSession')
       }
     ])
+
+    if (options.backendEnabled === false) {
+      return
+    }
+
+    /* **************************************************************************** */
+    /* ************************** Setup Built-in Backend ************************** */
+    /* **************************************************************************** */
+
+    if (!options.refreshToken.jwtSecret) {
+      logger.warn(`[${name}] Please make sure to set refresh token's secret`)
+    }
+
+    if (!options.accessToken.jwtSecret) {
+      logger.warn(`[${name}] Please make sure to set access token's secret`)
+    }
+
+    if (!options.registration?.enable) {
+      logger.warn(`[${name}] Registration is disabled`)
+    }
+
+    if (!options.oauth && !options.email?.provider) {
+      logger.warn(`[${name}] Please make sure to set email provider`)
+    }
+
+    // Initialize the module options
+    nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
+      app: {},
+      public: {},
+
+      auth: {
+        accessToken: options.accessToken,
+
+        refreshToken: options.refreshToken,
+
+        email: options.email,
+
+        oauth: options.oauth,
+
+        prisma: options.prisma,
+
+        registration: options.registration,
+
+        webhookKey: options.webhookKey
+      }
+    })
+
+    // Transpile CJS dependencies
+    nuxt.options.build.transpile.push(runtimeDir, 'bcryptjs')
 
     // Add server utils
     nuxt.options.nitro = defu(
