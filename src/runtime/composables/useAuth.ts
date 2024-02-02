@@ -1,7 +1,8 @@
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { AsyncData } from '#app'
-import type { Provider, PublicConfig, Response, User } from '../types'
+import { joinURL } from 'ufo'
+import type { Provider, Response, User } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
@@ -15,7 +16,7 @@ import {
 type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export function useAuth () {
-  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+  const publicConfig = useRuntimeConfig().public.auth
 
   /**
    * Login with email/password
