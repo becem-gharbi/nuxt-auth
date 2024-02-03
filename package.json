@@ -41,10 +41,10 @@
   "dependencies": {
     "@nuxt/kit": "^3.10.0",
     "@prisma/client": "^5.9.1",
-    "@prisma/extension-accelerate": "^0.6.2",
+    "@prisma/extension-accelerate": "^0.6.3",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.4",
-    "jose": "^5.2.0",
+    "jose": "^5.2.1",
     "mustache": "^4.2.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
