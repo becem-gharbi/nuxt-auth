@@ -8,9 +8,9 @@ import type {
 
 export type Provider = Exclude<PrismaProvider, "default">;
 
-export interface User extends Omit<PrismaUser, "password"> {}
+export interface User extends Omit<PrismaUser, "password"> { }
 
-export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> {}
+export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> { }
 
 export interface Session {
   id: RefreshToken["id"];
@@ -64,6 +64,13 @@ interface MailResendProvider {
 }
 
 export type PrivateConfig = {
+  backendEnabled: false,
+  refreshToken: {
+    cookieName?: string
+  }
+} | {
+  backendEnabled: true;
+
   accessToken: {
     jwtSecret: string;
     maxAge?: number;
@@ -112,6 +119,22 @@ export type PrivateConfig = {
 };
 
 export type PublicConfig = {
+  backendEnabled: true;
+  baseUrl: string;
+  enableGlobalAuthMiddleware?: boolean;
+  loggedInFlagName?: string;
+  redirect: {
+    login: string;
+    logout: string;
+    home: string;
+    callback?: string;
+    passwordReset?: string;
+    emailVerify?: string;
+  };
+} |
+{
+  backendEnabled: false;
+  backendBaseUrl: string;
   baseUrl: string;
   enableGlobalAuthMiddleware?: boolean;
   loggedInFlagName?: string;

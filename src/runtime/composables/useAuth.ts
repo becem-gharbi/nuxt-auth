@@ -1,7 +1,8 @@
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { AsyncData } from '#app'
-import type { Provider, PublicConfig, Response } from '../types'
+import { joinURL } from 'ufo'
+import type { Provider, Response, User } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
@@ -15,7 +16,7 @@ import {
 type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export function useAuth () {
-  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+  const publicConfig = useRuntimeConfig().public.auth
 
   /**
    * Login with email/password
@@ -24,8 +25,10 @@ export function useAuth () {
     email: string;
     password: string;
   }): useFetchReturn<{ access_token: string, expires_in:number }> {
-    const res = await useFetch('/api/auth/login', {
+    const res = await useFetch<{ access_token: string, expires_in: number }>('/api/auth/login', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
+      credentials: 'include',
       body: {
         email: credentials.email,
         password: credentials.password
@@ -50,7 +53,7 @@ export function useAuth () {
     const returnToPath = useRoute().query.redirect?.toString()
 
     return navigateTo({
-      path: `/api/auth/login/${provider}`,
+      path: joinURL(publicConfig.backendBaseUrl, '/api/auth/login', provider),
       query: {
         redirect: returnToPath
       }
@@ -66,7 +69,7 @@ export function useAuth () {
   async function fetchUser () {
     const { user } = useAuthSession()
     try {
-      const data = await useNuxtApp().$auth.fetch('/api/auth/me')
+      const data = await useNuxtApp().$auth.fetch<User>('/api/auth/me')
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),
@@ -78,8 +81,10 @@ export function useAuth () {
   }
 
   async function logout () {
-    await $fetch('/api/auth/logout', {
-      method: 'POST'
+    await $fetch<Response>('/api/auth/logout', {
+      baseURL: publicConfig.backendBaseUrl,
+      method: 'POST',
+      credentials: 'include'
     }).finally(_onLogout)
   }
 
@@ -105,7 +110,8 @@ export function useAuth () {
     password: string;
     name: string;
   }): useFetchReturn<Response> {
-    return await useFetch('/api/auth/register', {
+    return await useFetch<Response>('/api/auth/register', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       body: userInfo,
       credentials: 'omit'
@@ -113,7 +119,8 @@ export function useAuth () {
   }
 
   async function requestPasswordReset (email: string): useFetchReturn<Response> {
-    return await useFetch('/api/auth/password/request', {
+    return await useFetch<Response>('/api/auth/password/request', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
       body: {
@@ -123,7 +130,8 @@ export function useAuth () {
   }
 
   async function resetPassword (password: string): useFetchReturn<Response> {
-    return await useFetch('/api/auth/password/reset', {
+    return await useFetch<Response>('/api/auth/password/reset', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'PUT',
       credentials: 'omit',
       body: {
@@ -134,7 +142,8 @@ export function useAuth () {
   }
 
   async function requestEmailVerify (email: string): useFetchReturn<Response> {
-    return await useFetch('/api/auth/email/request', {
+    return await useFetch<Response>('/api/auth/email/request', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
       body: {

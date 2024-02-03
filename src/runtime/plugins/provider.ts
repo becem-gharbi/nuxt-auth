@@ -1,17 +1,22 @@
 import { defu } from 'defu'
+import type { $Fetch } from 'ofetch'
 import {
   defineNuxtPlugin,
   useAuthSession,
-  useRequestHeaders
+  useRequestHeaders,
+  useRuntimeConfig
 } from '#imports'
 
 export default defineNuxtPlugin(() => {
+  const publicConfig = useRuntimeConfig().public.auth
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
 
   /**
    * A $fetch instance with auto authorization handler
    */
   const fetch = $fetch.create({
+    baseURL: publicConfig.backendBaseUrl,
+
     async onRequest ({ options }) {
       const accessToken = await useAuthSession().getAccessToken()
 
@@ -27,7 +32,7 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       auth: {
-        fetch
+        fetch: fetch as $Fetch
       }
     }
   }

@@ -3,6 +3,16 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   ssr: true,
 
+  routeRules: {
+    '/api/**': {
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:3001',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT, PATCH',
+        'Access-Control-Allow-Headers': 'content-type, authorization, user-agent'
+      }
+    }
+  },
   nitro: {
     preset: process.env.NITRO_PRESET
   },
@@ -17,10 +27,12 @@ export default defineNuxtConfig({
 
   auth: {
     baseUrl: 'http://localhost:3000',
+    backendEnabled: true,
+    // backendUrl: 'http://localhost:3000',
 
     accessToken: {
       jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || '',
-      // maxAge: 15,
+      maxAge: 15,
       customClaims: {
         'https://hasura.io/jwt/claims': {
           'x-hasura-allowed-roles': ['user', 'admin'],
