@@ -53,7 +53,7 @@ export function useAuth () {
     const returnToPath = useRoute().query.redirect?.toString()
 
     return navigateTo({
-      path: joinURL(publicConfig.backendBaseUrl, 'api/auth/login', provider),
+      path: joinURL(publicConfig.backendBaseUrl, '/api/auth/login', provider),
       query: {
         redirect: returnToPath
       }

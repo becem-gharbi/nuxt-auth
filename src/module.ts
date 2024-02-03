@@ -33,8 +33,6 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     backendEnabled: true,
 
-    backendBaseUrl: '',
-
     baseUrl: '',
 
     accessToken: {
@@ -116,13 +114,12 @@ export default defineNuxtModule<ModuleOptions>({
       app: {},
 
       auth: {
-        backendEnabled: options.backendEnabled,
         refreshToken: options.refreshToken
       },
 
       public: {
         auth: {
-          backendBaseUrl: options.backendBaseUrl,
+          backendBaseUrl: options.backendEnabled ? '/' : options.backendBaseUrl,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,
@@ -163,6 +160,9 @@ export default defineNuxtModule<ModuleOptions>({
     ])
 
     if (options.backendEnabled === false) {
+      if (!options.backendBaseUrl) {
+        logger.warn(`[${name}] Please make sure to set backendBaseUrl`)
+      }
       return
     }
 

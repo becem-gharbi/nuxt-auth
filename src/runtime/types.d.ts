@@ -119,6 +119,21 @@ export type PrivateConfig = {
 };
 
 export type PublicConfig = {
+  backendEnabled: true;
+  baseUrl: string;
+  enableGlobalAuthMiddleware?: boolean;
+  loggedInFlagName?: string;
+  redirect: {
+    login: string;
+    logout: string;
+    home: string;
+    callback?: string;
+    passwordReset?: string;
+    emailVerify?: string;
+  };
+} |
+{
+  backendEnabled: false;
   backendBaseUrl: string;
   baseUrl: string;
   enableGlobalAuthMiddleware?: boolean;
