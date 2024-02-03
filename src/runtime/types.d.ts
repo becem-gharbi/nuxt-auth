@@ -64,7 +64,10 @@ interface MailResendProvider {
 }
 
 export type PrivateConfig = {
-  backendEnabled: false
+  backendEnabled: false,
+  refreshToken: {
+    cookieName?: string
+  }
 } | {
   backendEnabled: true;
 

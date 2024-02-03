@@ -116,7 +116,8 @@ export default defineNuxtModule<ModuleOptions>({
       app: {},
 
       auth: {
-        backendEnabled: options.backendEnabled
+        backendEnabled: options.backendEnabled,
+        refreshToken: options.refreshToken
       },
 
       public: {
