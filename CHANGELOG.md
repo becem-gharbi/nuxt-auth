@@ -1,4 +1,16 @@
 # Changelog
+## v2.4.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.8...v2.4.2)
+
+### 🏡 Chore
+
+- Bump version to 2.4 ([0dd9f8f](https://github.com/becem-gharbi/nuxt-auth/commit/0dd9f8f))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.3.8
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.7...v2.3.8)
