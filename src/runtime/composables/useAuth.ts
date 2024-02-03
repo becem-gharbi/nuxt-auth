@@ -28,6 +28,7 @@ export function useAuth () {
     const res = await useFetch<{ access_token: string, expires_in: number }>('/api/auth/login', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
+      credentials: 'include',
       body: {
         email: credentials.email,
         password: credentials.password
@@ -82,7 +83,8 @@ export function useAuth () {
   async function logout () {
     await $fetch('/api/auth/logout', {
       baseURL: publicConfig.backendBaseUrl,
-      method: 'POST'
+      method: 'POST',
+      credentials: 'include'
     }).finally(_onLogout)
   }
 

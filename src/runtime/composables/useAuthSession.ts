@@ -59,11 +59,12 @@ export function useAuthSession () {
     isRefreshOn.value = true
 
     const accessToken = useAuthToken()
-
     await $fetch
       .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
         baseURL: publicConfig.backendBaseUrl,
         method: 'POST',
+        // Cloudflare Workers does not support "credentials" field
+        ...(process.client ? { credentials: 'include' } : {}),
         headers: process.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
       })
       .then((res) => {
