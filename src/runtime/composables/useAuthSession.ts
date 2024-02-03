@@ -62,6 +62,7 @@ export function useAuthSession () {
 
     await $fetch
       .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
+        baseURL: publicConfig.backendBaseUrl,
         method: 'POST',
         headers: process.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
       })

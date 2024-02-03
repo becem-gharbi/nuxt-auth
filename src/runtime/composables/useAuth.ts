@@ -25,7 +25,8 @@ export function useAuth () {
     email: string;
     password: string;
   }): useFetchReturn<{ access_token: string, expires_in:number }> {
-    const res = await useFetch<{ access_token: string, expires_in:number }>('/api/auth/login', {
+    const res = await useFetch<{ access_token: string, expires_in: number }>('/api/auth/login', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       body: {
         email: credentials.email,
@@ -51,7 +52,7 @@ export function useAuth () {
     const returnToPath = useRoute().query.redirect?.toString()
 
     return navigateTo({
-      path: `/api/auth/login/${provider}`,
+      path: joinURL(publicConfig.backendBaseUrl, 'api/auth/login', provider),
       query: {
         redirect: returnToPath
       }
@@ -80,6 +81,7 @@ export function useAuth () {
 
   async function logout () {
     await $fetch('/api/auth/logout', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST'
     }).finally(_onLogout)
   }
@@ -107,6 +109,7 @@ export function useAuth () {
     name: string;
   }): useFetchReturn<Response> {
     return await useFetch('/api/auth/register', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       body: userInfo,
       credentials: 'omit'
@@ -115,6 +118,7 @@ export function useAuth () {
 
   async function requestPasswordReset (email: string): useFetchReturn<Response> {
     return await useFetch('/api/auth/password/request', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
       body: {
@@ -125,6 +129,7 @@ export function useAuth () {
 
   async function resetPassword (password: string): useFetchReturn<Response> {
     return await useFetch('/api/auth/password/reset', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'PUT',
       credentials: 'omit',
       body: {
@@ -136,6 +141,7 @@ export function useAuth () {
 
   async function requestEmailVerify (email: string): useFetchReturn<Response> {
     return await useFetch('/api/auth/email/request', {
+      baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
       body: {
