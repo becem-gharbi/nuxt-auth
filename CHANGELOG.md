@@ -1,4 +1,39 @@
 # Changelog
+## v2.3.8
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.7...v2.3.8)
+
+### 💅 Refactors
+
+- Add `backendEnabled` and `backendBaseUrl` config options ([da41425](https://github.com/becem-gharbi/nuxt-auth/commit/da41425))
+- Always overwrite baseURL with backendBaseUrl ([90285ad](https://github.com/becem-gharbi/nuxt-auth/commit/90285ad))
+- Set credentials to include for cross-site requests ([adbe673](https://github.com/becem-gharbi/nuxt-auth/commit/adbe673))
+- Always provide `refreshToken.cookieName` config option ([b8d02ef](https://github.com/becem-gharbi/nuxt-auth/commit/b8d02ef))
+
+### 📖 Documentation
+
+- Update 1.tokens.md ([7c6c06a](https://github.com/becem-gharbi/nuxt-auth/commit/7c6c06a))
+- Add frontend-only docs ([fcd8d4c](https://github.com/becem-gharbi/nuxt-auth/commit/fcd8d4c))
+
+### 🌊 Types
+
+- Remove extra assertions ([03723f0](https://github.com/becem-gharbi/nuxt-auth/commit/03723f0))
+- Exclude `backendBaseUrl` option if backend is enabled ([88eed61](https://github.com/becem-gharbi/nuxt-auth/commit/88eed61))
+- Solve typecheck issues ([d3d0eac](https://github.com/becem-gharbi/nuxt-auth/commit/d3d0eac))
+- Minor refactoring ([6ce190a](https://github.com/becem-gharbi/nuxt-auth/commit/6ce190a))
+
+### 🏡 Chore
+
+- **demo:** Upgrade nuxt-auth to v2.3.7 ([e9a776e](https://github.com/becem-gharbi/nuxt-auth/commit/e9a776e))
+- **playground:** Allow cross site requests ([d87d08e](https://github.com/becem-gharbi/nuxt-auth/commit/d87d08e))
+- **demo:** Upgrade deps ([c17e8ed](https://github.com/becem-gharbi/nuxt-auth/commit/c17e8ed))
+- **docs:** Upgrade non-major dependencies ([3f80d07](https://github.com/becem-gharbi/nuxt-auth/commit/3f80d07))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.3.7
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.6...v2.3.7)
