@@ -1,4 +1,5 @@
 import { defu } from 'defu'
+import type { $Fetch } from 'ofetch'
 import {
   defineNuxtPlugin,
   useAuthSession,
@@ -31,7 +32,7 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       auth: {
-        fetch
+        fetch: fetch as $Fetch
       }
     }
   }
