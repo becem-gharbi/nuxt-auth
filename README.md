@@ -14,6 +14,7 @@ A fairly complete solution to handle authentication for your Nuxt 3 project
 - ✔️ Oauth login (Google, Github ...)
 - ✔️ Route middleware protection
 - ✔️ Database agnostic (Prisma based)
+- ✔️ Custom backend option
 - ✔️ Auth operations via `useAuth` composable
 - ✔️ Auto refresh of access token via `useAuthFetch` composable
 - ✔️ Add dynamic custom claims to access token
