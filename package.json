@@ -39,7 +39,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@nuxt/kit": "^3.10.0",
+    "@nuxt/kit": "^3.10.1",
     "@prisma/client": "^5.9.1",
     "@prisma/extension-accelerate": "^0.6.3",
     "bcryptjs": "^2.4.3",
@@ -51,14 +51,14 @@
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.10.0",
+    "@nuxt/schema": "^3.10.1",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/mustache": "^4.2.5",
     "@types/uuid": "^9.0.8",
     "changelogen": "^0.5.5",
     "eslint": "^8.56.0",
-    "nuxt": "^3.10.0",
+    "nuxt": "^3.10.1",
     "prisma": "^5.9.1"
   },
   "peerDependencies": {
