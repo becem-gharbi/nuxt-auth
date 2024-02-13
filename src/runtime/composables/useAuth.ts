@@ -1,19 +1,13 @@
-import type { FetchError } from 'ofetch'
-import type { H3Error } from 'h3'
-import type { AsyncData } from '#app'
 import { joinURL } from 'ufo'
 import type { Provider, Response, User } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
   useRoute,
-  useFetch,
   useAuthSession,
   navigateTo,
   useNuxtApp
 } from '#imports'
-
-type useFetchReturn<T> = Promise<AsyncData<T | null, FetchError<H3Error> | null>>;
 
 export function useAuth () {
   const publicConfig = useRuntimeConfig().public.auth
@@ -24,8 +18,8 @@ export function useAuth () {
   async function login (credentials: {
     email: string;
     password: string;
-  }): useFetchReturn<{ access_token: string, expires_in:number }> {
-    const res = await useFetch<{ access_token: string, expires_in: number }>('/api/auth/login', {
+  }): Promise<{ access_token: string, expires_in: number }> {
+    const res = await $fetch<{ access_token: string, expires_in: number }>('/api/auth/login', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'include',
@@ -35,13 +29,12 @@ export function useAuth () {
       }
     })
 
-    if (!res.error.value && res.data.value) {
-      useAuthToken().value = {
-        access_token: res.data.value.access_token,
-        expires: new Date().getTime() + res.data.value.expires_in * 1000
-      }
-      await _onLogin()
+    useAuthToken().value = {
+      access_token: res.access_token,
+      expires: new Date().getTime() + res.expires_in * 1000
     }
+    await _onLogin()
+
     return res
   }
 
@@ -109,8 +102,8 @@ export function useAuth () {
     email: string;
     password: string;
     name: string;
-  }): useFetchReturn<Response> {
-    return await useFetch<Response>('/api/auth/register', {
+  }): Promise<Response> {
+    return await $fetch<Response>('/api/auth/register', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       body: userInfo,
@@ -118,8 +111,8 @@ export function useAuth () {
     })
   }
 
-  async function requestPasswordReset (email: string): useFetchReturn<Response> {
-    return await useFetch<Response>('/api/auth/password/request', {
+  async function requestPasswordReset (email: string): Promise<Response> {
+    return await $fetch<Response>('/api/auth/password/request', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
@@ -129,8 +122,8 @@ export function useAuth () {
     })
   }
 
-  async function resetPassword (password: string): useFetchReturn<Response> {
-    return await useFetch<Response>('/api/auth/password/reset', {
+  async function resetPassword (password: string): Promise<Response> {
+    return await $fetch<Response>('/api/auth/password/reset', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'PUT',
       credentials: 'omit',
@@ -141,8 +134,8 @@ export function useAuth () {
     })
   }
 
-  async function requestEmailVerify (email: string): useFetchReturn<Response> {
-    return await useFetch<Response>('/api/auth/email/request', {
+  async function requestEmailVerify (email: string): Promise<Response> {
+    return await $fetch<Response>('/api/auth/email/request', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
