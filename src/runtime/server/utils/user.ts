@@ -61,13 +61,10 @@ function generateAvatar (name: string) {
 
   const randomIndex = Math.floor(Math.random() * (colors.length - 1))
 
-  const url = withQuery('https://ui-avatars.com/api', {
+  const url = withQuery('/api/auth/avatar', {
     name,
     color: 'f5f5f5',
-    background: colors[randomIndex],
-    length: 1,
-    bold: true,
-    'font-size': 0.5
+    background: colors[randomIndex]
   })
 
   return url

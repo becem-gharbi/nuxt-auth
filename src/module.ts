@@ -375,6 +375,11 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve(runtimeDir, 'server/api/auth/session/index.get')
     })
 
+    addServerHandler({
+      route: '/api/auth/avatar',
+      handler: resolve(runtimeDir, 'server/api/auth/avatar.get')
+    })
+
     if (options.webhookKey) {
       addServerHandler({
         route: '/api/auth/session/revoke/expired',
