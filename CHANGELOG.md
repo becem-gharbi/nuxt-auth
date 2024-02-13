@@ -1,4 +1,36 @@
 # Changelog
+## v2.4.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.2...v2.4.3)
+
+### 🔥 Performance
+
+- Generate default user avatar internally ([984fa4d](https://github.com/becem-gharbi/nuxt-auth/commit/984fa4d))
+
+### 🩹 Fixes
+
+- Avoid `useFetch` call outside of script setup ([22466e5](https://github.com/becem-gharbi/nuxt-auth/commit/22466e5))
+
+### 📖 Documentation
+
+- Add more details and improve phrasing ([#16](https://github.com/becem-gharbi/nuxt-auth/pull/16))
+- Ensure style concistency ([49db800](https://github.com/becem-gharbi/nuxt-auth/commit/49db800))
+- No significant change ([d300746](https://github.com/becem-gharbi/nuxt-auth/commit/d300746))
+
+### 🌊 Types
+
+- Fix undefined configKey `auth` ([2ea4d74](https://github.com/becem-gharbi/nuxt-auth/commit/2ea4d74))
+
+### 🏡 Chore
+
+- **playground:** No significant change ([a919215](https://github.com/becem-gharbi/nuxt-auth/commit/a919215))
+- Remove demo app ([ebfdfc3](https://github.com/becem-gharbi/nuxt-auth/commit/ebfdfc3))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Behon Baker
+
 ## v2.4.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.3.8...v2.4.2)
