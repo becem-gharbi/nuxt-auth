@@ -26,11 +26,11 @@ const email = ref()
 const password = ref()
 
 async function handleLogin () {
-  const { data, error } = await login({ email: email.value, password: password.value })
+  await login({ email: email.value, password: password.value })
 }
 
 async function handleRequestPasswordReset () {
-  const { error } = await requestPasswordReset(email.value)
+  await requestPasswordReset(email.value)
   // console.log(error.value?.data?.message)
 }
 </script>

@@ -19,7 +19,7 @@ const { resetPassword } = useAuth()
 const password = ref()
 
 async function handleResetPassword () {
-  const { error } = await resetPassword(password.value)
+  await resetPassword(password.value)
   // console.log(error.value?.data.message)
 }
 
