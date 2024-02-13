@@ -63,14 +63,14 @@ interface MailResendProvider {
   apiKey: string
 }
 
-type PrivateConfigWithoutBackend = {
+export type PrivateConfigWithoutBackend = {
   backendEnabled: false,
   refreshToken: {
     cookieName?: string
   }
 }
 
-type PrivateConfigWithBackend = {
+export type PrivateConfigWithBackend = {
   backendEnabled: true;
 
   accessToken: {
@@ -120,7 +120,7 @@ type PrivateConfigWithBackend = {
   webhookKey?: string;
 };
 
-type PublicConfigCommon = {
+export type PublicConfigCommon = {
   baseUrl: string;
   enableGlobalAuthMiddleware?: boolean;
   loggedInFlagName?: string;
@@ -134,17 +134,13 @@ type PublicConfigCommon = {
   };
 }
 
-type PublicConfigWithBackend = PublicConfigCommon & {
-  backendEnabled: true;
-}
-
-type PublicConfigWithoutBackend = PublicConfigCommon & {
-  backendEnabled: false;
-  backendBaseUrl: string;
-}
-
 export type PrivateConfig = PrivateConfigWithBackend | PrivateConfigWithoutBackend
 
-export type PublicConfig = PublicConfigWithBackend | PublicConfigWithoutBackend
+export type PublicConfig = PublicConfigCommon & ({
+  backendEnabled: true;
+} | {
+  backendEnabled: false;
+  backendBaseUrl: string;
+})
 
 export interface Response { status: string }
