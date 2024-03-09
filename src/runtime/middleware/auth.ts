@@ -15,10 +15,8 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
 
-  if (publicConfig.enableGlobalAuthMiddleware === true) {
-    if (to.meta.auth === false) {
-      return
-    }
+  if (publicConfig.enableGlobalAuthMiddleware && to.meta.auth === false) {
+    return
   }
 
   if (!useAuthToken().value) {
