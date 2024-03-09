@@ -4,6 +4,7 @@
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
+  "homepage": "https://nuxt-auth.bg.tn",
   "keywords": [
     "nuxt",
     "auth",
