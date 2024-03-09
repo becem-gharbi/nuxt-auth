@@ -1,4 +1,29 @@
 # Changelog
+## v2.4.5
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.3...v2.4.5)
+
+### 🩹 Fixes
+
+- Avoid auto-logout on SSR error ([921662e](https://github.com/becem-gharbi/nuxt-auth/commit/921662e))
+
+### 💅 Refactors
+
+- Remove extra token check ([0391746](https://github.com/becem-gharbi/nuxt-auth/commit/0391746))
+- No significant change ([309f48d](https://github.com/becem-gharbi/nuxt-auth/commit/309f48d))
+
+### 📖 Documentation
+
+- Change font family ([e8d8103](https://github.com/becem-gharbi/nuxt-auth/commit/e8d8103))
+
+### 🏡 Chore
+
+- **package.json:** Set homepage property ([1f98370](https://github.com/becem-gharbi/nuxt-auth/commit/1f98370))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.4.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.2...v2.4.3)
