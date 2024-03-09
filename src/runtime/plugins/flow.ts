@@ -30,17 +30,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const firstTime = (process.server && !isPrerenderd) || (process.client && (!isServerRendered || isPrerenderd))
 
     if (firstTime) {
-      if (token.value) {
-        await useAuth().fetchUser()
-      } else {
-        const isCallback = useRoute().path === publicConfig.redirect.callback
-        const { _refreshToken, _refresh } = useAuthSession()
+      const isCallback = useRoute().path === publicConfig.redirect.callback
+      const { _refreshToken, _refresh } = useAuthSession()
 
-        if (isCallback || _loggedInFlag.value || _refreshToken.get()) {
-          await _refresh()
-          if (token.value) {
-            await useAuth().fetchUser()
-          }
+      if (isCallback || _loggedInFlag.value || _refreshToken.get()) {
+        await _refresh()
+        if (token.value) {
+          await useAuth().fetchUser()
         }
       }
     }
@@ -69,5 +65,5 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         }
       })
     })
-  } catch (e) {}
+  } catch (e) { }
 })
