@@ -25,9 +25,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     /**
      * Makes sure to refresh access token and set user state if possible (run once)
      */
+    const isSSRError = typeof nuxtApp.payload.error !== 'undefined'
     const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
     const isServerRendered = nuxtApp.payload.serverRendered
-    const firstTime = (process.server && !isPrerenderd) || (process.client && (!isServerRendered || isPrerenderd))
+    const firstTime = (process.server && !isPrerenderd && !isSSRError) || (process.client && (!isServerRendered || isPrerenderd || isSSRError))
 
     if (firstTime) {
       const isCallback = useRoute().path === publicConfig.redirect.callback
