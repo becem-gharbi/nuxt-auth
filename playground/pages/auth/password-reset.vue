@@ -12,6 +12,8 @@
 </template>
 
 <script setup>
+import { definePageMeta, useAuth, ref } from '#imports'
+
 definePageMeta({ middleware: 'guest' })
 
 const { resetPassword } = useAuth()

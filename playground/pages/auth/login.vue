@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { useAuth, ref } from '#imports'
+
 const { login, requestPasswordReset, loginWithProvider } = useAuth()
 
 const email = ref()

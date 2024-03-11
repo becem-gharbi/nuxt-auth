@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+import { definePageMeta, useAuth, useAuthSession, ref, useAsyncData } from '#imports'
+
 definePageMeta({ middleware: 'auth' })
 
 const { logout, fetchUser, changePassword } = useAuth()
