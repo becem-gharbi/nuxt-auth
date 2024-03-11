@@ -48,6 +48,16 @@ export async function signRefreshToken (payload: RefreshTokenPayload) {
   return refreshToken
 }
 
+export async function decodeRefreshToken (refreshToken: string) {
+  const config = getConfig()
+  const payload = await decode<RefreshTokenPayload>(
+    refreshToken,
+    config.private.refreshToken.jwtSecret
+  )
+
+  return payload
+}
+
 export async function updateRefreshToken (
   event: H3Event,
   refreshTokenId: RefreshToken['id']
@@ -74,13 +84,7 @@ export async function updateRefreshToken (
     userId: refreshTokenEntity.userId
   }
 
-  const config = getConfig()
-
-  const refreshToken = await encode(
-    payload,
-    config.private.refreshToken.jwtSecret,
-    config.private.refreshToken.maxAge!
-  )
+  const refreshToken = await signRefreshToken(payload)
 
   return refreshToken
 }
@@ -124,25 +128,17 @@ export async function findRefreshTokenById (
 }
 
 export async function verifyRefreshToken (event: H3Event, refreshToken: string) {
-  const config = getConfig()
   // check if the refreshToken is issued by the auth server && if it's not expired
-  const payload = await decode<RefreshTokenPayload>(
-    refreshToken,
-    config.private.refreshToken.jwtSecret
-  )
+  const payload = await decodeRefreshToken(refreshToken)
+  const userAgent = getHeader(event, 'user-agent') ?? null
 
   const refreshTokenEntity = await findRefreshTokenById(event, payload.id)
 
   if (
     !refreshTokenEntity || // check if the refresh token is revoked (deleted from database)
-    refreshTokenEntity.uid !== payload.uid // check if the refresh token is fresh (not stolen)
+    refreshTokenEntity.uid !== payload.uid || // check if the refresh token is fresh (not stolen)
+    refreshTokenEntity.userAgent !== userAgent
   ) {
-    throw new Error('unauthorized')
-  }
-
-  const userAgent = getHeader(event, 'user-agent') ?? null
-
-  if (refreshTokenEntity.userAgent !== userAgent) {
     throw new Error('unauthorized')
   }
 
