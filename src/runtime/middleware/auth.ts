@@ -2,8 +2,7 @@ import { useAuthToken } from '../composables/useAuthToken'
 import {
   defineNuxtRouteMiddleware,
   useRuntimeConfig,
-  navigateTo,
-  useNuxtApp
+  navigateTo
 } from '#imports'
 
 export default defineNuxtRouteMiddleware((to) => {
@@ -16,10 +15,9 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
 
-  // Makes sure no infinite redirections on ssr error
-  const isSSRError = process.server && typeof useNuxtApp().payload.error !== 'undefined'
+  const isPageFound = to.matched.length > 0
 
-  if (isSSRError || (publicConfig.enableGlobalAuthMiddleware && to.meta.auth === false)) {
+  if ((!isPageFound && process.server) || (publicConfig.enableGlobalAuthMiddleware && to.meta.auth === false)) {
     return
   }
 

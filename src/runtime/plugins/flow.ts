@@ -7,13 +7,14 @@ import {
   addRouteMiddleware,
   useRuntimeConfig,
   useAuth,
-  useRoute,
+  useRouter,
   useAuthSession
 } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   try {
     const publicConfig = useRuntimeConfig().public.auth
+    const router = useRouter()
 
     addRouteMiddleware('common', common, { global: true })
     addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
@@ -25,13 +26,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     /**
      * Makes sure to refresh access token and set user state if possible (run once)
      */
-    const isSSRError = typeof nuxtApp.payload.error !== 'undefined'
+    const isPageFound = router.currentRoute.value?.matched.length > 0
     const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
     const isServerRendered = nuxtApp.payload.serverRendered
-    const firstTime = (process.server && !isPrerenderd && !isSSRError) || (process.client && (!isServerRendered || isPrerenderd || isSSRError))
+    const firstTime = (process.server && !isPrerenderd && isPageFound) || (process.client && (!isServerRendered || isPrerenderd || !isPageFound))
 
     if (firstTime) {
-      const isCallback = useRoute().path === publicConfig.redirect.callback
+      const isCallback = router.currentRoute.value?.path === publicConfig.redirect.callback
       const { _refreshToken, _refresh } = useAuthSession()
 
       if (isCallback || _loggedInFlag.value || _refreshToken.get()) {
