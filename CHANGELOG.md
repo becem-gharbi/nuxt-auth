@@ -1,4 +1,25 @@
 # Changelog
+## v2.4.6
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.5...v2.4.6)
+
+### 🩹 Fixes
+
+- Auto-revoke active session if refresh fails ([67cd505](https://github.com/becem-gharbi/nuxt-auth/commit/67cd505))
+
+### 💅 Refactors
+
+- Only avoid auto-logout when page not found ([390de02](https://github.com/becem-gharbi/nuxt-auth/commit/390de02))
+- No significant change ([57f20a9](https://github.com/becem-gharbi/nuxt-auth/commit/57f20a9))
+
+### 📖 Documentation
+
+- Update introduction ([fe7b271](https://github.com/becem-gharbi/nuxt-auth/commit/fe7b271))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.4.5
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.3...v2.4.5)
