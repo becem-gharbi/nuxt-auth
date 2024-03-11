@@ -139,6 +139,7 @@ export async function verifyRefreshToken (event: H3Event, refreshToken: string) 
     refreshTokenEntity.uid !== payload.uid || // check if the refresh token is fresh (not stolen)
     refreshTokenEntity.userAgent !== userAgent
   ) {
+    await deleteRefreshToken(event, payload.id)
     throw new Error('unauthorized')
   }
 
