@@ -32,6 +32,7 @@ export default defineNuxtModule<ModuleOptions>({
 
   defaults: {
     backendEnabled: true,
+    backendBaseUrl: '/',
 
     baseUrl: '',
 
@@ -119,7 +120,7 @@ export default defineNuxtModule<ModuleOptions>({
 
       public: {
         auth: {
-          backendBaseUrl: options.backendEnabled ? '/' : options.backendBaseUrl,
+          backendBaseUrl: options.backendBaseUrl,
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,

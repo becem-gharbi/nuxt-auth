@@ -8,7 +8,7 @@ import type { Ref } from 'vue'
 import type {
   User,
   Session,
-  Response
+  Response, PublicConfig, PrivateConfig
 } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
@@ -16,28 +16,29 @@ import {
   useRuntimeConfig,
   useState,
   useRequestHeaders,
-  useNuxtApp
+  useNuxtApp,
+  useAuth
 } from '#imports'
 
 export function useAuthSession () {
   const event = useRequestEvent()
-  const publicConfig = useRuntimeConfig().public.auth
-  const privateConfig = useRuntimeConfig().auth
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+  const privateConfig = useRuntimeConfig().auth as PrivateConfig
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event!, privateConfig.refreshToken.cookieName),
-    clear: () => process.server && deleteCookie(event!, privateConfig.refreshToken.cookieName)
+    get: () => process.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
+    clear: () => process.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!)
   }
 
   const _loggedInFlag = {
     get value () {
       if (process.client) {
-        return localStorage.getItem(publicConfig.loggedInFlagName) === 'true'
+        return localStorage.getItem(publicConfig.loggedInFlagName!) === 'true'
       }
       return false
     },
     set value (value: boolean) {
-      process.client && localStorage.setItem(publicConfig.loggedInFlagName, value.toString())
+      process.client && localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
     }
   }
 

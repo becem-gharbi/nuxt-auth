@@ -1,4 +1,5 @@
 import { useAuthToken } from '../composables/useAuthToken'
+import type { PublicConfig } from '../types'
 import {
   defineNuxtRouteMiddleware,
   useRuntimeConfig,
@@ -6,7 +7,7 @@ import {
 } from '#imports'
 
 export default defineNuxtRouteMiddleware((to, from) => {
-  const publicConfig = useRuntimeConfig().public.auth
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
 
   if (
     to.path === publicConfig.redirect.login ||

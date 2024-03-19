@@ -1,5 +1,5 @@
 import { joinURL } from 'ufo'
-import type { Provider, Response, User } from '../types'
+import type { Provider, Response, User, PublicConfig } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
@@ -10,7 +10,7 @@ import {
 } from '#imports'
 
 export function useAuth () {
-  const publicConfig = useRuntimeConfig().public.auth
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
 
   /**
    * Login with email/password
@@ -46,7 +46,7 @@ export function useAuth () {
     const returnToPath = useRoute().query.redirect?.toString()
 
     return navigateTo({
-      path: joinURL(publicConfig.backendBaseUrl, '/api/auth/login', provider),
+      path: joinURL(publicConfig.backendBaseUrl!, '/api/auth/login', provider),
       query: {
         redirect: returnToPath
       }

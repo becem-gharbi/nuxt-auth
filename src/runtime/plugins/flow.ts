@@ -2,6 +2,7 @@ import common from '../middleware/common'
 import auth from '../middleware/auth'
 import guest from '../middleware/guest'
 import { useAuthToken } from '../composables/useAuthToken'
+import type { PublicConfig } from '../types'
 import {
   defineNuxtPlugin,
   addRouteMiddleware,
@@ -13,7 +14,7 @@ import {
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   try {
-    const publicConfig = useRuntimeConfig().public.auth
+    const publicConfig = useRuntimeConfig().public.auth as PublicConfig
     const router = useRouter()
 
     addRouteMiddleware('common', common, { global: true })

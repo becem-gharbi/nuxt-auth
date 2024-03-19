@@ -1,5 +1,6 @@
 import { defu } from 'defu'
 import type { $Fetch } from 'ofetch'
+import type { PublicConfig } from '../types'
 import {
   defineNuxtPlugin,
   useAuthSession,
@@ -8,7 +9,7 @@ import {
 } from '#imports'
 
 export default defineNuxtPlugin(() => {
-  const publicConfig = useRuntimeConfig().public.auth
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
 
   /**

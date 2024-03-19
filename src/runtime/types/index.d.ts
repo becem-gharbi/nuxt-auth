@@ -3,17 +3,17 @@ import type {
   Provider as PrismaProvider,
   Prisma,
   Role,
-  RefreshToken as PrismaRefreshToken,
-} from "@prisma/client";
+  RefreshToken as PrismaRefreshToken
+} from '@prisma/client'
 
-export type Provider = Exclude<PrismaProvider, "default">;
+export type Provider = Exclude<PrismaProvider, 'default'>;
 
-export interface User extends Omit<PrismaUser, "password"> { }
+export interface User extends Omit<PrismaUser, 'password'> { }
 
-export interface RefreshToken extends Omit<PrismaRefreshToken, "uid"> { }
+export interface RefreshToken extends Omit<PrismaRefreshToken, 'uid'> { }
 
 export interface Session {
-  id: RefreshToken["id"];
+  id: RefreshToken['id'];
   current: boolean;
   ua: string | null;
   updatedAt: Date;
@@ -27,39 +27,39 @@ export type MailMessage = {
 };
 
 export type ResetPasswordPayload = {
-  userId: User["id"];
+  userId: User['id'];
 };
 
 export type EmailVerifyPayload = {
-  userId: User["id"];
+  userId: User['id'];
 };
 
 export type AccessTokenPayload = {
-  userId: User["id"];
-  sessionId: Session["id"];
+  userId: User['id'];
+  sessionId: Session['id'];
   userRole: string;
   fingerprint: string | null;
 };
 
 export type RefreshTokenPayload = {
-  id: RefreshToken["id"];
+  id: RefreshToken['id'];
   uid: string;
-  userId: User["id"];
+  userId: User['id'];
 };
 
 interface MailCustomProvider {
-  name: "custom";
+  name: 'custom';
   url: string;
   authorization: string;
 }
 
 interface MailSendgridProvider {
-  name: "sendgrid";
+  name: 'sendgrid';
   apiKey: string;
 }
 
 interface MailResendProvider {
-  name: "resend",
+  name: 'resend',
   apiKey: string
 }
 
@@ -120,7 +120,9 @@ export type PrivateConfigWithBackend = {
   webhookKey?: string;
 };
 
-export type PublicConfigCommon = {
+export type PublicConfig = {
+  backendEnabled?: boolean;
+  backendBaseUrl?: string;
   baseUrl: string;
   enableGlobalAuthMiddleware?: boolean;
   loggedInFlagName?: string;
@@ -135,12 +137,5 @@ export type PublicConfigCommon = {
 }
 
 export type PrivateConfig = PrivateConfigWithBackend | PrivateConfigWithoutBackend
-
-export type PublicConfig = PublicConfigCommon & ({
-  backendEnabled: true;
-} | {
-  backendEnabled: false;
-  backendBaseUrl: string;
-})
 
 export interface Response { status: string }

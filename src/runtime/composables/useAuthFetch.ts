@@ -1,5 +1,6 @@
 import { defu } from 'defu'
 import type { NitroFetchRequest, NitroFetchOptions } from 'nitropack'
+import type { PublicConfig } from '../types'
 import { useAuthSession, useRequestHeaders, useRuntimeConfig } from '#imports'
 
 /**
@@ -9,7 +10,7 @@ export async function useAuthFetch <T> (
   request: NitroFetchRequest,
   options?: NitroFetchOptions<NitroFetchRequest>
 ): Promise<T> {
-  const publicConfig = useRuntimeConfig().public.auth
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const userAgent = useRequestHeaders(['user-agent'])['user-agent']
   const accessToken = await useAuthSession().getAccessToken()
 
