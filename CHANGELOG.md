@@ -1,4 +1,24 @@
 # Changelog
+## v2.4.7
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.6...v2.4.7)
+
+### 🔥 Performance
+
+- Avoid extra refresh on oauth login fail ([271bc9b](https://github.com/becem-gharbi/nuxt-auth/commit/271bc9b))
+
+### 🌊 Types
+
+- Solve typecheck issues ([b36d6f2](https://github.com/becem-gharbi/nuxt-auth/commit/b36d6f2))
+
+### 🏡 Chore
+
+- Disable auto import ([4047b7e](https://github.com/becem-gharbi/nuxt-auth/commit/4047b7e))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.4.6
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.5...v2.4.6)
