@@ -21,10 +21,12 @@ export default defineNuxtPlugin(() => {
     async onRequest ({ options }) {
       const accessToken = await useAuthSession().getAccessToken()
 
-      options.headers = defu(options.headers, accessToken && {
-        authorization: 'Bearer ' + accessToken,
-        'user-agent': userAgent
-      })
+      if (accessToken) {
+        options.headers = defu(options.headers, {
+          authorization: 'Bearer ' + accessToken,
+          'user-agent': userAgent
+        })
+      }
 
       options.credentials ||= 'omit'
     }

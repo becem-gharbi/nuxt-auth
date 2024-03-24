@@ -10,12 +10,10 @@ import {
   addServerPlugin
 } from '@nuxt/kit'
 import { defu } from 'defu'
-import type { PrismaClient } from '@prisma/client'
 import { name, version } from '../package.json'
 import type {
   PublicConfig,
-  PrivateConfig,
-  AccessTokenPayload
+  PrivateConfig
 } from './runtime/types'
 
 export type ModuleOptions = PrivateConfig & PublicConfig
@@ -392,21 +390,3 @@ export default defineNuxtModule<ModuleOptions>({
     }
   }
 })
-
-declare module '#app' {
-  interface NuxtApp {
-    $auth: {
-      fetch: typeof $fetch
-    };
-  }
-  interface RuntimeNuxtHooks {
-    'auth:loggedIn': (state: boolean) => void;
-  }
-}
-
-declare module 'h3' {
-  interface H3EventContext {
-    prisma: PrismaClient;
-    auth: AccessTokenPayload | undefined;
-  }
-}

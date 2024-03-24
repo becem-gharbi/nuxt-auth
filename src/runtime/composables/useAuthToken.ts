@@ -35,10 +35,7 @@ export function useAuthToken () {
 
   return {
     get value () {
-      if (process.client) {
-        return memory.value
-      }
-      return state.value
+      return process.client ? memory.value : state.value
     },
 
     set value (data: TokenStore | null) {

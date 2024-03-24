@@ -3,8 +3,27 @@ import type {
   Provider as PrismaProvider,
   Prisma,
   Role,
-  RefreshToken as PrismaRefreshToken
+  RefreshToken as PrismaRefreshToken,
+  PrismaClient
 } from '@prisma/client'
+
+declare module '#app' {
+  interface NuxtApp {
+    $auth: {
+      fetch: typeof $fetch;
+    };
+  }
+  interface RuntimeNuxtHooks {
+    'auth:loggedIn': (state: boolean) => void;
+  }
+}
+
+declare module 'h3' {
+  interface H3EventContext {
+    prisma: PrismaClient;
+    auth: AccessTokenPayload | undefined;
+  }
+}
 
 export type Provider = Exclude<PrismaProvider, 'default'>;
 

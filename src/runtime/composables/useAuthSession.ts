@@ -8,7 +8,7 @@ import type { Ref } from 'vue'
 import type {
   User,
   Session,
-  Response, PublicConfig, PrivateConfig
+  Response, PublicConfig
 } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
@@ -23,19 +23,16 @@ import {
 export function useAuthSession () {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const privateConfig = useRuntimeConfig().auth as PrivateConfig
+  const privateConfig = useRuntimeConfig().auth
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
-    clear: () => process.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!)
+    get: () => process.server && getCookie(event!, privateConfig.refreshToken.cookieName),
+    clear: () => process.server && deleteCookie(event!, privateConfig.refreshToken.cookieName)
   }
 
   const _loggedInFlag = {
     get value () {
-      if (process.client) {
-        return localStorage.getItem(publicConfig.loggedInFlagName!) === 'true'
-      }
-      return false
+      return process.client ? localStorage.getItem(publicConfig.loggedInFlagName!) === 'true' : false
     },
     set value (value: boolean) {
       process.client && localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
