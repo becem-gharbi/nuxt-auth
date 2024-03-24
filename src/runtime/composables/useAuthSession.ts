@@ -42,53 +42,42 @@ export function useAuthSession () {
   const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
 
   async function _refresh () {
-    const isRefreshOn = useState('auth-refresh-loading', () => false)
+    async function handler () {
+      const accessToken = useAuthToken()
 
-    if (isRefreshOn.value && process.client) {
-      // Wait until previous refresh call is completed
-      while (isRefreshOn.value) {
-        let timeoutId
-        await new Promise((resolve) => { timeoutId = setTimeout(resolve, 200) })
-        clearTimeout(timeoutId)
-      }
-      return
+      await $fetch
+        .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
+          baseURL: publicConfig.backendBaseUrl,
+          method: 'POST',
+          // Cloudflare Workers does not support "credentials" field
+          ...(process.client ? { credentials: 'include' } : {}),
+          headers: process.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
+        })
+        .then((res) => {
+          if (process.server) {
+            const cookies = splitCookiesString(res.headers.get('set-cookie') ?? '')
+
+            for (const cookie of cookies) {
+              appendResponseHeader(event!, 'set-cookie', cookie)
+            }
+          }
+
+          if (res._data) {
+            accessToken.value = {
+              access_token: res._data.access_token,
+              expires: new Date().getTime() + res._data.expires_in * 1000
+            }
+          }
+        })
+        .catch(async () => {
+          _refreshToken.clear()
+          await useAuth()._onLogout()
+        })
     }
 
-    isRefreshOn.value = true
-
-    const accessToken = useAuthToken()
-    await $fetch
-      .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
-        baseURL: publicConfig.backendBaseUrl,
-        method: 'POST',
-        // Cloudflare Workers does not support "credentials" field
-        ...(process.client ? { credentials: 'include' } : {}),
-        headers: process.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
-      })
-      .then((res) => {
-        if (process.server) {
-          const cookies = splitCookiesString(res.headers.get('set-cookie') ?? '')
-
-          for (const cookie of cookies) {
-            appendResponseHeader(event!, 'set-cookie', cookie)
-          }
-        }
-
-        if (res._data) {
-          accessToken.value = {
-            access_token: res._data.access_token,
-            expires: new Date().getTime() + res._data.expires_in * 1000
-          }
-        }
-        return res
-      })
-      .catch(async () => {
-        _refreshToken.clear()
-        await useAuth()._onLogout()
-      })
-      .finally(() => {
-        isRefreshOn.value = false
-      })
+    const { $auth } = useNuxtApp()
+    $auth._refreshPromise ||= handler()
+    await $auth._refreshPromise.finally(() => { $auth._refreshPromise = null })
   }
 
   /**

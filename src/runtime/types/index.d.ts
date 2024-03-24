@@ -11,6 +11,7 @@ declare module '#app' {
   interface NuxtApp {
     $auth: {
       fetch: typeof $fetch;
+      _refreshPromise: Promise<any> | null;
     };
   }
   interface RuntimeNuxtHooks {
