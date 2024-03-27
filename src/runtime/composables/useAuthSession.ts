@@ -26,16 +26,16 @@ export function useAuthSession () {
   const privateConfig = useRuntimeConfig().auth as PrivateConfig
 
   const _refreshToken = {
-    get: () => process.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
-    clear: () => process.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!)
+    get: () => import.meta.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
+    clear: () => import.meta.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!)
   }
 
   const _loggedInFlag = {
     get value () {
-      return process.client ? localStorage.getItem(publicConfig.loggedInFlagName!) === 'true' : false
+      return import.meta.client ? localStorage.getItem(publicConfig.loggedInFlagName!) === 'true' : false
     },
     set value (value: boolean) {
-      process.client && localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
+      import.meta.client && localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
     }
   }
 
@@ -50,11 +50,11 @@ export function useAuthSession () {
           baseURL: publicConfig.backendBaseUrl,
           method: 'POST',
           // Cloudflare Workers does not support "credentials" field
-          ...(process.client ? { credentials: 'include' } : {}),
-          headers: process.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
+          ...(import.meta.client ? { credentials: 'include' } : {}),
+          headers: import.meta.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
         })
         .then((res) => {
-          if (process.server) {
+          if (import.meta.server) {
             const cookies = splitCookiesString(res.headers.get('set-cookie') ?? '')
 
             for (const cookie of cookies) {

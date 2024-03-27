@@ -30,7 +30,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const isPageFound = router.currentRoute.value?.matched.length > 0
     const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
     const isServerRendered = nuxtApp.payload.serverRendered
-    const firstTime = (process.server && !isPrerenderd && isPageFound) || (process.client && (!isServerRendered || isPrerenderd || !isPageFound))
+    const firstTime = (import.meta.server && !isPrerenderd && isPageFound) || (import.meta.client && (!isServerRendered || isPrerenderd || !isPageFound))
 
     if (firstTime) {
       const isCallback = router.currentRoute.value?.path === publicConfig.redirect.callback && !router.currentRoute.value?.query.error

@@ -13,7 +13,7 @@ function memoryStorage () {
       return store
     },
     set value (data: TokenStore | null) {
-      if (process.client) { store = data }
+      if (import.meta.client) { store = data }
     }
   }
 }
@@ -28,18 +28,18 @@ const memory = memoryStorage()
 export function useAuthToken () {
   const state = useState<TokenStore | null>('auth-token', () => null)
 
-  if (process.client && state.value) {
+  if (import.meta.client && state.value) {
     memory.value = { ...state.value }
     state.value = null
   }
 
   return {
     get value () {
-      return process.client ? memory.value : state.value
+      return import.meta.client ? memory.value : state.value
     },
 
     set value (data: TokenStore | null) {
-      if (process.client) {
+      if (import.meta.client) {
         memory.value = data
       } else {
         state.value = data
