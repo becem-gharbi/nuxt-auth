@@ -198,7 +198,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     // Transpile CJS dependencies
-    nuxt.options.build.transpile.push(runtimeDir, 'bcryptjs')
+    nuxt.options.build.transpile.push(runtimeDir, 'bcryptjs', 'mustache')
 
     // Add server utils
     nuxt.options.nitro = defu(
