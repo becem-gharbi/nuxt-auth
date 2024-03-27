@@ -1,5 +1,3 @@
-/* eslint no-console: 0 */
-
 import { ZodError } from 'zod'
 import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
@@ -24,6 +22,7 @@ export async function handleError (
       h3Error.message = 'unauthorized'
       h3Error.statusCode = 401
     } else if (error.message.includes('prisma')) {
+      // eslint-disable-next-line no-console
       console.error(error.message)
     } else {
       h3Error.message = error.message

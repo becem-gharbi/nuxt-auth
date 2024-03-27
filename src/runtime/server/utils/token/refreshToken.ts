@@ -1,12 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { setCookie, getCookie, deleteCookie, getHeader } from 'h3'
 import type { H3Event } from 'h3'
-import type {
-  RefreshTokenPayload,
-  User,
-  RefreshToken,
-  Session
-} from '../../../types'
+import type { RefreshTokenPayload, User, RefreshToken, Session } from '../../../types'
 import { getConfig } from '../config'
 import { encode, decode } from './jwt'
 

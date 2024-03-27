@@ -2,14 +2,7 @@ import { defineEventHandler, readBody } from 'h3'
 import mustache from 'mustache'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import {
-  getConfig,
-  sendMail,
-  createResetPasswordToken,
-  findUser,
-  handleError,
-  setUserRequestedPasswordReset
-} from '../../../utils'
+import { getConfig, sendMail, createResetPasswordToken, findUser, handleError, setUserRequestedPasswordReset } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

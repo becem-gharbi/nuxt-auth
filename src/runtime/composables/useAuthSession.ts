@@ -1,27 +1,8 @@
-import {
-  deleteCookie,
-  getCookie,
-  splitCookiesString,
-  appendResponseHeader
-} from 'h3'
+import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
-import type {
-  User,
-  Session,
-  Response,
-  PublicConfig,
-  PrivateConfig,
-  AuthenticationData
-} from '../types'
+import type { User, Session, Response, PublicConfig, PrivateConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
-import {
-  useRequestEvent,
-  useRuntimeConfig,
-  useState,
-  useRequestHeaders,
-  useNuxtApp,
-  useAuth
-} from '#imports'
+import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
 
 export function useAuthSession () {
   const event = useRequestEvent()

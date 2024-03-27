@@ -3,13 +3,7 @@ import auth from '../middleware/auth'
 import guest from '../middleware/guest'
 import { useAuthToken } from '../composables/useAuthToken'
 import type { PublicConfig } from '../types'
-import {
-  defineNuxtPlugin,
-  addRouteMiddleware,
-  useAuth,
-  useRouter,
-  useAuthSession
-} from '#imports'
+import { defineNuxtPlugin, addRouteMiddleware, useAuth, useRouter, useAuthSession } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const publicConfig = nuxtApp.$config.public.auth as PublicConfig

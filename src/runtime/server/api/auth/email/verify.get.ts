@@ -1,11 +1,6 @@
 import { defineEventHandler, getQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
-import {
-  getConfig,
-  verifyEmailVerifyToken,
-  setUserEmailVerified,
-  handleError
-} from '../../../utils'
+import { getConfig, verifyEmailVerifyToken, setUserEmailVerified, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

@@ -1,13 +1,7 @@
 import { joinURL } from 'ufo'
 import type { Provider, Response, User, PublicConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
-import {
-  useRuntimeConfig,
-  useRoute,
-  useAuthSession,
-  navigateTo,
-  useNuxtApp
-} from '#imports'
+import { useRuntimeConfig, useRoute, useAuthSession, navigateTo, useNuxtApp } from '#imports'
 
 export function useAuth () {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig

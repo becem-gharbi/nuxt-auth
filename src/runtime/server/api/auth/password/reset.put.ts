@@ -1,14 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 import { z } from 'zod'
-import {
-  getConfig,
-  deleteManyRefreshTokenByUser,
-  verifyResetPasswordToken,
-  changePassword,
-  handleError,
-  setUserRequestedPasswordReset,
-  findUser
-} from '../../../utils'
+import { getConfig, deleteManyRefreshTokenByUser, verifyResetPasswordToken, changePassword, handleError, setUserRequestedPasswordReset, findUser } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

@@ -1,9 +1,9 @@
 import type {
   User as PrismaUser,
   Provider as PrismaProvider,
+  RefreshToken as PrismaRefreshToken,
   Prisma,
   Role,
-  RefreshToken as PrismaRefreshToken,
   PrismaClient
 } from '@prisma/client'
 

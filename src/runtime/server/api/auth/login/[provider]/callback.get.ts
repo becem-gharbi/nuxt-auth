@@ -3,15 +3,7 @@ import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
 import type { User, Provider } from '../../../../../types'
-import {
-  getConfig,
-  createRefreshToken,
-  setRefreshTokenCookie,
-  createUser,
-  findUser,
-  handleError,
-  signRefreshToken
-} from '../../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, createUser, findUser, handleError, signRefreshToken } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

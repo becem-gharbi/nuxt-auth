@@ -1,20 +1,8 @@
 import { fileURLToPath } from 'url'
-import {
-  defineNuxtModule,
-  addPlugin,
-  createResolver,
-  addImports,
-  addServerHandler,
-  addTemplate,
-  logger,
-  addServerPlugin
-} from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver, addImports, addServerHandler, addTemplate, logger, addServerPlugin } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
-import type {
-  PublicConfig,
-  PrivateConfig
-} from './runtime/types'
+import type { PublicConfig, PrivateConfig } from './runtime/types'
 
 export type ModuleOptions = PrivateConfig & PublicConfig
 
