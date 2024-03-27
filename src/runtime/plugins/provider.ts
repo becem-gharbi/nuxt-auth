@@ -5,7 +5,7 @@ import { defineNuxtPlugin, useAuthSession, useRequestHeaders } from '#imports'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const publicConfig = nuxtApp.$config.public.auth as PublicConfig
-  const userAgent = useRequestHeaders(['user-agent'])['user-agent']
+  const reqHeaders = useRequestHeaders(['user-agent'])
 
   /**
    * A $fetch instance with auto authorization handler
@@ -17,9 +17,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       const accessToken = await useAuthSession().getAccessToken()
 
       if (accessToken) {
-        options.headers = defu(options.headers, {
-          authorization: 'Bearer ' + accessToken,
-          'user-agent': userAgent
+        options.headers = defu(options.headers, reqHeaders, {
+          authorization: 'Bearer ' + accessToken
         })
       }
 

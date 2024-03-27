@@ -11,14 +11,13 @@ export async function useAuthFetch <T> (
   options?: NitroFetchOptions<NitroFetchRequest>
 ): Promise<T> {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const userAgent = useRequestHeaders(['user-agent'])['user-agent']
+  const reqHeaders = useRequestHeaders(['user-agent'])
   const accessToken = await useAuthSession().getAccessToken()
 
-  const _options = defu(options, {
+  const _options = defu(options, reqHeaders, {
     credentials: 'omit',
     headers: accessToken && {
-      authorization: 'Bearer ' + accessToken,
-      'user-agent': userAgent
+      authorization: 'Bearer ' + accessToken
     }
   }) as NitroFetchOptions<NitroFetchRequest>
 
