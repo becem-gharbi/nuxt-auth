@@ -1,4 +1,31 @@
 # Changelog
+## v2.4.8
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.7...v2.4.8)
+
+### 💅 Refactors
+
+- No significant change ([d802de6](https://github.com/becem-gharbi/nuxt-auth/commit/d802de6))
+- Better concurrent refresh handling ([184a62e](https://github.com/becem-gharbi/nuxt-auth/commit/184a62e))
+- Replace `process` with `import.meta` ([2070c8f](https://github.com/becem-gharbi/nuxt-auth/commit/2070c8f))
+- Remove `try...catch` of flow plugin ([92ab51e](https://github.com/becem-gharbi/nuxt-auth/commit/92ab51e))
+- Better code readibility ([ade5fd4](https://github.com/becem-gharbi/nuxt-auth/commit/ade5fd4))
+- Format import statements ([ffb4428](https://github.com/becem-gharbi/nuxt-auth/commit/ffb4428))
+- More refactoring ([bef2094](https://github.com/becem-gharbi/nuxt-auth/commit/bef2094))
+
+### 🌊 Types
+
+- Solve typecheck issues ([23b7d4f](https://github.com/becem-gharbi/nuxt-auth/commit/23b7d4f))
+
+### 🏡 Chore
+
+- **playground:** Remove user image ([9ef9134](https://github.com/becem-gharbi/nuxt-auth/commit/9ef9134))
+- Transpile `mustache` ([a7738b2](https://github.com/becem-gharbi/nuxt-auth/commit/a7738b2))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v2.4.7
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.6...v2.4.7)
