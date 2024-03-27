@@ -13,60 +13,58 @@ import {
 } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  try {
-    const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-    const router = useRouter()
+  const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+  const router = useRouter()
 
-    addRouteMiddleware('common', common, { global: true })
-    addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
-    addRouteMiddleware('guest', guest)
+  addRouteMiddleware('common', common, { global: true })
+  addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
+  addRouteMiddleware('guest', guest)
 
-    const { _loggedInFlag } = useAuthSession()
-    const token = useAuthToken()
+  const { _loggedInFlag } = useAuthSession()
+  const token = useAuthToken()
 
-    /**
-     * Makes sure to refresh access token and set user state if possible (run once)
-     */
-    const isPageFound = router.currentRoute.value?.matched.length > 0
-    const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
-    const isServerRendered = nuxtApp.payload.serverRendered
-    const firstTime = (import.meta.server && !isPrerenderd && isPageFound) || (import.meta.client && (!isServerRendered || isPrerenderd || !isPageFound))
+  /**
+  * Makes sure to refresh access token and set user state if possible (run once)
+  */
+  const isPageFound = router.currentRoute.value?.matched.length > 0
+  const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
+  const isServerRendered = nuxtApp.payload.serverRendered
+  const firstTime = (import.meta.server && !isPrerenderd && isPageFound) || (import.meta.client && (!isServerRendered || isPrerenderd || !isPageFound))
 
-    if (firstTime) {
-      const isCallback = router.currentRoute.value?.path === publicConfig.redirect.callback && !router.currentRoute.value?.query.error
-      const { _refreshToken, _refresh } = useAuthSession()
+  if (firstTime) {
+    const isCallback = router.currentRoute.value?.path === publicConfig.redirect.callback && !router.currentRoute.value?.query.error
+    const { _refreshToken, _refresh } = useAuthSession()
 
-      if (isCallback || _loggedInFlag.value || _refreshToken.get()) {
-        await _refresh()
-        if (token.value) {
-          await useAuth().fetchUser()
-        }
+    if (isCallback || _loggedInFlag.value || _refreshToken.get()) {
+      await _refresh()
+      if (token.value) {
+        await useAuth().fetchUser()
       }
     }
+  }
 
-    /**
-     * Calls loggedIn hook and sets the loggedIn flag in localStorage
-     */
-    if (token.value) {
-      _loggedInFlag.value = true
-      await nuxtApp.callHook('auth:loggedIn', true)
-    } else {
-      _loggedInFlag.value = false
-    }
+  /**
+  * Calls loggedIn hook and sets the loggedIn flag in localStorage
+  */
+  if (token.value) {
+    _loggedInFlag.value = true
+    await nuxtApp.callHook('auth:loggedIn', true)
+  } else {
+    _loggedInFlag.value = false
+  }
 
-    /**
-     * Makes sure to sync login status between tabs
-     */
-    nuxtApp.hook('app:mounted', () => {
-      addEventListener('storage', (event) => {
-        if (event.key === publicConfig.loggedInFlagName) {
-          if (event.oldValue === 'true' && event.newValue === 'false' && token.value) {
-            useAuth()._onLogout()
-          } else if (event.oldValue === 'false' && event.newValue === 'true') {
-            location.reload()
-          }
+  /**
+  * Makes sure to sync login status between tabs
+  */
+  nuxtApp.hook('app:mounted', () => {
+    addEventListener('storage', (event) => {
+      if (event.key === publicConfig.loggedInFlagName) {
+        if (event.oldValue === 'true' && event.newValue === 'false' && token.value) {
+          useAuth()._onLogout()
+        } else if (event.oldValue === 'false' && event.newValue === 'true') {
+          location.reload()
         }
-      })
+      }
     })
-  } catch (e) { }
+  })
 })

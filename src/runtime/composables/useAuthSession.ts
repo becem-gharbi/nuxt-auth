@@ -44,6 +44,8 @@ export function useAuthSession () {
   async function _refresh () {
     async function handler () {
       const accessToken = useAuthToken()
+      const reqHeaders = useRequestHeaders(['cookie', 'user-agent'])
+      const { _onLogout } = useAuth()
 
       await $fetch
         .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
@@ -51,7 +53,7 @@ export function useAuthSession () {
           method: 'POST',
           // Cloudflare Workers does not support "credentials" field
           ...(import.meta.client ? { credentials: 'include' } : {}),
-          headers: import.meta.server ? useRequestHeaders(['cookie', 'user-agent']) : {}
+          headers: import.meta.server ? reqHeaders : {}
         })
         .then((res) => {
           if (import.meta.server) {
@@ -71,7 +73,7 @@ export function useAuthSession () {
         })
         .catch(async () => {
           _refreshToken.clear()
-          await useAuth()._onLogout()
+          await _onLogout()
         })
     }
 

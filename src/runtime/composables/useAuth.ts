@@ -11,6 +11,9 @@ import {
 
 export function useAuth () {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
+  const accessToken = useAuthToken()
+  const { callHook } = useNuxtApp()
+  const { _loggedInFlag } = useAuthSession()
 
   /**
    * Login with email/password
@@ -29,7 +32,7 @@ export function useAuth () {
       }
     })
 
-    useAuthToken().value = {
+    accessToken.value = {
       access_token: res.access_token,
       expires: new Date().getTime() + res.expires_in * 1000
     }
@@ -41,11 +44,11 @@ export function useAuth () {
   /**
    * Login via oauth provider
    */
-  function loginWithProvider (provider: Provider) {
+  async function loginWithProvider (provider: Provider) {
     // The protected page the user has visited before redirect to login page
     const returnToPath = useRoute().query.redirect?.toString()
 
-    return navigateTo({
+    await navigateTo({
       path: joinURL(publicConfig.backendBaseUrl!, '/api/auth/login', provider),
       query: {
         redirect: returnToPath
@@ -86,16 +89,18 @@ export function useAuth () {
     if (useAuthSession().user.value === null) { return }
     const returnToPath = useRoute().query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-    useAuthSession()._loggedInFlag.value = true
-    await useNuxtApp().callHook('auth:loggedIn', true)
+    _loggedInFlag.value = true
+    await callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
 
   async function _onLogout () {
-    await useNuxtApp().callHook('auth:loggedIn', false)
-    useAuthToken().value = null
-    useAuthSession()._loggedInFlag.value = false
-    await navigateTo(publicConfig.redirect.logout, { external: true })
+    await callHook('auth:loggedIn', false)
+    accessToken.value = null
+    _loggedInFlag.value = false
+    if (import.meta.client) {
+      await navigateTo(publicConfig.redirect.logout, { external: true })
+    }
   }
 
   async function register (userInfo: {
