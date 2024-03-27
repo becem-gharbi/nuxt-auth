@@ -48,7 +48,7 @@ export function useAuthToken () {
 
     get expired () {
       if (this.value) {
-        const msRefreshBeforeExpires = 3000
+        const msRefreshBeforeExpires = 10000
         const expires = this.value.expires - msRefreshBeforeExpires
         return expires < Date.now()
       }

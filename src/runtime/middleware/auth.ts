@@ -17,8 +17,9 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   const isPageFound = to.matched.length > 0
+  const isDisabled = publicConfig.enableGlobalAuthMiddleware && to.meta.auth === false
 
-  if ((!isPageFound && import.meta.server) || (publicConfig.enableGlobalAuthMiddleware && to.meta.auth === false)) {
+  if (isDisabled || (!isPageFound && import.meta.server)) {
     return
   }
 

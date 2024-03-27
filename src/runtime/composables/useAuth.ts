@@ -1,5 +1,5 @@
 import { joinURL } from 'ufo'
-import type { Provider, Response, User, PublicConfig } from '../types'
+import type { Provider, Response, User, PublicConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
   useRuntimeConfig,
@@ -11,9 +11,8 @@ import {
 
 export function useAuth () {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const accessToken = useAuthToken()
+  const token = useAuthToken()
   const { callHook } = useNuxtApp()
-  const { _loggedInFlag } = useAuthSession()
 
   /**
    * Login with email/password
@@ -21,8 +20,8 @@ export function useAuth () {
   async function login (credentials: {
     email: string;
     password: string;
-  }): Promise<{ access_token: string, expires_in: number }> {
-    const res = await $fetch<{ access_token: string, expires_in: number }>('/api/auth/login', {
+  }): Promise<AuthenticationData> {
+    const res = await $fetch<AuthenticationData>('/api/auth/login', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'include',
@@ -32,7 +31,7 @@ export function useAuth () {
       }
     })
 
-    accessToken.value = {
+    token.value = {
       access_token: res.access_token,
       expires: new Date().getTime() + res.expires_in * 1000
     }
@@ -89,15 +88,13 @@ export function useAuth () {
     if (useAuthSession().user.value === null) { return }
     const returnToPath = useRoute().query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-    _loggedInFlag.value = true
     await callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
 
   async function _onLogout () {
     await callHook('auth:loggedIn', false)
-    accessToken.value = null
-    _loggedInFlag.value = false
+    token.value = null
     if (import.meta.client) {
       await navigateTo(publicConfig.redirect.logout, { external: true })
     }

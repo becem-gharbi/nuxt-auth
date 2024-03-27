@@ -11,7 +11,7 @@ declare module '#app' {
   interface NuxtApp {
     $auth: {
       fetch: typeof $fetch;
-      _refreshPromise: Promise<any> | null | undefined;
+      _refreshPromise: Promise<any> | null;
     };
   }
   interface RuntimeNuxtHooks {
@@ -81,6 +81,11 @@ interface MailSendgridProvider {
 interface MailResendProvider {
   name: 'resend',
   apiKey: string
+}
+
+export interface AuthenticationData {
+  access_token: string;
+  expires_in: number; 
 }
 
 export type PrivateConfigWithoutBackend = {

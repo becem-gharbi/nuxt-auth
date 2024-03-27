@@ -8,7 +8,10 @@ import type { Ref } from 'vue'
 import type {
   User,
   Session,
-  Response, PublicConfig, PrivateConfig
+  Response,
+  PublicConfig,
+  PrivateConfig,
+  AuthenticationData
 } from '../types'
 import { useAuthToken } from './useAuthToken'
 import {
@@ -35,7 +38,9 @@ export function useAuthSession () {
       return import.meta.client ? localStorage.getItem(publicConfig.loggedInFlagName!) === 'true' : false
     },
     set value (value: boolean) {
-      import.meta.client && localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
+      if (import.meta.client) {
+        localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
+      }
     }
   }
 
@@ -43,12 +48,12 @@ export function useAuthSession () {
 
   async function _refresh () {
     async function handler () {
-      const accessToken = useAuthToken()
+      const token = useAuthToken()
       const reqHeaders = useRequestHeaders(['cookie', 'user-agent'])
       const { _onLogout } = useAuth()
 
       await $fetch
-        .raw<{ access_token: string, expires_in: number }>('/api/auth/session/refresh', {
+        .raw<AuthenticationData>('/api/auth/session/refresh', {
           baseURL: publicConfig.backendBaseUrl,
           method: 'POST',
           // Cloudflare Workers does not support "credentials" field
@@ -65,7 +70,7 @@ export function useAuthSession () {
           }
 
           if (res._data) {
-            accessToken.value = {
+            token.value = {
               access_token: res._data.access_token,
               expires: new Date().getTime() + res._data.expires_in * 1000
             }
@@ -87,13 +92,13 @@ export function useAuthSession () {
    * @returns Fresh access token (refreshed if expired)
    */
   async function getAccessToken (): Promise<string | null | undefined> {
-    const accessToken = useAuthToken()
+    const token = useAuthToken()
 
-    if (accessToken.expired) {
+    if (token.expired) {
       await _refresh()
     }
 
-    return accessToken.value?.access_token
+    return token.value?.access_token
   }
 
   /**
