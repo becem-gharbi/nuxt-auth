@@ -8,7 +8,7 @@ import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp:NitroApp) => {
   const config = getConfig()
-  const prisma = new PrismaClient(config.private.prisma).$extends(withAccelerate())
+  const prisma = new PrismaClient(config.private.prisma as any).$extends(withAccelerate())
 
   nitroApp.hooks.hook('request', (event) => {
     // @ts-ignore

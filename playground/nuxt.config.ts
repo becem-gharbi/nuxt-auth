@@ -87,6 +87,8 @@ export default defineNuxtConfig({
       emailVerify: '/auth/email-verify'
     },
 
-    webhookKey: 'abc'
+    webhookKey: 'abc',
+
+    prisma: false
   }
 })
