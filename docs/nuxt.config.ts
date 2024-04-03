@@ -19,4 +19,9 @@ export default defineNuxtConfig({
       ]
     }
   },
+  mdc: {
+    highlight: {
+      langs: ['prisma', 'ts', 'vue', 'js']
+    }
+  }
 })
