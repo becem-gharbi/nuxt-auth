@@ -189,7 +189,7 @@ export default defineNuxtModule<ModuleOptions>({
 
         oauth: options.oauth,
 
-        prisma: options.prisma,
+        prisma: options.prisma as any,
 
         registration: options.registration,
 
