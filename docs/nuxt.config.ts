@@ -23,5 +23,5 @@ export default defineNuxtConfig({
     highlight: {
       langs: ['prisma', 'ts', 'vue', 'js']
     }
-  }
-})
+  } 
+} as any)
