@@ -133,7 +133,7 @@ export type PrivateConfigWithBackend = {
     };
   };
 
-  prisma?: Prisma.PrismaClientOptions;
+  prisma?: Prisma.PrismaClientOptions | false;
 
   registration: {
     enable?: boolean;
