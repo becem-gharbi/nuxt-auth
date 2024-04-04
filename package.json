@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "2.4.8",
+  "version": "2.5.1-edge",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -13,7 +13,7 @@
   ],
   "publishConfig": {
     "access": "public",
-    "tag": "latest"
+    "tag": "edge"
   },
   "exports": {
     ".": {
@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.1",
+    "@prisma/client": "^5.12.0",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.4",
     "jose": "^5.2.3",
@@ -53,7 +54,6 @@
     "@nuxt/module-builder": "^0.5.5",
     "@nuxt/schema": "^3.11.1",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@prisma/client": "^5.12.0",
     "@prisma/extension-accelerate": "^1.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/mustache": "^4.2.5",

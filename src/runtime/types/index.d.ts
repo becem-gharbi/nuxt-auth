@@ -26,6 +26,12 @@ declare module 'h3' {
   }
 }
 
+declare module 'nitropack' {
+  interface NitroRuntimeHooks {
+    'auth:email': (from: string, msg: MailMessage) => Promise<void> |void
+  }
+}
+
 export type Provider = Exclude<PrismaProvider, 'default'>;
 
 export interface User extends Omit<PrismaUser, 'password'> { }
@@ -67,6 +73,7 @@ export type RefreshTokenPayload = {
   userId: User['id'];
 };
 
+/** @deprecated since 2.5.0, please use `hook` instead */
 interface MailCustomProvider {
   name: 'custom';
   url: string;
@@ -83,9 +90,13 @@ interface MailResendProvider {
   apiKey: string
 }
 
+interface MailHookProvider {
+  name: 'hook'
+}
+
 export interface AuthenticationData {
   access_token: string;
-  expires_in: number; 
+  expires_in: number;
 }
 
 export type PrivateConfigWithoutBackend = {
@@ -126,7 +137,7 @@ export type PrivateConfigWithBackend = {
 
   email?: {
     from: string;
-    provider: MailCustomProvider | MailSendgridProvider | MailResendProvider;
+    provider: MailCustomProvider | MailSendgridProvider | MailResendProvider | MailHookProvider;
     templates?: {
       passwordReset?: string;
       emailVerify?: string;
