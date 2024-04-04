@@ -73,6 +73,7 @@ export type RefreshTokenPayload = {
   userId: User['id'];
 };
 
+/** @deprecated since 2.5.0, please use `hook` instead */
 interface MailCustomProvider {
   name: 'custom';
   url: string;
