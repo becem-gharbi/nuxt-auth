@@ -1,4 +1,22 @@
 # Changelog
+## v2.5.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.8...v2.5.0)
+
+### 🚀 Enhancements
+
+- Support custom prisma client instantiation ([#17](https://github.com/becem-gharbi/nuxt-auth/pull/17))
+- Add Hook email provider ([#18](https://github.com/becem-gharbi/nuxt-auth/pull/18))
+
+### 🏡 Chore
+
+- Revert pkg version ([05f109b](https://github.com/becem-gharbi/nuxt-auth/commit/05f109b))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.4.8
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.7...v2.4.8)
