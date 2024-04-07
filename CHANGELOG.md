@@ -1,4 +1,21 @@
 # Changelog
+## v2.5.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.5.0...v2.5.1)
+
+### 🔥 Performance
+
+- Replace `mustache` with lightweight internal utility ([50041c3](https://github.com/becem-gharbi/nuxt-auth/commit/50041c3))
+- Minify default email templates ([6f3f7e2](https://github.com/becem-gharbi/nuxt-auth/commit/6f3f7e2))
+
+### 🏡 Chore
+
+- **playground:** Use sqlite instead of mongo db ([79b72c0](https://github.com/becem-gharbi/nuxt-auth/commit/79b72c0))
+
+### ❤️ Contributors
+
+- Becem-gharbi ([@becem-gharbi](http://github.com/becem-gharbi))
+
 ## v2.5.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.4.8...v2.5.0)
