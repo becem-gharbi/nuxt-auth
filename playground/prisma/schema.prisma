@@ -6,45 +6,34 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGO_DB_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id                     String         @id @default(auto()) @map("_id") @db.ObjectId
+  id                     Int            @id @default(autoincrement())
   name                   String
   email                  String         @unique
   picture                String
-  role                   Role           @default(user)
-  provider               Provider       @default(default)
+  role                   String         @default("user")
+  provider               String         @default("default")
   password               String?
   verified               Boolean        @default(false)
   suspended              Boolean        @default(false)
-  requestedPasswordReset Boolean        @default(false)
   refreshTokens          RefreshToken[]
+  requestedPasswordReset Boolean        @default(false)
   createdAt              DateTime       @default(now())
   updatedAt              DateTime       @updatedAt
 }
 
 model RefreshToken {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int      @id @default(autoincrement())
   uid       String
-  userId    String   @db.ObjectId
+  userId    Int
   user      User     @relation(fields: [userId], references: [id])
   userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([userId])
-}
-
-enum Role {
-  user
-  admin
-}
-
-enum Provider {
-  default
-  google
-  github
 }
