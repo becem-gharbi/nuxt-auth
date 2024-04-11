@@ -46,7 +46,6 @@
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.4",
     "jose": "^5.2.3",
-    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -55,7 +54,6 @@
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@prisma/extension-accelerate": "^1.0.0",
     "@types/bcryptjs": "^2.4.6",
-    "@types/uuid": "^9.0.8",
     "changelogen": "^0.5.5",
     "eslint": "^8.57.0",
     "nuxt": "^3.11.1",

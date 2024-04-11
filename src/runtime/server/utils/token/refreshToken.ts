@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 import { setCookie, getCookie, deleteCookie, getHeader } from 'h3'
 import type { H3Event } from 'h3'
 import type { RefreshTokenPayload, User, RefreshToken, Session } from '../../../types'
@@ -12,7 +12,7 @@ export async function createRefreshToken (event: H3Event, user: User) {
 
   const refreshTokenEntity = await prisma.refreshToken.create({
     data: {
-      uid: uuidv4(),
+      uid: randomUUID(),
       userId: user.id,
       userAgent
     },
@@ -64,7 +64,7 @@ export async function updateRefreshToken (
       id: refreshTokenId
     },
     data: {
-      uid: uuidv4()
+      uid: randomUUID()
     },
     select: {
       id: true,
