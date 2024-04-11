@@ -17,8 +17,6 @@ export async function sendMail (msg: MailMessage) {
   switch (settings.provider.name) {
     case 'hook':
       return await withHook()
-    case 'custom':
-      return await withCustom(settings.provider.url, settings.provider.authorization)
     case 'sendgrid':
       return await withSendgrid(settings.provider.apiKey)
     case 'resend':
@@ -59,19 +57,6 @@ export async function sendMail (msg: MailMessage) {
         to: msg.to,
         subject: msg.subject,
         html: msg.html
-      }
-    })
-  }
-
-  function withCustom (url: string, authorization: string) {
-    return $fetch(url, {
-      method: 'POST',
-      headers: {
-        authorization
-      },
-      body: {
-        ...msg,
-        from: settings.from
       }
     })
   }
