@@ -137,8 +137,6 @@ export type PrivateConfigWithBackend = {
     };
   };
 
-  prisma?: Prisma.PrismaClientOptions | false;
-
   registration: {
     enable?: boolean;
     requireEmailVerification?: boolean;

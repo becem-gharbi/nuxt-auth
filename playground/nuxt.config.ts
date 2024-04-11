@@ -13,9 +13,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  nitro: {
-    preset: process.env.NITRO_PRESET
-  },
 
   app: {
     head: {
@@ -87,8 +84,6 @@ export default defineNuxtConfig({
       emailVerify: '/auth/email-verify'
     },
 
-    webhookKey: 'abc',
-
-    prisma: false
+    webhookKey: 'abc'
   }
 })
