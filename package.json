@@ -55,7 +55,6 @@
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@prisma/extension-accelerate": "^1.0.0",
     "@types/bcryptjs": "^2.4.6",
-    "@types/mustache": "^4.2.5",
     "@types/uuid": "^9.0.8",
     "changelogen": "^0.5.5",
     "eslint": "^8.57.0",
