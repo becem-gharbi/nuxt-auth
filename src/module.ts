@@ -1,9 +1,11 @@
 import { fileURLToPath } from 'url'
+import { readFileSync } from 'fs'
+import { resolve as resolveAbsolute } from 'path'
 import { defineNuxtModule, addPlugin, createResolver, addImports, addServerHandler, addTemplate, logger, addServerPlugin } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
-import type { PublicConfig, PrivateConfig } from './runtime/types'
 
+import type { PublicConfig, PrivateConfig } from './runtime/types'
 export type ModuleOptions = PrivateConfig & PublicConfig
 
 export default defineNuxtModule<ModuleOptions>({
@@ -53,16 +55,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     prisma: {},
 
-    loggedInFlagName: 'auth_logged_in',
-
-    // @ts-ignore
-    email: {
-      from: 'nuxt-auth',
-      templates: {
-        emailVerify: '<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>@font-face{font-family:Inter;font-style:normal;font-weight:400;mso-font-alt:Verdana;src:url(https://rsms.me/inter/font-files/Inter-Regular.woff2?v=3.19) format(\'woff2\')}*{font-family:Inter,Verdana}p{font-size:15px;line-height:24px;margin:16px 0;margin-top:0;margin-bottom:20px;color:#374151;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-align:left}</style></head><body><table align="center" width="100%" role="presentation" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;margin-left:auto;margin-right:auto;padding:.5rem"><tbody><tr style="width:100%"><td><p>Hello {{name}}</p><p>We have received a request to verify your email address. If you haven\'t made this request please ignore the following email. Otherwise, to complete the process, click the following link.</p><table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:0;margin-bottom:20px;text-align:left"><tbody><tr><td><a href="{{link}}" style="border:2px solid;line-height:1.25rem;text-decoration:none;display:inline-block;max-width:100%;font-size:.875rem;font-weight:500;text-decoration-line:none;color:#109c0d;background-color:transparent;border-color:#109c0d;padding:10px 34px;border-radius:6px"><span></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0;mso-text-raise:9px">Verify email</span><span></span></a></td></tr></tbody></table><hr style="width:100%;border:none;border-top:1px solid #eaeaea;margin-top:32px;margin-bottom:32px"><p>This link will expire in {{validityInMinutes}} minutes.</p></td></tr></tbody></table></body></html>',
-        passwordReset: '<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>@font-face{font-family:Inter;font-style:normal;font-weight:400;mso-font-alt:Verdana;src:url(https://rsms.me/inter/font-files/Inter-Regular.woff2?v=3.19) format(\'woff2\')}*{font-family:Inter,Verdana}p{font-size:15px;line-height:24px;margin:16px 0;margin-top:0;margin-bottom:20px;color:#374151;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-align:left}</style></head><body><table align="center" width="100%" role="presentation" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;margin-left:auto;margin-right:auto;padding:.5rem"><tbody><tr style="width:100%"><td><p>Hello {{name}}</p><p>We have received a request to reset your password. If you haven\'t made this request please ignore the following email. Otherwise, to complete the process, click the following link.</p><table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:0;margin-bottom:20px;text-align:left"><tbody><tr><td><a href="{{link}}" style="border:2px solid;line-height:1.25rem;text-decoration:none;display:inline-block;max-width:100%;font-size:.875rem;font-weight:500;text-decoration-line:none;color:#109c0d;background-color:transparent;border-color:#109c0d;padding:10px 34px;border-radius:6px"><span></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0;mso-text-raise:9px">Reset password</span><span></span></a></td></tr></tbody></table><hr style="width:100%;border:none;border-top:1px solid #eaeaea;margin-top:32px;margin-bottom:32px"><p>This link will expire in {{validityInMinutes}} minutes.</p></td></tr></tbody></table></body></html>'
-      }
-    }
+    loggedInFlagName: 'auth_logged_in'
   },
 
   setup (options, nuxt) {
@@ -302,6 +295,28 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     if (options.email?.provider) {
+      options.email.templates ||= {}
+
+      if (options.email.templates.emailVerify) {
+        if (options.email.templates.emailVerify.endsWith('.html')) {
+          const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
+          options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
+        }
+      } else {
+        const emailVerifyPath = resolve(runtimeDir, 'templates/email_verification.html')
+        options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
+      }
+
+      if (options.email.templates.passwordReset) {
+        if (options.email.templates.passwordReset.endsWith('.html')) {
+          const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
+          options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
+        }
+      } else {
+        const passwordResetPath = resolve(runtimeDir, 'templates/password_reset.html')
+        options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
+      }
+
       addServerHandler({
         route: '/api/auth/password/request',
         handler: resolve(runtimeDir, 'server/api/auth/password/request.post')
