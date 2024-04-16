@@ -21,6 +21,9 @@ export default defineEventHandler(async (event) => {
     const user = await findUser(event, { email })
 
     if (user) {
+      if (!user.verified && config.private.registration.requireEmailVerification) {
+        throw new Error('account-not-verified')
+      }
       throw new Error(`email-used-with-${user.provider}`)
     }
 
