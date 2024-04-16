@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
     if (
       !user.verified &&
-      config.private.registration?.requireEmailVerification
+      config.private.registration.requireEmailVerification
     ) {
       throw new Error('account-not-verified')
     }

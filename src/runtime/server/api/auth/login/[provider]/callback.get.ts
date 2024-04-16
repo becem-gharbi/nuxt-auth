@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
     user = await findUser(event, { email: userInfo.email })
 
     if (!user) {
-      if (config.private.registration?.enable === false) {
+      if (config.private.registration.enable === false) {
         throw new Error('registration-disabled')
       }
 
