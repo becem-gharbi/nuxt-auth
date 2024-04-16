@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url'
 import { readFileSync } from 'fs'
+import { resolve as resolveAbsolute } from 'path'
 import { defineNuxtModule, addPlugin, createResolver, addImports, addServerHandler, addTemplate, logger, addServerPlugin } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
@@ -294,12 +295,27 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     if (options.email?.provider) {
-      const defaultEmailVerifyPath = resolve(runtimeDir, 'templates/email_verification.html')
-      const defaultPasswordResetPath = resolve(runtimeDir, 'templates/password_reset.html')
-
       options.email.templates ||= {}
-      options.email.templates.emailVerify ||= readFileSync(defaultEmailVerifyPath, 'utf-8')
-      options.email.templates.passwordReset ||= readFileSync(defaultPasswordResetPath, 'utf-8')
+
+      if (options.email.templates.emailVerify) {
+        if (options.email.templates.emailVerify.endsWith('.html')) {
+          const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
+          options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
+        }
+      } else {
+        const emailVerifyPath = resolve(runtimeDir, 'templates/email_verification.html')
+        options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
+      }
+
+      if (options.email.templates.passwordReset) {
+        if (options.email.templates.passwordReset.endsWith('.html')) {
+          const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
+          options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
+        }
+      } else {
+        const passwordResetPath = resolve(runtimeDir, 'templates/password_reset.html')
+        options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
+      }
 
       addServerHandler({
         route: '/api/auth/password/request',
