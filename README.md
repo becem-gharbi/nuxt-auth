@@ -5,7 +5,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A fairly complete solution to handle authentication for your Nuxt 3 project
+A fairly complete solution to handle authentication for your Nuxt project
 
 ## Features
 

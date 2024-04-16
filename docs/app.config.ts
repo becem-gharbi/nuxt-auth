@@ -4,7 +4,7 @@ export default defineAppConfig({
   docus: {
     title: "Nuxt Auth",
     description:
-      "A fairly complete solution to handle authentication for your Nuxt 3 project",
+      "A fairly complete solution to handle authentication for your Nuxt project",
     image:
       "/cover.jpg",
     socials: {
