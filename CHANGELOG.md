@@ -1,4 +1,34 @@
 # Changelog
+## v2.6.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.5.1...v2.6.0)
+
+### 🚀 Enhancements
+
+- Support adding custom email templates via relative path ([#20](https://github.com/becem-gharbi/nuxt-auth/pull/20))
+
+### 🔥 Performance
+
+- Replace `uuid` with `crypto.randomUUID` ([b045232](https://github.com/becem-gharbi/nuxt-auth/commit/b045232))
+
+### 🩹 Fixes
+
+- **registration:** Inform user when account not verified ([#21](https://github.com/becem-gharbi/nuxt-auth/pull/21))
+
+### 💅 Refactors
+
+- No significant change ([ac16309](https://github.com/becem-gharbi/nuxt-auth/commit/ac16309))
+
+### 📖 Documentation
+
+- Mention new starter ([a8a4a47](https://github.com/becem-gharbi/nuxt-auth/commit/a8a4a47))
+- Remove Nuxt version specification ([96fbae0](https://github.com/becem-gharbi/nuxt-auth/commit/96fbae0))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.5.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.5.0...v2.5.1)
