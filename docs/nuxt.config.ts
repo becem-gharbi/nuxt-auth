@@ -19,6 +19,8 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   mdc: {
     highlight: {
       langs: ['prisma', 'ts', 'vue', 'js'],

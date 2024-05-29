@@ -39,12 +39,11 @@
           revoke
         </button>
       </li>
-      <li>
-        <button @click="() => refresh()">
-          Update sessions
-        </button>
-      </li>
     </ul>
+
+    <button @click="() => refresh()">
+      Update sessions
+    </button>
 
     <button @click="revokeAllSessions">
       Delete all my sessions

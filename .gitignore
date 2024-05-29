@@ -58,3 +58,9 @@ Temporary Items
 bg-dev-nuxt-auth-0.0.0-development.tgz
 package
 playground/prisma/migrations
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+playwright-report/
+test-results/

@@ -27,39 +27,47 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build",
     "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:preview": "nuxi preview playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "prisma:init": "cd playground && prisma init",
+    "dev:build:ssr": "nuxi build playground",
+    "dev:build:spa": "cross-env NUXT_SSR=false nuxi build playground",
+    "test": "playwright test --ui",
+    "test:prod:ssr": "cross-env NODE_ENV=production && npm run dev:build:ssr && playwright test",
+    "test:prod:spa": "cross-env NODE_ENV=production && npm run dev:build:spa && playwright test",
+    "test:prod": "npm run test:prod:ssr && npm run test:prod:spa",
+    "lint": "eslint .",
+    "typecheck": "nuxi typecheck",
+    "prepack": "nuxt-module-build",
+    "release:pre": "npm run typecheck && npm run lint && npm run prepack",
+    "release": "npm run release:pre && npm run test:prod && changelogen --release && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
-    "prisma:push": "cd playground && prisma db push",
-    "release": "npm run lint && npm run typecheck && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
-    "lint": "eslint .",
-    "typecheck": "nuxi typecheck"
+    "prisma:push": "cd playground && prisma db push"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.11.1",
-    "@prisma/client": "^5.12.0",
+    "@nuxt/kit": "^3.11.2",
+    "@prisma/client": "^5.14.0",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.4",
-    "jose": "^5.2.3",
-    "zod": "^3.22.4"
+    "jose": "^5.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.3.13",
-    "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.11.1",
-    "@prisma/extension-accelerate": "^1.0.0",
+    "@nuxt/module-builder": "^0.7.0",
+    "@nuxt/schema": "^3.11.2",
+    "@playwright/test": "^1.44.1",
+    "@prisma/extension-accelerate": "^1.1.0",
     "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.12.13",
     "changelogen": "^0.5.5",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
-    "nuxt": "^3.11.1",
-    "prisma": "^5.12.0"
+    "nuxt": "^3.11.2",
+    "prisma": "^5.14.0"
   },
   "repository": {
     "url": "git+https://github.com/becem-gharbi/nuxt-auth.git"
-  }
+  },
+  "packageManager": "pnpm@8.7.0+sha1.4a6f863625170af87d027789f72662e0601ecb57"
 }

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <NuxtPage />
+    <client-only>
+      <div data-testid="hydration-check" />
+    </client-only>
+    <nuxt-page />
   </div>
 </template>
-
-<script setup lang="ts">
-</script>

@@ -24,6 +24,10 @@
       </button>
     </form>
 
+    <p data-testid="registration-result">
+      {{ result }}
+    </p>
+
     <button @click="requestEmailVerifyHandler">
       Request email verify
     </button>
@@ -41,16 +45,21 @@ const email = ref()
 const password = ref()
 const name = ref()
 
+const result = ref()
+
 async function handleRegister() {
   await register({
     email: email.value,
     password: password.value,
     name: name.value,
+  }).then(() => {
+    result.value = 'ok'
+  }).catch((err) => {
+    result.value = err.data.message
   })
 }
 
 async function requestEmailVerifyHandler() {
   await requestEmailVerify(email.value)
-  // console.log(error.value?.data.message)
 }
 </script>

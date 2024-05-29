@@ -26,6 +26,5 @@ const password = ref()
 
 async function handleResetPassword() {
   await resetPassword(password.value)
-  // console.log(error.value?.data.message)
 }
 </script>

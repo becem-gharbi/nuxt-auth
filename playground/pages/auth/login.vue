@@ -23,7 +23,7 @@
     <button @click="handleRequestPasswordReset">
       Forgot password
     </button>
-    <button @click="() => loginWithProvider('google')">
+    <button @click="loginWithProvider('google')">
       Login with google
     </button>
   </div>
@@ -43,6 +43,5 @@ async function handleLogin() {
 
 async function handleRequestPasswordReset() {
   await requestPasswordReset(email.value)
-  // console.log(error.value?.data?.message)
 }
 </script>
