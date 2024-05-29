@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const { state: returnToPath, code } = getQuery<{ code: string, state: string }>(event)
 
     const schema = z.object({
-      code: z.string()
+      code: z.string(),
     })
 
     schema.parse({ code })
@@ -35,11 +35,11 @@ export default defineEventHandler(async (event) => {
     formData.append('client_id', oauthProvider.clientId)
     formData.append(
       'client_secret',
-      oauthProvider.clientSecret
+      oauthProvider.clientSecret,
     )
     formData.append(
       'redirect_uri',
-      resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback')
+      resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback'),
     )
 
     const { access_token: accessToken } = await $fetch(
@@ -48,15 +48,15 @@ export default defineEventHandler(async (event) => {
         method: 'POST',
         body: formData,
         headers: {
-          Accept: 'application/json'
-        }
-      }
+          Accept: 'application/json',
+        },
+      },
     )
 
     const userInfo = await $fetch(oauthProvider.userUrl, {
       headers: {
-        Authorization: 'Bearer ' + accessToken
-      }
+        Authorization: 'Bearer ' + accessToken,
+      },
     })
 
     if (!userInfo.name) {
@@ -83,8 +83,8 @@ export default defineEventHandler(async (event) => {
           'picture',
           'picture_url',
           'photo',
-          'photo_url'
-        ].includes(el)
+          'photo_url',
+        ].includes(el),
       )
 
       const picture = pictureKey ? userInfo[pictureKey] : null
@@ -94,7 +94,7 @@ export default defineEventHandler(async (event) => {
         name: userInfo.name,
         provider,
         picture,
-        verified: true
+        verified: true,
       })
 
       user = Object.assign(newUser)
@@ -118,12 +118,13 @@ export default defineEventHandler(async (event) => {
 
     await sendRedirect(
       event,
-      withQuery(config.public.redirect.callback, { redirect: returnToPath })
+      withQuery(config.public.redirect.callback, { redirect: returnToPath }),
     )
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error, {
       event,
-      url: config.public.redirect.callback!
+      url: config.public.redirect.callback!,
     })
   }
 })

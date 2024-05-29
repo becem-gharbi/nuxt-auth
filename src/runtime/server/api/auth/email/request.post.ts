@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const { email } = await readBody(event)
 
     const schema = z.object({
-      email: z.string().email()
+      email: z.string().email(),
     })
 
     schema.parse({ email })
@@ -23,12 +23,12 @@ export default defineEventHandler(async (event) => {
 
     if (user && !user.verified) {
       const emailVerifyToken = await createEmailVerifyToken({
-        userId: user.id
+        userId: user.id,
       })
 
       const redirectUrl = resolveURL(
         config.public.baseUrl,
-        '/api/auth/email/verify'
+        '/api/auth/email/verify',
       )
 
       const link = withQuery(redirectUrl, { token: emailVerifyToken })
@@ -42,15 +42,16 @@ export default defineEventHandler(async (event) => {
             ...user,
             link,
             validityInMinutes: Math.round(
-              config.private.accessToken.maxAge! / 60
-            )
-          }
-        )
+              config.private.accessToken.maxAge! / 60,
+            ),
+          },
+        ),
       })
     }
 
     return { status: 'ok' }
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

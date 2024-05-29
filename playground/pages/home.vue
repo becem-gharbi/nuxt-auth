@@ -12,16 +12,25 @@
 
     <form @submit.prevent="handleChangePassword">
       <label for="current-password">Current password</label>
-      <input id="current-password" v-model="currentPassword">
+      <input
+        id="current-password"
+        v-model="currentPassword"
+      >
       <label for="newt-password">New password</label>
-      <input id="new-password" v-model="newPassword">
+      <input
+        id="new-password"
+        v-model="newPassword"
+      >
       <button type="submit">
         Change password
       </button>
     </form>
 
     <ul v-if="data">
-      <li v-for="session of data" :key="session.id">
+      <li
+        v-for="session of data"
+        :key="session.id"
+      >
         <p>{{ session }}</p>
         <button @click="revokeSession(session.id)">
           revoke
@@ -48,20 +57,19 @@ definePageMeta({ middleware: 'auth' })
 const { logout, fetchUser, changePassword } = useAuth()
 const { user, revokeAllSessions, getAllSessions, revokeSession } = useAuthSession()
 
-async function handleLogout () {
+async function handleLogout() {
   await logout()
 }
 
 const currentPassword = ref('')
 const newPassword = ref('')
 
-async function handleChangePassword () {
+async function handleChangePassword() {
   await changePassword({
     currentPassword: currentPassword.value,
-    newPassword: newPassword.value
+    newPassword: newPassword.value,
   })
 }
 
 const { data, refresh, error } = await useAsyncData(getAllSessions)
-
 </script>

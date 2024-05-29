@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   extends: '@nuxt-themes/docus',
   imports: {
-    autoImport: true
+    autoImport: true,
   },
   app: {
     head: {
@@ -10,18 +10,18 @@ export default defineNuxtConfig({
         {
           rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
-          crossorigin: 'anonymous'
+          crossorigin: 'anonymous',
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600&display=swap'
-        }
-      ]
-    }
+          href: 'https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600&display=swap',
+        },
+      ],
+    },
   },
   mdc: {
     highlight: {
-      langs: ['prisma', 'ts', 'vue', 'js']
-    }
-  } 
+      langs: ['prisma', 'ts', 'vue', 'js'],
+    },
+  },
 } as any)

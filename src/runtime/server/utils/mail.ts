@@ -2,10 +2,10 @@ import type { NitroApp } from 'nitropack'
 import type { MailMessage } from '../../types'
 import { getConfig } from './config'
 // @ts-ignore
-// eslint-disable-next-line import/named
+
 import { useNitroApp } from '#imports'
 
-export async function sendMail (msg: MailMessage) {
+export async function sendMail(msg: MailMessage) {
   const config = getConfig()
 
   if (!config.private.email?.provider) {
@@ -27,56 +27,56 @@ export async function sendMail (msg: MailMessage) {
       throw new Error('invalid-email-provider')
   }
 
-  function withSendgrid (apiKey: string) {
+  function withSendgrid(apiKey: string) {
     return $fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
       headers: {
-        authorization: `Bearer ${apiKey}`
+        authorization: `Bearer ${apiKey}`,
       },
       body: {
         personalizations: [
           {
             to: [{ email: msg.to }],
-            subject: msg.subject
-          }
+            subject: msg.subject,
+          },
         ],
         content: [{ type: 'text/html', value: msg.html }],
         from: { email: settings.from },
-        reply_to: { email: settings.from }
-      }
+        reply_to: { email: settings.from },
+      },
     })
   }
 
   // https://resend.com/docs/api-reference/emails/send-email
-  function withResend (apiKey: string) {
+  function withResend(apiKey: string) {
     return $fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Authorization: `Bearer ${apiKey}`,
       },
       body: {
         from: settings.from,
         to: msg.to,
         subject: msg.subject,
-        html: msg.html
-      }
+        html: msg.html,
+      },
     })
   }
 
-  function withCustom (url: string, authorization: string) {
+  function withCustom(url: string, authorization: string) {
     return $fetch(url, {
       method: 'POST',
       headers: {
-        authorization
+        authorization,
       },
       body: {
         ...msg,
-        from: settings.from
-      }
+        from: settings.from,
+      },
     })
   }
 
-  function withHook () {
+  function withHook() {
     const nitroApp = useNitroApp() as NitroApp
     return nitroApp.hooks.callHook('auth:email', settings.from, msg)
   }

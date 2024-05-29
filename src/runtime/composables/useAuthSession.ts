@@ -4,31 +4,31 @@ import type { User, Session, Response, PublicConfig, PrivateConfig, Authenticati
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
 
-export function useAuthSession () {
+export function useAuthSession() {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const privateConfig = useRuntimeConfig().auth as PrivateConfig
 
   const _refreshToken = {
     get: () => import.meta.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
-    clear: () => import.meta.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!)
+    clear: () => import.meta.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!),
   }
 
   const _loggedInFlag = {
-    get value () {
+    get value() {
       return import.meta.client ? localStorage.getItem(publicConfig.loggedInFlagName!) === 'true' : false
     },
-    set value (value: boolean) {
+    set value(value: boolean) {
       if (import.meta.client) {
         localStorage.setItem(publicConfig.loggedInFlagName!, value.toString())
       }
-    }
+    },
   }
 
   const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
 
-  async function _refresh () {
-    async function handler () {
+  async function _refresh() {
+    async function handler() {
       const token = useAuthToken()
       const reqHeaders = useRequestHeaders(['cookie', 'user-agent'])
       const { _onLogout } = useAuth()
@@ -39,7 +39,7 @@ export function useAuthSession () {
           method: 'POST',
           // Cloudflare Workers does not support "credentials" field
           ...(import.meta.client ? { credentials: 'include' } : {}),
-          headers: import.meta.server ? reqHeaders : {}
+          headers: import.meta.server ? reqHeaders : {},
         })
         .then((res) => {
           if (import.meta.server) {
@@ -53,7 +53,7 @@ export function useAuthSession () {
           if (res._data) {
             token.value = {
               access_token: res._data.access_token,
-              expires: new Date().getTime() + res._data.expires_in * 1000
+              expires: new Date().getTime() + res._data.expires_in * 1000,
             }
           }
         })
@@ -72,7 +72,7 @@ export function useAuthSession () {
    * Async get access token
    * @returns Fresh access token (refreshed if expired)
    */
-  async function getAccessToken (): Promise<string | null | undefined> {
+  async function getAccessToken(): Promise<string | null | undefined> {
     const token = useAuthToken()
 
     if (token.expired) {
@@ -85,25 +85,25 @@ export function useAuthSession () {
   /**
    * Removes all stored sessions of the active user
    */
-  function revokeAllSessions (): Promise<Response> {
+  function revokeAllSessions(): Promise<Response> {
     return useNuxtApp().$auth.fetch<Response>('/api/auth/session/revoke/all', {
-      method: 'DELETE'
+      method: 'DELETE',
     })
   }
 
   /**
    * Removes a single stored session of the active user
    */
-  function revokeSession (id: Session['id']): Promise<Response> {
+  function revokeSession(id: Session['id']): Promise<Response> {
     return useNuxtApp().$auth.fetch<Response>(`/api/auth/session/revoke/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
   }
 
   /**
    * Get all stored sessions of the active user
    */
-  async function getAllSessions (): Promise<Session[]> {
+  async function getAllSessions(): Promise<Session[]> {
     const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/session')
 
     // Move current session on top
@@ -124,6 +124,6 @@ export function useAuthSession () {
     getAccessToken,
     revokeAllSessions,
     revokeSession,
-    getAllSessions
+    getAllSessions,
   }
 }

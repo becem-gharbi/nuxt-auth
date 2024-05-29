@@ -2,14 +2,14 @@ import { defineAppConfig } from '#imports'
 
 export default defineAppConfig({
   docus: {
-    title: "Nuxt Auth",
+    title: 'Nuxt Auth',
     description:
-      "A fairly complete solution to handle authentication for your Nuxt project",
+      'A fairly complete solution to handle authentication for your Nuxt project',
     image:
-      "/cover.jpg",
+      '/cover.jpg',
     socials: {
       //  twitter: "nuxt_js",
-      github: "becem-gharbi/nuxt-auth",
+      github: 'becem-gharbi/nuxt-auth',
       // nuxt: {
       //   label: "Nuxt",
       //   icon: "simple-icons:nuxtdotjs",
@@ -39,4 +39,4 @@ export default defineAppConfig({
       fluid: true,
     },
   },
-});
+})

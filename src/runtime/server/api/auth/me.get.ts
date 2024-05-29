@@ -18,7 +18,8 @@ export default defineEventHandler(async (event) => {
     const { password, ...sanitizedUser } = user
 
     return sanitizedUser
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

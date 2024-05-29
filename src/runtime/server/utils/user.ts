@@ -5,21 +5,21 @@ import type { User } from '../../types'
 import { getConfig } from './config'
 import { hashSync, compareSync } from './bcrypt'
 
-export async function findUser (
+export async function findUser(
   event: H3Event,
-  where: Prisma.UserWhereUniqueInput
+  where: Prisma.UserWhereUniqueInput,
 ) {
   const prisma = event.context.prisma
 
   const user = await prisma.user.findUnique({
-    where
+    where,
   })
   return user
 }
 
-export async function createUser (
+export async function createUser(
   event: H3Event,
-  input: Prisma.UserCreateInput
+  input: Prisma.UserCreateInput,
 ) {
   const hashedPassword = input.password
     ? hashSync(input.password, 12)
@@ -34,14 +34,14 @@ export async function createUser (
       password: hashedPassword,
       role: config.private.registration.defaultRole as User['role'] ?? 'user',
       provider: input.provider ?? 'default',
-      picture: input.picture || generateAvatar(input.name)
-    }
+      picture: input.picture || generateAvatar(input.name),
+    },
   })
 
   return user
 }
 
-function generateAvatar (name: string) {
+function generateAvatar(name: string) {
   // https://tailwindcss.com/docs/customizing-colors#default-color-palette
   // Variant 700
   const colors = [
@@ -56,7 +56,7 @@ function generateAvatar (name: string) {
     '1d4ed8' /* blue */,
     '4338ca' /* indigo */,
     '6d28d9' /* violet */,
-    'be123c' /* rose */
+    'be123c', /* rose */
   ]
 
   const randomIndex = Math.floor(Math.random() * (colors.length - 1))
@@ -64,16 +64,16 @@ function generateAvatar (name: string) {
   const url = withQuery('/api/auth/avatar', {
     name,
     color: 'f5f5f5',
-    background: colors[randomIndex]
+    background: colors[randomIndex],
   })
 
   return url
 }
 
-export async function changePassword (
+export async function changePassword(
   event: H3Event,
   userId: User['id'],
-  password: string
+  password: string,
 ) {
   const hashedPassword = hashSync(password, 12)
 
@@ -81,53 +81,53 @@ export async function changePassword (
 
   await prisma.user.update({
     where: {
-      id: userId
+      id: userId,
     },
     data: {
-      password: hashedPassword
+      password: hashedPassword,
     },
     select: {
-      id: true
-    }
+      id: true,
+    },
   })
 }
 
-export async function setUserEmailVerified (event: H3Event, userId: User['id']) {
+export async function setUserEmailVerified(event: H3Event, userId: User['id']) {
   const prisma = event.context.prisma
 
   await prisma.user.update({
     where: {
-      id: userId
+      id: userId,
     },
     data: {
-      verified: true
+      verified: true,
     },
     select: {
-      id: true
-    }
+      id: true,
+    },
   })
 }
 
-export function verifyPassword (password: string, hashedPassword: string) {
+export function verifyPassword(password: string, hashedPassword: string) {
   return compareSync(password, hashedPassword)
 }
 
-export async function setUserRequestedPasswordReset (
+export async function setUserRequestedPasswordReset(
   event: H3Event,
   userId: User['id'],
-  state: boolean
+  state: boolean,
 ) {
   const prisma = event.context.prisma
 
   await prisma.user.update({
     where: {
-      id: userId
+      id: userId,
     },
     data: {
-      requestedPasswordReset: state
+      requestedPasswordReset: state,
     },
     select: {
-      id: true
-    }
+      id: true,
+    },
   })
 }

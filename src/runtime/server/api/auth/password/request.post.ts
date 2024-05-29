@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const { email } = await readBody(event)
 
     const schema = z.object({
-      email: z.string().email()
+      email: z.string().email(),
     })
 
     schema.parse({ email })
@@ -23,12 +23,12 @@ export default defineEventHandler(async (event) => {
 
     if (user && user.provider === 'default') {
       const resetPasswordToken = await createResetPasswordToken({
-        userId: user.id
+        userId: user.id,
       })
 
       const redirectUrl = resolveURL(
         config.public.baseUrl,
-        config.public.redirect.passwordReset
+        config.public.redirect.passwordReset,
       )
       const link = withQuery(redirectUrl, { token: resetPasswordToken })
 
@@ -41,17 +41,18 @@ export default defineEventHandler(async (event) => {
             ...user,
             link,
             validityInMinutes: Math.round(
-              config.private.accessToken.maxAge! / 60
-            )
-          }
-        )
+              config.private.accessToken.maxAge! / 60,
+            ),
+          },
+        ),
       })
 
       await setUserRequestedPasswordReset(event, user.id, true)
     }
 
     return { status: 'ok' }
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

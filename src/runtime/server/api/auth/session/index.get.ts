@@ -17,9 +17,10 @@ export default defineEventHandler(async (event) => {
       current: token.id === auth.sessionId,
       ua: token.userAgent,
       createdAt: token.createdAt,
-      updatedAt: token.updatedAt
+      updatedAt: token.updatedAt,
     }))
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

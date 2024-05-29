@@ -6,9 +6,9 @@ import { useAuthSession, useRequestHeaders, useRuntimeConfig } from '#imports'
 /**
  * @deprecated since version 2.2.1, please use `useNuxtApp().$auth.fetch() instead`
  */
-export async function useAuthFetch <T> (
+export async function useAuthFetch<T>(
   request: NitroFetchRequest,
-  options?: NitroFetchOptions<NitroFetchRequest>
+  options?: NitroFetchOptions<NitroFetchRequest>,
 ): Promise<T> {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const reqHeaders = useRequestHeaders(['user-agent'])
@@ -17,8 +17,8 @@ export async function useAuthFetch <T> (
   const _options = defu(options, reqHeaders, {
     credentials: 'omit',
     headers: accessToken && {
-      authorization: 'Bearer ' + accessToken
-    }
+      authorization: 'Bearer ' + accessToken,
+    },
   }) as NitroFetchOptions<NitroFetchRequest>
 
   _options.baseURL = publicConfig.backendBaseUrl

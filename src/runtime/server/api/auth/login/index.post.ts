@@ -9,23 +9,23 @@ export default defineEventHandler(async (event) => {
     const { email, password } = await readBody(event)
     const schema = z.object({
       email: z.string().email(),
-      password: z.string()
+      password: z.string(),
     })
     schema.parse({ email, password })
 
     const user = await findUser(event, { email })
 
     if (
-      !user ||
-      user.provider !== 'default' ||
-      !verifyPassword(password, user.password!)
+      !user
+      || user.provider !== 'default'
+      || !verifyPassword(password, user.password!)
     ) {
       throw new Error('wrong-credentials')
     }
 
     if (
-      !user.verified &&
-      config.private.registration.requireEmailVerification
+      !user.verified
+      && config.private.registration.requireEmailVerification
     ) {
       throw new Error('account-not-verified')
     }
@@ -41,7 +41,8 @@ export default defineEventHandler(async (event) => {
     const accessToken = await createAccessToken(event, user, sessionId)
 
     return accessToken
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

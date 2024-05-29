@@ -7,5 +7,5 @@ export const mustache = {
     })
 
     return template
-  }
+  },
 }

@@ -12,7 +12,8 @@ export default defineEventHandler(async (event) => {
     deleteRefreshTokenCookie(event)
 
     return { status: 'ok' }
-  } catch (error) {
+  }
+  catch (error) {
     deleteRefreshTokenCookie(event)
 
     await handleError(error)

@@ -6,8 +6,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
 
   if (
-    to.path === publicConfig.redirect.login ||
-    to.path === publicConfig.redirect.callback
+    to.path === publicConfig.redirect.login
+    || to.path === publicConfig.redirect.callback
   ) {
     if (useAuthToken().value) {
       const returnToPath = from.query.redirect?.toString()

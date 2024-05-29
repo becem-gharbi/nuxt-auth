@@ -13,25 +13,25 @@ export default defineNuxtPlugin((nuxtApp) => {
   const fetch = $fetch.create({
     baseURL: publicConfig.backendBaseUrl,
 
-    async onRequest ({ options }) {
+    async onRequest({ options }) {
       const accessToken = await useAuthSession().getAccessToken()
 
       if (accessToken) {
         options.headers = defu(options.headers, reqHeaders, {
-          authorization: 'Bearer ' + accessToken
+          authorization: 'Bearer ' + accessToken,
         })
       }
 
       options.credentials ||= 'omit'
-    }
+    },
   })
 
   return {
     provide: {
       auth: {
         fetch: fetch as $Fetch,
-        _refreshPromise: null
-      }
-    }
+        _refreshPromise: null,
+      },
+    },
   }
 })

@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
       config.public.baseUrl,
       '/api/auth/login',
       provider,
-      'callback'
+      'callback',
     )
 
     const authorizationUrl = withQuery(
@@ -31,12 +31,13 @@ export default defineEventHandler(async (event) => {
         scope: oauthProvider.scopes,
         redirect_uri: redirectUri,
         client_id: oauthProvider.clientId,
-        state: returnToPath
-      }
+        state: returnToPath,
+      },
     )
 
     await sendRedirect(event, authorizationUrl)
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

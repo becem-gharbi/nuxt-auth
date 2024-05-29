@@ -2,21 +2,21 @@ import { defineEventHandler, getQuery, setResponseHeaders, createError } from 'h
 
 export default defineEventHandler((event) => {
   const query = getQuery<{
-        name: string;
-        color: string;
-        background: string;
-    }>(event)
+    name: string
+    color: string
+    background: string
+  }>(event)
 
   query.name ||= ''
   query.background ||= 'f0e9e9'
   query.color ||= '8b5d5d'
 
   const validateColor = (color: string) => {
-    const valid = /^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color)
+    const valid = /^([A-F0-9]{6}|[A-F0-9]{3})$/i.test(color)
     if (!valid) {
       throw createError({
         statusCode: 422,
-        message: 'Color should be in format rrggbb or rgb'
+        message: 'Color should be in format rrggbb or rgb',
       })
     }
   }
@@ -26,7 +26,7 @@ export default defineEventHandler((event) => {
 
   setResponseHeaders(event, {
     'Content-Type': 'image/svg+xml',
-    'Cache-Control': 'public, max-age=2592000, immutable'
+    'Cache-Control': 'public, max-age=2592000, immutable',
   })
 
   return `

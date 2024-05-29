@@ -3,8 +3,18 @@
     <h1>Login</h1>
 
     <form @submit.prevent="handleLogin">
-      <input v-model="email" placeholder="email" type="email" autocomplete="email">
-      <input v-model="password" placeholder="password" type="password" autocomplete="current-password">
+      <input
+        v-model="email"
+        placeholder="email"
+        type="email"
+        autocomplete="email"
+      >
+      <input
+        v-model="password"
+        placeholder="password"
+        type="password"
+        autocomplete="current-password"
+      >
       <button type="submit">
         Login
       </button>
@@ -27,11 +37,11 @@ const { login, requestPasswordReset, loginWithProvider } = useAuth()
 const email = ref()
 const password = ref()
 
-async function handleLogin () {
+async function handleLogin() {
   await login({ email: email.value, password: password.value })
 }
 
-async function handleRequestPasswordReset () {
+async function handleRequestPasswordReset() {
   await requestPasswordReset(email.value)
   // console.log(error.value?.data?.message)
 }

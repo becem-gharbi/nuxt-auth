@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       currentPassword: z.string(),
       newPassword: z
         .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? ''))
+        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
     })
 
     schema.parse({ currentPassword, newPassword })
@@ -26,9 +26,9 @@ export default defineEventHandler(async (event) => {
     const user = await findUser(event, { id: auth.userId })
 
     if (
-      !user ||
-      user.provider !== 'default' ||
-      !verifyPassword(currentPassword, user.password!)
+      !user
+      || user.provider !== 'default'
+      || !verifyPassword(currentPassword, user.password!)
     ) {
       throw new Error('wrong-password')
     }
@@ -38,7 +38,8 @@ export default defineEventHandler(async (event) => {
     await deleteManyRefreshTokenByUser(event, auth.userId, auth.sessionId)
 
     return { status: 'ok' }
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     const token = getQuery(event).token?.toString()
 
     const schema = z.object({
-      token: z.string()
+      token: z.string(),
     })
 
     schema.parse({ token })
@@ -27,10 +27,11 @@ export default defineEventHandler(async (event) => {
     await setUserEmailVerified(event, payload.userId)
 
     await sendRedirect(event, config.public.redirect.emailVerify)
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error, {
       event,
-      url: config.public.redirect.emailVerify!
+      url: config.public.redirect.emailVerify!,
     })
   }
 })

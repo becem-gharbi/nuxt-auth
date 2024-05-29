@@ -4,89 +4,89 @@ import type {
   RefreshToken as PrismaRefreshToken,
   Prisma,
   Role,
-  PrismaClient
+  PrismaClient,
 } from '@prisma/client'
 
 declare module '#app' {
   interface NuxtApp {
     $auth: {
-      fetch: typeof $fetch;
-      _refreshPromise: Promise<any> | null;
-    };
+      fetch: typeof $fetch
+      _refreshPromise: Promise<any> | null
+    }
   }
   interface RuntimeNuxtHooks {
-    'auth:loggedIn': (state: boolean) => void;
+    'auth:loggedIn': (state: boolean) => void
   }
 }
 
 declare module 'h3' {
   interface H3EventContext {
-    prisma: PrismaClient;
-    auth: AccessTokenPayload | undefined;
+    prisma: PrismaClient
+    auth: AccessTokenPayload | undefined
   }
 }
 
 declare module 'nitropack' {
   interface NitroRuntimeHooks {
-    'auth:email': (from: string, msg: MailMessage) => Promise<void> |void
+    'auth:email': (from: string, msg: MailMessage) => Promise<void> | void
   }
 }
 
-export type Provider = Exclude<PrismaProvider, 'default'>;
+export type Provider = Exclude<PrismaProvider, 'default'>
 
 export interface User extends Omit<PrismaUser, 'password'> { }
 
 export interface RefreshToken extends Omit<PrismaRefreshToken, 'uid'> { }
 
 export interface Session {
-  id: RefreshToken['id'];
-  current: boolean;
-  ua: string | null;
-  updatedAt: Date;
-  createdAt: Date;
+  id: RefreshToken['id']
+  current: boolean
+  ua: string | null
+  updatedAt: Date
+  createdAt: Date
 }
 
 export type MailMessage = {
-  to: string;
-  subject: string;
-  html: string;
-};
+  to: string
+  subject: string
+  html: string
+}
 
 export type ResetPasswordPayload = {
-  userId: User['id'];
-};
+  userId: User['id']
+}
 
 export type EmailVerifyPayload = {
-  userId: User['id'];
-};
+  userId: User['id']
+}
 
 export type AccessTokenPayload = {
-  userId: User['id'];
-  sessionId: Session['id'];
-  userRole: string;
-  fingerprint: string | null;
-};
+  userId: User['id']
+  sessionId: Session['id']
+  userRole: string
+  fingerprint: string | null
+}
 
 export type RefreshTokenPayload = {
-  id: RefreshToken['id'];
-  uid: string;
-  userId: User['id'];
-};
+  id: RefreshToken['id']
+  uid: string
+  userId: User['id']
+}
 
 /** @deprecated since 2.5.0, please use `hook` instead */
 interface MailCustomProvider {
-  name: 'custom';
-  url: string;
-  authorization: string;
+  name: 'custom'
+  url: string
+  authorization: string
 }
 
 interface MailSendgridProvider {
-  name: 'sendgrid';
-  apiKey: string;
+  name: 'sendgrid'
+  apiKey: string
 }
 
 interface MailResendProvider {
-  name: 'resend',
+  name: 'resend'
   apiKey: string
 }
 
@@ -95,81 +95,81 @@ interface MailHookProvider {
 }
 
 export interface AuthenticationData {
-  access_token: string;
-  expires_in: number;
+  access_token: string
+  expires_in: number
 }
 
 export type PrivateConfigWithoutBackend = {
-  backendEnabled: false,
+  backendEnabled: false
   refreshToken: {
     cookieName?: string
   }
 }
 
 export type PrivateConfigWithBackend = {
-  backendEnabled: true;
+  backendEnabled: true
 
   accessToken: {
-    jwtSecret: string;
-    maxAge?: number;
-    customClaims?: Record<string, any>;
-  };
+    jwtSecret: string
+    maxAge?: number
+    customClaims?: Record<string, any>
+  }
 
   refreshToken: {
-    cookieName?: string;
-    jwtSecret: string;
-    maxAge?: number;
-  };
+    cookieName?: string
+    jwtSecret: string
+    maxAge?: number
+  }
 
   oauth?: Partial<
     Record<
       Provider,
       {
-        clientId: string;
-        clientSecret: string;
-        scopes: string;
-        authorizeUrl: string;
-        tokenUrl: string;
-        userUrl: string;
+        clientId: string
+        clientSecret: string
+        scopes: string
+        authorizeUrl: string
+        tokenUrl: string
+        userUrl: string
       }
     >
-  >;
+  >
 
   email?: {
-    from: string;
-    provider: MailCustomProvider | MailSendgridProvider | MailResendProvider | MailHookProvider;
+    from: string
+    provider: MailCustomProvider | MailSendgridProvider | MailResendProvider | MailHookProvider
     templates?: {
-      passwordReset?: string;
-      emailVerify?: string;
-    };
-  };
+      passwordReset?: string
+      emailVerify?: string
+    }
+  }
 
-  prisma?: Prisma.PrismaClientOptions | false;
+  prisma?: Prisma.PrismaClientOptions | false
 
   registration: {
-    enable?: boolean;
-    requireEmailVerification?: boolean;
-    passwordValidationRegex?: string;
-    defaultRole: Role;
-  };
+    enable?: boolean
+    requireEmailVerification?: boolean
+    passwordValidationRegex?: string
+    defaultRole: Role
+  }
 
-  webhookKey?: string;
-};
+  webhookKey?: string
+}
 
 export type PublicConfig = {
-  backendEnabled?: boolean;
-  backendBaseUrl?: string;
-  baseUrl: string;
-  enableGlobalAuthMiddleware?: boolean;
-  loggedInFlagName?: string;
+  backendEnabled?: boolean
+  backendBaseUrl?: string
+  baseUrl: string
+  enableGlobalAuthMiddleware?: boolean
+  loggedInFlagName?: string
   redirect: {
-    login: string;
-    logout: string;
-    home: string;
-    callback?: string;
-    passwordReset?: string;
-    emailVerify?: string;
-  };
+    login: string
+    logout: string
+    home: string
+    callback?: string
+    passwordReset?: string
+    emailVerify?: string
+  }
 }
 
 export type PrivateConfig = PrivateConfigWithBackend | PrivateConfigWithoutBackend

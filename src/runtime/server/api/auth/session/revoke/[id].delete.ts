@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const id = Number(event.context.params!.id) || event.context.params!.id
 
     const schema = z.object({
-      id: z.number().or(z.string())
+      id: z.number().or(z.string()),
     })
 
     schema.parse({ id })
@@ -28,7 +28,8 @@ export default defineEventHandler(async (event) => {
     await deleteRefreshToken(event, id as RefreshToken['id'])
 
     return { status: 'ok' }
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

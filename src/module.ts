@@ -1,10 +1,11 @@
-import { readFileSync } from 'fs'
-import { resolve as resolveAbsolute } from 'path'
+import { readFileSync } from 'node:fs'
+import { resolve as resolveAbsolute } from 'node:path'
 import { defineNuxtModule, addPlugin, createResolver, addImports, addServerHandler, addTemplate, logger, addServerPlugin } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
 
 import type { PublicConfig, PrivateConfig } from './runtime/types'
+
 export type ModuleOptions = PrivateConfig & PublicConfig
 
 export default defineNuxtModule<ModuleOptions>({
@@ -12,9 +13,9 @@ export default defineNuxtModule<ModuleOptions>({
     name,
     version,
     compatibility: {
-      nuxt: '^3.8.2'
+      nuxt: '^3.8.2',
     },
-    configKey: 'auth'
+    configKey: 'auth',
   },
 
   defaults: {
@@ -25,12 +26,12 @@ export default defineNuxtModule<ModuleOptions>({
     loggedInFlagName: 'auth_logged_in',
     accessToken: {
       jwtSecret: '',
-      maxAge: 15 * 60
+      maxAge: 15 * 60,
     },
     refreshToken: {
       cookieName: 'auth_refresh_token',
       jwtSecret: '',
-      maxAge: 7 * 24 * 60 * 60
+      maxAge: 7 * 24 * 60 * 60,
     },
     redirect: {
       login: '',
@@ -38,17 +39,17 @@ export default defineNuxtModule<ModuleOptions>({
       home: '',
       callback: '',
       passwordReset: '',
-      emailVerify: ''
+      emailVerify: '',
     },
     registration: {
       enable: true,
       defaultRole: 'user',
       requireEmailVerification: true,
-      passwordValidationRegex: ''
-    }
+      passwordValidationRegex: '',
+    },
   },
 
-  setup (options, nuxt) {
+  setup(options, nuxt) {
     if (!options.redirect.login) {
       logger.warn('[nuxt-auth] Please make sure to set login redirect path')
     }
@@ -69,7 +70,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
       app: {},
       auth: {
-        refreshToken: options.refreshToken
+        refreshToken: options.refreshToken,
       },
       public: {
         auth: {
@@ -77,9 +78,9 @@ export default defineNuxtModule<ModuleOptions>({
           baseUrl: options.baseUrl,
           enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
           loggedInFlagName: options.loggedInFlagName,
-          redirect: options.redirect
-        }
-      }
+          redirect: options.redirect,
+        },
+      },
     })
 
     const { resolve } = createResolver(import.meta.url)
@@ -92,16 +93,16 @@ export default defineNuxtModule<ModuleOptions>({
     addImports([
       {
         name: 'useAuth',
-        from: resolve('./runtime/composables/useAuth')
+        from: resolve('./runtime/composables/useAuth'),
       },
       {
         name: 'useAuthFetch',
-        from: resolve('./runtime/composables/useAuthFetch')
+        from: resolve('./runtime/composables/useAuthFetch'),
       },
       {
         name: 'useAuthSession',
-        from: resolve('./runtime/composables/useAuthSession')
-      }
+        from: resolve('./runtime/composables/useAuthSession'),
+      },
     ])
 
     if (options.backendEnabled === false) {
@@ -142,8 +143,8 @@ export default defineNuxtModule<ModuleOptions>({
         oauth: options.oauth,
         prisma: options.prisma as any,
         registration: options.registration,
-        webhookKey: options.webhookKey
-      }
+        webhookKey: options.webhookKey,
+      },
     })
 
     // Transpile CJS dependencies
@@ -153,17 +154,17 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.nitro = defu(
       {
         alias: {
-          '#auth': resolve('./runtime/server/utils')
-        }
+          '#auth': resolve('./runtime/server/utils'),
+        },
       },
-      nuxt.options.nitro
+      nuxt.options.nitro,
     )
 
     addTemplate({
       filename: 'types/auth.d.ts',
       getContents: () =>
         [
-          "declare module '#auth' {",
+          'declare module \'#auth\' {',
           `  const encode: typeof import('${resolve('./runtime/server/utils')}').encode`,
           `  const decode: typeof import('${resolve('./runtime/server/utils')}').decode`,
           `  const compareSync: typeof import('${resolve('./runtime/server/utils')}').compareSync`,
@@ -171,13 +172,13 @@ export default defineNuxtModule<ModuleOptions>({
           `  const sendMail: typeof import('${resolve('./runtime/server/utils')}').sendMail`,
           `  const handleError: typeof import('${resolve('./runtime/server/utils')}').handleError`,
           `  const getConfig: typeof import('${resolve('./runtime/server/utils')}').getConfig`,
-          '}'
-        ].join('\n')
+          '}',
+        ].join('\n'),
     })
 
     nuxt.hook('prepare:types', (options) => {
       options.references.push({
-        path: resolve(nuxt.options.buildDir, 'types/auth.d.ts')
+        path: resolve(nuxt.options.buildDir, 'types/auth.d.ts'),
       })
     })
 
@@ -186,7 +187,7 @@ export default defineNuxtModule<ModuleOptions>({
         'cloudflare-pages',
         'netlify-edge',
         'vercel-edge',
-        'cloudflare'
+        'cloudflare',
       ]
       const preset = nuxt.options.nitro.preset as string
       const isEdge = supportedEdges.includes(preset)
@@ -195,7 +196,8 @@ export default defineNuxtModule<ModuleOptions>({
         logger.info(`[nuxt-auth] Detected edge environment <${preset}>`)
         const prisma = resolve('./runtime/server/plugins/prisma.edge')
         addServerPlugin(prisma)
-      } else {
+      }
+      else {
         const prisma = resolve('./runtime/server/plugins/prisma')
         addServerPlugin(prisma)
       }
@@ -207,36 +209,36 @@ export default defineNuxtModule<ModuleOptions>({
     // Add server routes
     addServerHandler({
       route: '/api/auth/login',
-      handler: resolve('./runtime/server/api/auth/login/index.post')
+      handler: resolve('./runtime/server/api/auth/login/index.post'),
     })
 
     if (options.oauth) {
       addServerHandler({
         route: '/api/auth/login/:provider',
-        handler: resolve('./runtime/server/api/auth/login/[provider].get')
+        handler: resolve('./runtime/server/api/auth/login/[provider].get'),
       })
 
       addServerHandler({
         route: '/api/auth/login/:provider/callback',
-        handler: resolve('./runtime/server/api/auth/login/[provider]/callback.get')
+        handler: resolve('./runtime/server/api/auth/login/[provider]/callback.get'),
       })
     }
 
     if (options.registration.enable === true) {
       addServerHandler({
         route: '/api/auth/register',
-        handler: resolve('./runtime/server/api/auth/register.post')
+        handler: resolve('./runtime/server/api/auth/register.post'),
       })
     }
 
     addServerHandler({
       route: '/api/auth/me',
-      handler: resolve('./runtime/server/api/auth/me.get')
+      handler: resolve('./runtime/server/api/auth/me.get'),
     })
 
     addServerHandler({
       route: '/api/auth/logout',
-      handler: resolve('./runtime/server/api/auth/logout.post')
+      handler: resolve('./runtime/server/api/auth/logout.post'),
     })
 
     if (options.email?.provider) {
@@ -247,7 +249,8 @@ export default defineNuxtModule<ModuleOptions>({
           const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
           options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
         }
-      } else {
+      }
+      else {
         const emailVerifyPath = resolve('./runtime/templates/email_verification.html')
         options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
       }
@@ -257,67 +260,68 @@ export default defineNuxtModule<ModuleOptions>({
           const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
           options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
         }
-      } else {
+      }
+      else {
         const passwordResetPath = resolve('./runtime/templates/password_reset.html')
         options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
       }
 
       addServerHandler({
         route: '/api/auth/password/request',
-        handler: resolve('./runtime/server/api/auth/password/request.post')
+        handler: resolve('./runtime/server/api/auth/password/request.post'),
       })
 
       addServerHandler({
         route: '/api/auth/email/request',
-        handler: resolve('./runtime/server/api/auth/email/request.post')
+        handler: resolve('./runtime/server/api/auth/email/request.post'),
       })
 
       addServerHandler({
         route: '/api/auth/email/verify',
-        handler: resolve('./runtime/server/api/auth/email/verify.get')
+        handler: resolve('./runtime/server/api/auth/email/verify.get'),
       })
 
       addServerHandler({
         route: '/api/auth/password/reset',
-        handler: resolve('./runtime/server/api/auth/password/reset.put')
+        handler: resolve('./runtime/server/api/auth/password/reset.put'),
       })
     }
 
     addServerHandler({
       route: '/api/auth/password/change',
-      handler: resolve('./runtime/server/api/auth/password/change.put')
+      handler: resolve('./runtime/server/api/auth/password/change.put'),
     })
 
     addServerHandler({
       route: '/api/auth/session/revoke/:id',
-      handler: resolve('./runtime/server/api/auth/session/revoke/[id].delete')
+      handler: resolve('./runtime/server/api/auth/session/revoke/[id].delete'),
     })
 
     addServerHandler({
       route: '/api/auth/session/revoke/all',
-      handler: resolve('./runtime/server/api/auth/session/revoke/all.delete')
+      handler: resolve('./runtime/server/api/auth/session/revoke/all.delete'),
     })
 
     addServerHandler({
       route: '/api/auth/session/refresh',
-      handler: resolve('./runtime/server/api/auth/session/refresh.post')
+      handler: resolve('./runtime/server/api/auth/session/refresh.post'),
     })
 
     addServerHandler({
       route: '/api/auth/session',
-      handler: resolve('./runtime/server/api/auth/session/index.get')
+      handler: resolve('./runtime/server/api/auth/session/index.get'),
     })
 
     addServerHandler({
       route: '/api/auth/avatar',
-      handler: resolve('./runtime/server/api/auth/avatar.get')
+      handler: resolve('./runtime/server/api/auth/avatar.get'),
     })
 
     if (options.webhookKey) {
       addServerHandler({
         route: '/api/auth/session/revoke/expired',
-        handler: resolve('./runtime/server/api/auth/session/revoke/expired.delete')
+        handler: resolve('./runtime/server/api/auth/session/revoke/expired.delete'),
       })
     }
-  }
+  },
 })

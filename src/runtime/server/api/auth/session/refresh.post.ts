@@ -26,7 +26,8 @@ export default defineEventHandler(async (event) => {
     const accessToken = await createAccessToken(event, user, sessionId)
 
     return accessToken
-  } catch (error) {
+  }
+  catch (error) {
     deleteRefreshTokenCookie(event)
 
     await handleError(error)

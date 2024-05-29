@@ -15,24 +15,27 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
   addRouteMiddleware('guest', guest)
 
-  nuxtApp.hook('auth:loggedIn', (state) => { _loggedInFlag.value = state })
+  nuxtApp.hook('auth:loggedIn', (state) => {
+    _loggedInFlag.value = state
+  })
 
   /**
-  * Makes sure to sync login status between tabs
-  */
+   * Makes sure to sync login status between tabs
+   */
   nuxtApp.hook('app:mounted', () => {
     addEventListener('storage', (event) => {
       if (event.key === publicConfig.loggedInFlagName) {
         if (event.oldValue === 'true' && event.newValue === 'false' && token.value) {
           useAuth()._onLogout()
-        } else if (event.oldValue === 'false' && event.newValue === 'true') {
+        }
+        else if (event.oldValue === 'false' && event.newValue === 'true') {
           location.reload()
         }
       }
     })
   })
 
-  function isFirstTime () {
+  function isFirstTime() {
     const isPageFound = router.currentRoute.value?.matched.length > 0
     const isPrerenderd = typeof nuxtApp.payload.prerenderedAt === 'number'
     const isServerRendered = nuxtApp.payload.serverRendered
@@ -41,7 +44,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     return isServerValid || isClientValid
   }
 
-  function canFetchUser () {
+  function canFetchUser() {
     const isCallback = router.currentRoute.value?.path === publicConfig.redirect.callback
     const isCallbackValid = isCallback && !router.currentRoute.value?.query.error
     const isRefreshTokenExists = !!useAuthSession()._refreshToken.get()
@@ -49,8 +52,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   /**
-  * Makes sure to refresh access token and set user state if possible (run once)
-  */
+   * Makes sure to refresh access token and set user state if possible (run once)
+   */
   if (isFirstTime() && canFetchUser()) {
     await useAuthSession()._refresh()
     if (token.value) {
@@ -59,11 +62,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   /**
-  * Calls loggedIn hook and sets the loggedIn flag in localStorage
-  */
+   * Calls loggedIn hook and sets the loggedIn flag in localStorage
+   */
   if (token.value) {
     await nuxtApp.callHook('auth:loggedIn', true)
-  } else {
+  }
+  else {
     _loggedInFlag.value = false
   }
 })

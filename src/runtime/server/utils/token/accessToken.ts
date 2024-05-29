@@ -6,7 +6,7 @@ import { mustache } from '../mustache'
 import { encode, decode } from './jwt'
 import { getFingerprintHash, verifyFingerprint } from './fingerprint'
 
-export async function createAccessToken (event: H3Event, user: User, sessionId: Session['id']) {
+export async function createAccessToken(event: H3Event, user: User, sessionId: Session['id']) {
   const config = getConfig()
 
   let customClaims = config.private.accessToken.customClaims || {}
@@ -23,18 +23,18 @@ export async function createAccessToken (event: H3Event, user: User, sessionId: 
     sessionId,
     userId: user.id,
     userRole: user.role,
-    fingerprint
+    fingerprint,
   }
 
   const accessToken = await encode(
     payload,
     config.private.accessToken.jwtSecret,
-    config.private.accessToken.maxAge!
+    config.private.accessToken.maxAge!,
   )
 
   return {
     access_token: accessToken,
-    expires_in: config.private.accessToken.maxAge
+    expires_in: config.private.accessToken.maxAge,
   }
 }
 
@@ -43,7 +43,7 @@ export async function createAccessToken (event: H3Event, user: User, sessionId: 
  * @param event
  * @returns accessToken
  */
-export function getAccessTokenFromHeader (event: H3Event) {
+export function getAccessTokenFromHeader(event: H3Event) {
   const authorization = getRequestHeader(event, 'Authorization')
   if (authorization) {
     const accessToken = authorization.split('Bearer ')[1]
@@ -56,12 +56,12 @@ export function getAccessTokenFromHeader (event: H3Event) {
  * @param accessToken
  * @returns accessTokenPayload
  */
-export async function verifyAccessToken (event:H3Event, accessToken: string) {
+export async function verifyAccessToken(event: H3Event, accessToken: string) {
   const config = getConfig()
 
   const payload = await decode<AccessTokenPayload>(
     accessToken,
-    config.private.accessToken.jwtSecret
+    config.private.accessToken.jwtSecret,
   )
 
   await verifyFingerprint(event, payload.fingerprint)

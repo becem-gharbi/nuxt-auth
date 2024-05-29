@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       token: z.string(),
       password: z
         .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? ''))
+        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
     })
 
     schema.parse({ password, token })
@@ -32,7 +32,8 @@ export default defineEventHandler(async (event) => {
     await setUserRequestedPasswordReset(event, payload.userId, false)
 
     return { status: 'ok' }
-  } catch (error) {
+  }
+  catch (error) {
     await handleError(error)
   }
 })

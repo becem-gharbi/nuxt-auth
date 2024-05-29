@@ -5,6 +5,6 @@ export default defineNuxtPlugin({
   hooks: {
     'auth:loggedIn': (state) => {
       // console.log('AUTH LOGGED IN', state)
-    }
-  }
+    },
+  },
 })
