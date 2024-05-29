@@ -1,8 +1,8 @@
 import type { NitroApp } from 'nitropack'
 import type { MailMessage } from '../../types'
 import { getConfig } from './config'
-// @ts-ignore
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { useNitroApp } from '#imports'
 
 export async function sendMail(msg: MailMessage) {

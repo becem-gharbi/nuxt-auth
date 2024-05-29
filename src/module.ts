@@ -141,7 +141,7 @@ export default defineNuxtModule<ModuleOptions>({
         refreshToken: options.refreshToken,
         email: options.email,
         oauth: options.oauth,
-        prisma: options.prisma as any,
+        prisma: options.prisma || undefined,
         registration: options.registration,
         webhookKey: options.webhookKey,
       },

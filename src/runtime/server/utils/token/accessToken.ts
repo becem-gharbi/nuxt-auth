@@ -53,6 +53,7 @@ export function getAccessTokenFromHeader(event: H3Event) {
 
 /**
  * Check if the access token is issued by the server and not expired
+ * @param event H3Event
  * @param accessToken
  * @returns accessTokenPayload
  */

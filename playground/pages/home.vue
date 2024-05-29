@@ -8,7 +8,10 @@
       Logout
     </button>
     <p>{{ user }}</p>
-    <!-- <img :src="user?.picture" height="40"> -->
+    <img
+      :src="user?.picture"
+      height="40"
+    >
 
     <form @submit.prevent="handleChangePassword">
       <label for="current-password">Current password</label>
@@ -71,5 +74,5 @@ async function handleChangePassword() {
   })
 }
 
-const { data, refresh, error } = await useAsyncData(getAllSessions)
+const { data, refresh } = await useAsyncData(getAllSessions)
 </script>

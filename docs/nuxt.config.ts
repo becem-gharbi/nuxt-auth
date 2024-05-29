@@ -24,4 +24,4 @@ export default defineNuxtConfig({
       langs: ['prisma', 'ts', 'vue', 'js'],
     },
   },
-} as any)
+})

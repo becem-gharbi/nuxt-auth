@@ -12,7 +12,7 @@ export default defineEventHandler((event) => {
   query.color ||= '8b5d5d'
 
   const validateColor = (color: string) => {
-    const valid = /^([A-F0-9]{6}|[A-F0-9]{3})$/i.test(color)
+    const valid = /^[A-F0-9]{6}|[A-F0-9]{3}$/i.test(color)
     if (!valid) {
       throw createError({
         statusCode: 422,

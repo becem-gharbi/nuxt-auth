@@ -11,7 +11,7 @@ declare module '#app' {
   interface NuxtApp {
     $auth: {
       fetch: typeof $fetch
-      _refreshPromise: Promise<any> | null
+      _refreshPromise: Promise<void> | null
     }
   }
   interface RuntimeNuxtHooks {
@@ -112,7 +112,7 @@ export type PrivateConfigWithBackend = {
   accessToken: {
     jwtSecret: string
     maxAge?: number
-    customClaims?: Record<string, any>
+    customClaims?: Record<string, object>
   }
 
   refreshToken: {

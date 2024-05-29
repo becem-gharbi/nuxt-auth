@@ -80,7 +80,9 @@ export function useAuth() {
 
   async function _onLogin() {
     await fetchUser()
-    if (useAuthSession().user.value === null) { return }
+    if (useAuthSession().user.value === null) {
+      return
+    }
     const returnToPath = useRoute().query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
     await callHook('auth:loggedIn', true)

@@ -23,5 +23,6 @@ export async function useAuthFetch<T>(
 
   _options.baseURL = publicConfig.backendBaseUrl
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return $fetch<any>(request, _options)
 }

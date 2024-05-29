@@ -65,7 +65,9 @@ export function useAuthSession() {
 
     const { $auth } = useNuxtApp()
     $auth._refreshPromise ||= handler()
-    await $auth._refreshPromise.finally(() => { $auth._refreshPromise = null })
+    await $auth._refreshPromise.finally(() => {
+      $auth._refreshPromise = null
+    })
   }
 
   /**

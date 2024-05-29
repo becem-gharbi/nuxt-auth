@@ -1,7 +1,8 @@
-import crypto from 'crypto'
+import crypto from 'node:crypto'
 import { setRandomFallback, hashSync, compareSync } from 'bcryptjs'
 
 if (!globalThis.crypto) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   globalThis.crypto = crypto
 }

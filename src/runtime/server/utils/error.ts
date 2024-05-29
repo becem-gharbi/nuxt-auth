@@ -7,6 +7,7 @@ import type { H3Event } from 'h3'
  * Checks error type and set status code accordingly
  */
 export async function handleError(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any,
   redirect?: { event: H3Event, url: string },
 ) {
