@@ -1,15 +1,15 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-  ssr: true,
+  modules: ['../src/module'],
+
+  ssr: process.env.NUXT_SSR !== 'false',
 
   app: {
     head: {
       title: 'Nuxt Auth',
     },
   },
-
-  modules: ['../src/module'],
 
   auth: {
     baseUrl: 'http://localhost:3000',
