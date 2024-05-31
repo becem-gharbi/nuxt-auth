@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "2.6.0",
+  "version": "3.0.0-beta",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -13,7 +13,7 @@
   ],
   "publishConfig": {
     "access": "public",
-    "tag": "latest"
+    "tag": "v3"
   },
   "exports": {
     ".": {
@@ -39,10 +39,11 @@
     "typecheck": "nuxi typecheck",
     "prepack": "nuxt-module-build",
     "release:pre": "npm run typecheck && npm run lint && npm run prepack",
-    "release": "npm run release:pre && npm run test:prod && changelogen --release && npm publish && git push --follow-tags",
+    "release": "npm run release:pre && npm run test:prod && npm run changelogen && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
-    "prisma:push": "cd playground && prisma db push"
+    "prisma:push": "cd playground && prisma db push",
+    "changelogen": "changelogen --release --versionSuffix=beta --publishTag=v3"
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2",

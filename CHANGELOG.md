@@ -1,4 +1,45 @@
 # Changelog
+## v3.0.0-beta
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.6.0...v3.0.0-beta)
+
+### 📖 Documentation
+
+- Update 4.email.md ([aecf78f](https://github.com/becem-gharbi/nuxt-auth/commit/aecf78f))
+
+### 🏡 Chore
+
+- **lint:** Migrate to `@nuxt/eslint-config` ([67a2dcb](https://github.com/becem-gharbi/nuxt-auth/commit/67a2dcb))
+- **lint:** Fix issues ([687a7b4](https://github.com/becem-gharbi/nuxt-auth/commit/687a7b4))
+- Hide node deprecation warnings on build ([3c7d27a](https://github.com/becem-gharbi/nuxt-auth/commit/3c7d27a))
+- ⚠️  Remove `useAuthFetch` ([#24](https://github.com/becem-gharbi/nuxt-auth/pull/24))
+- ⚠️  Remove internal prisma instantiation ([#25](https://github.com/becem-gharbi/nuxt-auth/pull/25))
+- ⚠️  Remove Custom email provider ([#26](https://github.com/becem-gharbi/nuxt-auth/pull/26))
+- **playground:** Remove deprecated config options ([38c59b3](https://github.com/becem-gharbi/nuxt-auth/commit/38c59b3))
+- ⚠️  Remove purge of expired sessions ([#27](https://github.com/becem-gharbi/nuxt-auth/pull/27))
+- ⚠️  Rename `registration.enable` to `registration.enabled` ([#28](https://github.com/becem-gharbi/nuxt-auth/pull/28))
+- ⚠️  Only except `.html` custom email templates ([#29](https://github.com/becem-gharbi/nuxt-auth/pull/29))
+- Change password reset and email verification token's secrets ([9125a3f](https://github.com/becem-gharbi/nuxt-auth/commit/9125a3f))
+- Resolve `@typescript-eslint/ban-ts-comment` overrides ([bf0ab12](https://github.com/becem-gharbi/nuxt-auth/commit/bf0ab12))
+
+### ✅ Tests
+
+- Add basic tests ([98c3e3a](https://github.com/becem-gharbi/nuxt-auth/commit/98c3e3a))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Remove `useAuthFetch` ([#24](https://github.com/becem-gharbi/nuxt-auth/pull/24))
+- ⚠️  Remove internal prisma instantiation ([#25](https://github.com/becem-gharbi/nuxt-auth/pull/25))
+- ⚠️  Remove Custom email provider ([#26](https://github.com/becem-gharbi/nuxt-auth/pull/26))
+- ⚠️  Remove purge of expired sessions ([#27](https://github.com/becem-gharbi/nuxt-auth/pull/27))
+- ⚠️  Rename `registration.enable` to `registration.enabled` ([#28](https://github.com/becem-gharbi/nuxt-auth/pull/28))
+- ⚠️  Only except `.html` custom email templates ([#29](https://github.com/becem-gharbi/nuxt-auth/pull/29))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.6.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.5.1...v2.6.0)
