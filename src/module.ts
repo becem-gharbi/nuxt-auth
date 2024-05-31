@@ -137,7 +137,6 @@ export default defineNuxtModule<ModuleOptions>({
         refreshToken: options.refreshToken,
         email: options.email,
         oauth: options.oauth,
-        prisma: options.prisma || undefined,
         registration: options.registration,
         webhookKey: options.webhookKey,
       },
@@ -177,27 +176,6 @@ export default defineNuxtModule<ModuleOptions>({
         path: resolve(nuxt.options.buildDir, 'types/auth.d.ts'),
       })
     })
-
-    if (options.prisma !== false) {
-      const supportedEdges = [
-        'cloudflare-pages',
-        'netlify-edge',
-        'vercel-edge',
-        'cloudflare',
-      ]
-      const preset = nuxt.options.nitro.preset as string
-      const isEdge = supportedEdges.includes(preset)
-
-      if (preset && isEdge) {
-        logger.info(`[nuxt-auth] Detected edge environment <${preset}>`)
-        const prisma = resolve('./runtime/server/plugins/prisma.edge')
-        addServerPlugin(prisma)
-      }
-      else {
-        const prisma = resolve('./runtime/server/plugins/prisma')
-        addServerPlugin(prisma)
-      }
-    }
 
     const middleware = resolve('./runtime/server/plugins/middleware')
     addServerPlugin(middleware)
