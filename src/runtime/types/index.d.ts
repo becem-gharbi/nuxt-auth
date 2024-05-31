@@ -72,13 +72,6 @@ export type RefreshTokenPayload = {
   userId: User['id']
 }
 
-/** @deprecated since 2.5.0, please use `hook` instead */
-interface MailCustomProvider {
-  name: 'custom'
-  url: string
-  authorization: string
-}
-
 interface MailSendgridProvider {
   name: 'sendgrid'
   apiKey: string
@@ -136,7 +129,7 @@ export type PrivateConfigWithBackend = {
 
   email?: {
     from: string
-    provider: MailCustomProvider | MailSendgridProvider | MailResendProvider | MailHookProvider
+    provider: MailSendgridProvider | MailResendProvider | MailHookProvider
     templates?: {
       passwordReset?: string
       emailVerify?: string
