@@ -42,7 +42,7 @@ export default defineNuxtModule<ModuleOptions>({
       emailVerify: '',
     },
     registration: {
-      enable: true,
+      enabled: true,
       defaultRole: 'user',
       requireEmailVerification: true,
       passwordValidationRegex: '',
@@ -120,7 +120,7 @@ export default defineNuxtModule<ModuleOptions>({
       logger.warn('[nuxt-auth] Please make sure to set access token\'s secret')
     }
 
-    if (!options.registration.enable) {
+    if (!options.registration.enabled) {
       logger.warn('[nuxt-auth] Registration is disabled')
     }
 
@@ -197,7 +197,7 @@ export default defineNuxtModule<ModuleOptions>({
       })
     }
 
-    if (options.registration.enable === true) {
+    if (options.registration.enabled === true) {
       addServerHandler({
         route: '/api/auth/register',
         handler: resolve('./runtime/server/api/auth/register.post'),
