@@ -37,9 +37,6 @@ devDependencies:
   '@playwright/test':
     specifier: ^1.44.1
     version: 1.44.1
-  '@prisma/extension-accelerate':
-    specifier: ^1.1.0
-    version: 1.1.0(@prisma/client@5.14.0)
   '@types/bcryptjs':
     specifier: ^2.4.6
     version: 2.4.6
@@ -1717,6 +1714,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.7
+      napi-wasm: 1.1.0
     dev: true
     bundledDependencies:
       - napi-wasm
@@ -1801,6 +1799,7 @@ packages:
         optional: true
     dependencies:
       prisma: 5.14.0
+    dev: false
 
   /@prisma/debug@5.14.0:
     resolution: {integrity: sha512-iq56qBZuFfX3fCxoxT8gBX33lQzomBU0qIUaEj1RebsKVz1ob/BVH1XSBwwwvRVtZEV1b7Fxx2eVu34Ge/mg3w==}
@@ -1816,15 +1815,6 @@ packages:
       '@prisma/engines-version': 5.14.0-25.e9771e62de70f79a5e1c604a2d7c8e2a0a874b48
       '@prisma/fetch-engine': 5.14.0
       '@prisma/get-platform': 5.14.0
-
-  /@prisma/extension-accelerate@1.1.0(@prisma/client@5.14.0):
-    resolution: {integrity: sha512-sESjhBZ4ywQjAVpKzsfhxyNu+9txIM5I6M1MPBaJBq/xDlqmniIAhlwIEt9KLtO80zqPxqbZYes18zrkgYqNiQ==}
-    engines: {node: '>=16'}
-    peerDependencies:
-      '@prisma/client': '>=4.16.1'
-    dependencies:
-      '@prisma/client': 5.14.0(prisma@5.14.0)
-    dev: true
 
   /@prisma/fetch-engine@5.14.0:
     resolution: {integrity: sha512-VrheA9y9DMURK5vu8OJoOgQpxOhas3qF0IBHJ8G/0X44k82kc8E0w98HCn2nhnbOOMwbWsJWXfLC2/F8n5u0gQ==}
@@ -5912,6 +5902,10 @@ packages:
     resolution: {integrity: sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
+    dev: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
     dev: true
 
   /natural-compare@1.4.0:

@@ -2,7 +2,6 @@ import type {
   User as PrismaUser,
   Provider as PrismaProvider,
   RefreshToken as PrismaRefreshToken,
-  Prisma,
   Role,
   PrismaClient,
 } from '@prisma/client'
@@ -143,8 +142,6 @@ export type PrivateConfigWithBackend = {
       emailVerify?: string
     }
   }
-
-  prisma?: Prisma.PrismaClientOptions | false
 
   registration: {
     enable?: boolean
