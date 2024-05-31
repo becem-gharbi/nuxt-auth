@@ -138,7 +138,6 @@ export default defineNuxtModule<ModuleOptions>({
         email: options.email,
         oauth: options.oauth,
         registration: options.registration,
-        webhookKey: options.webhookKey,
       },
     })
 
@@ -290,12 +289,5 @@ export default defineNuxtModule<ModuleOptions>({
       route: '/api/auth/avatar',
       handler: resolve('./runtime/server/api/auth/avatar.get'),
     })
-
-    if (options.webhookKey) {
-      addServerHandler({
-        route: '/api/auth/session/revoke/expired',
-        handler: resolve('./runtime/server/api/auth/session/revoke/expired.delete'),
-      })
-    }
   },
 })

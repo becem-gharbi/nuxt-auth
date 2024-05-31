@@ -142,8 +142,6 @@ export type PrivateConfigWithBackend = {
     passwordValidationRegex?: string
     defaultRole: Role
   }
-
-  webhookKey?: string
 }
 
 export type PublicConfig = {
