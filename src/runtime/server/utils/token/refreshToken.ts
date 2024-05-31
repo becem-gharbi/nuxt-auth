@@ -208,21 +208,3 @@ export function deleteRefreshTokenCookie(event: H3Event) {
   const config = getConfig()
   deleteCookie(event, config.private.refreshToken.cookieName!)
 }
-
-export async function deleteManyRefreshTokenExpired(event: H3Event) {
-  const config = getConfig()
-  const now = new Date()
-  const minDate = new Date(
-    now.getTime() - config.private.refreshToken.maxAge! * 1000,
-  )
-
-  const prisma = event.context.prisma
-
-  await prisma.refreshToken.deleteMany({
-    where: {
-      updatedAt: {
-        lt: minDate,
-      },
-    },
-  })
-}
