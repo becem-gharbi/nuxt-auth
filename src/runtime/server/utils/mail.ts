@@ -1,8 +1,7 @@
-import type { NitroApp } from 'nitropack'
 import type { MailMessage } from '../../types'
 import { getConfig } from './config'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+
+// @ts-expect-error importing an internal module
 import { useNitroApp } from '#imports'
 
 export async function sendMail(msg: MailMessage) {
@@ -62,7 +61,7 @@ export async function sendMail(msg: MailMessage) {
   }
 
   function withHook() {
-    const nitroApp = useNitroApp() as NitroApp
+    const nitroApp = useNitroApp()
     return nitroApp.hooks.callHook('auth:email', settings.from, msg)
   }
 }

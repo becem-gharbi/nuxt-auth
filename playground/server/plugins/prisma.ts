@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import type { NitroApp } from 'nitropack'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+
+// @ts-expect-error importing an internal module
 import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
@@ -9,5 +9,9 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
   nitroApp.hooks.hook('request', (event) => {
     event.context.prisma = prisma
+  })
+
+  nitroApp.hooks.hook('auth:email', (from, message) => {
+    console.log(from, message)
   })
 })
