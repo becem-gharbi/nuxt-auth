@@ -70,9 +70,5 @@ export default defineNuxtConfig({
       passwordReset: '/auth/password-reset',
       emailVerify: '/auth/email-verify',
     },
-
-    webhookKey: 'abc',
-
-    prisma: false,
   },
 })
