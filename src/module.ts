@@ -217,22 +217,18 @@ export default defineNuxtModule<ModuleOptions>({
     if (options.email?.provider) {
       options.email.templates ||= {}
 
-      if (options.email.templates.emailVerify) {
-        if (options.email.templates.emailVerify.endsWith('.html')) {
-          const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
-          options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
-        }
+      if (options.email.templates.emailVerify?.endsWith('.html')) {
+        const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
+        options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
       }
       else {
         const emailVerifyPath = resolve('./runtime/templates/email_verification.html')
         options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
       }
 
-      if (options.email.templates.passwordReset) {
-        if (options.email.templates.passwordReset.endsWith('.html')) {
-          const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
-          options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
-        }
+      if (options.email.templates.passwordReset?.endsWith('.html')) {
+        const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
+        options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
       }
       else {
         const passwordResetPath = resolve('./runtime/templates/password_reset.html')
