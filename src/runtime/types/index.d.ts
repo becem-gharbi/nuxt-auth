@@ -137,7 +137,7 @@ export type PrivateConfigWithBackend = {
   }
 
   registration: {
-    enable?: boolean
+    enabled?: boolean
     requireEmailVerification?: boolean
     passwordValidationRegex?: string
     defaultRole: Role
