@@ -96,10 +96,6 @@ export default defineNuxtModule<ModuleOptions>({
         from: resolve('./runtime/composables/useAuth'),
       },
       {
-        name: 'useAuthFetch',
-        from: resolve('./runtime/composables/useAuthFetch'),
-      },
-      {
         name: 'useAuthSession',
         from: resolve('./runtime/composables/useAuthSession'),
       },
