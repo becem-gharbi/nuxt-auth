@@ -1,6 +1,6 @@
 import { defineEventHandler, getQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
-import { getConfig, verifyEmailVerifyToken, setUserEmailVerified, handleError } from '../../../utils'
+import { getConfig, verifyEmailVerifyToken, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyEmailVerifyToken(token)
 
-    await setUserEmailVerified(event, payload.userId)
+    await event.context._authAdapter.user.update(payload.userId, { verified: true })
 
     await sendRedirect(event, config.public.redirect.emailVerify)
   }

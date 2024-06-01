@@ -1,10 +1,3 @@
-import type {
-  User as PrismaUser,
-  Provider as PrismaProvider,
-  RefreshToken as PrismaRefreshToken,
-  Role,
-} from '@prisma/client'
-
 export interface UserBase {
   id: number | string
   name: string
@@ -23,11 +16,16 @@ export interface UserBase {
 export interface RefreshTokenBase {
   id: number | string
   uid: string
-  userId: number
+  userId: number | string
   userAgent: string | null
   createdAt: Date
   updatedAt: Date
 }
+
+export type UserCreateInput = Pick<UserBase, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
+export type UserUpdateInput = Omit<Partial<UserBase>, 'id'>
+export type RefreshTokenCreateInput = Pick<RefreshTokenBase, 'uid' | 'userAgent' | 'userId'>
+export type RefreshTokenUpdateInput = Pick<RefreshTokenBase, 'uid'>
 
 export interface Adapter<Options = unknown> {
   name: string
@@ -35,14 +33,14 @@ export interface Adapter<Options = unknown> {
   user: {
     findById: (id: UserBase['id']) => Promise<UserBase | null>
     findByEmail: (email: UserBase['email']) => Promise<UserBase | null>
-    create: (data: Pick<UserBase, 'name' | 'email' | 'picture'>) => Promise<UserBase>
-    update: (id: UserBase['id'], data: Omit<Partial<UserBase>, 'id'>) => Promise<void>
+    create: (input: UserCreateInput) => Promise<UserBase>
+    update: (id: UserBase['id'], input: UserUpdateInput) => Promise<UserBase>
   }
   refreshToken: {
     findById: (id: RefreshTokenBase['id']) => Promise<RefreshTokenBase | null>
     findManyByUserId: (id: UserBase['id']) => Promise<RefreshTokenBase[]>
-    create: (data: Pick<RefreshTokenBase, 'uid' | 'userId' | 'userAgent'>) => Promise<RefreshTokenBase>
-    update: (id: RefreshTokenBase['id'], data: Omit<Partial<RefreshTokenBase>, 'id'>) => Promise<void>
+    create: (input: RefreshTokenCreateInput) => Promise<RefreshTokenBase>
+    update: (id: RefreshTokenBase['id'], input: RefreshTokenUpdateInput) => Promise<RefreshTokenBase>
     delete: (id: RefreshTokenBase['id']) => Promise<void>
     deleteManyByUserId: (id: UserBase['id'], excludeId?: RefreshTokenBase['id']) => Promise<void>
   }
@@ -73,14 +71,8 @@ declare module 'nitropack' {
   }
 }
 
-export type Provider = Exclude<PrismaProvider, 'default'>
-
-export interface User extends Omit<PrismaUser, 'password'> { }
-
-export interface RefreshToken extends Omit<PrismaRefreshToken, 'uid'> { }
-
 export interface Session {
-  id: RefreshToken['id']
+  id: RefreshTokenBase['id']
   current: boolean
   ua: string | null
   updatedAt: Date
@@ -94,24 +86,24 @@ export type MailMessage = {
 }
 
 export type ResetPasswordPayload = {
-  userId: User['id']
+  userId: UserBase['id']
 }
 
 export type EmailVerifyPayload = {
-  userId: User['id']
+  userId: UserBase['id']
 }
 
 export type AccessTokenPayload = {
-  userId: User['id']
-  sessionId: Session['id']
+  userId: UserBase['id']
+  sessionId: RefreshTokenBase['id']
   userRole: string
   fingerprint: string | null
 }
 
 export type RefreshTokenPayload = {
-  id: RefreshToken['id']
+  id: RefreshTokenBase['id']
   uid: string
-  userId: User['id']
+  userId: UserBase['id']
 }
 
 interface MailSendgridProvider {

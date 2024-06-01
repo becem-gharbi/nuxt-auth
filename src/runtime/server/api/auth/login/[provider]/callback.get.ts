@@ -2,8 +2,8 @@ import { defineEventHandler, getQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import type { User, Provider } from '../../../../../types'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createUser, findUserByEmail, handleError, signRefreshToken } from '../../../../utils'
+import type { UserBase } from '../../../../../types'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('Please make sure to set callback redirect path')
     }
 
-    const provider = event.context.params!.provider as Provider
+    const provider = event.context.params!.provider
 
     const { state: returnToPath, code } = getQuery<{ code: string, state: string }>(event)
 
@@ -67,9 +67,9 @@ export default defineEventHandler(async (event) => {
       throw new Error('email-not-accessible')
     }
 
-    let user: User | null = null
+    let user: UserBase | null = null
 
-    user = await findUserByEmail(event, userInfo.email)
+    user = await event.context._authAdapter.user.findByEmail(userInfo.email)
 
     if (!user) {
       if (config.private.registration.enabled === false) {
@@ -89,12 +89,14 @@ export default defineEventHandler(async (event) => {
 
       const picture = pictureKey ? userInfo[pictureKey] : null
 
-      const newUser = await createUser(event, {
+      const newUser = await event.context._authAdapter.user.create({
+        provider,
+        password: null,
+        verified: true,
         email: userInfo.email,
         name: userInfo.name,
-        provider,
-        picture,
-        verified: true,
+        role: config.private.registration.defaultRole,
+        picture: picture ?? generateAvatar(userInfo.name),
       })
 
       user = Object.assign(newUser)
@@ -116,10 +118,7 @@ export default defineEventHandler(async (event) => {
       setRefreshTokenCookie(event, refreshToken)
     }
 
-    await sendRedirect(
-      event,
-      withQuery(config.public.redirect.callback, { redirect: returnToPath }),
-    )
+    await sendRedirect(event, withQuery(config.public.redirect.callback, { redirect: returnToPath }))
   }
   catch (error) {
     await handleError(error, {

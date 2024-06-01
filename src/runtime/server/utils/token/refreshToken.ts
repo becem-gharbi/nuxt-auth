@@ -1,26 +1,17 @@
 import { randomUUID } from 'node:crypto'
 import { setCookie, getCookie, deleteCookie, getHeader } from 'h3'
 import type { H3Event } from 'h3'
-import type { RefreshTokenPayload, User, RefreshToken, Session } from '../../../types'
+import type { RefreshTokenPayload, UserBase, RefreshTokenBase } from '../../../types'
 import { getConfig } from '../config'
 import { encode, decode } from './jwt'
 
-export async function createRefreshToken(event: H3Event, user: User) {
-  const prisma = event.context.prisma
-
+export async function createRefreshToken(event: H3Event, user: UserBase) {
   const userAgent = getHeader(event, 'user-agent') ?? null
 
-  const refreshTokenEntity = await prisma.refreshToken.create({
-    data: {
-      uid: randomUUID(),
-      userId: user.id,
-      userAgent,
-    },
-    select: {
-      id: true,
-      uid: true,
-      userId: true,
-    },
+  const refreshTokenEntity = await event.context._authAdapter.refreshToken.create({
+    userId: user.id,
+    userAgent,
+    uid: randomUUID(),
   })
 
   const payload: RefreshTokenPayload = {
@@ -55,22 +46,10 @@ export async function decodeRefreshToken(refreshToken: string) {
 
 export async function updateRefreshToken(
   event: H3Event,
-  refreshTokenId: RefreshToken['id'],
+  refreshTokenId: RefreshTokenBase['id'],
 ) {
-  const prisma = event.context.prisma
-
-  const refreshTokenEntity = await prisma.refreshToken.update({
-    where: {
-      id: refreshTokenId,
-    },
-    data: {
-      uid: randomUUID(),
-    },
-    select: {
-      id: true,
-      uid: true,
-      userId: true,
-    },
+  const refreshTokenEntity = await event.context._authAdapter.refreshToken.update(refreshTokenId, {
+    uid: randomUUID(),
   })
 
   const payload: RefreshTokenPayload = {
@@ -103,105 +82,23 @@ export function getRefreshTokenFromCookie(event: H3Event) {
   return refreshToken
 }
 
-export async function findRefreshTokenById(
-  event: H3Event,
-  id: RefreshToken['id'],
-) {
-  const prisma = event.context.prisma
-
-  const refreshTokenEntity = await prisma.refreshToken.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      userId: true,
-      uid: true,
-      userAgent: true,
-    },
-  })
-  return refreshTokenEntity
-}
-
 export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   // check if the refreshToken is issued by the auth server && if it's not expired
   const payload = await decodeRefreshToken(refreshToken)
   const userAgent = getHeader(event, 'user-agent') ?? null
 
-  const refreshTokenEntity = await findRefreshTokenById(event, payload.id)
+  const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(payload.id)
 
   if (
     !refreshTokenEntity // check if the refresh token is revoked (deleted from database)
     || refreshTokenEntity.uid !== payload.uid // check if the refresh token is fresh (not stolen)
     || refreshTokenEntity.userAgent !== userAgent
   ) {
-    await deleteRefreshToken(event, payload.id)
+    await event.context._authAdapter.refreshToken.delete(payload.id)
     throw new Error('unauthorized')
   }
 
   return payload
-}
-
-export async function deleteRefreshToken(
-  event: H3Event,
-  refreshTokenId: RefreshToken['id'],
-) {
-  const prisma = event.context.prisma
-
-  await prisma.refreshToken.delete({
-    where: {
-      id: refreshTokenId,
-    },
-    select: {
-      id: true,
-    },
-  })
-}
-
-export async function deleteManyRefreshTokenByUser(
-  event: H3Event,
-  userId: User['id'],
-  exclude?: Session['id'],
-) {
-  const prisma = event.context.prisma
-
-  await prisma.refreshToken.deleteMany({
-    where: {
-      userId,
-      id: {
-        not: exclude,
-      },
-    },
-  })
-}
-
-export async function findManyRefreshTokenByUser(
-  event: H3Event,
-  userId: User['id'],
-) {
-  const config = getConfig()
-  const now = new Date()
-  const minDate = new Date(
-    now.getTime() - config.private.refreshToken.maxAge! * 1000,
-  )
-
-  const prisma = event.context.prisma
-
-  const refreshTokens = await prisma.refreshToken.findMany({
-    where: {
-      userId,
-      updatedAt: {
-        gt: minDate,
-      },
-    },
-    select: {
-      id: true,
-      userAgent: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  })
-
-  return refreshTokens
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {

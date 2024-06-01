@@ -1,5 +1,5 @@
 import { joinURL } from 'ufo'
-import type { Provider, Response, User, PublicConfig, AuthenticationData } from '../types'
+import type { Response, UserBase, PublicConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
 import { useRuntimeConfig, useRoute, useAuthSession, navigateTo, useNuxtApp } from '#imports'
 
@@ -37,7 +37,7 @@ export function useAuth() {
   /**
    * Login via oauth provider
    */
-  async function loginWithProvider(provider: Provider) {
+  async function loginWithProvider(provider: string) {
     // The protected page the user has visited before redirect to login page
     const returnToPath = useRoute().query.redirect?.toString()
 
@@ -58,7 +58,7 @@ export function useAuth() {
   async function fetchUser() {
     const { user } = useAuthSession()
     try {
-      const data = await useNuxtApp().$auth.fetch<User>('/api/auth/me')
+      const data = await useNuxtApp().$auth.fetch<UserBase>('/api/auth/me')
       user.value = {
         ...data,
         createdAt: new Date(data.createdAt),

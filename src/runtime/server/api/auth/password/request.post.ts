@@ -1,7 +1,7 @@
 import { defineEventHandler, readBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createResetPasswordToken, findUserByEmail, handleError, setUserRequestedPasswordReset } from '../../../utils'
+import { mustache, getConfig, sendMail, createResetPasswordToken, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email })
 
-    const user = await findUserByEmail(event, email)
+    const user = await event.context._authAdapter.user.findByEmail(email)
 
     if (user && user.provider === 'default') {
       const resetPasswordToken = await createResetPasswordToken({
@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
         ),
       })
 
-      await setUserRequestedPasswordReset(event, user.id, true)
+      await event.context._authAdapter.user.update(user.id, { requestedPasswordReset: true })
     }
 
     return { status: 'ok' }

@@ -1,24 +1,27 @@
 import { readBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, findUserByEmail, verifyPassword, handleError, signRefreshToken } from '../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
     const { email, password } = await readBody(event)
+
     const schema = z.object({
       email: z.string().email(),
       password: z.string(),
     })
+
     schema.parse({ email, password })
 
-    const user = await findUserByEmail(event, email)
+    const user = await event.context._authAdapter.user.findByEmail(email)
 
     if (
       !user
       || user.provider !== 'default'
-      || !verifyPassword(password, user.password!)
+      || !user.password
+      || !compareSync(password, user.password)
     ) {
       throw new Error('wrong-credentials')
     }

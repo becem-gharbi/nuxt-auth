@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, findUserById, handleError } from '../../../utils'
+import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyRefreshToken(event, refreshToken ?? '')
 
-    const user = await findUserById(event, payload.userId)
+    const user = await event.context._authAdapter.user.findById(payload.userId)
 
     if (!user) {
       throw new Error('unauthorized')
