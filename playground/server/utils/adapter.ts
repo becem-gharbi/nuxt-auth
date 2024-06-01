@@ -1,9 +1,10 @@
-import type { Prisma, User, RefreshToken } from '@prisma/client'
-import { PrismaClient } from '@prisma/client'
+import type { PrismaClient, User, RefreshToken } from '@prisma/client'
 import { defineAdapter } from '#auth'
 
-export const prismaAdapter = defineAdapter<Prisma.PrismaClientOptions>((options) => {
-  const client = new PrismaClient(options)
+export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
+  if (!client) {
+    throw new Error('Prisma client not defined')
+  }
 
   return {
     name: 'prisma',
