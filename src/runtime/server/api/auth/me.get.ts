@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { findUser, handleError } from '../../utils'
+import { findUserById, handleError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('unauthorized')
     }
 
-    const user = await findUser(event, { id: auth.userId })
+    const user = await findUserById(event, auth.userId)
 
     if (!user) {
       throw new Error('unauthorized')

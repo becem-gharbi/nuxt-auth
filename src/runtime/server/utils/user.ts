@@ -5,14 +5,26 @@ import type { User } from '../../types'
 import { getConfig } from './config'
 import { hashSync, compareSync } from './bcrypt'
 
-export async function findUser(
+export async function findUserById(
   event: H3Event,
-  where: Prisma.UserWhereUniqueInput,
+  id: User['id'],
 ) {
   const prisma = event.context.prisma
 
   const user = await prisma.user.findUnique({
-    where,
+    where: { id },
+  })
+  return user
+}
+
+export async function findUserByEmail(
+  event: H3Event,
+  email: User['email'],
+) {
+  const prisma = event.context.prisma
+
+  const user = await prisma.user.findUnique({
+    where: { email },
   })
   return user
 }

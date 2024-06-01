@@ -1,7 +1,7 @@
 import { defineEventHandler, readBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createEmailVerifyToken, findUser, handleError } from '../../../utils'
+import { mustache, getConfig, sendMail, createEmailVerifyToken, findUserByEmail, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email })
 
-    const user = await findUser(event, { email })
+    const user = await findUserByEmail(event, email)
 
     if (user && !user.verified) {
       const emailVerifyToken = await createEmailVerifyToken({

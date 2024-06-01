@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, createUser, findUser, handleError } from '../../utils'
+import { getConfig, createUser, findUserByEmail, handleError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email, password, name })
 
-    const user = await findUser(event, { email })
+    const user = await findUserByEmail(event, email)
 
     if (user) {
       if (!user.verified && config.private.registration.requireEmailVerification) {

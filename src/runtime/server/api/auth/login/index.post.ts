@@ -1,6 +1,6 @@
 import { readBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, findUser, verifyPassword, handleError, signRefreshToken } from '../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, findUserByEmail, verifyPassword, handleError, signRefreshToken } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     })
     schema.parse({ email, password })
 
-    const user = await findUser(event, { email })
+    const user = await findUserByEmail(event, email)
 
     if (
       !user

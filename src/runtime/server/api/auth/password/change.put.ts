@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, deleteManyRefreshTokenByUser, changePassword, findUser, verifyPassword, handleError } from '../../../utils'
+import { getConfig, deleteManyRefreshTokenByUser, changePassword, findUserById, verifyPassword, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('unauthorized')
     }
 
-    const user = await findUser(event, { id: auth.userId })
+    const user = await findUserById(event, auth.userId)
 
     if (
       !user
