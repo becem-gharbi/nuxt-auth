@@ -27,15 +27,21 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async create(data) {
         return client.user.create({
           data,
+          select: {
+            id: true,
+          },
         })
       },
 
       async update(id, data) {
-        return client.user.update({
+        await client.user.update({
           where: {
             id: id as PrismaUser['id'],
           },
           data,
+          select: {
+            id: true,
+          },
         })
       },
     },
@@ -62,15 +68,22 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
             ...data,
             userId: data.userId as PrismaUser['id'],
           },
+          select: {
+            id: true,
+          },
         })
       },
 
       async update(id, data) {
-        return client.refreshToken.update({
+        await client.refreshToken.update({
           where: {
             id: id as PrismaRefreshToken['id'],
           },
           data,
+          select: {
+            id: true,
+            userId: true,
+          },
         })
       },
 
@@ -78,6 +91,9 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
         await client.refreshToken.delete({
           where: {
             id: id as PrismaRefreshToken['id'],
+          },
+          select: {
+            id: true,
           },
         })
       },

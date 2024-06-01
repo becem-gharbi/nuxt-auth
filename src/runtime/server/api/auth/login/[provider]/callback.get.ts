@@ -2,7 +2,6 @@ import { defineEventHandler, getQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import type { UserBase } from '../../../../../types'
 import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
@@ -67,11 +66,20 @@ export default defineEventHandler(async (event) => {
       throw new Error('email-not-accessible')
     }
 
-    let user: UserBase | null = null
+    const user = await event.context._authAdapter.user.findByEmail(userInfo.email)
 
-    user = await event.context._authAdapter.user.findByEmail(userInfo.email)
+    let userId = user?.id
 
-    if (!user) {
+    if (user) {
+      if (user.provider !== provider) {
+        throw new Error(`email-used-with-${user.provider}`)
+      }
+
+      if (user.suspended) {
+        throw new Error('account-suspended')
+      }
+    }
+    else {
       if (config.private.registration.enabled === false) {
         throw new Error('registration-disabled')
       }
@@ -99,24 +107,14 @@ export default defineEventHandler(async (event) => {
         picture: picture ?? generateAvatar(userInfo.name),
       })
 
-      user = Object.assign(newUser)
+      userId = newUser.id
     }
 
-    if (user) {
-      if (user.provider !== provider) {
-        throw new Error(`email-used-with-${user.provider}`)
-      }
+    const payload = await createRefreshToken(event, userId!)
 
-      if (user.suspended) {
-        throw new Error('account-suspended')
-      }
+    const refreshToken = await signRefreshToken(payload)
 
-      const payload = await createRefreshToken(event, user)
-
-      const refreshToken = await signRefreshToken(payload)
-
-      setRefreshTokenCookie(event, refreshToken)
-    }
+    setRefreshTokenCookie(event, refreshToken)
 
     await sendRedirect(event, withQuery(config.public.redirect.callback, { redirect: returnToPath }))
   }

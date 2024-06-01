@@ -22,10 +22,12 @@ export interface RefreshTokenBase {
   updatedAt: Date
 }
 
-export type UserCreateInput = Pick<UserBase, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
-export type UserUpdateInput = Omit<Partial<UserBase>, 'id'>
-export type RefreshTokenCreateInput = Pick<RefreshTokenBase, 'uid' | 'userAgent' | 'userId'>
-export type RefreshTokenUpdateInput = Pick<RefreshTokenBase, 'uid'>
+type UserCreateInput = Pick<UserBase, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
+type UserCreateOutput = Pick<UserBase, 'id'>
+type UserUpdateInput = Omit<Partial<UserBase>, 'id'>
+type RefreshTokenCreateInput = Pick<RefreshTokenBase, 'uid' | 'userAgent' | 'userId'>
+type RefreshTokenCreateOutput = Pick<RefreshTokenBase, 'id'>
+type RefreshTokenUpdateInput = Pick<RefreshTokenBase, 'uid'>
 
 export interface Adapter<Options = unknown> {
   name: string
@@ -33,14 +35,14 @@ export interface Adapter<Options = unknown> {
   user: {
     findById: (id: UserBase['id']) => Promise<UserBase | null>
     findByEmail: (email: UserBase['email']) => Promise<UserBase | null>
-    create: (input: UserCreateInput) => Promise<UserBase>
-    update: (id: UserBase['id'], input: UserUpdateInput) => Promise<UserBase>
+    create: (input: UserCreateInput) => Promise<UserCreateOutput>
+    update: (id: UserBase['id'], input: UserUpdateInput) => Promise<void>
   }
   refreshToken: {
     findById: (id: RefreshTokenBase['id']) => Promise<RefreshTokenBase | null>
     findManyByUserId: (id: UserBase['id']) => Promise<RefreshTokenBase[]>
-    create: (input: RefreshTokenCreateInput) => Promise<RefreshTokenBase>
-    update: (id: RefreshTokenBase['id'], input: RefreshTokenUpdateInput) => Promise<RefreshTokenBase>
+    create: (input: RefreshTokenCreateInput) => Promise<RefreshTokenCreateOutput>
+    update: (id: RefreshTokenBase['id'], input: RefreshTokenUpdateInput) => Promise<void>
     delete: (id: RefreshTokenBase['id']) => Promise<void>
     deleteManyByUserId: (id: UserBase['id'], excludeId?: RefreshTokenBase['id']) => Promise<void>
   }

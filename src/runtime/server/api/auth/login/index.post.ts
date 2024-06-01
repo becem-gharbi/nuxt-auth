@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('account-suspended')
     }
 
-    const payload = await createRefreshToken(event, user)
+    const payload = await createRefreshToken(event, user.id)
     const refreshToken = await signRefreshToken(payload)
     setRefreshTokenCookie(event, refreshToken)
     const sessionId = payload.id

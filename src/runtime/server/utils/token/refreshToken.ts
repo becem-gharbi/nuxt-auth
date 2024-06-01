@@ -1,23 +1,25 @@
-import { randomUUID } from 'node:crypto'
+import { randomUUID } from 'uncrypto'
 import { setCookie, getCookie, deleteCookie, getHeader } from 'h3'
 import type { H3Event } from 'h3'
 import type { RefreshTokenPayload, UserBase, RefreshTokenBase } from '../../../types'
 import { getConfig } from '../config'
 import { encode, decode } from './jwt'
 
-export async function createRefreshToken(event: H3Event, user: UserBase) {
+export async function createRefreshToken(event: H3Event, userId: UserBase['id']) {
   const userAgent = getHeader(event, 'user-agent')
 
+  const uid = randomUUID()
+
   const refreshTokenEntity = await event.context._authAdapter.refreshToken.create({
-    userId: user.id,
+    userId,
     userAgent: userAgent ?? null,
-    uid: randomUUID(),
+    uid,
   })
 
   const payload: RefreshTokenPayload = {
     id: refreshTokenEntity.id,
-    uid: refreshTokenEntity.uid,
-    userId: refreshTokenEntity.userId,
+    uid,
+    userId,
   }
 
   return payload
@@ -44,19 +46,14 @@ export async function decodeRefreshToken(refreshToken: string) {
   return payload
 }
 
-export async function updateRefreshToken(
-  event: H3Event,
-  refreshTokenId: RefreshTokenBase['id'],
-) {
-  const refreshTokenEntity = await event.context._authAdapter.refreshToken.update(refreshTokenId, {
-    uid: randomUUID(),
+export async function updateRefreshToken(event: H3Event, id: RefreshTokenBase['id'], userId: UserBase['id']) {
+  const uid = randomUUID()
+
+  await event.context._authAdapter.refreshToken.update(id, {
+    uid,
   })
 
-  const refreshToken = await signRefreshToken({
-    id: refreshTokenEntity.id,
-    uid: refreshTokenEntity.uid,
-    userId: refreshTokenEntity.userId,
-  })
+  const refreshToken = await signRefreshToken({ id, uid, userId })
 
   return refreshToken
 }
