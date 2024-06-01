@@ -52,8 +52,7 @@ export default defineNuxtConfig({
     email: {
       from: process.env.AUTH_EMAIL_FROM!,
       provider: {
-        name: 'resend',
-        apiKey: process.env.AUTH_EMAIL_RESEND_API_KEY!,
+        name: 'hook',
       },
     },
 
