@@ -6,11 +6,11 @@ import { getConfig } from '../config'
 import { encode, decode } from './jwt'
 
 export async function createRefreshToken(event: H3Event, user: UserBase) {
-  const userAgent = getHeader(event, 'user-agent') ?? null
+  const userAgent = getHeader(event, 'user-agent')
 
   const refreshTokenEntity = await event.context._authAdapter.refreshToken.create({
     userId: user.id,
-    userAgent,
+    userAgent: userAgent ?? null,
     uid: randomUUID(),
   })
 
@@ -52,13 +52,11 @@ export async function updateRefreshToken(
     uid: randomUUID(),
   })
 
-  const payload: RefreshTokenPayload = {
+  const refreshToken = await signRefreshToken({
     id: refreshTokenEntity.id,
     uid: refreshTokenEntity.uid,
     userId: refreshTokenEntity.userId,
-  }
-
-  const refreshToken = await signRefreshToken(payload)
+  })
 
   return refreshToken
 }
