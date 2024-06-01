@@ -1,7 +1,7 @@
 import { defineEventHandler, readBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createEmailVerifyToken, findUser, handleError } from '../../../utils'
+import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -19,17 +19,14 @@ export default defineEventHandler(async (event) => {
 
     schema.parse({ email })
 
-    const user = await findUser(event, { email })
+    const user = await event.context._authAdapter.user.findByEmail(email)
 
     if (user && !user.verified) {
       const emailVerifyToken = await createEmailVerifyToken({
         userId: user.id,
       })
 
-      const redirectUrl = resolveURL(
-        config.public.baseUrl,
-        '/api/auth/email/verify',
-      )
+      const redirectUrl = resolveURL(config.public.baseUrl, '/api/auth/email/verify')
 
       const link = withQuery(redirectUrl, { token: emailVerifyToken })
 

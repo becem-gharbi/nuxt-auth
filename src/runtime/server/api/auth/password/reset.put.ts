@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, deleteManyRefreshTokenByUser, verifyResetPasswordToken, changePassword, handleError, setUserRequestedPasswordReset, findUser } from '../../../utils'
+import { getConfig, verifyResetPasswordToken, hashSync, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -19,17 +19,21 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyResetPasswordToken(token)
 
-    const user = await findUser(event, { id: payload.userId })
+    const user = await event.context._authAdapter.user.findById(payload.userId)
 
     if (!user?.requestedPasswordReset) {
       throw new Error('reset-not-requested')
     }
 
-    await changePassword(event, payload.userId, password)
+    const hashedPassword = hashSync(password, 12)
 
-    await deleteManyRefreshTokenByUser(event, payload.userId)
+    await event.context._authAdapter.user.update(payload.userId, {
+      password: hashedPassword,
+    })
 
-    await setUserRequestedPasswordReset(event, payload.userId, false)
+    await event.context._authAdapter.refreshToken.deleteManyByUserId(payload.userId)
+
+    await event.context._authAdapter.user.update(payload.userId, { requestedPasswordReset: false })
 
     return { status: 'ok' }
   }

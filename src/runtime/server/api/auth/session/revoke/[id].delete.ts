@@ -1,7 +1,6 @@
 import { defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { handleError, findRefreshTokenById, deleteRefreshToken } from '../../../../utils'
-import type { RefreshToken } from '../../../../../types'
+import { handleError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -19,13 +18,13 @@ export default defineEventHandler(async (event) => {
       throw new Error('unauthorized')
     }
 
-    const refreshTokenEntity = await findRefreshTokenById(event, id as RefreshToken['id'])
+    const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(id)
 
     if (!refreshTokenEntity || refreshTokenEntity.userId !== auth.userId) {
       throw new Error('unauthorized')
     }
 
-    await deleteRefreshToken(event, id as RefreshToken['id'])
+    await event.context._authAdapter.refreshToken.delete(id)
 
     return { status: 'ok' }
   }

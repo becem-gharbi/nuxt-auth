@@ -1,11 +1,10 @@
 import { defineEventHandler, sendRedirect, getQuery } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { getConfig, handleError } from '../../../utils'
-import type { Provider } from '../../../../types'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
-  const provider = event.context.params!.provider as Provider
+  const provider = event.context.params!.provider
 
   const oauthProvider = config.private.oauth?.[provider]
 
@@ -17,12 +16,7 @@ export default defineEventHandler(async (event) => {
   const returnToPath = getQuery(event)?.redirect
 
   try {
-    const redirectUri = resolveURL(
-      config.public.baseUrl,
-      '/api/auth/login',
-      provider,
-      'callback',
-    )
+    const redirectUri = resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback')
 
     const authorizationUrl = withQuery(
       oauthProvider.authorizeUrl,

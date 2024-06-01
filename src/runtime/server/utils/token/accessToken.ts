@@ -1,12 +1,12 @@
 import { getRequestHeader } from 'h3'
 import type { H3Event } from 'h3'
-import type { AccessTokenPayload, User, Session } from '../../../types'
+import type { AccessTokenPayload, UserBase, Session } from '../../../types'
 import { getConfig } from '../config'
 import { mustache } from '../mustache'
 import { encode, decode } from './jwt'
 import { getFingerprintHash, verifyFingerprint } from './fingerprint'
 
-export async function createAccessToken(event: H3Event, user: User, sessionId: Session['id']) {
+export async function createAccessToken(event: H3Event, user: UserBase, sessionId: Session['id']) {
   const config = getConfig()
 
   let customClaims = config.private.accessToken.customClaims || {}

@@ -165,7 +165,7 @@ export default defineNuxtModule<ModuleOptions>({
           `  const hashSync: typeof import('${resolve('./runtime/server/utils')}').hashSync`,
           `  const sendMail: typeof import('${resolve('./runtime/server/utils')}').sendMail`,
           `  const handleError: typeof import('${resolve('./runtime/server/utils')}').handleError`,
-          `  const getConfig: typeof import('${resolve('./runtime/server/utils')}').getConfig`,
+          `  const defineAdapter: typeof import('${resolve('./runtime/server/utils')}').defineAdapter`,
           '}',
         ].join('\n'),
     })

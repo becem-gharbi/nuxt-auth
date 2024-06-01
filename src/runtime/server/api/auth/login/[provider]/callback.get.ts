@@ -2,8 +2,7 @@ import { defineEventHandler, getQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import type { User, Provider } from '../../../../../types'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createUser, findUser, handleError, signRefreshToken } from '../../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -13,7 +12,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('Please make sure to set callback redirect path')
     }
 
-    const provider = event.context.params!.provider as Provider
+    const provider = event.context.params!.provider
 
     const { state: returnToPath, code } = getQuery<{ code: string, state: string }>(event)
 
@@ -67,11 +66,20 @@ export default defineEventHandler(async (event) => {
       throw new Error('email-not-accessible')
     }
 
-    let user: User | null = null
+    const user = await event.context._authAdapter.user.findByEmail(userInfo.email)
 
-    user = await findUser(event, { email: userInfo.email })
+    let userId = user?.id
 
-    if (!user) {
+    if (user) {
+      if (user.provider !== provider) {
+        throw new Error(`email-used-with-${user.provider}`)
+      }
+
+      if (user.suspended) {
+        throw new Error('account-suspended')
+      }
+    }
+    else {
       if (config.private.registration.enabled === false) {
         throw new Error('registration-disabled')
       }
@@ -89,37 +97,26 @@ export default defineEventHandler(async (event) => {
 
       const picture = pictureKey ? userInfo[pictureKey] : null
 
-      const newUser = await createUser(event, {
+      const newUser = await event.context._authAdapter.user.create({
+        provider,
+        password: null,
+        verified: true,
         email: userInfo.email,
         name: userInfo.name,
-        provider,
-        picture,
-        verified: true,
+        role: config.private.registration.defaultRole,
+        picture: picture ?? generateAvatar(userInfo.name),
       })
 
-      user = Object.assign(newUser)
+      userId = newUser.id
     }
 
-    if (user) {
-      if (user.provider !== provider) {
-        throw new Error(`email-used-with-${user.provider}`)
-      }
+    const payload = await createRefreshToken(event, userId!)
 
-      if (user.suspended) {
-        throw new Error('account-suspended')
-      }
+    const refreshToken = await signRefreshToken(payload)
 
-      const payload = await createRefreshToken(event, user)
+    setRefreshTokenCookie(event, refreshToken)
 
-      const refreshToken = await signRefreshToken(payload)
-
-      setRefreshTokenCookie(event, refreshToken)
-    }
-
-    await sendRedirect(
-      event,
-      withQuery(config.public.redirect.callback, { redirect: returnToPath }),
-    )
+    await sendRedirect(event, withQuery(config.public.redirect.callback, { redirect: returnToPath }))
   }
   catch (error) {
     await handleError(error, {

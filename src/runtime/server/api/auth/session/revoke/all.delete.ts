@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { handleError, deleteManyRefreshTokenByUser } from '../../../../utils'
+import { handleError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('unauthorized')
     }
 
-    await deleteManyRefreshTokenByUser(event, auth.userId, auth.sessionId)
+    await event.context._authAdapter.refreshToken.deleteManyByUserId(auth.userId, auth.sessionId)
 
     return { status: 'ok' }
   }
