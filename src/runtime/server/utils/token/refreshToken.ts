@@ -80,15 +80,16 @@ export function getRefreshTokenFromCookie(event: H3Event) {
 export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   // check if the refreshToken is issued by the auth server && if it's not expired
   const payload = await decodeRefreshToken(refreshToken)
-  const userAgent = getHeader(event, 'user-agent') ?? null
 
   const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(payload.id)
 
-  if (
-    !refreshTokenEntity // check if the refresh token is revoked (deleted from database)
-    || refreshTokenEntity.uid !== payload.uid // check if the refresh token is fresh (not stolen)
-    || refreshTokenEntity.userAgent !== userAgent
-  ) {
+  if (!refreshTokenEntity) {
+    throw new Error('unauthorized')
+  }
+
+  const userAgent = getHeader(event, 'user-agent') ?? null
+
+  if (refreshTokenEntity.uid !== payload.uid || refreshTokenEntity.userAgent !== userAgent) {
     await event.context._authAdapter.refreshToken.delete(payload.id)
     throw new Error('unauthorized')
   }
