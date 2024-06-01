@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, deleteManyRefreshTokenByUser, changePassword, findUserById, verifyPassword, handleError } from '../../../utils'
+import { getConfig, hashSync, compareSync, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -23,19 +23,24 @@ export default defineEventHandler(async (event) => {
       throw new Error('unauthorized')
     }
 
-    const user = await findUserById(event, auth.userId)
+    const user = await event.context._authAdapter.user.findById(auth.userId)
 
     if (
       !user
       || user.provider !== 'default'
-      || !verifyPassword(currentPassword, user.password!)
+      || !user.password
+      || !compareSync(currentPassword, user.password)
     ) {
       throw new Error('wrong-password')
     }
 
-    await changePassword(event, user.id, newPassword)
+    const hashedPassword = hashSync(newPassword, 12)
 
-    await deleteManyRefreshTokenByUser(event, auth.userId, auth.sessionId)
+    await event.context._authAdapter.user.update(user.id, {
+      password: hashedPassword,
+    })
+
+    await event.context._authAdapter.refreshToken.deleteManyByUserId(auth.userId, auth.sessionId)
 
     return { status: 'ok' }
   }

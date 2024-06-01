@@ -24,10 +24,9 @@ export async function handleError(
       h3Error.message = 'unauthorized'
       h3Error.statusCode = 401
     }
-    else if (error.message.includes('prisma')) {
-      console.error(error.message)
-    }
     else {
+      // TODO: only return known messages
+      console.error(error.message)
       h3Error.message = error.message
       h3Error.statusCode = 400
     }

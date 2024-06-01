@@ -1,6 +1,6 @@
 import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
-import type { User, Session, Response, PublicConfig, PrivateConfig, AuthenticationData } from '../types'
+import type { UserBase, Session, Response, PublicConfig, PrivateConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
 
@@ -25,7 +25,7 @@ export function useAuthSession() {
     },
   }
 
-  const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
+  const user: Ref<UserBase | null | undefined> = useState<UserBase | null | undefined>('auth-user', () => null)
 
   async function _refresh() {
     async function handler() {
