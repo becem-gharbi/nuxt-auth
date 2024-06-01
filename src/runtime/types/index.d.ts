@@ -3,8 +3,50 @@ import type {
   Provider as PrismaProvider,
   RefreshToken as PrismaRefreshToken,
   Role,
-  PrismaClient,
 } from '@prisma/client'
+
+export interface UserBase {
+  id: number | string
+  name: string
+  email: string
+  picture: string
+  role: string
+  provider: string
+  password: string | null
+  verified: boolean
+  suspended: boolean
+  requestedPasswordReset: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface RefreshTokenBase {
+  id: number | string
+  uid: string
+  userId: number
+  userAgent: string | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface Adapter<Options = unknown> {
+  name: string
+  options?: Options
+  user: {
+    findById: (id: UserBase['id']) => Promise<UserBase | null>
+    findByEmail: (email: UserBase['email']) => Promise<UserBase | null>
+    create: (data: Pick<UserBase, 'name' | 'email' | 'picture'>) => Promise<UserBase>
+    update: (id: UserBase['id'], data: Omit<Partial<UserBase>, 'id'>) => Promise<void>
+  }
+  refreshToken: {
+    findById: (id: RefreshTokenBase['id']) => Promise<RefreshTokenBase | null>
+    findManyByUserId: (id: UserBase['id']) => Promise<RefreshTokenBase[]>
+    create: (data: Pick<RefreshTokenBase, 'uid' | 'userId' | 'userAgent'>) => Promise<RefreshTokenBase>
+    update: (id: RefreshTokenBase['id'], data: Omit<Partial<RefreshTokenBase>, 'id'>) => Promise<void>
+    delete: (id: RefreshTokenBase['id']) => Promise<void>
+    deleteManyByUserId: (id: UserBase['id'], excludeId?: RefreshTokenBase['id']) => Promise<void>
+  }
+}
 
 declare module '#app' {
   interface NuxtApp {
@@ -20,7 +62,7 @@ declare module '#app' {
 
 declare module 'h3' {
   interface H3EventContext {
-    prisma: PrismaClient
+    _authAdapter: Adapter
     auth: AccessTokenPayload | undefined
   }
 }

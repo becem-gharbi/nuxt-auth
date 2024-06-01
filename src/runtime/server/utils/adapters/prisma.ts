@@ -1,7 +1,7 @@
 import type { PrismaClient, User as PrismaUser, RefreshToken as PrismaRefreshToken } from '@prisma/client'
 import { defineAdapter } from './factory'
 
-export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefreshToken>((client) => {
+export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
   if (!client) {
     throw new Error('[nuxt-auth] Prisma adapter requires a Prisma client')
   }
@@ -12,7 +12,9 @@ export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefre
     user: {
       async findById(id) {
         return client.user.findUnique({
-          where: { id },
+          where: {
+            id: id as PrismaUser['id'],
+          },
         })
       },
 
@@ -31,7 +33,7 @@ export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefre
       async update(id, data) {
         await client.user.update({
           where: {
-            id,
+            id: id as PrismaUser['id'],
           },
           data,
         })
@@ -40,13 +42,17 @@ export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefre
     refreshToken: {
       async findById(id) {
         return client.refreshToken.findUnique({
-          where: { id },
+          where: {
+            id: id as PrismaRefreshToken['id'],
+          },
         })
       },
 
       async findManyByUserId(id) {
         return client.refreshToken.findMany({
-          where: { userId: id },
+          where: {
+            userId: id as PrismaUser['id'],
+          },
         })
       },
 
@@ -59,7 +65,7 @@ export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefre
       async update(id, data) {
         await client.refreshToken.update({
           where: {
-            id,
+            id: id as PrismaRefreshToken['id'],
           },
           data,
         })
@@ -68,17 +74,17 @@ export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefre
       async delete(id) {
         await client.refreshToken.delete({
           where: {
-            id,
+            id: id as PrismaRefreshToken['id'],
           },
         })
       },
 
-      async deleteManyByUserId(id, exclude) {
+      async deleteManyByUserId(id, excludeId) {
         await client.refreshToken.deleteMany({
           where: {
-            userId: id,
+            userId: id as PrismaUser['id'],
             id: {
-              not: exclude,
+              not: excludeId as PrismaRefreshToken['id'],
             },
           },
         })
