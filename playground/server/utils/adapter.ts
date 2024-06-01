@@ -1,10 +1,9 @@
-import type { PrismaClient, User as PrismaUser, RefreshToken as PrismaRefreshToken } from '@prisma/client'
-import { defineAdapter } from './factory'
+import type { Prisma, User, RefreshToken } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
+import { defineAdapter } from '#auth'
 
-export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
-  if (!client) {
-    throw new Error('[nuxt-auth] Prisma adapter requires a Prisma client')
-  }
+export const prismaAdapter = defineAdapter<Prisma.PrismaClientOptions>((options) => {
+  const client = new PrismaClient(options)
 
   return {
     name: 'prisma',
@@ -13,7 +12,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async findById(id) {
         return client.user.findUnique({
           where: {
-            id: id as PrismaUser['id'],
+            id: id as User['id'],
           },
         })
       },
@@ -36,7 +35,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async update(id, data) {
         await client.user.update({
           where: {
-            id: id as PrismaUser['id'],
+            id: id as User['id'],
           },
           data,
           select: {
@@ -49,7 +48,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async findById(id) {
         return client.refreshToken.findUnique({
           where: {
-            id: id as PrismaRefreshToken['id'],
+            id: id as RefreshToken['id'],
           },
         })
       },
@@ -57,7 +56,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async findManyByUserId(id) {
         return client.refreshToken.findMany({
           where: {
-            userId: id as PrismaUser['id'],
+            userId: id as User['id'],
           },
         })
       },
@@ -66,7 +65,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
         return client.refreshToken.create({
           data: {
             ...data,
-            userId: data.userId as PrismaUser['id'],
+            userId: data.userId as User['id'],
           },
           select: {
             id: true,
@@ -77,12 +76,11 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async update(id, data) {
         await client.refreshToken.update({
           where: {
-            id: id as PrismaRefreshToken['id'],
+            id: id as RefreshToken['id'],
           },
           data,
           select: {
             id: true,
-            userId: true,
           },
         })
       },
@@ -90,7 +88,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async delete(id) {
         await client.refreshToken.delete({
           where: {
-            id: id as PrismaRefreshToken['id'],
+            id: id as RefreshToken['id'],
           },
           select: {
             id: true,
@@ -101,9 +99,9 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
       async deleteManyByUserId(id, excludeId) {
         await client.refreshToken.deleteMany({
           where: {
-            userId: id as PrismaUser['id'],
+            userId: id as User['id'],
             id: {
-              not: excludeId as PrismaRefreshToken['id'],
+              not: excludeId as RefreshToken['id'],
             },
           },
         })
