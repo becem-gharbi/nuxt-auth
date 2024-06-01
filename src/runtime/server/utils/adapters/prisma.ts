@@ -72,6 +72,17 @@ export const prismaAdapter = defineAdapter<PrismaClient, PrismaUser, PrismaRefre
           },
         })
       },
+
+      async deleteManyByUserId(id, exclude) {
+        await client.refreshToken.deleteMany({
+          where: {
+            userId: id,
+            id: {
+              not: exclude,
+            },
+          },
+        })
+      },
     },
   }
 })

@@ -37,6 +37,7 @@ interface Adapter<Options, User extends UserBase, RefreshToken extends RefreshTo
     create: (data: Pick<RefreshToken, 'uid' | 'userId' | 'userAgent'>) => Promise<RefreshToken>
     update: (id: RefreshToken['id'], data: Partial<RefreshToken>) => Promise<void>
     delete: (id: RefreshToken['id']) => Promise<void>
+    deleteManyByUserId: (id: User['id'], exclude?: RefreshToken['id']) => Promise<void>
   }
 }
 
