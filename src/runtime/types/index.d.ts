@@ -121,6 +121,13 @@ export type RefreshTokenPayload = {
   userId: UserBase['id']
 }
 
+export interface AuthenticationData {
+  access_token: string
+  expires_in: number
+}
+
+export interface Response { status: string }
+
 interface MailSendgridProvider {
   name: 'sendgrid'
   apiKey: string
@@ -133,11 +140,6 @@ interface MailResendProvider {
 
 interface MailHookProvider {
   name: 'hook'
-}
-
-export interface AuthenticationData {
-  access_token: string
-  expires_in: number
 }
 
 export type PrivateConfigWithoutBackend = {
@@ -153,6 +155,7 @@ export type PrivateConfigWithBackend = {
   accessToken: {
     jwtSecret: string
     maxAge?: number
+    // TODO: re-check it
     customClaims?: Record<string, object>
   }
 
@@ -162,16 +165,14 @@ export type PrivateConfigWithBackend = {
     maxAge?: number
   }
 
-  oauth?: Record<
-      Provider,
-      {
-        clientId: string
-        clientSecret: string
-        scopes: string
-        authorizeUrl: string
-        tokenUrl: string
-        userUrl: string
-      }
+  oauth?: Record<string, {
+    clientId: string
+    clientSecret: string
+    scopes: string
+    authorizeUrl: string
+    tokenUrl: string
+    userUrl: string
+  }
     >
 
   email?: {
@@ -209,4 +210,4 @@ export type PublicConfig = {
 
 export type PrivateConfig = PrivateConfigWithBackend | PrivateConfigWithoutBackend
 
-export interface Response { status: string }
+export type ModuleOptions = PrivateConfig & PublicConfig
