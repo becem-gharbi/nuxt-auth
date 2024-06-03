@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     const oauthProvider = config.private.oauth![provider]
 
     const qSchema = z.object({
-      code: z.string(),
+      code: z.string().min(1),
       state: z.string().startsWith('/').optional(),
     })
 

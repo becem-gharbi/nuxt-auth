@@ -14,16 +14,17 @@ export default defineEventHandler(async (event) => {
       id: z.string().min(1).or(z.number()),
     })
 
-    // TODO: check in case id is a number
-    const { id } = await getValidatedRouterParams(event, schema.parse)
+    const params = await getValidatedRouterParams(event, schema.parse)
 
-    const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(id)
+    params.id = Number.isNaN(Number(params.id)) ? params.id : Number(params.id)
+
+    const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(params.id)
 
     if (!refreshTokenEntity || refreshTokenEntity.userId !== auth.userId) {
       throw createUnauthorizedError()
     }
 
-    await event.context._authAdapter.refreshToken.delete(id)
+    await event.context._authAdapter.refreshToken.delete(params.id)
 
     return { status: 'ok' }
   }
