@@ -7,7 +7,10 @@
     <button @click="handleLogout">
       Logout
     </button>
-    <p>{{ user }}</p>
+    <p data-testid="user-info">
+      {{ user }}
+    </p>
+
     <img
       :src="user?.picture"
       height="40"
