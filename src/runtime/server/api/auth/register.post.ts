@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
       email,
       password: hashedPassword,
       name,
-      provider: 'local',
+      provider: 'default',
       picture: generateAvatar(name),
       role: config.private.registration.defaultRole,
       verified: false,
