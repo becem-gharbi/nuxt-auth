@@ -4,7 +4,7 @@ import { createResolver, addServerHandler, addTemplate, addServerPlugin } from '
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions } from '../runtime/types'
-import { createRequiredError } from './utils'
+import { warnRequiredOption } from './utils'
 
 export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   if (!options.backendEnabled) {
@@ -12,19 +12,19 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   }
 
   if (!options.refreshToken.jwtSecret) {
-    throw createRequiredError('refreshToken.jwtSecret')
+    warnRequiredOption('refreshToken.jwtSecret')
   }
 
   if (!options.accessToken.jwtSecret) {
-    throw createRequiredError('accessToken.jwtSecret')
+    warnRequiredOption('accessToken.jwtSecret')
   }
 
   if (!options.registration.enabled) {
-    console.warn('[nuxt-auth] Registration is disabled')
+    warnRequiredOption('[nuxt-auth] Registration is disabled')
   }
 
   if (!options.oauth && !options.email?.provider) {
-    console.warn('[nuxt-auth] Please make sure to set email provider')
+    warnRequiredOption('[nuxt-auth] Please make sure to set email provider')
   }
 
   nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
@@ -77,8 +77,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     })
   })
 
-  const middleware = resolve('../runtime/server/plugins/middleware')
-  addServerPlugin(middleware)
+  addServerPlugin(resolve('../runtime/server/plugins/middleware'))
 
   // Add server routes
   addServerHandler({

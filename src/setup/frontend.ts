@@ -2,27 +2,27 @@ import { addPlugin, createResolver, addImports } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions } from '../runtime/types'
-import { createRequiredError } from './utils'
+import { warnRequiredOption } from './utils'
 
 export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
   if (!options.redirect.login) {
-    throw createRequiredError('redirect.login')
+    warnRequiredOption('redirect.login')
   }
 
   if (!options.redirect.logout) {
-    throw createRequiredError('redirect.logout')
+    warnRequiredOption('redirect.logout')
   }
 
   if (!options.redirect.home) {
-    throw createRequiredError('redirect.home')
+    warnRequiredOption('redirect.home')
   }
 
   if (!options.baseUrl) {
-    throw createRequiredError('baseUrl')
+    warnRequiredOption('baseUrl')
   }
 
   if (options.backendEnabled === false && !options.backendBaseUrl) {
-    throw createRequiredError('backendBaseUrl')
+    warnRequiredOption('backendBaseUrl')
   }
 
   // Initialize the module options
