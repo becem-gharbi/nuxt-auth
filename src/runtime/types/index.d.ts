@@ -113,6 +113,7 @@ export type AccessTokenPayload = {
   sessionId: RefreshTokenBase['id']
   userRole: string
   fingerprint: string | null
+  provider: string
 }
 
 export type RefreshTokenPayload = {
