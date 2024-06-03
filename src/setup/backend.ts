@@ -122,16 +122,21 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     handler: resolve('../runtime/server/api/auth/avatar.get'),
   })
 
-  if (options.oauth) {
-    addServerHandler({
-      route: '/api/auth/login/:provider',
-      handler: resolve('../runtime/server/api/auth/login/[provider].get'),
-    })
+  if (options.oauth && Object.keys(options.oauth).length) {
+    if (options.redirect.callback) {
+      addServerHandler({
+        route: '/api/auth/login/:provider',
+        handler: resolve('../runtime/server/api/auth/login/[provider].get'),
+      })
 
-    addServerHandler({
-      route: '/api/auth/login/:provider/callback',
-      handler: resolve('../runtime/server/api/auth/login/[provider]/callback.get'),
-    })
+      addServerHandler({
+        route: '/api/auth/login/:provider/callback',
+        handler: resolve('../runtime/server/api/auth/login/[provider]/callback.get'),
+      })
+    }
+    else {
+      warnRequiredOption('redirect.callback')
+    }
   }
 
   if (!options.registration.enabled) {

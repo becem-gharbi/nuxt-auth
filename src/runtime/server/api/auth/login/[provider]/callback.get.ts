@@ -8,17 +8,7 @@ export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    // TODO: endpoint should not exist in the first place
-    if (!config.public.redirect.callback) {
-      throw createCustomError(500, 'Something went wrong')
-    }
-
     const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
-
-    // TODO: endpoint should not exist in the first place
-    if (!providers.length) {
-      throw createCustomError(500, 'Something went wrong')
-    }
 
     const pSchema = z.object({
       provider: z.custom<string>(value => providers.includes(value)),
@@ -123,7 +113,7 @@ export default defineEventHandler(async (event) => {
 
     setRefreshTokenCookie(event, refreshToken)
 
-    await sendRedirect(event, withQuery(config.public.redirect.callback, { redirect: returnToPath }))
+    await sendRedirect(event, withQuery(config.public.redirect.callback!, { redirect: returnToPath }))
   }
   catch (error) {
     await handleError(error, {
