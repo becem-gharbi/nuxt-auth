@@ -1,17 +1,12 @@
 import { defineEventHandler, sendRedirect, getValidatedQuery, getValidatedRouterParams } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { getConfig, handleError, createCustomError } from '../../../utils'
+import { getConfig, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
-
-  // TODO: endpoint should not exist in the first place
-  if (!providers.length) {
-    throw createCustomError(500, 'Something went wrong')
-  }
 
   const pSchema = z.object({
     provider: z.custom<string>(value => providers.includes(value)),

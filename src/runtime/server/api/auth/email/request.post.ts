@@ -1,17 +1,12 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError, createCustomError } from '../../../utils'
+import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    // TODO: endpoint should not exist in the first place
-    if (!config.public.redirect.emailVerify) {
-      throw createCustomError(500, 'Something went wrong')
-    }
-
     const schema = z.object({
       email: z.string().email(),
     })

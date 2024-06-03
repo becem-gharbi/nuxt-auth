@@ -1,17 +1,12 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createResetPasswordToken, handleError, createCustomError } from '../../../utils'
+import { mustache, getConfig, sendMail, createResetPasswordToken, handleError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    // TODO: endpoint should not exist in the first place
-    if (!config.public.redirect.passwordReset) {
-      throw createCustomError(500, 'Something went wrong')
-    }
-
     const schema = z.object({
       email: z.string().email(),
     })
@@ -27,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
       const redirectUrl = resolveURL(
         config.public.baseUrl,
-        config.public.redirect.passwordReset,
+        config.public.redirect.passwordReset!,
       )
       const link = withQuery(redirectUrl, { token: resetPasswordToken })
 

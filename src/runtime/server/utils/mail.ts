@@ -8,7 +8,6 @@ import { useNitroApp } from '#imports'
 export async function sendMail(msg: MailMessage) {
   const config = getConfig()
 
-  // TODO: should not be called in the first place
   if (!config.private.email?.provider) {
     throw createCustomError(500, 'Something went wrong')
   }
@@ -23,7 +22,6 @@ export async function sendMail(msg: MailMessage) {
     case 'resend':
       return await withResend(settings.provider.apiKey)
     default:
-      // TODO: should not be called in the first place
       throw createCustomError(500, 'Something went wrong')
   }
 
