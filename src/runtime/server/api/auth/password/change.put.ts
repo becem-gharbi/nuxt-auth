@@ -6,10 +6,9 @@ export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    // TODO: add provider to access token payload
     const auth = event.context.auth
 
-    if (!auth) {
+    if (!auth || auth.provider !== 'default') {
       throw createUnauthorizedError()
     }
 
@@ -24,7 +23,6 @@ export default defineEventHandler(async (event) => {
 
     if (
       !user
-      || user.provider !== 'default'
       || !user.password
       || !compareSync(currentPassword, user.password)
     ) {
