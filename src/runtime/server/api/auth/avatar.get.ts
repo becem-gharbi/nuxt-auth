@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
     'Cache-Control': 'public, max-age=2592000, immutable',
   })
 
-  // TODO: create utility function
   return `
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 64 64" version="1.1">
         <rect fill="#${query.background}" cx="32" width="64" height="64" cy="32" r="32"/>
