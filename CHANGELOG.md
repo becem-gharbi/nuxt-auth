@@ -1,5 +1,50 @@
 # Changelog
 
+## vv3.0.0-beta.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/ce6e049f69c74db2251dc4040f44c4ab4914bafe...vv3.0.0-beta.2)
+
+### 🚀 Enhancements
+
+- Add `provider` to access token payload ([#34](https://github.com/becem-gharbi/nuxt-auth/pull/34))
+
+### 🔥 Performance
+
+- ⚠️  Avoid registration of server handlers when respective configuration missing ([#33](https://github.com/becem-gharbi/nuxt-auth/pull/33))
+
+### 🩹 Fixes
+
+- Convert param id to number if possible ([9a88165](https://github.com/becem-gharbi/nuxt-auth/commit/9a88165))
+- Assign role `default` on registration with credentials ([65a9813](https://github.com/becem-gharbi/nuxt-auth/commit/65a9813))
+
+### 💅 Refactors
+
+- ⚠️  Change server error messages ([#32](https://github.com/becem-gharbi/nuxt-auth/pull/32))
+
+### 🌊 Types
+
+- Set `accessToken.customClaims` values to `unknown` ([242be21](https://github.com/becem-gharbi/nuxt-auth/commit/242be21))
+
+### 🏡 Chore
+
+- **playground:** Pass prisma client to event context ([56e8604](https://github.com/becem-gharbi/nuxt-auth/commit/56e8604))
+- Sync changelog ([e474411](https://github.com/becem-gharbi/nuxt-auth/commit/e474411))
+
+### ✅ Tests
+
+- Add render user avatar test ([ad503b1](https://github.com/becem-gharbi/nuxt-auth/commit/ad503b1))
+- Add request password reset test ([454ec0e](https://github.com/becem-gharbi/nuxt-auth/commit/454ec0e))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Avoid registration of server handlers when respective configuration missing ([#33](https://github.com/becem-gharbi/nuxt-auth/pull/33))
+- ⚠️  Change server error messages ([#32](https://github.com/becem-gharbi/nuxt-auth/pull/32))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.0-beta.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0-beta...v3)
