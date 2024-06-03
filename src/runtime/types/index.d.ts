@@ -113,6 +113,7 @@ export type AccessTokenPayload = {
   sessionId: RefreshTokenBase['id']
   userRole: string
   fingerprint: string | null
+  provider: string
 }
 
 export type RefreshTokenPayload = {
@@ -155,8 +156,7 @@ export type PrivateConfigWithBackend = {
   accessToken: {
     jwtSecret: string
     maxAge?: number
-    // TODO: re-check it
-    customClaims?: Record<string, object>
+    customClaims?: Record<string, unknown>
   }
 
   refreshToken: {

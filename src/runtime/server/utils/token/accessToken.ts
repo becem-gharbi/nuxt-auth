@@ -21,9 +21,10 @@ export async function createAccessToken(event: H3Event, user: UserBase, sessionI
   const payload: AccessTokenPayload = {
     ...customClaims,
     sessionId,
+    fingerprint,
     userId: user.id,
     userRole: user.role,
-    fingerprint,
+    provider: user.provider,
   }
 
   const accessToken = await encode(
