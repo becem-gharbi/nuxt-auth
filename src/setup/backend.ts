@@ -148,15 +148,20 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   }
 
   if (options.email?.provider) {
-    addServerHandler({
-      route: '/api/auth/password/request',
-      handler: resolve('../runtime/server/api/auth/password/request.post'),
-    })
+    if (options.redirect.passwordReset) {
+      addServerHandler({
+        route: '/api/auth/password/request',
+        handler: resolve('../runtime/server/api/auth/password/request.post'),
+      })
 
-    addServerHandler({
-      route: '/api/auth/password/reset',
-      handler: resolve('../runtime/server/api/auth/password/reset.put'),
-    })
+      addServerHandler({
+        route: '/api/auth/password/reset',
+        handler: resolve('../runtime/server/api/auth/password/reset.put'),
+      })
+    }
+    else {
+      warnRequiredOption('redirect.passwordReset')
+    }
 
     addServerHandler({
       route: '/api/auth/email/request',
