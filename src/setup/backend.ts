@@ -163,15 +163,20 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
       warnRequiredOption('redirect.passwordReset')
     }
 
-    addServerHandler({
-      route: '/api/auth/email/request',
-      handler: resolve('../runtime/server/api/auth/email/request.post'),
-    })
+    if (options.redirect.emailVerify) {
+      addServerHandler({
+        route: '/api/auth/email/request',
+        handler: resolve('../runtime/server/api/auth/email/request.post'),
+      })
 
-    addServerHandler({
-      route: '/api/auth/email/verify',
-      handler: resolve('../runtime/server/api/auth/email/verify.get'),
-    })
+      addServerHandler({
+        route: '/api/auth/email/verify',
+        handler: resolve('../runtime/server/api/auth/email/verify.get'),
+      })
+    }
+    else {
+      warnRequiredOption('redirect.emailVerify')
+    }
 
     options.email.templates ||= {}
 
