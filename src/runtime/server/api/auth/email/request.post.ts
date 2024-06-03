@@ -1,14 +1,15 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError } from '../../../utils'
+import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
+    // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.emailVerify) {
-      throw new Error('Please make sure to set emailVerify redirect path')
+      throw createCustomError(500, 'Please make sure to set emailVerify redirect path')
     }
 
     const schema = z.object({

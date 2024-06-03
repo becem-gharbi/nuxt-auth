@@ -1,6 +1,6 @@
 import { defineEventHandler, getValidatedQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
-import { getConfig, verifyEmailVerifyToken, handleError } from '../../../utils'
+import { getConfig, verifyEmailVerifyToken, handleError, createCustomError } from '../../../utils'
 
 // TODO: update docs `token-not-found` message removed
 
@@ -8,8 +8,9 @@ export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
+    // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.emailVerify) {
-      throw new Error('Please make sure to set emailVerify redirect path')
+      throw createCustomError(500, 'Please make sure to set emailVerify redirect path')
     }
 
     const schema = z.object({

@@ -2,20 +2,22 @@ import { defineEventHandler, getValidatedQuery, sendRedirect, getValidatedRouter
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken } from '../../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken, createCustomError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
+    // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.callback) {
-      throw new Error('Please make sure to set callback redirect path')
+      throw createCustomError(500, 'Please make sure to set callback redirect path')
     }
 
     const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
 
+    // TODO: endpoint should not exist in the first place
     if (!providers.length) {
-      throw new Error('oauth-not-configured')
+      throw createCustomError(500, 'oauth-not-configured')
     }
 
     const pSchema = z.object({
@@ -64,11 +66,11 @@ export default defineEventHandler(async (event) => {
     })
 
     if (!userInfo.name) {
-      throw new Error('name-not-accessible')
+      throw createCustomError(400, 'name-not-accessible')
     }
 
     if (!userInfo.email) {
-      throw new Error('email-not-accessible')
+      throw createCustomError(400, 'email-not-accessible')
     }
 
     const user = await event.context._authAdapter.user.findByEmail(userInfo.email)
@@ -77,16 +79,16 @@ export default defineEventHandler(async (event) => {
 
     if (user) {
       if (user.provider !== provider) {
-        throw new Error(`email-used-with-${user.provider}`)
+        throw createCustomError(403, `email-used-with-${user.provider}`)
       }
 
       if (user.suspended) {
-        throw new Error('account-suspended')
+        throw createCustomError(403, 'account-suspended')
       }
     }
     else {
       if (config.private.registration.enabled === false) {
-        throw new Error('registration-disabled')
+        throw createCustomError(500, 'registration-disabled')
       }
 
       const pictureKey = Object.keys(userInfo).find(el =>

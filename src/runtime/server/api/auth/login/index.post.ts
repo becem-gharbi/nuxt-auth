@@ -1,6 +1,6 @@
 import { readValidatedBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken } from '../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -21,18 +21,18 @@ export default defineEventHandler(async (event) => {
       || !user.password
       || !compareSync(password, user.password)
     ) {
-      throw new Error('wrong-credentials')
+      throw createCustomError(401, 'wrong-credentials')
     }
 
     if (
       !user.verified
       && config.private.registration.requireEmailVerification
     ) {
-      throw new Error('account-not-verified')
+      throw createCustomError(403, 'account-not-verified')
     }
 
     if (user.suspended) {
-      throw new Error('account-suspended')
+      throw createCustomError(403, 'account-suspended')
     }
 
     const payload = await createRefreshToken(event, user.id)

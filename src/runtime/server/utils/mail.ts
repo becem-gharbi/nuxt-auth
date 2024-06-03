@@ -1,5 +1,6 @@
 import type { MailMessage } from '../../types'
 import { getConfig } from './config'
+import { createCustomError } from './error'
 
 // @ts-expect-error importing an internal module
 import { useNitroApp } from '#imports'
@@ -8,7 +9,7 @@ export async function sendMail(msg: MailMessage) {
   const config = getConfig()
 
   if (!config.private.email?.provider) {
-    throw new Error('Please make sure to configure email provider')
+    throw createCustomError(500, 'Please make sure to configure email provider')
   }
 
   const settings = config.private.email
@@ -21,7 +22,7 @@ export async function sendMail(msg: MailMessage) {
     case 'resend':
       return await withResend(settings.provider.apiKey)
     default:
-      throw new Error('invalid-email-provider')
+      throw createCustomError(500, 'invalid-email-provider')
   }
 
   function withSendgrid(apiKey: string) {

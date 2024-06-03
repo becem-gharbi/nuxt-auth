@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError, createUnauthorizedError } from '../../../utils'
+import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError, createUnauthorizedError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (user.suspended) {
-      throw new Error('account-suspended')
+      throw createCustomError(403, 'account-suspended')
     }
 
     const newRefreshToken = await updateRefreshToken(event, payload.id, user.id)

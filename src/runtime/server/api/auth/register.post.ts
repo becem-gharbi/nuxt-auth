@@ -1,6 +1,6 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, hashSync, handleError, generateAvatar } from '../../utils'
+import { getConfig, hashSync, handleError, generateAvatar, createCustomError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -18,9 +18,9 @@ export default defineEventHandler(async (event) => {
 
     if (user) {
       if (!user.verified && config.private.registration.requireEmailVerification) {
-        throw new Error('account-not-verified')
+        throw createCustomError(403, 'account-not-verified')
       }
-      throw new Error(`email-used-with-${user.provider}`)
+      throw createCustomError(403, `email-used-with-${user.provider}`)
     }
 
     const hashedPassword = hashSync(password, 12)

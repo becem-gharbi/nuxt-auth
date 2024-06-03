@@ -1,6 +1,6 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, hashSync, compareSync, handleError, createUnauthorizedError } from '../../../utils'
+import { getConfig, hashSync, compareSync, handleError, createUnauthorizedError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       || !user.password
       || !compareSync(currentPassword, user.password)
     ) {
-      throw new Error('wrong-password')
+      throw createCustomError(401, 'wrong-password')
     }
 
     const hashedPassword = hashSync(newPassword, 12)

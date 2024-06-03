@@ -1,6 +1,6 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, verifyResetPasswordToken, hashSync, handleError } from '../../../utils'
+import { getConfig, verifyResetPasswordToken, hashSync, handleError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const user = await event.context._authAdapter.user.findById(payload.userId)
 
     if (!user?.requestedPasswordReset) {
-      throw new Error('reset-not-requested')
+      throw createCustomError(403, 'reset-not-requested')
     }
 
     const hashedPassword = hashSync(password, 12)
