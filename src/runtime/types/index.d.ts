@@ -149,8 +149,7 @@ export type PrivateConfigWithBackend = {
     maxAge?: number
   }
 
-  oauth?: Partial<
-    Record<
+  oauth?: Record<
       Provider,
       {
         clientId: string
@@ -161,7 +160,6 @@ export type PrivateConfigWithBackend = {
         userUrl: string
       }
     >
-  >
 
   email?: {
     from: string
