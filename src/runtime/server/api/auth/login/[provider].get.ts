@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 
   // TODO: endpoint should not exist in the first place
   if (!providers.length) {
-    throw createCustomError(500, 'oauth-not-configured')
+    throw createCustomError(500, 'Something went wrong')
   }
 
   const pSchema = z.object({

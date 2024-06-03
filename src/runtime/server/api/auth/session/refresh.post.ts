@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (user.suspended) {
-      throw createCustomError(403, 'account-suspended')
+      throw createCustomError(403, 'Account suspended')
     }
 
     const newRefreshToken = await updateRefreshToken(event, payload.id, user.id)

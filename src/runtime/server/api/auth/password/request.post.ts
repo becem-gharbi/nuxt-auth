@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   try {
     // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.passwordReset) {
-      throw createCustomError(500, 'Please make sure to set passwordReset redirect path')
+      throw createCustomError(500, 'Something went wrong')
     }
 
     const schema = z.object({

@@ -18,9 +18,9 @@ export default defineEventHandler(async (event) => {
 
     if (user) {
       if (!user.verified && config.private.registration.requireEmailVerification) {
-        throw createCustomError(403, 'account-not-verified')
+        throw createCustomError(403, 'Account not verified')
       }
-      throw createCustomError(403, `email-used-with-${user.provider}`)
+      throw createCustomError(403, 'Email already used')
     }
 
     const hashedPassword = hashSync(password, 12)

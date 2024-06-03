@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       || !user.password
       || !compareSync(currentPassword, user.password)
     ) {
-      throw createCustomError(401, 'wrong-password')
+      throw createCustomError(401, 'Wrong password')
     }
 
     const hashedPassword = hashSync(newPassword, 12)

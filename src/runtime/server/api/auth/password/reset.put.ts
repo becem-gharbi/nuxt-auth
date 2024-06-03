@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const user = await event.context._authAdapter.user.findById(payload.userId)
 
     if (!user?.requestedPasswordReset) {
-      throw createCustomError(403, 'reset-not-requested')
+      throw createCustomError(403, 'Password reset not requested')
     }
 
     const hashedPassword = hashSync(password, 12)

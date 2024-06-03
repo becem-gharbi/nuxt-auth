@@ -21,18 +21,18 @@ export default defineEventHandler(async (event) => {
       || !user.password
       || !compareSync(password, user.password)
     ) {
-      throw createCustomError(401, 'wrong-credentials')
+      throw createCustomError(401, 'Wrong credentials')
     }
 
     if (
       !user.verified
       && config.private.registration.requireEmailVerification
     ) {
-      throw createCustomError(403, 'account-not-verified')
+      throw createCustomError(403, 'Account not verified')
     }
 
     if (user.suspended) {
-      throw createCustomError(403, 'account-suspended')
+      throw createCustomError(403, 'Account suspended')
     }
 
     const payload = await createRefreshToken(event, user.id)

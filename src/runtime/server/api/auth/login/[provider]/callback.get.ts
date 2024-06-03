@@ -10,14 +10,14 @@ export default defineEventHandler(async (event) => {
   try {
     // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.callback) {
-      throw createCustomError(500, 'Please make sure to set callback redirect path')
+      throw createCustomError(500, 'Something went wrong')
     }
 
     const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
 
     // TODO: endpoint should not exist in the first place
     if (!providers.length) {
-      throw createCustomError(500, 'oauth-not-configured')
+      throw createCustomError(500, 'Something went wrong')
     }
 
     const pSchema = z.object({
@@ -66,11 +66,11 @@ export default defineEventHandler(async (event) => {
     })
 
     if (!userInfo.name) {
-      throw createCustomError(400, 'name-not-accessible')
+      throw createCustomError(400, 'Oauth name not accessible')
     }
 
     if (!userInfo.email) {
-      throw createCustomError(400, 'email-not-accessible')
+      throw createCustomError(400, 'Oauth email not accessible')
     }
 
     const user = await event.context._authAdapter.user.findByEmail(userInfo.email)
@@ -79,16 +79,16 @@ export default defineEventHandler(async (event) => {
 
     if (user) {
       if (user.provider !== provider) {
-        throw createCustomError(403, `email-used-with-${user.provider}`)
+        throw createCustomError(403, 'Email already used')
       }
 
       if (user.suspended) {
-        throw createCustomError(403, 'account-suspended')
+        throw createCustomError(403, 'Account suspended')
       }
     }
     else {
       if (config.private.registration.enabled === false) {
-        throw createCustomError(500, 'registration-disabled')
+        throw createCustomError(500, 'Registration disabled')
       }
 
       const pictureKey = Object.keys(userInfo).find(el =>

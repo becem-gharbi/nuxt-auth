@@ -9,5 +9,5 @@ test('should register', async ({ page }) => {
   await page.getByRole('button', { name: 'Register' }).click()
   await page.waitForTimeout(2000)
   const result = await page.getByTestId('registration-result').textContent()
-  expect(result).toMatch(/ok|email-used-with-default/)
+  expect(result).toMatch(/ok|Email already used/)
 })
