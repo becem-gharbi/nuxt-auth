@@ -19,14 +19,6 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     warnRequiredOption('accessToken.jwtSecret')
   }
 
-  if (!options.registration.enabled) {
-    logger.warn('[nuxt-auth] Registration is disabled')
-  }
-
-  if (!options.oauth && !options.email?.provider) {
-    logger.warn('[nuxt-auth] Please make sure to set email provider')
-  }
-
   nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
     app: {},
     public: {},
@@ -85,18 +77,6 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     handler: resolve('../runtime/server/api/auth/login/index.post'),
   })
 
-  if (options.oauth) {
-    addServerHandler({
-      route: '/api/auth/login/:provider',
-      handler: resolve('../runtime/server/api/auth/login/[provider].get'),
-    })
-
-    addServerHandler({
-      route: '/api/auth/login/:provider/callback',
-      handler: resolve('../runtime/server/api/auth/login/[provider]/callback.get'),
-    })
-  }
-
   addServerHandler({
     route: '/api/auth/register',
     handler: resolve('../runtime/server/api/auth/register.post'),
@@ -111,48 +91,6 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     route: '/api/auth/logout',
     handler: resolve('../runtime/server/api/auth/logout.post'),
   })
-
-  if (options.email?.provider) {
-    options.email.templates ||= {}
-
-    if (options.email.templates.emailVerify?.endsWith('.html')) {
-      const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
-      options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
-    }
-    else {
-      const emailVerifyPath = resolve('../runtime/templates/email_verification.html')
-      options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
-    }
-
-    if (options.email.templates.passwordReset?.endsWith('.html')) {
-      const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
-      options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
-    }
-    else {
-      const passwordResetPath = resolve('../runtime/templates/password_reset.html')
-      options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
-    }
-
-    addServerHandler({
-      route: '/api/auth/password/request',
-      handler: resolve('../runtime/server/api/auth/password/request.post'),
-    })
-
-    addServerHandler({
-      route: '/api/auth/email/request',
-      handler: resolve('../runtime/server/api/auth/email/request.post'),
-    })
-
-    addServerHandler({
-      route: '/api/auth/email/verify',
-      handler: resolve('../runtime/server/api/auth/email/verify.get'),
-    })
-
-    addServerHandler({
-      route: '/api/auth/password/reset',
-      handler: resolve('../runtime/server/api/auth/password/reset.put'),
-    })
-  }
 
   addServerHandler({
     route: '/api/auth/password/change',
@@ -183,4 +121,66 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     route: '/api/auth/avatar',
     handler: resolve('../runtime/server/api/auth/avatar.get'),
   })
+
+  if (options.oauth) {
+    addServerHandler({
+      route: '/api/auth/login/:provider',
+      handler: resolve('../runtime/server/api/auth/login/[provider].get'),
+    })
+
+    addServerHandler({
+      route: '/api/auth/login/:provider/callback',
+      handler: resolve('../runtime/server/api/auth/login/[provider]/callback.get'),
+    })
+  }
+
+  if (!options.registration.enabled) {
+    logger.warn('[nuxt-auth] Registration is disabled')
+  }
+
+  if (!options.oauth && !options.email?.provider) {
+    logger.warn('[nuxt-auth] Please make sure to set email provider')
+  }
+
+  if (options.email?.provider) {
+    addServerHandler({
+      route: '/api/auth/password/request',
+      handler: resolve('../runtime/server/api/auth/password/request.post'),
+    })
+
+    addServerHandler({
+      route: '/api/auth/password/reset',
+      handler: resolve('../runtime/server/api/auth/password/reset.put'),
+    })
+
+    addServerHandler({
+      route: '/api/auth/email/request',
+      handler: resolve('../runtime/server/api/auth/email/request.post'),
+    })
+
+    addServerHandler({
+      route: '/api/auth/email/verify',
+      handler: resolve('../runtime/server/api/auth/email/verify.get'),
+    })
+
+    options.email.templates ||= {}
+
+    if (options.email.templates.emailVerify?.endsWith('.html')) {
+      const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
+      options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
+    }
+    else {
+      const emailVerifyPath = resolve('../runtime/templates/email_verification.html')
+      options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
+    }
+
+    if (options.email.templates.passwordReset?.endsWith('.html')) {
+      const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
+      options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
+    }
+    else {
+      const passwordResetPath = resolve('../runtime/templates/password_reset.html')
+      options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
+    }
+  }
 }
