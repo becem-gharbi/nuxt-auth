@@ -14,6 +14,10 @@ export default defineEventHandler(async (event) => {
 
     const { email, password, name } = await readValidatedBody(event, schema.parse)
 
+    if (config.private.registration.enabled === false) {
+      throw createCustomError(500, 'Registration disabled')
+    }
+
     const user = await event.context._authAdapter.user.findByEmail(email)
 
     if (user) {
