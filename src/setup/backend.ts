@@ -1,14 +1,14 @@
 import { readFileSync } from 'node:fs'
 import { resolve as resolveAbsolute } from 'node:path'
-import { createResolver, addServerHandler, addTemplate, addServerPlugin, logger } from '@nuxt/kit'
+import { createResolver, addServerHandler, addTemplate, addServerPlugin } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions } from '../runtime/types'
-import { warnRequiredOption } from './utils'
+import { warnRequiredOption, info } from './utils'
 
 export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   if (!options.backendEnabled) {
-    throw new Error('[nuxt-auth] backend should be enabled')
+    throw new Error('Backend should be enabled')
   }
 
   if (!options.refreshToken.jwtSecret) {
@@ -140,11 +140,11 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   }
 
   if (!options.registration.enabled) {
-    logger.warn('[nuxt-auth] Registration is disabled')
+    info('Registration is disabled')
   }
 
-  if (!options.oauth && !options.email?.provider) {
-    logger.warn('[nuxt-auth] Please make sure to set email provider')
+  if (!options.email?.provider) {
+    info('No email provider is set')
   }
 
   if (options.email?.provider) {
