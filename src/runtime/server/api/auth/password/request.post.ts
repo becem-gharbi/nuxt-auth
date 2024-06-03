@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, readValidatedBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
 import { mustache, getConfig, sendMail, createResetPasswordToken, handleError } from '../../../utils'
@@ -11,13 +11,11 @@ export default defineEventHandler(async (event) => {
       throw new Error('Please make sure to set passwordReset redirect path')
     }
 
-    const { email } = await readBody(event)
-
     const schema = z.object({
       email: z.string().email(),
     })
 
-    schema.parse({ email })
+    const { email } = await readValidatedBody(event, schema.parse)
 
     const user = await event.context._authAdapter.user.findByEmail(email)
 

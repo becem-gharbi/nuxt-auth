@@ -1,6 +1,8 @@
-import { defineEventHandler, getQuery, sendRedirect } from 'h3'
+import { defineEventHandler, getValidatedQuery, sendRedirect } from 'h3'
 import { z } from 'zod'
 import { getConfig, verifyEmailVerifyToken, handleError } from '../../../utils'
+
+// TODO: update docs `token-not-found` message removed
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -10,17 +12,11 @@ export default defineEventHandler(async (event) => {
       throw new Error('Please make sure to set emailVerify redirect path')
     }
 
-    const token = getQuery(event).token?.toString()
-
     const schema = z.object({
-      token: z.string(),
+      token: z.string().min(1),
     })
 
-    schema.parse({ token })
-
-    if (!token) {
-      throw new Error('token-not-found')
-    }
+    const { token } = await getValidatedQuery(event, schema.parse)
 
     const payload = await verifyEmailVerifyToken(token)
 

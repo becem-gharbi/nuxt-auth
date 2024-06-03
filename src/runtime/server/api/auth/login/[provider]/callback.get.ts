@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery, sendRedirect } from 'h3'
+import { defineEventHandler, getValidatedQuery, sendRedirect, getValidatedRouterParams } from 'h3'
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
@@ -12,21 +12,26 @@ export default defineEventHandler(async (event) => {
       throw new Error('Please make sure to set callback redirect path')
     }
 
-    const provider = event.context.params!.provider
+    const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
 
-    const { state: returnToPath, code } = getQuery<{ code: string, state: string }>(event)
-
-    const schema = z.object({
-      code: z.string(),
-    })
-
-    schema.parse({ code })
-
-    const oauthProvider = config.private.oauth?.[provider]
-
-    if (!oauthProvider) {
+    if (!providers.length) {
       throw new Error('oauth-not-configured')
     }
+
+    const pSchema = z.object({
+      provider: z.custom<string>(value => providers.includes(value)),
+    })
+
+    const { provider } = await getValidatedRouterParams(event, pSchema.parse)
+
+    const oauthProvider = config.private.oauth![provider]
+
+    const qSchema = z.object({
+      code: z.string(),
+      state: z.string().startsWith('/').optional(),
+    })
+
+    const { state: returnToPath, code } = await getValidatedQuery(event, qSchema.parse)
 
     const formData = new FormData()
     formData.append('grant_type', 'authorization_code')

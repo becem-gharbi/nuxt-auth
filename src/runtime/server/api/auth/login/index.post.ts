@@ -1,4 +1,4 @@
-import { readBody, defineEventHandler } from 'h3'
+import { readValidatedBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
 import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken } from '../../../utils'
 
@@ -6,14 +6,12 @@ export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    const { email, password } = await readBody(event)
-
     const schema = z.object({
       email: z.string().email(),
-      password: z.string(),
+      password: z.string().min(1),
     })
 
-    schema.parse({ email, password })
+    const { email, password } = await readValidatedBody(event, schema.parse)
 
     const user = await event.context._authAdapter.user.findByEmail(email)
 

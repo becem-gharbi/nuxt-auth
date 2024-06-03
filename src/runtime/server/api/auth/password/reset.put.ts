@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
 import { getConfig, verifyResetPasswordToken, hashSync, handleError } from '../../../utils'
 
@@ -6,16 +6,12 @@ export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    const { password, token } = await readBody(event)
-
     const schema = z.object({
-      token: z.string(),
-      password: z
-        .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
+      token: z.string().min(1),
+      password: z.string().regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
     })
 
-    schema.parse({ password, token })
+    const { password, token } = await readValidatedBody(event, schema.parse)
 
     const payload = await verifyResetPasswordToken(token)
 
