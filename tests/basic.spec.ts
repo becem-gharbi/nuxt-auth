@@ -31,3 +31,11 @@ test('should refresh session', async ({ browser }) => {
   const newSession = await page.locator('li').first().textContent()
   expect(newSession).not.toEqual(currentSession)
 })
+
+test('should render user avatar', async ({ browser }) => {
+  const context = await browser.newContext()
+  const page = await context.newPage()
+  await login(page)
+
+  await expect(page.locator('img')).not.toHaveJSProperty('naturalWidth', 0)
+})
