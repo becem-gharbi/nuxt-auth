@@ -155,8 +155,7 @@ export type PrivateConfigWithBackend = {
   accessToken: {
     jwtSecret: string
     maxAge?: number
-    // TODO: re-check it
-    customClaims?: Record<string, object>
+    customClaims?: Record<string, unknown>
   }
 
   refreshToken: {
