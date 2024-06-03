@@ -1,4 +1,34 @@
 # Changelog
+
+## v3.0.0-beta.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0-beta...v3)
+
+### 🚀 Enhancements
+
+- ⚠️  Allow usage of custom data layer ([#30](https://github.com/becem-gharbi/nuxt-auth/pull/30))
+
+### 🩹 Fixes
+
+- Avoid delete of non-existant refresh token ([#31](https://github.com/becem-gharbi/nuxt-auth/pull/31))
+
+### 💅 Refactors
+
+- Change findUser to findUserById and findUserByEmail ([7ce97d6](https://github.com/becem-gharbi/nuxt-auth/commit/7ce97d6))
+
+### 🏡 Chore
+
+- Resolve import of nitro utils ([8f98519](https://github.com/becem-gharbi/nuxt-auth/commit/8f98519))
+- **playground:** Change email provider to hook ([028697f](https://github.com/becem-gharbi/nuxt-auth/commit/028697f))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Allow usage of custom data layer ([#30](https://github.com/becem-gharbi/nuxt-auth/pull/30))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.0-beta
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.6.0...v3.0.0-beta)
