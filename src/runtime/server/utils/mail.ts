@@ -23,7 +23,6 @@ export async function sendMail(msg: MailMessage) {
     case 'resend':
       return await withResend(settings.provider.apiKey)
     default:
-      // TODO: should not be called in the first place
       throw createCustomError(500, 'Something went wrong')
   }
 

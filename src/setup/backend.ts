@@ -180,7 +180,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
 
     options.email.templates ||= {}
 
-    if (options.email.templates.emailVerify?.endsWith('.html')) {
+    if (options.email.templates.emailVerify) {
       const emailVerifyPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.emailVerify)
       options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
     }
@@ -189,7 +189,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
       options.email.templates.emailVerify = readFileSync(emailVerifyPath, 'utf-8')
     }
 
-    if (options.email.templates.passwordReset?.endsWith('.html')) {
+    if (options.email.templates.passwordReset) {
       const passwordResetPath = resolveAbsolute(nuxt.options.srcDir, options.email.templates.passwordReset)
       options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
     }
