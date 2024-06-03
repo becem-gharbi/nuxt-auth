@@ -1,4 +1,3 @@
-import { ZodError } from 'zod'
 import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
@@ -15,12 +14,7 @@ export async function handleError(
   h3Error.statusCode = 500
 
   if (error) {
-    //
-    if (error instanceof ZodError) {
-      h3Error.message = error.issues[0].path + ' | ' + error.issues[0].message
-      h3Error.statusCode = 400
-    }
-    else if (error.message === 'unauthorized') {
+    if (error.message === 'unauthorized') {
       h3Error.message = 'unauthorized'
       h3Error.statusCode = 401
     }
@@ -33,10 +27,7 @@ export async function handleError(
   }
 
   if (redirect) {
-    await sendRedirect(
-      redirect.event,
-      withQuery(redirect.url, { error: h3Error.message }),
-    )
+    await sendRedirect(redirect.event, withQuery(redirect.url, { error: h3Error.message }))
     return
   }
 
