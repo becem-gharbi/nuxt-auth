@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { handleError } from '../../../utils'
+import { handleError, createUnauthorizedError } from '../../../utils'
 import type { Session } from '../../../../types'
 
 export default defineEventHandler(async (event) => {
@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const auth = event.context.auth
 
     if (!auth) {
-      throw new Error('unauthorized')
+      throw createUnauthorizedError()
     }
 
     const refreshTokens = await event.context._authAdapter.refreshToken.findManyByUserId(auth.userId)

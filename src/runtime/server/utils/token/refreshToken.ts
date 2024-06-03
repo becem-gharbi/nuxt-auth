@@ -3,6 +3,7 @@ import { setCookie, getCookie, deleteCookie, getHeader } from 'h3'
 import type { H3Event } from 'h3'
 import type { RefreshTokenPayload, UserBase, RefreshTokenBase } from '../../../types'
 import { getConfig } from '../config'
+import { createUnauthorizedError } from '../error'
 import { encode, decode } from './jwt'
 
 export async function createRefreshToken(event: H3Event, userId: UserBase['id']) {
@@ -84,14 +85,14 @@ export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(payload.id)
 
   if (!refreshTokenEntity) {
-    throw new Error('unauthorized')
+    throw createUnauthorizedError()
   }
 
   const userAgent = getHeader(event, 'user-agent') ?? null
 
   if (refreshTokenEntity.uid !== payload.uid || refreshTokenEntity.userAgent !== userAgent) {
     await event.context._authAdapter.refreshToken.delete(payload.id)
-    throw new Error('unauthorized')
+    throw createUnauthorizedError()
   }
 
   return payload

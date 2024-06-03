@@ -1,23 +1,22 @@
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, readValidatedBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createResetPasswordToken, handleError } from '../../../utils'
+import { mustache, getConfig, sendMail, createResetPasswordToken, handleError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
+    // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.passwordReset) {
-      throw new Error('Please make sure to set passwordReset redirect path')
+      throw createCustomError(500, 'Something went wrong')
     }
-
-    const { email } = await readBody(event)
 
     const schema = z.object({
       email: z.string().email(),
     })
 
-    schema.parse({ email })
+    const { email } = await readValidatedBody(event, schema.parse)
 
     const user = await event.context._authAdapter.user.findByEmail(email)
 

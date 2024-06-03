@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError } from '../../../utils'
+import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError, createUnauthorizedError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,11 +10,11 @@ export default defineEventHandler(async (event) => {
     const user = await event.context._authAdapter.user.findById(payload.userId)
 
     if (!user) {
-      throw new Error('unauthorized')
+      throw createUnauthorizedError()
     }
 
     if (user.suspended) {
-      throw new Error('account-suspended')
+      throw createCustomError(403, 'Account suspended')
     }
 
     const newRefreshToken = await updateRefreshToken(event, payload.id, user.id)

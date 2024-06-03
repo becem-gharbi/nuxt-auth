@@ -1,28 +1,24 @@
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, verifyResetPasswordToken, hashSync, handleError } from '../../../utils'
+import { getConfig, verifyResetPasswordToken, hashSync, handleError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    const { password, token } = await readBody(event)
-
     const schema = z.object({
-      token: z.string(),
-      password: z
-        .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
+      token: z.string().min(1),
+      password: z.string().regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
     })
 
-    schema.parse({ password, token })
+    const { password, token } = await readValidatedBody(event, schema.parse)
 
     const payload = await verifyResetPasswordToken(token)
 
     const user = await event.context._authAdapter.user.findById(payload.userId)
 
     if (!user?.requestedPasswordReset) {
-      throw new Error('reset-not-requested')
+      throw createCustomError(403, 'Password reset not requested')
     }
 
     const hashedPassword = hashSync(password, 12)

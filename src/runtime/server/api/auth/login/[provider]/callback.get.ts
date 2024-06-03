@@ -1,32 +1,39 @@
-import { defineEventHandler, getQuery, sendRedirect } from 'h3'
+import { defineEventHandler, getValidatedQuery, sendRedirect, getValidatedRouterParams } from 'h3'
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken } from '../../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken, createCustomError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
+    // TODO: endpoint should not exist in the first place
     if (!config.public.redirect.callback) {
-      throw new Error('Please make sure to set callback redirect path')
+      throw createCustomError(500, 'Something went wrong')
     }
 
-    const provider = event.context.params!.provider
+    const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
 
-    const { state: returnToPath, code } = getQuery<{ code: string, state: string }>(event)
+    // TODO: endpoint should not exist in the first place
+    if (!providers.length) {
+      throw createCustomError(500, 'Something went wrong')
+    }
 
-    const schema = z.object({
-      code: z.string(),
+    const pSchema = z.object({
+      provider: z.custom<string>(value => providers.includes(value)),
     })
 
-    schema.parse({ code })
+    const { provider } = await getValidatedRouterParams(event, pSchema.parse)
 
-    const oauthProvider = config.private.oauth?.[provider]
+    const oauthProvider = config.private.oauth![provider]
 
-    if (!oauthProvider) {
-      throw new Error('oauth-not-configured')
-    }
+    const qSchema = z.object({
+      code: z.string(),
+      state: z.string().startsWith('/').optional(),
+    })
+
+    const { state: returnToPath, code } = await getValidatedQuery(event, qSchema.parse)
 
     const formData = new FormData()
     formData.append('grant_type', 'authorization_code')
@@ -59,11 +66,11 @@ export default defineEventHandler(async (event) => {
     })
 
     if (!userInfo.name) {
-      throw new Error('name-not-accessible')
+      throw createCustomError(400, 'Oauth name not accessible')
     }
 
     if (!userInfo.email) {
-      throw new Error('email-not-accessible')
+      throw createCustomError(400, 'Oauth email not accessible')
     }
 
     const user = await event.context._authAdapter.user.findByEmail(userInfo.email)
@@ -72,16 +79,16 @@ export default defineEventHandler(async (event) => {
 
     if (user) {
       if (user.provider !== provider) {
-        throw new Error(`email-used-with-${user.provider}`)
+        throw createCustomError(403, 'Email already used')
       }
 
       if (user.suspended) {
-        throw new Error('account-suspended')
+        throw createCustomError(403, 'Account suspended')
       }
     }
     else {
       if (config.private.registration.enabled === false) {
-        throw new Error('registration-disabled')
+        throw createCustomError(500, 'Registration disabled')
       }
 
       const pictureKey = Object.keys(userInfo).find(el =>

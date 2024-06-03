@@ -1,19 +1,17 @@
-import { readBody, defineEventHandler } from 'h3'
+import { readValidatedBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken } from '../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    const { email, password } = await readBody(event)
-
     const schema = z.object({
       email: z.string().email(),
-      password: z.string(),
+      password: z.string().min(1),
     })
 
-    schema.parse({ email, password })
+    const { email, password } = await readValidatedBody(event, schema.parse)
 
     const user = await event.context._authAdapter.user.findByEmail(email)
 
@@ -23,18 +21,18 @@ export default defineEventHandler(async (event) => {
       || !user.password
       || !compareSync(password, user.password)
     ) {
-      throw new Error('wrong-credentials')
+      throw createCustomError(401, 'Wrong credentials')
     }
 
     if (
       !user.verified
       && config.private.registration.requireEmailVerification
     ) {
-      throw new Error('account-not-verified')
+      throw createCustomError(403, 'Account not verified')
     }
 
     if (user.suspended) {
-      throw new Error('account-suspended')
+      throw createCustomError(403, 'Account suspended')
     }
 
     const payload = await createRefreshToken(event, user.id)

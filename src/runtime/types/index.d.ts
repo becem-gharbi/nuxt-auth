@@ -48,6 +48,19 @@ export interface Adapter<Options = unknown> {
   }
 }
 
+export type KnownErrors =
+  'Unauthorized'
+  | 'Account suspended'
+  | 'Account not verified'
+  | 'Wrong credentials'
+  | 'Email already used'
+  | 'Wrong password'
+  | 'Password reset not requested'
+  | 'Oauth name not accessible'
+  | 'Oauth email not accessible'
+  | 'Registration disabled'
+  | 'Something went wrong'
+
 declare module '#app' {
   interface NuxtApp {
     $auth: {
@@ -149,8 +162,7 @@ export type PrivateConfigWithBackend = {
     maxAge?: number
   }
 
-  oauth?: Partial<
-    Record<
+  oauth?: Record<
       Provider,
       {
         clientId: string
@@ -161,7 +173,6 @@ export type PrivateConfigWithBackend = {
         userUrl: string
       }
     >
-  >
 
   email?: {
     from: string

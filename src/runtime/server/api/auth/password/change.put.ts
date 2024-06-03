@@ -1,27 +1,24 @@
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, hashSync, compareSync, handleError } from '../../../utils'
+import { getConfig, hashSync, compareSync, handleError, createUnauthorizedError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    const { currentPassword, newPassword } = await readBody(event)
-
-    const schema = z.object({
-      currentPassword: z.string(),
-      newPassword: z
-        .string()
-        .regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
-    })
-
-    schema.parse({ currentPassword, newPassword })
-
+    // TODO: add provider to access token payload
     const auth = event.context.auth
 
     if (!auth) {
-      throw new Error('unauthorized')
+      throw createUnauthorizedError()
     }
+
+    const schema = z.object({
+      currentPassword: z.string().min(1),
+      newPassword: z.string().regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
+    })
+
+    const { currentPassword, newPassword } = await readValidatedBody(event, schema.parse)
 
     const user = await event.context._authAdapter.user.findById(auth.userId)
 
@@ -31,7 +28,7 @@ export default defineEventHandler(async (event) => {
       || !user.password
       || !compareSync(currentPassword, user.password)
     ) {
-      throw new Error('wrong-password')
+      throw createCustomError(401, 'Wrong password')
     }
 
     const hashedPassword = hashSync(newPassword, 12)

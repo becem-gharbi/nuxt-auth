@@ -1,44 +1,27 @@
-import { ZodError } from 'zod'
 import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
+import type { KnownErrors } from '../../types'
 
-/**
- * Checks error type and set status code accordingly
- */
-export async function handleError(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error: any,
-  redirect?: { event: H3Event, url: string },
-) {
-  const h3Error = new H3Error('server-error')
-  h3Error.statusCode = 500
+export function createCustomError(statusCode: number, message: KnownErrors) {
+  return createError({ message, statusCode })
+}
 
-  if (error) {
-    //
-    if (error instanceof ZodError) {
-      h3Error.message = error.issues[0].path + ' | ' + error.issues[0].message
-      h3Error.statusCode = 400
-    }
-    else if (error.message === 'unauthorized') {
-      h3Error.message = 'unauthorized'
-      h3Error.statusCode = 401
+export function createUnauthorizedError() {
+  return createCustomError(401, 'Unauthorized')
+}
+
+export async function handleError(error: unknown, redirect?: { event: H3Event, url: string }) {
+  if (error instanceof H3Error) {
+    if (redirect) {
+      await sendRedirect(redirect.event, withQuery(redirect.url, { error: error.message }))
+      return
     }
     else {
-      // TODO: only return known messages
-      console.error(error.message)
-      h3Error.message = error.message
-      h3Error.statusCode = 400
+      throw error
     }
   }
 
-  if (redirect) {
-    await sendRedirect(
-      redirect.event,
-      withQuery(redirect.url, { error: h3Error.message }),
-    )
-    return
-  }
-
-  throw createError(h3Error)
+  console.error(error)
+  throw createCustomError(500, 'Something went wrong')
 }
