@@ -1,5 +1,6 @@
 import { jwtVerify, SignJWT } from 'jose'
 import type { JWTPayload } from 'jose'
+import { createUnauthorizedError } from '../error'
 
 async function encode(payload: JWTPayload, key: string, maxAge: number) {
   const secret = new TextEncoder().encode(key)
@@ -16,7 +17,7 @@ async function decode<T>(token: string, key: string) {
   const secret = new TextEncoder().encode(key)
 
   const { payload } = await jwtVerify<T>(token, secret).catch(() => {
-    throw new Error('unauthorized')
+    throw createUnauthorizedError()
   })
 
   return payload

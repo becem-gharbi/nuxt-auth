@@ -1,13 +1,13 @@
 import { defineEventHandler, getValidatedRouterParams } from 'h3'
 import { z } from 'zod'
-import { handleError } from '../../../../utils'
+import { handleError, createUnauthorizedError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
     const auth = event.context.auth
 
     if (!auth) {
-      throw new Error('unauthorized')
+      throw createUnauthorizedError()
     }
 
     const schema = z.object({
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(id)
 
     if (!refreshTokenEntity || refreshTokenEntity.userId !== auth.userId) {
-      throw new Error('unauthorized')
+      throw createUnauthorizedError()
     }
 
     await event.context._authAdapter.refreshToken.delete(id)

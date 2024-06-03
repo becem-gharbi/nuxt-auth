@@ -2,6 +2,13 @@ import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
 
+export function createUnauthorizedError() {
+  return createError({
+    message: 'unauthorized',
+    statusCode: 401,
+  })
+}
+
 /**
  * Checks error type and set status code accordingly
  */

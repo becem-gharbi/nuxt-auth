@@ -1,6 +1,6 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, hashSync, compareSync, handleError } from '../../../utils'
+import { getConfig, hashSync, compareSync, handleError, createUnauthorizedError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const auth = event.context.auth
 
     if (!auth) {
-      throw new Error('unauthorized')
+      throw createUnauthorizedError()
     }
 
     const schema = z.object({
