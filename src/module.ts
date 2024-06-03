@@ -1,8 +1,10 @@
 import { defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
-import type { ModuleOptions } from './runtime/types'
+import type { PrivateConfig, PublicConfig } from './runtime/types'
 import { setupBackend } from './setup/backend'
 import { setupFrontend } from './setup/frontend'
+
+export type ModuleOptions = PrivateConfig & PublicConfig
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
