@@ -1,9 +1,9 @@
 import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin({
-  enforce: 'pre',
   hooks: {
-    'auth:loggedIn': () => {
+    'auth:loggedIn': (state) => {
+      console.log('logged in', state)
     },
   },
 })

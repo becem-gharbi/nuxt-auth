@@ -45,8 +45,8 @@ export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
   const { resolve } = createResolver(import.meta.url)
 
   // Add nuxt plugins
-  addPlugin(resolve('../runtime/plugins/provider'), { append: true })
-  addPlugin(resolve('../runtime/plugins/flow'), { append: true })
+  addPlugin(resolve('../runtime/plugins/provider'))
+  addPlugin(resolve('../runtime/plugins/flow'))
 
   // Add composables
   addImports([
