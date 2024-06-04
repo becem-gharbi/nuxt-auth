@@ -4,12 +4,10 @@ import consola from 'consola'
 import { definePrismaAdapter } from '#auth'
 
 // @ts-expect-error importing an internal module
-import { defineNitroPlugin, useRuntimeConfig } from '#imports'
+import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
-  const config = useRuntimeConfig()
-
-  if (config.adapter === 'prisma') {
+  if (process.env.NUXT_ADAPTER === 'prisma') {
     consola.success('Running with Prisma adapter')
 
     const prisma = new PrismaClient()
