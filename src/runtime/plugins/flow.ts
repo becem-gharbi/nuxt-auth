@@ -1,19 +1,12 @@
-import common from '../middleware/common'
-import auth from '../middleware/auth'
-import guest from '../middleware/guest'
 import { useAuthToken } from '../composables/useAuthToken'
 import type { PublicConfig } from '../types'
-import { defineNuxtPlugin, addRouteMiddleware, useAuth, useRouter, useAuthSession } from '#imports'
+import { defineNuxtPlugin, useAuth, useRouter, useAuthSession } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const publicConfig = nuxtApp.$config.public.auth as PublicConfig
   const router = useRouter()
   const token = useAuthToken()
   const { _loggedInFlag } = useAuthSession()
-
-  addRouteMiddleware('common', common, { global: true })
-  addRouteMiddleware('auth', auth, { global: publicConfig.enableGlobalAuthMiddleware })
-  addRouteMiddleware('guest', guest)
 
   nuxtApp.hook('auth:loggedIn', (state) => {
     _loggedInFlag.value = state

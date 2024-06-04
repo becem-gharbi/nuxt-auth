@@ -3,6 +3,22 @@ import type { Response, UserBase, PublicConfig, AuthenticationData } from '../ty
 import { useAuthToken } from './useAuthToken'
 import { useRuntimeConfig, useRoute, useAuthSession, navigateTo, useNuxtApp } from '#imports'
 
+interface LoginInput {
+  email: string
+  password: string
+}
+
+interface RegisterInput {
+  email: string
+  password: string
+  name: string
+}
+
+interface ChangePasswordInput {
+  currentPassword: string
+  newPassword: string
+}
+
 export function useAuth() {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const token = useAuthToken()
@@ -11,17 +27,14 @@ export function useAuth() {
   /**
    * Login with email/password
    */
-  async function login(credentials: {
-    email: string
-    password: string
-  }): Promise<AuthenticationData> {
+  async function login(input: LoginInput): Promise<AuthenticationData> {
     const res = await $fetch<AuthenticationData>('/api/auth/login', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'include',
       body: {
-        email: credentials.email,
-        password: credentials.password,
+        email: input.email,
+        password: input.password,
       },
     })
 
@@ -97,15 +110,15 @@ export function useAuth() {
     }
   }
 
-  async function register(userInfo: {
-    email: string
-    password: string
-    name: string
-  }): Promise<Response> {
+  async function register(input: RegisterInput): Promise<Response> {
     return await $fetch<Response>('/api/auth/register', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
-      body: userInfo,
+      body: {
+        name: input.name,
+        email: input.email,
+        password: input.password,
+      },
       credentials: 'omit',
     })
   }
@@ -144,10 +157,7 @@ export function useAuth() {
     })
   }
 
-  function changePassword(input: {
-    currentPassword: string
-    newPassword: string
-  }): Promise<Response> {
+  function changePassword(input: ChangePasswordInput): Promise<Response> {
     return useNuxtApp().$auth.fetch<Response>('/api/auth/password/change', {
       method: 'PUT',
       body: {
