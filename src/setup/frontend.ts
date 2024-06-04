@@ -1,4 +1,4 @@
-import { addPlugin, createResolver, addImports } from '@nuxt/kit'
+import { addPlugin, createResolver, addImports, addRouteMiddleware } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions } from '../runtime/types'
@@ -59,4 +59,21 @@ export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
       from: resolve('../runtime/composables/useAuthSession'),
     },
   ])
+
+  addRouteMiddleware({
+    name: 'auth',
+    path: resolve('../runtime/middleware/auth'),
+    global: !!options.enableGlobalAuthMiddleware,
+  })
+
+  addRouteMiddleware({
+    name: 'guest',
+    path: resolve('../runtime/middleware/guest'),
+  })
+
+  addRouteMiddleware({
+    name: '_auth-common',
+    path: resolve('../runtime/middleware/common'),
+    global: true,
+  })
 }
