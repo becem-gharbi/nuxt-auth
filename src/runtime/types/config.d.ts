@@ -12,6 +12,37 @@ interface MailHookProvider {
   name: 'hook'
 }
 
+type OauthBase = Record<string, {
+  clientId: string
+  clientSecret: string
+  scopes: string
+  authorizeUrl: string
+  tokenUrl: string
+  userUrl: string
+}>
+
+type OauthGoogle = {
+  google?: {
+    clientId: string
+    clientSecret: string
+    scopes: 'email profile'
+    authorizeUrl: 'https://accounts.google.com/o/oauth2/auth'
+    tokenUrl: 'https://accounts.google.com/o/oauth2/token'
+    userUrl: 'https://www.googleapis.com/oauth2/v3/userinfo'
+  }
+}
+
+type OauthGitHub = {
+  github?: {
+    clientId: string
+    clientSecret: string
+    scopes: 'user:email'
+    authorizeUrl: 'https://github.com/login/oauth/authorize'
+    tokenUrl: 'https://github.com/login/oauth/access_token'
+    userUrl: 'https://api.github.com/user'
+  }
+}
+
 export type PrivateConfigWithoutBackend = {
   backendEnabled: false
   refreshToken: {
@@ -34,15 +65,7 @@ export type PrivateConfigWithBackend = {
     maxAge?: number
   }
 
-  oauth?: Record<string, {
-    clientId: string
-    clientSecret: string
-    scopes: string
-    authorizeUrl: string
-    tokenUrl: string
-    userUrl: string
-  }
-    >
+  oauth?: OauthBase & OauthGoogle & OauthGitHub
 
   email?: {
     from: string
