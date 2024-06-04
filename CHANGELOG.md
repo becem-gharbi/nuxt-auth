@@ -1,6 +1,46 @@
 # Changelog
 
-## vv3.0.0-beta.2
+## v3.0.0-beta.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/vv3.0.0-beta.2...vv3.0.0-beta.3)
+
+### 🚀 Enhancements
+
+- Add `auth:fetchError` hook ([ab89ac9](https://github.com/becem-gharbi/nuxt-auth/commit/ab89ac9))
+- Feat: add `emailValidationRegex` for email validation on registration ([#37](https://github.com/becem-gharbi/nuxt-auth/pull/37))
+- Add `prisma` adapter ([#38](https://github.com/becem-gharbi/nuxt-auth/pull/38))
+- Add `unstorage` adapter ([#39](https://github.com/becem-gharbi/nuxt-auth/pull/39))
+- Allow augmenting adapter types e.g User ([916ab82](https://github.com/becem-gharbi/nuxt-auth/commit/916ab82))
+
+### 🩹 Fixes
+
+- Disallow token refresh when account not verified ([5672407](https://github.com/becem-gharbi/nuxt-auth/commit/5672407))
+
+### 💅 Refactors
+
+- Ensure auth refresh flow runs at the end ([#36](https://github.com/becem-gharbi/nuxt-auth/pull/36))
+
+### 🌊 Types
+
+- Define types of route middlewares `auth` and `guest` ([#35](https://github.com/becem-gharbi/nuxt-auth/pull/35))
+- Add known oauth options for `google` and `github` ([06b9f82](https://github.com/becem-gharbi/nuxt-auth/commit/06b9f82))
+- Resolve `provider` from `User` ([68a357f](https://github.com/becem-gharbi/nuxt-auth/commit/68a357f))
+
+### 🏡 Chore
+
+- ⚠️  Do not convert `createdAt` `updatedAt` to Date on user state ([82fc63c](https://github.com/becem-gharbi/nuxt-auth/commit/82fc63c))
+- **playground:** Add adapter selection ([580b821](https://github.com/becem-gharbi/nuxt-auth/commit/580b821))
+- **playground:** Avoid editing runtime config ([b48e24c](https://github.com/becem-gharbi/nuxt-auth/commit/b48e24c))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Do not convert `createdAt` `updatedAt` to Date on user state ([82fc63c](https://github.com/becem-gharbi/nuxt-auth/commit/82fc63c))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+
+## v3.0.0-beta.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/ce6e049f69c74db2251dc4040f44c4ab4914bafe...vv3.0.0-beta.2)
 
