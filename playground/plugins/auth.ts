@@ -5,5 +5,8 @@ export default defineNuxtPlugin({
     'auth:loggedIn': (state) => {
       console.log('logged in', state)
     },
+    'auth:fetchError': (response) => {
+      console.log('fetch error', response?._data?.message)
+    },
   },
 })

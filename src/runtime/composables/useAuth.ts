@@ -36,6 +36,9 @@ export function useAuth() {
         email: input.email,
         password: input.password,
       },
+      async  onResponseError({ response }) {
+        await callHook('auth:fetchError', response)
+      },
     })
 
     token.value = {
@@ -88,6 +91,9 @@ export function useAuth() {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'include',
+      async  onResponseError({ response }) {
+        await callHook('auth:fetchError', response)
+      },
     }).finally(_onLogout)
   }
 
@@ -120,6 +126,9 @@ export function useAuth() {
         password: input.password,
       },
       credentials: 'omit',
+      async  onResponseError({ response }) {
+        await callHook('auth:fetchError', response)
+      },
     })
   }
 
@@ -130,6 +139,9 @@ export function useAuth() {
       credentials: 'omit',
       body: {
         email,
+      },
+      async  onResponseError({ response }) {
+        await callHook('auth:fetchError', response)
       },
     })
   }
@@ -143,6 +155,9 @@ export function useAuth() {
         password,
         token: useRoute().query.token,
       },
+      async  onResponseError({ response }) {
+        await callHook('auth:fetchError', response)
+      },
     })
   }
 
@@ -153,6 +168,9 @@ export function useAuth() {
       credentials: 'omit',
       body: {
         email,
+      },
+      async  onResponseError({ response }) {
+        await callHook('auth:fetchError', response)
       },
     })
   }

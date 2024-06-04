@@ -8,6 +8,7 @@ export function useAuthSession() {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const privateConfig = useRuntimeConfig().auth as PrivateConfig
+  const { callHook } = useNuxtApp()
 
   const _refreshToken = {
     get: () => import.meta.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
@@ -40,6 +41,9 @@ export function useAuthSession() {
           // Cloudflare Workers does not support "credentials" field
           ...(import.meta.client ? { credentials: 'include' } : {}),
           headers: import.meta.server ? reqHeaders : {},
+          async  onResponseError({ response }) {
+            await callHook('auth:fetchError', response)
+          },
         })
         .then((res) => {
           if (import.meta.server) {

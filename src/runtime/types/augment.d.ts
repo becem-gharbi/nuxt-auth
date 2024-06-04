@@ -1,3 +1,5 @@
+import type { FetchError } from 'ofetch'
+import type { H3Error } from 'h3'
 import type { AccessTokenPayload, MailMessage } from './common'
 import type { Adapter } from './adapter'
 
@@ -9,7 +11,8 @@ declare module '#app' {
     }
   }
   interface RuntimeNuxtHooks {
-    'auth:loggedIn': (state: boolean) => void
+    'auth:loggedIn': (state: boolean) => Promise<void> | void
+    'auth:fetchError': (response: FetchError<H3Error>['response']) => Promise<void> | void
   }
 }
 
@@ -41,4 +44,4 @@ declare module 'nitropack' {
   }
 }
 
-export {}
+export { }

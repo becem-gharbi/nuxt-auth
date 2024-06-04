@@ -4,6 +4,7 @@ import { defineNuxtPlugin, useAuthSession, useRequestHeaders } from '#imports'
 
 export default defineNuxtPlugin({
   name: 'auth:provider',
+  enforce: 'post',
 
   setup: (nuxtApp) => {
     const publicConfig = nuxtApp.$config.public.auth as PublicConfig
@@ -25,6 +26,10 @@ export default defineNuxtPlugin({
         }
 
         options.credentials ||= 'omit'
+      },
+
+      async onResponseError({ response }) {
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     })
 
