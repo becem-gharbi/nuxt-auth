@@ -3,6 +3,10 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   modules: ['../src/module'],
 
+  runtimeConfig: {
+    adapter: 'unstorage',
+  },
+
   ssr: process.env.NUXT_SSR !== 'false',
 
   app: {

@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:C:\\Users\\becem\\Desktop\\Work\\nuxt-auth\\playground\\prisma_data\\.db"
 }
 
 model User {

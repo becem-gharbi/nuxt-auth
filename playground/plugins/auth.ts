@@ -1,12 +1,13 @@
+import consola from 'consola'
 import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin({
   hooks: {
     'auth:loggedIn': (state) => {
-      console.log('logged in', state)
+      consola.info('logged in', state)
     },
     'auth:fetchError': (response) => {
-      console.log('fetch error', response?._data?.message)
+      consola.info('fetch error', response?._data?.message)
     },
   },
 })
