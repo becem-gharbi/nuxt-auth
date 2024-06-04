@@ -24,10 +24,7 @@ export default defineEventHandler(async (event) => {
       throw createCustomError(401, 'Wrong credentials')
     }
 
-    if (
-      !user.verified
-      && config.private.registration.requireEmailVerification
-    ) {
+    if (!user.verified && config.private.registration.requireEmailVerification) {
       throw createCustomError(403, 'Account not verified')
     }
 

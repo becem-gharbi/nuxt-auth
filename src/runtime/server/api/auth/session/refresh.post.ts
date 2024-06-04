@@ -1,8 +1,10 @@
 import { defineEventHandler } from 'h3'
-import { createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError, createUnauthorizedError, createCustomError } from '../../../utils'
+import { getConfig, createAccessToken, getRefreshTokenFromCookie, setRefreshTokenCookie, updateRefreshToken, verifyRefreshToken, deleteRefreshTokenCookie, handleError, createUnauthorizedError, createCustomError } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
+    const config = getConfig()
+
     const refreshToken = getRefreshTokenFromCookie(event)
 
     const payload = await verifyRefreshToken(event, refreshToken ?? '')
@@ -15,6 +17,10 @@ export default defineEventHandler(async (event) => {
 
     if (user.suspended) {
       throw createCustomError(403, 'Account suspended')
+    }
+
+    if (!user.verified && config.private.registration.requireEmailVerification) {
+      throw createCustomError(403, 'Account not verified')
     }
 
     const newRefreshToken = await updateRefreshToken(event, payload.id, user.id)
