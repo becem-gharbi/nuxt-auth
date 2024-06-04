@@ -1,4 +1,4 @@
-export interface UserBase {
+export interface User {
   id: number | string
   name: string
   email: string
@@ -13,37 +13,66 @@ export interface UserBase {
   updatedAt: Date
 }
 
-export interface RefreshTokenBase {
+export interface RefreshToken {
   id: number | string
   uid: string
-  userId: number | string
+  userId: User['id']
   userAgent: string | null
   createdAt: Date
   updatedAt: Date
 }
 
-type UserCreateInput = Pick<UserBase, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
-type UserCreateOutput = Pick<UserBase, 'id'>
-type UserUpdateInput = Omit<Partial<UserBase>, 'id'>
-type RefreshTokenCreateInput = Pick<RefreshTokenBase, 'uid' | 'userAgent' | 'userId'>
-type RefreshTokenCreateOutput = Pick<RefreshTokenBase, 'id'>
-type RefreshTokenUpdateInput = Pick<RefreshTokenBase, 'uid'>
+export interface Session {
+  id: RefreshToken['id']
+  current: boolean
+  ua: string | null
+  updatedAt: Date
+  createdAt: Date
+}
+
+export type AccessTokenPayload = {
+  userId: User['id']
+  sessionId: RefreshToken['id']
+  userRole: User['role']
+  fingerprint: string | null
+  provider: User['provider']
+}
+
+export type RefreshTokenPayload = {
+  id: RefreshToken['id']
+  uid: string
+  userId: User['id']
+}
+
+declare module 'h3' {
+  interface H3EventContext {
+    _authAdapter: Adapter
+    auth?: AccessTokenPayload
+  }
+}
+
+type UserCreateInput = Pick<User, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
+type UserCreateOutput = Pick<User, 'id'>
+type UserUpdateInput = Omit<Partial<User>, 'id'>
+type RefreshTokenCreateInput = Pick<RefreshToken, 'uid' | 'userAgent' | 'userId'>
+type RefreshTokenCreateOutput = Pick<RefreshToken, 'id'>
+type RefreshTokenUpdateInput = Pick<RefreshToken, 'uid'>
 
 export interface Adapter<Options = unknown> {
   name: string
   options?: Options
   user: {
-    findById: (id: UserBase['id']) => Promise<UserBase | null>
-    findByEmail: (email: UserBase['email']) => Promise<UserBase | null>
+    findById: (id: User['id']) => Promise<User | null>
+    findByEmail: (email: User['email']) => Promise<User | null>
     create: (input: UserCreateInput) => Promise<UserCreateOutput>
-    update: (id: UserBase['id'], input: UserUpdateInput) => Promise<void>
+    update: (id: User['id'], input: UserUpdateInput) => Promise<void>
   }
   refreshToken: {
-    findById: (id: RefreshTokenBase['id']) => Promise<RefreshTokenBase | null>
-    findManyByUserId: (id: UserBase['id']) => Promise<RefreshTokenBase[]>
+    findById: (id: RefreshToken['id']) => Promise<RefreshToken | null>
+    findManyByUserId: (id: User['id']) => Promise<RefreshToken[]>
     create: (input: RefreshTokenCreateInput) => Promise<RefreshTokenCreateOutput>
-    update: (id: RefreshTokenBase['id'], input: RefreshTokenUpdateInput) => Promise<void>
-    delete: (id: RefreshTokenBase['id']) => Promise<void>
-    deleteManyByUserId: (id: UserBase['id'], excludeId?: RefreshTokenBase['id']) => Promise<void>
+    update: (id: RefreshToken['id'], input: RefreshTokenUpdateInput) => Promise<void>
+    delete: (id: RefreshToken['id']) => Promise<void>
+    deleteManyByUserId: (id: User['id'], excludeId?: RefreshToken['id']) => Promise<void>
   }
 }

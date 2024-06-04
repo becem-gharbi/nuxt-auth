@@ -1,12 +1,12 @@
 import { randomUUID } from 'uncrypto'
 import { setCookie, getCookie, deleteCookie, getHeader } from 'h3'
 import type { H3Event } from 'h3'
-import type { RefreshTokenPayload, UserBase, RefreshTokenBase } from '../../../types'
 import { getConfig } from '../config'
 import { createUnauthorizedError } from '../error'
 import { encode, decode } from './jwt'
+import type { User, RefreshToken, RefreshTokenPayload } from '#build/types/auth_adapter'
 
-export async function createRefreshToken(event: H3Event, userId: UserBase['id']) {
+export async function createRefreshToken(event: H3Event, userId: User['id']) {
   const userAgent = getHeader(event, 'user-agent')
 
   const uid = randomUUID()
@@ -47,7 +47,7 @@ export async function decodeRefreshToken(refreshToken: string) {
   return payload
 }
 
-export async function updateRefreshToken(event: H3Event, id: RefreshTokenBase['id'], userId: UserBase['id']) {
+export async function updateRefreshToken(event: H3Event, id: RefreshToken['id'], userId: User['id']) {
   const uid = randomUUID()
 
   await event.context._authAdapter.refreshToken.update(id, {
