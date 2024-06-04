@@ -2,7 +2,7 @@ import { defineEventHandler, getValidatedQuery, sendRedirect, getValidatedRouter
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, generateAvatar, handleError, signRefreshToken, createCustomError } from '../../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, handleError, signRefreshToken, createCustomError, createAccount } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
@@ -77,10 +77,6 @@ export default defineEventHandler(async (event) => {
       }
     }
     else {
-      if (config.private.registration.enabled === false) {
-        throw createCustomError(500, 'Registration disabled')
-      }
-
       const pictureKey = Object.keys(userInfo).find(el =>
         [
           'avatar',
@@ -94,14 +90,12 @@ export default defineEventHandler(async (event) => {
 
       const picture = pictureKey ? userInfo[pictureKey] : null
 
-      const newUser = await event.context._authAdapter.user.create({
+      const newUser = await createAccount(event, {
         provider,
-        password: null,
         verified: true,
         email: userInfo.email,
         name: userInfo.name,
-        role: config.private.registration.defaultRole,
-        picture: picture ?? generateAvatar(userInfo.name),
+        picture,
       })
 
       userId = newUser.id
