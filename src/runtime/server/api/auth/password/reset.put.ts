@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   try {
     const schema = z.object({
       token: z.string().min(1),
-      password: z.string().regex(new RegExp(config.private.registration.passwordValidationRegex ?? '')),
+      password: z.string().regex(new RegExp(config.private.registration.passwordValidationRegex!)),
     })
 
     const { password, token } = await readValidatedBody(event, schema.parse)
