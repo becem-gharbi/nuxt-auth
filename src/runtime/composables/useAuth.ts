@@ -54,7 +54,7 @@ export function useAuth() {
   /**
    * Login via oauth provider
    */
-  async function loginWithProvider(provider: string) {
+  async function loginWithProvider(provider: User['provider']) {
     // The protected page the user has visited before redirect to login page
     const returnToPath = useRoute().query.redirect?.toString()
 
