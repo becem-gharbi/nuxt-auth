@@ -1,6 +1,6 @@
 import type { NitroApp } from 'nitropack'
 import { PrismaClient } from '@prisma/client'
-import { prismaAdapter } from '../utils/adapter'
+import { definePrismaAdapter } from '#auth'
 
 // @ts-expect-error importing an internal module
 import { defineNitroPlugin } from '#imports'
@@ -8,7 +8,7 @@ import { defineNitroPlugin } from '#imports'
 export default defineNitroPlugin((nitroApp: NitroApp) => {
   const client = new PrismaClient()
 
-  const adapter = prismaAdapter(client)
+  const adapter = definePrismaAdapter(client)
 
   nitroApp.hooks.hook('request', (event) => {
     event.context._authAdapter = adapter

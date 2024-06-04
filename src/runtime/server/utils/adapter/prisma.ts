@@ -1,7 +1,7 @@
 import type { PrismaClient, User, RefreshToken } from '@prisma/client'
-import { defineAdapter } from '#auth'
+import { defineAdapter } from './index'
 
-export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
+export const definePrismaAdapter = defineAdapter<PrismaClient>((client) => {
   if (!client) {
     throw new Error('Prisma client not defined')
   }
@@ -45,6 +45,7 @@ export const prismaAdapter = defineAdapter<PrismaClient>((client) => {
         })
       },
     },
+
     refreshToken: {
       async findById(id) {
         return client.refreshToken.findUnique({

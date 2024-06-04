@@ -1,4 +1,4 @@
-import type { Adapter } from '../../types'
+import type { Adapter } from '../../../types'
 
 type AdapterFactory<Options> = (opts?: Options) => Adapter<Options>
 
