@@ -74,14 +74,9 @@ export function useAuth() {
   async function fetchUser() {
     const { user } = useAuthSession()
     try {
-      const data = await useNuxtApp().$auth.fetch<UserBase>('/api/auth/me')
-      user.value = {
-        ...data,
-        createdAt: new Date(data.createdAt),
-        updatedAt: new Date(data.updatedAt),
-      }
+      user.value = await useNuxtApp().$auth.fetch<UserBase>('/api/auth/me')
     }
-    catch (e) {
+    catch (err) {
       user.value = null
     }
   }

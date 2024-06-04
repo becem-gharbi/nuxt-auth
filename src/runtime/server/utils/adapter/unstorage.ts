@@ -27,8 +27,8 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
         await client.setItem(`users:${id}`, {
           ...data,
           id,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         })
         return { id }
       },
@@ -38,7 +38,7 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
         await client.setItem(`users:${id}`, {
           ...item,
           ...data,
-          updatedAt: Date.now(),
+          updatedAt: new Date(),
         })
       },
     },
@@ -62,8 +62,8 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
           {
             ...data,
             id,
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
           })
         return { id }
       },
@@ -73,7 +73,7 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
         await client.setItem(`refresh_tokens:${id}`, {
           ...item,
           ...data,
-          updatedAt: Date.now(),
+          updatedAt: new Date(),
         })
       },
 
