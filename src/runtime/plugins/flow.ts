@@ -63,7 +63,6 @@ export default defineNuxtPlugin({
      * Calls loggedIn hook and sets the loggedIn flag in localStorage
      */
     if (token.value) {
-      console.log('logged in from flow plugin')
       await nuxtApp.callHook('auth:loggedIn', true)
     }
     else {
