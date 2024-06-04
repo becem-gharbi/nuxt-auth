@@ -1,6 +1,10 @@
-import type { ResetPasswordPayload } from '../../../types'
 import { getConfig } from '../config'
 import { encode, decode } from './jwt'
+import type { User } from '#build/types/auth_adapter'
+
+type ResetPasswordPayload = {
+  userId: User['id']
+}
 
 export async function createResetPasswordToken(payload: ResetPasswordPayload) {
   const config = getConfig()

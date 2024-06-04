@@ -1,6 +1,10 @@
-import type { EmailVerifyPayload } from '../../../types'
 import { getConfig } from '../config'
 import { decode, encode } from './jwt'
+import type { User } from '#build/types/auth_adapter'
+
+type EmailVerifyPayload = {
+  userId: User['id']
+}
 
 export async function createEmailVerifyToken(payload: EmailVerifyPayload) {
   const config = getConfig()

@@ -1,7 +1,8 @@
 import { joinURL } from 'ufo'
-import type { Response, UserBase, PublicConfig, AuthenticationData } from '../types'
+import type { Response, PublicConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
 import { useRuntimeConfig, useRoute, useAuthSession, navigateTo, useNuxtApp } from '#imports'
+import type { User } from '#build/types/auth_adapter'
 
 interface LoginInput {
   email: string
@@ -53,7 +54,7 @@ export function useAuth() {
   /**
    * Login via oauth provider
    */
-  async function loginWithProvider(provider: string) {
+  async function loginWithProvider(provider: User['provider']) {
     // The protected page the user has visited before redirect to login page
     const returnToPath = useRoute().query.redirect?.toString()
 
@@ -74,7 +75,7 @@ export function useAuth() {
   async function fetchUser() {
     const { user } = useAuthSession()
     try {
-      user.value = await useNuxtApp().$auth.fetch<UserBase>('/api/auth/me')
+      user.value = await useNuxtApp().$auth.fetch<User>('/api/auth/me')
     }
     catch (err) {
       user.value = null

@@ -2,13 +2,14 @@ import type { H3Event } from 'h3'
 import { getConfig } from './config'
 import { generateAvatar } from './avatar'
 import { createCustomError } from './error'
+import type { User } from '#build/types/auth_adapter'
 
 interface CreateAccountInput {
   name: string
   email: string
   password?: string
   verified?: boolean
-  provider?: string
+  provider?: User['provider']
   picture?: string
 }
 

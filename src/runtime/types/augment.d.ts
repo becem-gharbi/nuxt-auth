@@ -1,7 +1,6 @@
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
-import type { AccessTokenPayload, MailMessage } from './common'
-import type { Adapter } from './adapter'
+import type { MailMessage } from './common'
 
 declare module '#app' {
   interface NuxtApp {
@@ -28,13 +27,6 @@ declare module 'vue' {
       fetch: typeof $fetch
       _refreshPromise: Promise<void> | null
     }
-  }
-}
-
-declare module 'h3' {
-  interface H3EventContext {
-    _authAdapter: Adapter
-    auth?: AccessTokenPayload
   }
 }
 

@@ -1,7 +1,7 @@
 import type { Storage } from 'unstorage'
 import { randomUUID } from 'uncrypto'
-import type { UserBase, RefreshTokenBase } from '../../../types'
 import { defineAdapter } from './utils'
+import type { User, RefreshToken } from '#build/types/auth_adapter'
 
 export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
   if (!client) {
@@ -13,11 +13,11 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
 
     user: {
       async findById(id) {
-        return client.getItem<UserBase>(`users:${id}`)
+        return client.getItem<User>(`users:${id}`)
       },
 
       async findByEmail(email) {
-        const itemsAll = await client.getKeys('users').then(keys => client.getItems<UserBase>(keys))
+        const itemsAll = await client.getKeys('users').then(keys => client.getItems<User>(keys))
         const itemsFiltered = itemsAll.find(item => item.value.email === email)
         return itemsFiltered?.value ?? null
       },
@@ -45,12 +45,12 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
 
     refreshToken: {
       async findById(id) {
-        return client.getItem<RefreshTokenBase>(`refresh_tokens:${id}`)
+        return client.getItem<RefreshToken>(`refresh_tokens:${id}`)
       },
 
       async findManyByUserId(id) {
         const items = await client.getKeys('refresh_tokens').then((keys) => {
-          return client.getItems<RefreshTokenBase>(keys)
+          return client.getItems<RefreshToken>(keys)
         })
         const itemsFiltered = items.filter(item => item.value.userId === id)
         return itemsFiltered.map(item => item.value)

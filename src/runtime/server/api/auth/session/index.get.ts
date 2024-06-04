@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'h3'
 import { handleError, createUnauthorizedError } from '../../../utils'
-import type { Session } from '../../../../types'
+import type { Session } from '#build/types/auth_adapter'
 
 export default defineEventHandler(async (event) => {
   try {
