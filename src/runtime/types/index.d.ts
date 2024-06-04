@@ -73,6 +73,15 @@ declare module '#app' {
   }
 }
 
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $auth: {
+      fetch: typeof $fetch
+      _refreshPromise: Promise<void> | null
+    }
+  }
+}
+
 declare module 'h3' {
   interface H3EventContext {
     _authAdapter: Adapter
