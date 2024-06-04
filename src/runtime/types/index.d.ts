@@ -73,6 +73,12 @@ declare module '#app' {
   }
 }
 
+declare module 'vue-router' {
+  interface RouteMeta {
+    auth?: boolean
+  }
+}
+
 declare module 'vue' {
   interface ComponentCustomProperties {
     $auth: {
