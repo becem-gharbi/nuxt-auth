@@ -59,6 +59,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
           `  const sendMail: typeof import('${resolve('../runtime/server/utils')}').sendMail`,
           `  const handleError: typeof import('${resolve('../runtime/server/utils')}').handleError`,
           `  const defineAdapter: typeof import('${resolve('../runtime/server/utils')}').defineAdapter`,
+          `  const definePrismaAdapter: typeof import('${resolve('../runtime/server/utils')}').definePrismaAdapter`,
           '}',
       ].join('\n'),
   })
