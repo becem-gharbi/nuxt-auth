@@ -43,7 +43,8 @@ export default defineNuxtModule<ModuleOptions>({
       enabled: true,
       defaultRole: 'user',
       requireEmailVerification: true,
-      passwordValidationRegex: '',
+      passwordValidationRegex: '^.+$',
+      emailValidationRegex: '^.+$',
     },
   },
 

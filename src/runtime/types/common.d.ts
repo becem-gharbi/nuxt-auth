@@ -6,6 +6,7 @@ export type KnownErrors =
   | 'Account not verified'
   | 'Wrong credentials'
   | 'Email already used'
+  | 'Email not accepted'
   | 'Wrong password'
   | 'Password reset not requested'
   | 'Oauth name not accessible'
