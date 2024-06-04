@@ -19,6 +19,12 @@ export async function createAccount(event: H3Event, data: CreateAccountInput) {
     throw createCustomError(500, 'Registration disabled')
   }
 
+  const regex = new RegExp(config.private.registration.emailValidationRegex ?? '')
+
+  if (!regex.test(data.email)) {
+    throw createCustomError(403, 'Email not accepted')
+  }
+
   return event.context._authAdapter.user.create({
     name: data.name,
     email: data.email,
