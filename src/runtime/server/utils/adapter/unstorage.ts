@@ -13,30 +13,30 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
 
     user: {
       async findById(id) {
-        return client.getItem<User>(`users:${id}`)
+        return client.getItem<User>(`users:id:${id}:data`)
       },
 
       async findByEmail(email) {
-        const itemsAll = await client.getKeys('users').then(keys => client.getItems<User>(keys))
-        const itemsFiltered = itemsAll.find(item => item.value.email === email)
-        return itemsFiltered?.value ?? null
+        const id = await client.getItem<string>(`users:email:${email}`)
+        return id ? this.findById(id) : null
       },
 
       async create(data) {
         const id = randomUUID()
-        await client.setItem(`users:${id}`, {
+        await client.setItem(`users:id:${id}:data`, {
           ...data,
           id,
           createdAt: new Date(),
           updatedAt: new Date(),
         })
+        await client.setItem(`users:email:${data.email}`, id)
         return { id }
       },
 
       async update(id, data) {
-        const item = await this.findById(id)
-        await client.setItem(`users:${id}`, {
-          ...item,
+        const user = await this.findById(id)
+        await client.setItem(`users:id:${id}:data`, {
+          ...user,
           ...data,
           updatedAt: new Date(),
         })
@@ -44,21 +44,20 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
     },
 
     refreshToken: {
-      async findById(id) {
-        return client.getItem<RefreshToken>(`refresh_tokens:${id}`)
+      async findById(id, userId) {
+        return client.getItem<RefreshToken>(`users:id:${userId}:tokens:${id}`)
       },
 
-      async findManyByUserId(id) {
-        const items = await client.getKeys('refresh_tokens').then((keys) => {
+      async findManyByUserId(userId) {
+        const tokens = await client.getKeys(`users:id:${userId}:tokens`).then((keys) => {
           return client.getItems<RefreshToken>(keys)
         })
-        const itemsFiltered = items.filter(item => item.value.userId === id)
-        return itemsFiltered.map(item => item.value)
+        return tokens.map(token => token.value)
       },
 
       async create(data) {
         const id = randomUUID()
-        await client.setItem(`refresh_tokens:${id}`,
+        await client.setItem(`users:id:${data.userId}:tokens:${id}`,
           {
             ...data,
             id,
@@ -69,23 +68,23 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
       },
 
       async update(id, data) {
-        const item = await this.findById(id, data.userId)
-        await client.setItem(`refresh_tokens:${id}`, {
-          ...item,
+        const token = await this.findById(id, data.userId)
+        await client.setItem(`users:id:${data.userId}:tokens:${id}`, {
+          ...token,
           ...data,
           updatedAt: new Date(),
         })
       },
 
-      async delete(id) {
-        await client.removeItem(`refresh_tokens:${id}`)
+      async delete(id, userId) {
+        await client.removeItem(`users:id:${userId}:tokens:${id}`)
       },
 
-      async deleteManyByUserId(id, excludeId) {
-        const items = await this.findManyByUserId(id)
-        const itemsFiltered = items.filter(item => item.id !== excludeId)
-        await Promise.all(itemsFiltered.map((item) => {
-          return client.removeItem(`refresh_tokens:${item.id}`)
+      async deleteManyByUserId(userId, excludeId) {
+        const tokens = await this.findManyByUserId(userId)
+        const tokensFiltered = tokens.filter(token => token.id !== excludeId)
+        await Promise.all(tokensFiltered.map((token) => {
+          return client.removeItem(`users:id:${userId}:tokens:${token.id}`)
         }))
       },
     },
