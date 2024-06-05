@@ -1,6 +1,6 @@
 import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
-import type { Response, PublicConfig, PrivateConfig, AuthenticationData } from '../types'
+import type { ResponseOK, PublicConfig, PrivateConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
 import type { User, Session } from '#build/types/auth_adapter'
@@ -29,6 +29,13 @@ export function useAuthSession() {
 
   const user: Ref<User | null | undefined> = useState<User | null | undefined>('auth-user', () => null)
 
+  /**
+   * Asynchronously refreshes the authentication session.
+   * If the request is successful, updates the access token and its expiration time.
+   * If the request fails, clears the refresh token and logs out the user.
+   *
+   * @return {Promise<void>} A promise that resolves when the refresh operation is complete.
+   */
   async function _refresh() {
     async function handler() {
       const token = useAuthToken()
@@ -76,8 +83,9 @@ export function useAuthSession() {
   }
 
   /**
-   * Async get access token
-   * @returns Fresh access token (refreshed if expired)
+   * Retrieves the access token.
+   *
+   * @return {Promise<string | null | undefined>} The access token, or null if it is expired and cannot be refreshed, or undefined if the token is not set.
    */
   async function getAccessToken(): Promise<string | null | undefined> {
     const token = useAuthToken()
@@ -90,25 +98,32 @@ export function useAuthSession() {
   }
 
   /**
-   * Removes all stored sessions of the active user
+   * Revokes all active sessions except the current one, enhancing security by invalidating unused sessions.
+   *
+   * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of all sessions.
    */
-  function revokeAllSessions(): Promise<Response> {
-    return useNuxtApp().$auth.fetch<Response>('/api/auth/session/revoke/all', {
+  function revokeAllSessions(): Promise<ResponseOK> {
+    return useNuxtApp().$auth.fetch<ResponseOK>('/api/auth/session/revoke/all', {
       method: 'DELETE',
     })
   }
 
   /**
-   * Removes a single stored session of the active user
+   * Revokes a single stored session of the active user.
+   *
+   * @param {Session['id']} id - The ID of the session to revoke.
+   * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of the session.
    */
-  function revokeSession(id: Session['id']): Promise<Response> {
-    return useNuxtApp().$auth.fetch<Response>(`/api/auth/session/revoke/${id}`, {
+  function revokeSession(id: Session['id']): Promise<ResponseOK> {
+    return useNuxtApp().$auth.fetch<ResponseOK>(`/api/auth/session/revoke/${id}`, {
       method: 'DELETE',
     })
   }
 
   /**
-   * Get all stored sessions of the active user
+   * Retrieves information about all active sessions, offering insights into the user's session history.
+   *
+   * @return {Promise<Session[]>} A promise that resolves with an array of Session objects representing all active sessions. The current session is moved to the top of the array.
    */
   async function getAllSessions(): Promise<Session[]> {
     const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/session')
