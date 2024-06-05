@@ -69,7 +69,7 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((client) => {
       },
 
       async update(id, data) {
-        const item = await this.findById(id)
+        const item = await this.findById(id, data.userId)
         await client.setItem(`refresh_tokens:${id}`, {
           ...item,
           ...data,

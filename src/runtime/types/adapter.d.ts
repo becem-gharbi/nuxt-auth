@@ -56,7 +56,7 @@ type UserCreateOutput = Pick<User, 'id'>
 type UserUpdateInput = Omit<Partial<User>, 'id'>
 type RefreshTokenCreateInput = Pick<RefreshToken, 'uid' | 'userAgent' | 'userId'>
 type RefreshTokenCreateOutput = Pick<RefreshToken, 'id'>
-type RefreshTokenUpdateInput = Pick<RefreshToken, 'uid'>
+type RefreshTokenUpdateInput = Pick<RefreshToken, 'uid' | 'userId'>
 
 export interface Adapter<Options = unknown> {
   name: string
@@ -68,11 +68,11 @@ export interface Adapter<Options = unknown> {
     update: (id: User['id'], input: UserUpdateInput) => Promise<void>
   }
   refreshToken: {
-    findById: (id: RefreshToken['id']) => Promise<RefreshToken | null>
+    findById: (id: RefreshToken['id'], userId: User['id']) => Promise<RefreshToken | null>
     findManyByUserId: (id: User['id']) => Promise<RefreshToken[]>
     create: (input: RefreshTokenCreateInput) => Promise<RefreshTokenCreateOutput>
     update: (id: RefreshToken['id'], input: RefreshTokenUpdateInput) => Promise<void>
-    delete: (id: RefreshToken['id']) => Promise<void>
-    deleteManyByUserId: (id: User['id'], excludeId?: RefreshToken['id']) => Promise<void>
+    delete: (id: RefreshToken['id'], userId: User['id']) => Promise<void>
+    deleteManyByUserId: (userId: User['id'], excludeId?: RefreshToken['id']) => Promise<void>
   }
 }

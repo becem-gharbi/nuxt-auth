@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyRefreshToken(event, refreshToken ?? '')
 
-    await event.context._authAdapter.refreshToken.delete(payload.id)
+    await event.context._authAdapter.refreshToken.delete(payload.id, payload.userId)
 
     deleteRefreshTokenCookie(event)
 

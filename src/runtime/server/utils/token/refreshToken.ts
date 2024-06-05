@@ -52,6 +52,7 @@ export async function updateRefreshToken(event: H3Event, id: RefreshToken['id'],
 
   await event.context._authAdapter.refreshToken.update(id, {
     uid,
+    userId,
   })
 
   const refreshToken = await signRefreshToken({ id, uid, userId })
@@ -82,7 +83,7 @@ export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   // check if the refreshToken is issued by the auth server && if it's not expired
   const payload = await decodeRefreshToken(refreshToken)
 
-  const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(payload.id)
+  const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(payload.id, payload.userId)
 
   if (!refreshTokenEntity) {
     throw createUnauthorizedError()
@@ -91,7 +92,7 @@ export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   const userAgent = getHeader(event, 'user-agent') ?? null
 
   if (refreshTokenEntity.uid !== payload.uid || refreshTokenEntity.userAgent !== userAgent) {
-    await event.context._authAdapter.refreshToken.delete(payload.id)
+    await event.context._authAdapter.refreshToken.delete(payload.id, payload.userId)
     throw createUnauthorizedError()
   }
 
