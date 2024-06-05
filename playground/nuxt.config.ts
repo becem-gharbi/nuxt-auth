@@ -51,9 +51,6 @@ export default defineNuxtConfig({
 
     email: {
       from: process.env.AUTH_EMAIL_FROM!,
-      provider: {
-        name: 'hook',
-      },
     },
 
     registration: {
