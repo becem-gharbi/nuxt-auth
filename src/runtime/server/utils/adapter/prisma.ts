@@ -56,10 +56,10 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((client) => {
         })
       },
 
-      async findManyByUserId(id) {
+      async findManyByUserId(userId) {
         return client.refreshToken.findMany({
           where: {
-            userId: id as User['id'],
+            userId: userId as User['id'],
           },
         })
       },
@@ -102,10 +102,10 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((client) => {
         })
       },
 
-      async deleteManyByUserId(id, excludeId) {
+      async deleteManyByUserId(userId, excludeId) {
         await client.refreshToken.deleteMany({
           where: {
-            userId: id as User['id'],
+            userId: userId as User['id'],
             id: {
               not: excludeId as RefreshToken['id'],
             },
