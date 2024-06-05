@@ -23,6 +23,6 @@ export interface AuthenticationData {
   expires_in: number
 }
 
-export interface Response {
-  status: string
+export interface ResponseOK {
+  status: 'ok'
 }

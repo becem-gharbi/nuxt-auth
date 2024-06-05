@@ -1,5 +1,5 @@
 import { joinURL } from 'ufo'
-import type { Response, PublicConfig, AuthenticationData } from '../types'
+import type { ResponseOK, PublicConfig, AuthenticationData } from '../types'
 import { useAuthToken } from './useAuthToken'
 import { useRuntimeConfig, useRoute, useAuthSession, navigateTo, useNuxtApp } from '#imports'
 import type { User } from '#build/types/auth_adapter'
@@ -26,7 +26,10 @@ export function useAuth() {
   const { callHook } = useNuxtApp()
 
   /**
-   * Login with email/password
+   * Asynchronously logs in the user with the provided email and password.
+   *
+   * @param {LoginInput} input - The login input object containing the email and password.
+   * @return {Promise<AuthenticationData>} A promise that resolves to the authentication data if the login is successful.
    */
   async function login(input: LoginInput): Promise<AuthenticationData> {
     const res = await $fetch<AuthenticationData>('/api/auth/login', {
@@ -52,9 +55,12 @@ export function useAuth() {
   }
 
   /**
-   * Login via oauth provider
+   * Asynchronously logs in the user with the specified oauth provider.
+   *
+   * @param {User['provider']} provider - The oauth provider to log in with.
+   * @return {Promise<void>} A promise that resolves when the login is complete.
    */
-  async function loginWithProvider(provider: User['provider']) {
+  async function loginWithProvider(provider: User['provider']): Promise<void> {
     // The protected page the user has visited before redirect to login page
     const returnToPath = useRoute().query.redirect?.toString()
 
@@ -70,9 +76,13 @@ export function useAuth() {
   }
 
   /**
-   * Fetch active user, usefull to update `user` state
+   * Fetches the user data.
+   * If the fetch is successful, the user value is updated with the fetched user data.
+   * If an error occurs during the fetch, the user value is set to null.
+   *
+   * @return {Promise<void>} A Promise that resolves when the user data is fetched or an error occurs.
    */
-  async function fetchUser() {
+  async function fetchUser(): Promise<void> {
     const { user } = useAuthSession()
     try {
       user.value = await useNuxtApp().$auth.fetch<User>('/api/auth/me')
@@ -82,8 +92,13 @@ export function useAuth() {
     }
   }
 
-  async function logout() {
-    await $fetch<Response>('/api/auth/logout', {
+  /**
+   * Logs the user out.
+   *
+   * @return {Promise<void>} A promise that resolves when the logout request is complete.
+   */
+  async function logout(): Promise<void> {
+    await $fetch<ResponseOK>('/api/auth/logout', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'include',
@@ -93,7 +108,13 @@ export function useAuth() {
     }).finally(_onLogout)
   }
 
-  async function _onLogin() {
+  /**
+   * Logs the user in by fetching the user data, checking if the user is logged in,
+   * and redirecting to the specified page after calling the 'auth:loggedIn' hook.
+   *
+   * @return {Promise<void>} A promise that resolves when the login process is complete.
+   */
+  async function _onLogin(): Promise<void> {
     await fetchUser()
     if (useAuthSession().user.value === null) {
       return
@@ -104,7 +125,14 @@ export function useAuth() {
     await navigateTo(redirectTo)
   }
 
-  async function _onLogout() {
+  /**
+   * Logs the user out by calling the 'auth:loggedIn' hook with the value 'false',
+   * setting the token value to null, and navigating to the logout page if the code
+   * is running on the client side.
+   *
+   * @return {Promise<void>} A promise that resolves when the logout process is complete.
+   */
+  async function _onLogout(): Promise<void> {
     await callHook('auth:loggedIn', false)
     token.value = null
     if (import.meta.client) {
@@ -112,8 +140,14 @@ export function useAuth() {
     }
   }
 
-  async function register(input: RegisterInput): Promise<Response> {
-    return await $fetch<Response>('/api/auth/register', {
+  /**
+   * Registers a new user by sending a POST request to the '/api/auth/register' endpoint.
+   *
+   * @param {RegisterInput} input - The input object containing the user's name, email, and password.
+   * @return {Promise<ResponseOK>} - A promise that resolves to a ResponseOK object if the registration is successful.
+   */
+  async function register(input: RegisterInput): Promise<ResponseOK> {
+    return await $fetch<ResponseOK>('/api/auth/register', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       body: {
@@ -128,8 +162,14 @@ export function useAuth() {
     })
   }
 
-  async function requestPasswordReset(email: string): Promise<Response> {
-    return await $fetch<Response>('/api/auth/password/request', {
+  /**
+   * Sends a request to reset the user's password.
+   *
+   * @param {string} email - The email address of the user.
+   * @return {Promise<ResponseOK>} A Promise that resolves to the response from the server.
+   */
+  async function requestPasswordReset(email: string): Promise<ResponseOK> {
+    return await $fetch<ResponseOK>('/api/auth/password/request', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
@@ -142,8 +182,14 @@ export function useAuth() {
     })
   }
 
-  async function resetPassword(password: string): Promise<Response> {
-    return await $fetch<Response>('/api/auth/password/reset', {
+  /**
+   * Resets the user's password.
+   *
+   * @param {string} password - The new password for the user.
+   * @return {Promise<ResponseOK>} A Promise that resolves to the response from the server.
+   */
+  async function resetPassword(password: string): Promise<ResponseOK> {
+    return await $fetch<ResponseOK>('/api/auth/password/reset', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'PUT',
       credentials: 'omit',
@@ -157,8 +203,14 @@ export function useAuth() {
     })
   }
 
-  async function requestEmailVerify(email: string): Promise<Response> {
-    return await $fetch<Response>('/api/auth/email/request', {
+  /**
+   * Sends a request to verify the user's email address.
+   *
+   * @param {string} email - The email address of the user.
+   * @return {Promise<ResponseOK>} A Promise that resolves to the response from the server.
+   */
+  async function requestEmailVerify(email: string): Promise<ResponseOK> {
+    return await $fetch<ResponseOK>('/api/auth/email/request', {
       baseURL: publicConfig.backendBaseUrl,
       method: 'POST',
       credentials: 'omit',
@@ -171,8 +223,14 @@ export function useAuth() {
     })
   }
 
-  function changePassword(input: ChangePasswordInput): Promise<Response> {
-    return useNuxtApp().$auth.fetch<Response>('/api/auth/password/change', {
+  /**
+   * Changes the user's password.
+   *
+   * @param {ChangePasswordInput} input - An object containing the current password and the new password.
+   * @return {Promise<ResponseOK>} - A promise that resolves to a ResponseOK object if the password change is successful.
+   */
+  function changePassword(input: ChangePasswordInput): Promise<ResponseOK> {
+    return useNuxtApp().$auth.fetch<ResponseOK>('/api/auth/password/change', {
       method: 'PUT',
       body: {
         currentPassword: input.currentPassword,
