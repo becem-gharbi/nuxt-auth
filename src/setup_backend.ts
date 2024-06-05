@@ -48,7 +48,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   )
 
   addTemplate({
-    filename: 'types/auth.d.ts',
+    filename: 'types/auth_utils.d.ts',
     getContents: () =>
       [
         'declare module \'#auth\' {',
@@ -67,7 +67,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
 
   nuxt.hook('prepare:types', (options) => {
     options.references.push({
-      path: resolve(nuxt.options.buildDir, 'types/auth.d.ts'),
+      path: resolve(nuxt.options.buildDir, 'types/auth_utils.d.ts'),
     })
   })
 
