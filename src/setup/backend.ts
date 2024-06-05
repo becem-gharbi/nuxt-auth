@@ -124,6 +124,10 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     handler: resolve('../runtime/server/api/auth/avatar.get'),
   })
 
+  if (!options.registration.enabled) {
+    info('Registration is disabled')
+  }
+
   if (options.oauth && Object.keys(options.oauth).length) {
     if (options.redirect.callback) {
       addServerHandler({
@@ -140,16 +144,11 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
       warnRequiredOption('redirect.callback')
     }
   }
-
-  if (!options.registration.enabled) {
-    info('Registration is disabled')
+  else {
+    info('Oauth login is disabled')
   }
 
-  if (!options.email?.provider) {
-    info('No email provider is set')
-  }
-
-  if (options.email?.provider) {
+  if (options.email?.from) {
     if (options.redirect.passwordReset) {
       addServerHandler({
         route: '/api/auth/password/request',
@@ -199,5 +198,8 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
       const passwordResetPath = resolve('../runtime/templates/password_reset.html')
       options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
     }
+  }
+  else {
+    info('Email verification and password reset are disabled')
   }
 }

@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
             ...user,
             link,
             validityInMinutes: Math.round(
-              config.private.accessToken.maxAge! / 60,
+              config.private.email!.actionTimeout! / 60,
             ),
           },
         ),

@@ -1,6 +1,5 @@
 import type { MailMessage } from '../../types'
 import { getConfig } from './config'
-import { createCustomError } from './error'
 
 // @ts-expect-error importing an internal module
 import { useNitroApp } from '#imports'
@@ -8,8 +7,8 @@ import { useNitroApp } from '#imports'
 export async function sendMail(msg: MailMessage) {
   const config = getConfig()
 
-  if (!config.private.email?.provider) {
-    throw createCustomError(500, 'Something went wrong')
+  if (!config.private.email?.from) {
+    throw new Error('[nuxt-auth] Email `from` address is not set')
   }
 
   const settings = config.private.email
@@ -22,7 +21,7 @@ export async function sendMail(msg: MailMessage) {
     case 'resend':
       return await withResend(settings.provider.apiKey)
     default:
-      throw createCustomError(500, 'Something went wrong')
+      throw new Error('[nuxt-auth] invalid email `provider`')
   }
 
   function withSendgrid(apiKey: string) {
