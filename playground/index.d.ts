@@ -1,6 +1,6 @@
 declare module '#build/types/auth_adapter' {
-  interface User {
-  }
+  type UserId = number
+  type RefreshTokenId = number
 }
 
 export {}
