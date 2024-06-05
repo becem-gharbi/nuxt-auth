@@ -7,7 +7,11 @@ export default defineEventHandler(async (event) => {
 
     const refreshToken = getRefreshTokenFromCookie(event)
 
-    const payload = await verifyRefreshToken(event, refreshToken ?? '')
+    if (!refreshToken) {
+      throw createUnauthorizedError()
+    }
+
+    const payload = await verifyRefreshToken(event, refreshToken)
 
     const user = await event.context._authAdapter.user.findById(payload.userId)
 
