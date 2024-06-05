@@ -11,11 +11,12 @@ export default defineEventHandler(async (event) => {
     }
 
     const schema = z.object({
-      id: z.string().min(1).or(z.number()),
+      id: z.string().min(1),
     })
 
     const params = await getValidatedRouterParams(event, schema.parse)
 
+    // @ts-expect-error id can either be string or number
     params.id = Number.isNaN(Number(params.id)) ? params.id : Number(params.id)
 
     const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(params.id, auth.userId)
