@@ -70,7 +70,7 @@ export type PrivateConfigWithBackend = {
   email?: {
     from: string
     actionTimeout?: number
-    provider: MailSendgridProvider | MailResendProvider | MailHookProvider
+    provider?: MailSendgridProvider | MailResendProvider | MailHookProvider
     templates?: {
       passwordReset?: string
       emailVerify?: string
