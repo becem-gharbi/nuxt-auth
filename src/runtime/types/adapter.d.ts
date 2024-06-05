@@ -1,5 +1,10 @@
+/**
+ * Resolves to 'string' if T is 'any' (unresolved) and 'number' if T is a number
+ */
+type NumberOrString<T> = (T extends string ? string : number) extends number ? number : string
+
 export interface User {
-  id: number | string
+  id: NumberOrString<UserId>
   name: string
   email: string
   picture: string
@@ -14,7 +19,7 @@ export interface User {
 }
 
 export interface RefreshToken {
-  id: number | string
+  id: NumberOrString<RefreshTokenId>
   uid: string
   userId: User['id']
   userAgent: string | null

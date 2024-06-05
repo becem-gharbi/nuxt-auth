@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id                     Int            @id @default(autoincrement())
+  id                     String         @id @default(cuid())
   name                   String
   email                  String         @unique
   picture                String
@@ -27,9 +27,9 @@ model User {
 }
 
 model RefreshToken {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   uid       String
-  userId    Int
+  userId    String
   user      User     @relation(fields: [userId], references: [id])
   userAgent String?
   createdAt DateTime @default(now())
