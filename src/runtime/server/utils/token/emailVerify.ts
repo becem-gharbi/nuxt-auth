@@ -12,7 +12,7 @@ export async function createEmailVerifyToken(payload: EmailVerifyPayload) {
   const emailVerifyToken = await encode(
     payload,
     config.private.accessToken.jwtSecret + 'e',
-    config.private.accessToken.maxAge!,
+    config.private.email!.actionTimeout!,
   )
 
   return emailVerifyToken

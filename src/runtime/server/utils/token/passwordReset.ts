@@ -11,7 +11,7 @@ export async function createResetPasswordToken(payload: ResetPasswordPayload) {
   const resetPasswordToken = await encode(
     payload,
     config.private.accessToken.jwtSecret + 'p',
-    config.private.accessToken.maxAge!,
+    config.private.email!.actionTimeout!,
   )
 
   return resetPasswordToken

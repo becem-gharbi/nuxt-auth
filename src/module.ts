@@ -46,6 +46,9 @@ export default defineNuxtModule<ModuleOptions>({
       passwordValidationRegex: '^.+$',
       emailValidationRegex: '^.+$',
     },
+    email: {
+      actionTimeout: 15 * 60,
+    },
   },
 
   setup(options, nuxt) {
