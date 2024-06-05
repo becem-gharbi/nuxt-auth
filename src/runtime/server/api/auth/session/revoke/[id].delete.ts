@@ -18,13 +18,13 @@ export default defineEventHandler(async (event) => {
 
     params.id = Number.isNaN(Number(params.id)) ? params.id : Number(params.id)
 
-    const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(params.id)
+    const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(params.id, auth.userId)
 
     if (!refreshTokenEntity || refreshTokenEntity.userId !== auth.userId) {
       throw createUnauthorizedError()
     }
 
-    await event.context._authAdapter.refreshToken.delete(params.id)
+    await event.context._authAdapter.refreshToken.delete(params.id, auth.userId)
 
     return { status: 'ok' }
   }
