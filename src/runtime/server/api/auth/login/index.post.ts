@@ -27,6 +27,10 @@ export default defineEventHandler(async (event) => {
       throw createCustomError(403, 'Account suspended')
     }
 
+    if (user.requestedPasswordReset) {
+      await event.context._authAdapter.user.update(user.id, { requestedPasswordReset: false })
+    }
+
     const payload = await createRefreshToken(event, user.id)
     const refreshToken = await signRefreshToken(payload)
     setRefreshTokenCookie(event, refreshToken)
