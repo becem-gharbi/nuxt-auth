@@ -15,12 +15,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await event.context._authAdapter.user.findByEmail(email)
 
-    if (
-      !user
-      || user.provider !== 'default'
-      || !user.password
-      || !compareSync(password, user.password)
-    ) {
+    if (user?.provider !== 'default' || !user.password || !compareSync(password, user.password)) {
       throw createCustomError(401, 'Wrong credentials')
     }
 
@@ -36,9 +31,8 @@ export default defineEventHandler(async (event) => {
     const refreshToken = await signRefreshToken(payload)
     setRefreshTokenCookie(event, refreshToken)
     const sessionId = payload.id
-    const accessToken = await createAccessToken(event, user, sessionId)
 
-    return accessToken
+    return createAccessToken(event, user, sessionId)
   }
   catch (error) {
     await handleError(error)

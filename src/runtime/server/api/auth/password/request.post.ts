@@ -20,10 +20,7 @@ export default defineEventHandler(async (event) => {
         userId: user.id,
       })
 
-      const redirectUrl = resolveURL(
-        config.public.baseUrl,
-        config.public.redirect.passwordReset!,
-      )
+      const redirectUrl = resolveURL(config.public.baseUrl, config.public.redirect.passwordReset!)
       const link = withQuery(redirectUrl, { token: resetPasswordToken })
 
       await sendMail({

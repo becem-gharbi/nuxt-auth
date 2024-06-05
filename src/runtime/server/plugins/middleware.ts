@@ -11,8 +11,8 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
     if (accessToken) {
       await verifyAccessToken(event, accessToken)
-        .then(p => (event.context.auth = p))
-        .catch()
+        .then((p) => { event.context.auth = p })
+        .catch(() => {})
     }
   })
 })

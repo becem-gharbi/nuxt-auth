@@ -12,11 +12,10 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
     const prisma = new PrismaClient()
 
-    const prismaAdapter = definePrismaAdapter(prisma)
+    const adapter = definePrismaAdapter(prisma)
 
     nitroApp.hooks.hook('request', (event) => {
-      event.context._authAdapter = prismaAdapter
-      event.context.prisma = prisma
+      event.context._authAdapter = adapter
     })
   }
 })

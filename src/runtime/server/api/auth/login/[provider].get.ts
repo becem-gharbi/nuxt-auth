@@ -24,14 +24,14 @@ export default defineEventHandler(async (event) => {
   try {
     const oauthProvider = config.private.oauth![provider]
 
-    const redirectUri = resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback')
+    const redirectUrl = resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback')
 
     const authorizationUrl = withQuery(
       oauthProvider.authorizeUrl,
       {
         response_type: 'code',
         scope: oauthProvider.scopes,
-        redirect_uri: redirectUri,
+        redirect_uri: redirectUrl,
         client_id: oauthProvider.clientId,
         state: returnToPath,
       },

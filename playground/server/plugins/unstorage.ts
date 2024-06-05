@@ -15,10 +15,10 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
       driver: fsDriver({ base: './playground/unstorage_data' }),
     })
 
-    const unstorageAdapter = defineUnstorageAdapter(storage)
+    const adapter = defineUnstorageAdapter(storage)
 
     nitroApp.hooks.hook('request', (event) => {
-      event.context._authAdapter = unstorageAdapter
+      event.context._authAdapter = adapter
     })
   }
 })

@@ -9,11 +9,12 @@ import type { User, Session, AccessTokenPayload } from '#build/types/auth_adapte
 export async function createAccessToken(event: H3Event, user: User, sessionId: Session['id']) {
   const config = getConfig()
 
-  let customClaims = config.private.accessToken.customClaims || {}
+  let customClaims = {}
 
-  if (customClaims) {
-    const output = mustache.render(JSON.stringify(customClaims), user)
-    customClaims = Object.assign(JSON.parse(output))
+  if (typeof config.private.accessToken.customClaims === 'object') {
+    const template = JSON.stringify(config.private.accessToken.customClaims)
+    const output = mustache.render(template, user)
+    customClaims = JSON.parse(output)
   }
 
   const fingerprint = await getFingerprintHash(event)

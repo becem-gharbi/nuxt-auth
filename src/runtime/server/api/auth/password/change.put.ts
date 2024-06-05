@@ -21,11 +21,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await event.context._authAdapter.user.findById(auth.userId)
 
-    if (
-      !user
-      || !user.password
-      || !compareSync(currentPassword, user.password)
-    ) {
+    if (!user?.password || !compareSync(currentPassword, user.password)) {
       throw createCustomError(401, 'Wrong password')
     }
 

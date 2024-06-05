@@ -29,14 +29,8 @@ export default defineEventHandler(async (event) => {
     formData.append('grant_type', 'authorization_code')
     formData.append('code', code)
     formData.append('client_id', oauthProvider.clientId)
-    formData.append(
-      'client_secret',
-      oauthProvider.clientSecret,
-    )
-    formData.append(
-      'redirect_uri',
-      resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback'),
-    )
+    formData.append('client_secret', oauthProvider.clientSecret)
+    formData.append('redirect_uri', resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback'))
 
     const { access_token: accessToken } = await $fetch(
       oauthProvider.tokenUrl,
@@ -51,7 +45,7 @@ export default defineEventHandler(async (event) => {
 
     const userInfo = await $fetch(oauthProvider.userUrl, {
       headers: {
-        Authorization: 'Bearer ' + accessToken,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
 
@@ -107,12 +101,11 @@ export default defineEventHandler(async (event) => {
 
     setRefreshTokenCookie(event, refreshToken)
 
-    await sendRedirect(event, withQuery(config.public.redirect.callback!, { redirect: returnToPath }))
+    const redirectUrl = withQuery(config.public.redirect.callback!, { redirect: returnToPath })
+
+    await sendRedirect(event, redirectUrl)
   }
   catch (error) {
-    await handleError(error, {
-      event,
-      url: config.public.redirect.callback!,
-    })
+    await handleError(error, { event, url: config.public.redirect.callback! })
   }
 })
