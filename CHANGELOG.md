@@ -1,5 +1,43 @@
 # Changelog
 
+## v3.0.0-beta.4
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/d3967fe2aa32156e3dfd2dad21414fecd835ac8d...vv3.0.0-beta.4)
+
+### 🚀 Enhancements
+
+- Add Email action timeout ([#43](https://github.com/becem-gharbi/nuxt-auth/pull/43))
+
+### 🔥 Performance
+
+- Skip refresh token verification when undefined ([5bf7521](https://github.com/becem-gharbi/nuxt-auth/commit/5bf7521))
+
+### 🩹 Fixes
+
+- Reset `requestedPasswordReset` to false on login ([1deca27](https://github.com/becem-gharbi/nuxt-auth/commit/1deca27))
+- Allow overwriting ID type ([#44](https://github.com/becem-gharbi/nuxt-auth/pull/44))
+
+### 💅 Refactors
+
+- Code review ([b5739ad](https://github.com/becem-gharbi/nuxt-auth/commit/b5739ad))
+- Rename filename of `#auth` type definition ([8b636a3](https://github.com/becem-gharbi/nuxt-auth/commit/8b636a3))
+
+### 📖 Documentation
+
+- Update JSDOC of composables ([#42](https://github.com/becem-gharbi/nuxt-auth/pull/42))
+
+### 🏡 Chore
+
+- Change setup files location ([a3c2514](https://github.com/becem-gharbi/nuxt-auth/commit/a3c2514))
+
+### ✅ Tests
+
+- Update basic ([17a8f35](https://github.com/becem-gharbi/nuxt-auth/commit/17a8f35))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.0-beta.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/vv3.0.0-beta.2...vv3.0.0-beta.3)
