@@ -13,7 +13,7 @@ export async function sendMail(msg: MailMessage) {
 
   const settings = config.private.email
 
-  switch (settings.provider.name) {
+  switch (settings.provider?.name) {
     case 'hook':
       return await withHook()
     case 'sendgrid':
