@@ -1,7 +1,7 @@
 import { addPlugin, createResolver, addImports, addRouteMiddleware, addTypeTemplate } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
-import type { ModuleOptions } from '../runtime/types'
+import type { ModuleOptions } from './runtime/types'
 import { warnRequiredOption } from './utils'
 
 export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
@@ -45,40 +45,40 @@ export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
   const { resolve } = createResolver(import.meta.url)
 
   // Add nuxt plugins
-  addPlugin(resolve('../runtime/plugins/provider'))
-  addPlugin(resolve('../runtime/plugins/flow'))
+  addPlugin(resolve('./runtime/plugins/provider'))
+  addPlugin(resolve('./runtime/plugins/flow'))
 
   // Add composables
   addImports([
     {
       name: 'useAuth',
-      from: resolve('../runtime/composables/useAuth'),
+      from: resolve('./runtime/composables/useAuth'),
     },
     {
       name: 'useAuthSession',
-      from: resolve('../runtime/composables/useAuthSession'),
+      from: resolve('./runtime/composables/useAuthSession'),
     },
   ])
 
   addRouteMiddleware({
     name: 'auth',
-    path: resolve('../runtime/middleware/auth'),
+    path: resolve('./runtime/middleware/auth'),
     global: !!options.enableGlobalAuthMiddleware,
   })
 
   addRouteMiddleware({
     name: 'guest',
-    path: resolve('../runtime/middleware/guest'),
+    path: resolve('./runtime/middleware/guest'),
   })
 
   addRouteMiddleware({
     name: '_auth-common',
-    path: resolve('../runtime/middleware/common'),
+    path: resolve('./runtime/middleware/common'),
     global: true,
   })
 
   addTypeTemplate({
     filename: 'types/auth_adapter.d.ts',
-    src: resolve('../runtime/types/adapter.d.ts'),
+    src: resolve('./runtime/types/adapter.d.ts'),
   })
 }
