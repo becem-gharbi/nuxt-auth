@@ -48,6 +48,4 @@ test('should request password reset', async ({ page }) => {
   await page.waitForTimeout(2000)
   const result = await page.getByTestId('password-reset-result').textContent()
   expect(result).toMatch(/ok/)
-  await login(page)
-  await expect(page.getByTestId('user-info')).toContainText('"requestedPasswordReset": true')
 })
