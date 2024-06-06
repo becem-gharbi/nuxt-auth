@@ -1,5 +1,37 @@
 # Changelog
 
+## vv3.0.0-beta.5
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/70e293339fa43dcedde5dd235cd1b5dbea80fc22...vv3.0.0-beta.5)
+
+### 🩹 Fixes
+
+- Allow overwriting adapter Source ([#47](https://github.com/becem-gharbi/nuxt-auth/pull/47))
+
+### 💅 Refactors
+
+- Rename adapter Options to Source ([5780b45](https://github.com/becem-gharbi/nuxt-auth/commit/5780b45))
+- ⚠️  Change event.context definition ([#45](https://github.com/becem-gharbi/nuxt-auth/pull/45))
+- ⚠️  Rename `#auth` to `#auth_utils` ([d9d1bcc](https://github.com/becem-gharbi/nuxt-auth/commit/d9d1bcc))
+- ⚠️  Change path of session endpoints ([#48](https://github.com/becem-gharbi/nuxt-auth/pull/48))
+- Add max length validation for email & name ([ff5b4ad](https://github.com/becem-gharbi/nuxt-auth/commit/ff5b4ad))
+
+### 🌊 Types
+
+- Fix utils types & refactor ([b8412df](https://github.com/becem-gharbi/nuxt-auth/commit/b8412df))
+- Rename `#build/types/auth_adapter` to `#auth_adapter` ([#46](https://github.com/becem-gharbi/nuxt-auth/pull/46))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Change event.context definition ([#45](https://github.com/becem-gharbi/nuxt-auth/pull/45))
+- ⚠️  Rename `#auth` to `#auth_utils` ([d9d1bcc](https://github.com/becem-gharbi/nuxt-auth/commit/d9d1bcc))
+- ⚠️  Change path of session endpoints ([#48](https://github.com/becem-gharbi/nuxt-auth/pull/48))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.0-beta.4
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/d3967fe2aa32156e3dfd2dad21414fecd835ac8d...vv3.0.0-beta.4)
