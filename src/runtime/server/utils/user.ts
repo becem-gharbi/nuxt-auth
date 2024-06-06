@@ -26,7 +26,7 @@ export async function createAccount(event: H3Event, data: CreateAccountInput) {
     throw createCustomError(403, 'Email not accepted')
   }
 
-  return event.context._authAdapter.user.create({
+  return event.context.auth.adapter.user.create({
     name: data.name,
     email: data.email,
     password: data.password ?? null,

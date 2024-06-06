@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
     const { email, password, name } = await readValidatedBody(event, schema.parse)
 
-    const user = await event.context._authAdapter.user.findByEmail(email)
+    const user = await event.context.auth.adapter.user.findByEmail(email)
 
     if (user) {
       if (!user.verified && config.private.registration.requireEmailVerification) {

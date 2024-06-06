@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyEmailVerifyToken(token)
 
-    await event.context._authAdapter.user.update(payload.userId, { verified: true })
+    await event.context.auth.adapter.user.update(payload.userId, { verified: true })
 
     await sendRedirect(event, config.public.redirect.emailVerify!)
   }

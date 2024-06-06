@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyRefreshToken(event, refreshToken)
 
-    const user = await event.context._authAdapter.user.findById(payload.userId)
+    const user = await event.context.auth.adapter.user.findById(payload.userId)
 
     if (!user) {
       throw createUnauthorizedError()

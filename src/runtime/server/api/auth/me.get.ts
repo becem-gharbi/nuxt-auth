@@ -3,13 +3,13 @@ import { handleError, createUnauthorizedError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
-    const auth = event.context.auth
+    const authData = event.context.auth.data
 
-    if (!auth) {
+    if (!authData) {
       throw createUnauthorizedError()
     }
 
-    const user = await event.context._authAdapter.user.findById(auth.userId)
+    const user = await event.context.auth.adapter.user.findById(authData.userId)
 
     if (!user) {
       throw createUnauthorizedError()

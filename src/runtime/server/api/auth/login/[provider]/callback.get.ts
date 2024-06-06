@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
       throw createCustomError(400, 'Oauth email not accessible')
     }
 
-    const user = await event.context._authAdapter.user.findByEmail(userInfo.email)
+    const user = await event.context.auth.adapter.user.findByEmail(userInfo.email)
 
     let userId = user?.id
 

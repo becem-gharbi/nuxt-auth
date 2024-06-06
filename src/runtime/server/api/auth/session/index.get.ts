@@ -4,17 +4,17 @@ import type { Session } from '../../../../types/common'
 
 export default defineEventHandler(async (event) => {
   try {
-    const auth = event.context.auth
+    const authData = event.context.auth.data
 
-    if (!auth) {
+    if (!authData) {
       throw createUnauthorizedError()
     }
 
-    const refreshTokens = await event.context._authAdapter.refreshToken.findManyByUserId(auth.userId)
+    const refreshTokens = await event.context.auth.adapter.refreshToken.findManyByUserId(authData.userId)
 
     return refreshTokens.map<Session>(token => ({
       id: token.id,
-      current: token.id === auth.sessionId,
+      current: token.id === authData.sessionId,
       ua: token.userAgent,
       createdAt: token.createdAt,
       updatedAt: token.updatedAt,

@@ -58,6 +58,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
           `  const hashSync: typeof import('${resolve('./runtime/server/utils')}').hashSync`,
           `  const sendMail: typeof import('${resolve('./runtime/server/utils')}').sendMail`,
           `  const handleError: typeof import('${resolve('./runtime/server/utils')}').handleError`,
+          `  const setEventContext: typeof import('${resolve('./runtime/server/utils')}').setEventContext`,
           `  const defineAdapter: typeof import('${resolve('./runtime/server/utils')}').defineAdapter`,
           `  const definePrismaAdapter: typeof import('${resolve('./runtime/server/utils')}').definePrismaAdapter`,
           `  const defineUnstorageAdapter: typeof import('${resolve('./runtime/server/utils')}').defineUnstorageAdapter`,
@@ -70,8 +71,6 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
       path: resolve(nuxt.options.buildDir, 'types/auth_utils.d.ts'),
     })
   })
-
-  addServerPlugin(resolve('./runtime/server/plugins/middleware'))
 
   // Add server routes
   addServerHandler({
