@@ -2,7 +2,7 @@ import type { NitroApp } from 'nitropack'
 import { createStorage } from 'unstorage'
 import fsDriver from 'unstorage/drivers/fs'
 import consola from 'consola'
-import { defineUnstorageAdapter, setEventContext } from '#auth'
+import { defineUnstorageAdapter, setEventContext } from '#auth_utils'
 
 // @ts-expect-error importing an internal module
 import { defineNitroPlugin } from '#imports'

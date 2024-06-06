@@ -41,7 +41,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   nuxt.options.nitro = defu(
     {
       alias: {
-        '#auth': resolve('./runtime/server/utils'),
+        '#auth_utils': resolve('./runtime/server/utils'),
       },
     },
     nuxt.options.nitro,
@@ -51,7 +51,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     filename: 'types/auth_utils.d.ts',
     getContents: () =>
       [
-        'declare module \'#auth\' {',
+        'declare module \'#auth_utils\' {',
           `  const encode: typeof import('${resolve('./runtime/server/utils')}').encode`,
           `  const decode: typeof import('${resolve('./runtime/server/utils')}').decode`,
           `  const compareSync: typeof import('${resolve('./runtime/server/utils')}').compareSync`,

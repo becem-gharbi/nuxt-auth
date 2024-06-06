@@ -1,7 +1,7 @@
 import type { NitroApp } from 'nitropack'
 import { PrismaClient } from '@prisma/client'
 import consola from 'consola'
-import { definePrismaAdapter, setEventContext } from '#auth'
+import { definePrismaAdapter, setEventContext } from '#auth_utils'
 
 // @ts-expect-error importing an internal module
 import { defineNitroPlugin } from '#imports'
