@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import { getAccessTokenFromHeader, verifyAccessToken } from './token/accessToken'
-import type { Adapter } from '#build/types/auth_adapter'
+import type { Adapter } from '#auth_adapter'
 
 export async function setEventContext(event: H3Event, adapter: Adapter) {
   if (!adapter) {

@@ -1,6 +1,6 @@
 import { getConfig } from '../config'
 import { encode, decode } from './jwt'
-import type { User } from '#build/types/auth_adapter'
+import type { User } from '#auth_adapter'
 
 type ResetPasswordPayload = {
   userId: User['id']

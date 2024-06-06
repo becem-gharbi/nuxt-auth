@@ -1,6 +1,6 @@
 import { getConfig } from '../config'
 import { decode, encode } from './jwt'
-import type { User } from '#build/types/auth_adapter'
+import type { User } from '#auth_adapter'
 
 type EmailVerifyPayload = {
   userId: User['id']
