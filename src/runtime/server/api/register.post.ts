@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const schema = z.object({
-      name: z.string().min(1),
-      email: z.string().email(),
+      name: z.string().min(1).max(20),
+      email: z.string().email().max(40),
       password: z.string().regex(new RegExp(config.private.registration.passwordValidationRegex!)),
     })
 

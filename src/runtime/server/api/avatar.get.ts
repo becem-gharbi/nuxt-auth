@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
   const schema = z.object({
-    name: z.string().min(1),
+    name: z.string().min(1).max(20),
     color: z.string().regex(/^([a-f0-9]{6}|[a-f0-9]{3})$/).optional(),
     background: z.string().regex(/^([a-f0-9]{6}|[a-f0-9]{3})$/).optional(),
   })
