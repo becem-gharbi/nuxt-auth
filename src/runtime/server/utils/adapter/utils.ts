@@ -1,7 +1,7 @@
 import type { Adapter } from '#build/types/auth_adapter'
 
-export type AdapterFactory<Options> = (opts: Options) => Adapter<Options>
+export type AdapterFactory<Source> = (source: Source) => Adapter<Source>
 
-export function defineAdapter<Options>(factory: AdapterFactory<Options>): AdapterFactory<Options> {
+export function defineAdapter<Source>(factory: AdapterFactory<Source>): AdapterFactory<Source> {
   return factory
 }
