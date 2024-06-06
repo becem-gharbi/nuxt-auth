@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { handleError, createUnauthorizedError } from '../../../../utils'
+import { handleError, createUnauthorizedError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   try {

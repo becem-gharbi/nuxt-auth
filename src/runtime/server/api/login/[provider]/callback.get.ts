@@ -2,7 +2,7 @@ import { defineEventHandler, getValidatedQuery, sendRedirect, getValidatedRouter
 import { z } from 'zod'
 import { $fetch } from 'ofetch'
 import { resolveURL, withQuery } from 'ufo'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, handleError, signRefreshToken, createCustomError, createAccount } from '../../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, handleError, signRefreshToken, createCustomError, createAccount } from '../../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

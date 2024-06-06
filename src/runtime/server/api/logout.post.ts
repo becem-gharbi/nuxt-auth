@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { deleteRefreshTokenCookie, getRefreshTokenFromCookie, verifyRefreshToken, handleError, createUnauthorizedError } from '../../utils'
+import { deleteRefreshTokenCookie, getRefreshTokenFromCookie, verifyRefreshToken, handleError, createUnauthorizedError } from '../utils'
 
 export default defineEventHandler(async (event) => {
   try {

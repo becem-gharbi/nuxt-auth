@@ -75,52 +75,52 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   // Add server routes
   addServerHandler({
     route: '/api/auth/login',
-    handler: resolve('./runtime/server/api/auth/login/index.post'),
+    handler: resolve('./runtime/server/api/login/index.post'),
   })
 
   addServerHandler({
     route: '/api/auth/register',
-    handler: resolve('./runtime/server/api/auth/register.post'),
+    handler: resolve('./runtime/server/api/register.post'),
   })
 
   addServerHandler({
     route: '/api/auth/me',
-    handler: resolve('./runtime/server/api/auth/me.get'),
+    handler: resolve('./runtime/server/api/me.get'),
   })
 
   addServerHandler({
     route: '/api/auth/logout',
-    handler: resolve('./runtime/server/api/auth/logout.post'),
+    handler: resolve('./runtime/server/api/logout.post'),
   })
 
   addServerHandler({
     route: '/api/auth/password/change',
-    handler: resolve('./runtime/server/api/auth/password/change.put'),
+    handler: resolve('./runtime/server/api/password/change.put'),
   })
 
   addServerHandler({
-    route: '/api/auth/session/revoke/:id',
-    handler: resolve('./runtime/server/api/auth/session/revoke/[id].delete'),
+    route: '/api/auth/sessions/:id',
+    handler: resolve('./runtime/server/api/sessions/[id].delete'),
   })
 
   addServerHandler({
-    route: '/api/auth/session/revoke/all',
-    handler: resolve('./runtime/server/api/auth/session/revoke/all.delete'),
+    route: '/api/auth/sessions',
+    handler: resolve('./runtime/server/api/sessions/index.delete'),
   })
 
   addServerHandler({
-    route: '/api/auth/session/refresh',
-    handler: resolve('./runtime/server/api/auth/session/refresh.post'),
+    route: '/api/auth/sessions/refresh',
+    handler: resolve('./runtime/server/api/sessions/refresh.post'),
   })
 
   addServerHandler({
-    route: '/api/auth/session',
-    handler: resolve('./runtime/server/api/auth/session/index.get'),
+    route: '/api/auth/sessions',
+    handler: resolve('./runtime/server/api/sessions/index.get'),
   })
 
   addServerHandler({
     route: '/api/auth/avatar',
-    handler: resolve('./runtime/server/api/auth/avatar.get'),
+    handler: resolve('./runtime/server/api/avatar.get'),
   })
 
   if (!options.registration.enabled) {
@@ -131,12 +131,12 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     if (options.redirect.callback) {
       addServerHandler({
         route: '/api/auth/login/:provider',
-        handler: resolve('./runtime/server/api/auth/login/[provider].get'),
+        handler: resolve('./runtime/server/api/login/[provider].get'),
       })
 
       addServerHandler({
         route: '/api/auth/login/:provider/callback',
-        handler: resolve('./runtime/server/api/auth/login/[provider]/callback.get'),
+        handler: resolve('./runtime/server/api/login/[provider]/callback.get'),
       })
     }
     else {
@@ -151,12 +151,12 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     if (options.redirect.passwordReset) {
       addServerHandler({
         route: '/api/auth/password/request',
-        handler: resolve('./runtime/server/api/auth/password/request.post'),
+        handler: resolve('./runtime/server/api/password/request.post'),
       })
 
       addServerHandler({
         route: '/api/auth/password/reset',
-        handler: resolve('./runtime/server/api/auth/password/reset.put'),
+        handler: resolve('./runtime/server/api/password/reset.put'),
       })
     }
     else {
@@ -166,12 +166,12 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     if (options.redirect.emailVerify) {
       addServerHandler({
         route: '/api/auth/email/request',
-        handler: resolve('./runtime/server/api/auth/email/request.post'),
+        handler: resolve('./runtime/server/api/email/request.post'),
       })
 
       addServerHandler({
         route: '/api/auth/email/verify',
-        handler: resolve('./runtime/server/api/auth/email/verify.get'),
+        handler: resolve('./runtime/server/api/email/verify.get'),
       })
     }
     else {

@@ -1,7 +1,7 @@
 import { defineEventHandler, sendRedirect, getValidatedQuery, getValidatedRouterParams } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { getConfig, handleError } from '../../../utils'
+import { getConfig, handleError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

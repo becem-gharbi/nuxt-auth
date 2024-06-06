@@ -1,7 +1,7 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { resolveURL, withQuery } from 'ufo'
 import { z } from 'zod'
-import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError } from '../../../utils'
+import { mustache, getConfig, sendMail, createEmailVerifyToken, handleError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()

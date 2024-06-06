@@ -1,6 +1,6 @@
 import { readValidatedBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken, createCustomError } from '../../../utils'
+import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken, createCustomError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   const config = getConfig()
