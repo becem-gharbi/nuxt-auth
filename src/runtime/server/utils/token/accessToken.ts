@@ -5,7 +5,7 @@ import { mustache } from '../mustache'
 import type { Session, AccessTokenPayload } from '../../../types/common'
 import { encode, decode } from './jwt'
 import { getFingerprintHash, verifyFingerprint } from './fingerprint'
-import type { User } from '#build/types/auth_adapter'
+import type { User } from '#auth_adapter'
 
 export async function createAccessToken(event: H3Event, user: User, sessionId: Session['id']) {
   const config = getConfig()

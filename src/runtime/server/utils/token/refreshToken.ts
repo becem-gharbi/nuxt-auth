@@ -4,7 +4,7 @@ import type { H3Event } from 'h3'
 import { getConfig } from '../config'
 import { createUnauthorizedError } from '../error'
 import { encode, decode } from './jwt'
-import type { User, RefreshToken } from '#build/types/auth_adapter'
+import type { User, RefreshToken } from '#auth_adapter'
 
 type RefreshTokenPayload = {
   id: RefreshToken['id']

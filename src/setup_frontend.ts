@@ -1,4 +1,4 @@
-import { addPlugin, createResolver, addImports, addRouteMiddleware, addTypeTemplate } from '@nuxt/kit'
+import { addPlugin, createResolver, addImports, addRouteMiddleware } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions } from './runtime/types/config'
@@ -77,8 +77,7 @@ export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
     global: true,
   })
 
-  addTypeTemplate({
-    filename: 'types/auth_adapter.d.ts',
-    src: resolve('./runtime/types/adapter.d.ts'),
+  nuxt.options.alias = defu(nuxt.options.alias, {
+    '#auth_adapter': resolve('./runtime/types/adapter.d.ts'),
   })
 }

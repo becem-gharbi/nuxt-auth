@@ -3,7 +3,7 @@ import type { ResponseOK, AuthenticationData } from '../types/common'
 import type { PublicConfig } from '../types/config'
 import { useAuthToken } from './useAuthToken'
 import { useRuntimeConfig, useRoute, useAuthSession, navigateTo, useNuxtApp } from '#imports'
-import type { User } from '#build/types/auth_adapter'
+import type { User } from '#auth_adapter'
 
 interface LoginInput {
   email: string

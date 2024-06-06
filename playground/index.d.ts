@@ -1,4 +1,4 @@
-declare module '#build/types/auth_adapter' {
+declare module '#auth_adapter' {
 }
 
 export {}

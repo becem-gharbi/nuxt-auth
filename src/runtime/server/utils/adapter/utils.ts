@@ -1,4 +1,4 @@
-import type { Adapter } from '#build/types/auth_adapter'
+import type { Adapter } from '#auth_adapter'
 
 export type AdapterFactory<Source> = (source: Source) => Adapter<Source>
 

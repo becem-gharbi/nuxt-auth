@@ -1,7 +1,7 @@
 import type { Storage } from 'unstorage'
 import { randomUUID } from 'uncrypto'
 import { defineAdapter } from './utils'
-import type { User, RefreshToken } from '#build/types/auth_adapter'
+import type { User, RefreshToken } from '#auth_adapter'
 
 export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
   if (!storage) {

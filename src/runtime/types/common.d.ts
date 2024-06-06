@@ -1,6 +1,6 @@
 import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
-import type { Adapter, RefreshToken, User } from '#build/types/auth_adapter'
+import type { Adapter, RefreshToken, User } from '#auth_adapter'
 
 export interface Session {
   current: boolean

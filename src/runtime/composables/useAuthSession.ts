@@ -4,7 +4,7 @@ import type { ResponseOK, AuthenticationData, Session } from '../types/common'
 import type { PublicConfig, PrivateConfig } from '../types/config'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
-import type { User } from '#build/types/auth_adapter'
+import type { User } from '#auth_adapter'
 
 export function useAuthSession() {
   const event = useRequestEvent()
