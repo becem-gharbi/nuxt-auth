@@ -34,9 +34,9 @@ type RefreshTokenCreateInput = Pick<RefreshToken, 'uid' | 'userAgent' | 'userId'
 type RefreshTokenCreateOutput = Pick<RefreshToken, 'id'>
 type RefreshTokenUpdateInput = Pick<RefreshToken, 'uid' | 'userId'>
 
-export interface Adapter<Source = unknown> {
+export interface Adapter<SourceT = Source> {
   name: string
-  source: Source
+  source: SourceT
   user: {
     findById: (id: User['id']) => Promise<User | null>
     findByEmail: (email: User['email']) => Promise<User | null>
