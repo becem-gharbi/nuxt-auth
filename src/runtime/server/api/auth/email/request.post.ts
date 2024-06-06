@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     const { email } = await readValidatedBody(event, schema.parse)
 
-    const user = await event.context._authAdapter.user.findByEmail(email)
+    const user = await event.context.auth.adapter.user.findByEmail(email)
 
     if (user && !user.verified) {
       const emailVerifyToken = await createEmailVerifyToken({

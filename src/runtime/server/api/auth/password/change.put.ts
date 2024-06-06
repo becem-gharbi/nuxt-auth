@@ -6,9 +6,9 @@ export default defineEventHandler(async (event) => {
   const config = getConfig()
 
   try {
-    const auth = event.context.auth
+    const authData = event.context.auth.data
 
-    if (!auth || auth.provider !== 'default') {
+    if (authData?.provider !== 'default') {
       throw createUnauthorizedError()
     }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
     const { currentPassword, newPassword } = await readValidatedBody(event, schema.parse)
 
-    const user = await event.context._authAdapter.user.findById(auth.userId)
+    const user = await event.context.auth.adapter.user.findById(authData.userId)
 
     if (!user?.password || !compareSync(currentPassword, user.password)) {
       throw createCustomError(401, 'Wrong password')
@@ -27,11 +27,11 @@ export default defineEventHandler(async (event) => {
 
     const hashedPassword = hashSync(newPassword, 12)
 
-    await event.context._authAdapter.user.update(user.id, {
+    await event.context.auth.adapter.user.update(user.id, {
       password: hashedPassword,
     })
 
-    await event.context._authAdapter.refreshToken.deleteManyByUserId(auth.userId, auth.sessionId)
+    await event.context.auth.adapter.refreshToken.deleteManyByUserId(authData.userId, authData.sessionId)
 
     return { status: 'ok' }
   }

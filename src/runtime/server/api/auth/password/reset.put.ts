@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
     const payload = await verifyResetPasswordToken(token)
 
-    const user = await event.context._authAdapter.user.findById(payload.userId)
+    const user = await event.context.auth.adapter.user.findById(payload.userId)
 
     if (!user?.requestedPasswordReset) {
       throw createCustomError(403, 'Password reset not requested')
@@ -23,13 +23,13 @@ export default defineEventHandler(async (event) => {
 
     const hashedPassword = hashSync(password, 12)
 
-    await event.context._authAdapter.user.update(payload.userId, {
+    await event.context.auth.adapter.user.update(payload.userId, {
       password: hashedPassword,
     })
 
-    await event.context._authAdapter.refreshToken.deleteManyByUserId(payload.userId)
+    await event.context.auth.adapter.refreshToken.deleteManyByUserId(payload.userId)
 
-    await event.context._authAdapter.user.update(payload.userId, { requestedPasswordReset: false })
+    await event.context.auth.adapter.user.update(payload.userId, { requestedPasswordReset: false })
 
     return { status: 'ok' }
   }

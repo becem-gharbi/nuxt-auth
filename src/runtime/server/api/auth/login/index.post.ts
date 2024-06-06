@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     const { email, password } = await readValidatedBody(event, schema.parse)
 
-    const user = await event.context._authAdapter.user.findByEmail(email)
+    const user = await event.context.auth.adapter.user.findByEmail(email)
 
     if (user?.provider !== 'default' || !user.password || !compareSync(password, user.password)) {
       throw createCustomError(401, 'Wrong credentials')
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (user.requestedPasswordReset) {
-      await event.context._authAdapter.user.update(user.id, { requestedPasswordReset: false })
+      await event.context.auth.adapter.user.update(user.id, { requestedPasswordReset: false })
     }
 
     const payload = await createRefreshToken(event, user.id)

@@ -20,8 +20,10 @@ export type AccessTokenPayload = {
 
 declare module 'h3' {
   interface H3EventContext {
-    _authAdapter: Adapter
-    auth?: AccessTokenPayload
+    auth: {
+      data?: AccessTokenPayload
+      adapter: Adapter
+    }
   }
 }
 

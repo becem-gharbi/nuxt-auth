@@ -3,13 +3,13 @@ import { handleError, createUnauthorizedError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
-    const auth = event.context.auth
+    const authData = event.context.auth.data
 
-    if (!auth) {
+    if (!authData) {
       throw createUnauthorizedError()
     }
 
-    await event.context._authAdapter.refreshToken.deleteManyByUserId(auth.userId, auth.sessionId)
+    await event.context.auth.adapter.refreshToken.deleteManyByUserId(authData.userId, authData.sessionId)
 
     return { status: 'ok' }
   }

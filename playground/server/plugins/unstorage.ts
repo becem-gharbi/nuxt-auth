@@ -2,7 +2,7 @@ import type { NitroApp } from 'nitropack'
 import { createStorage } from 'unstorage'
 import fsDriver from 'unstorage/drivers/fs'
 import consola from 'consola'
-import { defineUnstorageAdapter } from '#auth'
+import { defineUnstorageAdapter, setEventContext } from '#auth'
 
 // @ts-expect-error importing an internal module
 import { defineNitroPlugin } from '#imports'
@@ -17,8 +17,6 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
     const adapter = defineUnstorageAdapter(storage)
 
-    nitroApp.hooks.hook('request', (event) => {
-      event.context._authAdapter = adapter
-    })
+    nitroApp.hooks.hook('request', event => setEventContext(event, adapter))
   }
 })

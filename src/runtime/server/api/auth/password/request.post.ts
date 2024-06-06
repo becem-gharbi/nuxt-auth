@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     const { email } = await readValidatedBody(event, schema.parse)
 
-    const user = await event.context._authAdapter.user.findByEmail(email)
+    const user = await event.context.auth.adapter.user.findByEmail(email)
 
     if (user && user.provider === 'default') {
       const resetPasswordToken = await createResetPasswordToken({
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         ),
       })
 
-      await event.context._authAdapter.user.update(user.id, { requestedPasswordReset: true })
+      await event.context.auth.adapter.user.update(user.id, { requestedPasswordReset: true })
     }
 
     return { status: 'ok' }

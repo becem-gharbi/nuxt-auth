@@ -4,9 +4,9 @@ import { handleError, createUnauthorizedError } from '../../../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
-    const auth = event.context.auth
+    const authData = event.context.auth.data
 
-    if (!auth) {
+    if (!authData) {
       throw createUnauthorizedError()
     }
 
@@ -19,13 +19,13 @@ export default defineEventHandler(async (event) => {
     // @ts-expect-error id can either be string or number
     params.id = Number.isNaN(Number(params.id)) ? params.id : Number(params.id)
 
-    const refreshTokenEntity = await event.context._authAdapter.refreshToken.findById(params.id, auth.userId)
+    const refreshTokenEntity = await event.context.auth.adapter.refreshToken.findById(params.id, authData.userId)
 
-    if (!refreshTokenEntity || refreshTokenEntity.userId !== auth.userId) {
+    if (refreshTokenEntity?.userId !== authData.userId) {
       throw createUnauthorizedError()
     }
 
-    await event.context._authAdapter.refreshToken.delete(params.id, auth.userId)
+    await event.context.auth.adapter.refreshToken.delete(params.id, authData.userId)
 
     return { status: 'ok' }
   }
