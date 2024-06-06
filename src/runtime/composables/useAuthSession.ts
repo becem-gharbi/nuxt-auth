@@ -44,7 +44,7 @@ export function useAuthSession() {
       const { _onLogout } = useAuth()
 
       await $fetch
-        .raw<AuthenticationData>('/api/auth/session/refresh', {
+        .raw<AuthenticationData>('/api/auth/sessions/refresh', {
           baseURL: publicConfig.backendBaseUrl,
           method: 'POST',
           // Cloudflare Workers does not support "credentials" field
@@ -104,7 +104,7 @@ export function useAuthSession() {
    * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of all sessions.
    */
   function revokeAllSessions(): Promise<ResponseOK> {
-    return useNuxtApp().$auth.fetch<ResponseOK>('/api/auth/session/revoke/all', {
+    return useNuxtApp().$auth.fetch<ResponseOK>('/api/auth/sessions', {
       method: 'DELETE',
     })
   }
@@ -116,7 +116,7 @@ export function useAuthSession() {
    * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of the session.
    */
   function revokeSession(id: Session['id']): Promise<ResponseOK> {
-    return useNuxtApp().$auth.fetch<ResponseOK>(`/api/auth/session/revoke/${id}`, {
+    return useNuxtApp().$auth.fetch<ResponseOK>(`/api/auth/sessions/${id}`, {
       method: 'DELETE',
     })
   }
@@ -127,7 +127,7 @@ export function useAuthSession() {
    * @return {Promise<Session[]>} A promise that resolves with an array of Session objects representing all active sessions. The current session is moved to the top of the array.
    */
   async function getAllSessions(): Promise<Session[]> {
-    const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/session')
+    const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/sessions')
 
     // Move current session on top
     const currentIndex = sessions.findIndex(el => el.current)

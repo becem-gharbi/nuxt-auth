@@ -1,6 +1,6 @@
 import { defineEventHandler, getValidatedRouterParams } from 'h3'
 import { z } from 'zod'
-import { handleError, createUnauthorizedError } from '../../../../utils'
+import { handleError, createUnauthorizedError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
