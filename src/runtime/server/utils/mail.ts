@@ -1,4 +1,5 @@
-import type { MailMessage } from '../../types'
+import { $fetch } from 'ofetch'
+import type { MailMessage } from '../../types/common'
 import { getConfig } from './config'
 
 // @ts-expect-error importing an internal module

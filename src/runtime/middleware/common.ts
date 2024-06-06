@@ -1,5 +1,5 @@
 import { useAuthToken } from '../composables/useAuthToken'
-import type { PublicConfig } from '../types'
+import type { PublicConfig } from '../types/config'
 import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from '#imports'
 
 export default defineNuxtRouteMiddleware((to, from) => {

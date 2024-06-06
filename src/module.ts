@@ -1,6 +1,6 @@
 import { defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
-import type { PrivateConfig, PublicConfig } from './runtime/types'
+import type { PrivateConfig, PublicConfig } from './runtime/types/config'
 import { setupBackend } from './setup_backend'
 import { setupFrontend } from './setup_frontend'
 

@@ -4,7 +4,7 @@ import { createResolver, addServerHandler, addTemplate, addServerPlugin } from '
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import { warnRequiredOption, info } from './utils'
-import type { ModuleOptions } from './runtime/types'
+import type { ModuleOptions } from './runtime/types/config'
 
 export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   if (!options.backendEnabled) {

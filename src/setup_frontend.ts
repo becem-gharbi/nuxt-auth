@@ -1,7 +1,7 @@
 import { addPlugin, createResolver, addImports, addRouteMiddleware, addTypeTemplate } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
-import type { ModuleOptions } from './runtime/types'
+import type { ModuleOptions } from './runtime/types/config'
 import { warnRequiredOption } from './utils'
 
 export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {

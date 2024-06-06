@@ -21,39 +21,10 @@ export interface User {
 export interface RefreshToken {
   id: NumberOrString<RefreshTokenId>
   uid: string
-  userId: User['id']
   userAgent: string | null
   createdAt: Date
   updatedAt: Date
-}
-
-export interface Session {
-  id: RefreshToken['id']
-  current: boolean
-  ua: string | null
-  updatedAt: Date
-  createdAt: Date
-}
-
-export type AccessTokenPayload = {
   userId: User['id']
-  sessionId: RefreshToken['id']
-  userRole: User['role']
-  fingerprint: string | null
-  provider: User['provider']
-}
-
-export type RefreshTokenPayload = {
-  id: RefreshToken['id']
-  uid: string
-  userId: User['id']
-}
-
-declare module 'h3' {
-  interface H3EventContext {
-    _authAdapter: Adapter
-    auth?: AccessTokenPayload
-  }
 }
 
 type UserCreateInput = Pick<User, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>

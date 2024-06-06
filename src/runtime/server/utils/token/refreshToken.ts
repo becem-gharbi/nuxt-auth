@@ -4,7 +4,13 @@ import type { H3Event } from 'h3'
 import { getConfig } from '../config'
 import { createUnauthorizedError } from '../error'
 import { encode, decode } from './jwt'
-import type { User, RefreshToken, RefreshTokenPayload } from '#build/types/auth_adapter'
+import type { User, RefreshToken } from '#build/types/auth_adapter'
+
+type RefreshTokenPayload = {
+  id: RefreshToken['id']
+  uid: RefreshToken['uid']
+  userId: RefreshToken['userId']
+}
 
 export async function createRefreshToken(event: H3Event, userId: User['id']) {
   const userAgent = getHeader(event, 'user-agent')

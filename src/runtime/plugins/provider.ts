@@ -1,5 +1,5 @@
 import { defu } from 'defu'
-import type { PublicConfig } from '../types'
+import type { PublicConfig } from '../types/config'
 import { defineNuxtPlugin, useAuthSession, useRequestHeaders } from '#imports'
 
 export default defineNuxtPlugin({

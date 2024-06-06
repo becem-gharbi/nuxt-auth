@@ -1,7 +1,7 @@
 import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
-import type { KnownErrors } from '../../types'
+import type { KnownErrors } from '../../types/common'
 
 export function createCustomError(statusCode: number, message: KnownErrors) {
   return createError({ message, statusCode })

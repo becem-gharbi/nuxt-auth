@@ -1,9 +1,10 @@
 import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
-import type { ResponseOK, PublicConfig, PrivateConfig, AuthenticationData } from '../types'
+import type { ResponseOK, AuthenticationData, Session } from '../types/common'
+import type { PublicConfig, PrivateConfig } from '../types/config'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
-import type { User, Session } from '#build/types/auth_adapter'
+import type { User } from '#build/types/auth_adapter'
 
 export function useAuthSession() {
   const event = useRequestEvent()
