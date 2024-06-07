@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "3.0.0",
+  "version": "2.6.0",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -13,7 +13,7 @@
   ],
   "publishConfig": {
     "access": "public",
-    "tag": "v3"
+    "tag": "latest"
   },
   "exports": {
     ".": {
