@@ -1,4 +1,4 @@
-import type { PublicConfig, PrivateConfig } from '../../types'
+import type { PublicConfig, PrivateConfig } from '../../types/config'
 import { useRuntimeConfig } from '#imports'
 
 export function getConfig() {

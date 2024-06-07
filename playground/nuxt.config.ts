@@ -51,10 +51,6 @@ export default defineNuxtConfig({
 
     email: {
       from: process.env.AUTH_EMAIL_FROM!,
-      provider: {
-        name: 'resend',
-        apiKey: process.env.AUTH_EMAIL_RESEND_API_KEY!,
-      },
     },
 
     registration: {
@@ -70,9 +66,5 @@ export default defineNuxtConfig({
       passwordReset: '/auth/password-reset',
       emailVerify: '/auth/email-verify',
     },
-
-    webhookKey: 'abc',
-
-    prisma: false,
   },
 })

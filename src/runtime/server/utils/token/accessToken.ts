@@ -1,19 +1,21 @@
 import { getRequestHeader } from 'h3'
 import type { H3Event } from 'h3'
-import type { AccessTokenPayload, User, Session } from '../../../types'
 import { getConfig } from '../config'
 import { mustache } from '../mustache'
+import type { AccessTokenPayload } from '../../../types/common'
 import { encode, decode } from './jwt'
 import { getFingerprintHash, verifyFingerprint } from './fingerprint'
+import type { User, Session } from '#auth_adapter'
 
 export async function createAccessToken(event: H3Event, user: User, sessionId: Session['id']) {
   const config = getConfig()
 
-  let customClaims = config.private.accessToken.customClaims || {}
+  let customClaims = {}
 
-  if (customClaims) {
-    const output = mustache.render(JSON.stringify(customClaims), user)
-    customClaims = Object.assign(JSON.parse(output))
+  if (typeof config.private.accessToken.customClaims === 'object') {
+    const template = JSON.stringify(config.private.accessToken.customClaims)
+    const output = mustache.render(template, user)
+    customClaims = JSON.parse(output)
   }
 
   const fingerprint = await getFingerprintHash(event)
@@ -21,9 +23,12 @@ export async function createAccessToken(event: H3Event, user: User, sessionId: S
   const payload: AccessTokenPayload = {
     ...customClaims,
     sessionId,
+    fingerprint,
     userId: user.id,
     userRole: user.role,
-    fingerprint,
+    provider: user.provider,
+    verified: user.verified,
+    suspended: user.suspended,
   }
 
   const accessToken = await encode(

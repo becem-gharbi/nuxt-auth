@@ -7,29 +7,29 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:C:\\Users\\becem\\Desktop\\Work\\nuxt-auth\\playground\\prisma_data\\.db"
 }
 
 model User {
-  id                     Int            @id @default(autoincrement())
+  id                     String    @id @default(cuid())
   name                   String
-  email                  String         @unique
+  email                  String    @unique
   picture                String
-  role                   String         @default("user")
-  provider               String         @default("default")
+  role                   String
+  provider               String
   password               String?
-  verified               Boolean        @default(false)
-  suspended              Boolean        @default(false)
-  refreshTokens          RefreshToken[]
-  requestedPasswordReset Boolean        @default(false)
-  createdAt              DateTime       @default(now())
-  updatedAt              DateTime       @updatedAt
+  verified               Boolean
+  suspended              Boolean?
+  sessions               Session[]
+  requestedPasswordReset Boolean?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 }
 
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
+model Session {
+  id        String   @id @default(cuid())
   uid       String
-  userId    Int
+  userId    String
   user      User     @relation(fields: [userId], references: [id])
   userAgent String?
   createdAt DateTime @default(now())

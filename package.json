@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "2.6.0",
+  "version": "3.0.0",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -13,7 +13,7 @@
   ],
   "publishConfig": {
     "access": "public",
-    "tag": "latest"
+    "tag": "v3"
   },
   "exports": {
     ".": {
@@ -39,14 +39,13 @@
     "typecheck": "nuxi typecheck",
     "prepack": "nuxt-module-build",
     "release:pre": "npm run typecheck && npm run lint && npm run prepack",
-    "release": "npm run release:pre && npm run test:prod && changelogen --release && npm publish && git push --follow-tags",
+    "release": "npm run release:pre && npm run test:prod && changelogen --release --versionSuffix=rc && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
     "prisma:push": "cd playground && prisma db push"
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2",
-    "@prisma/client": "^5.14.0",
     "bcryptjs": "^2.4.3",
     "defu": "^6.1.4",
     "jose": "^5.3.0",
@@ -57,7 +56,7 @@
     "@nuxt/module-builder": "^0.7.0",
     "@nuxt/schema": "^3.11.2",
     "@playwright/test": "^1.44.1",
-    "@prisma/extension-accelerate": "^1.1.0",
+    "@prisma/client": "^5.14.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.12.13",
     "changelogen": "^0.5.5",
@@ -69,5 +68,9 @@
   "repository": {
     "url": "git+https://github.com/becem-gharbi/nuxt-auth.git"
   },
-  "packageManager": "pnpm@8.7.0+sha1.4a6f863625170af87d027789f72662e0601ecb57"
+  "packageManager": "pnpm@8.7.0+sha1.4a6f863625170af87d027789f72662e0601ecb57",
+  "peerDependencies": {
+    "h3": "^1",
+    "ofetch": "^1"
+  }
 }

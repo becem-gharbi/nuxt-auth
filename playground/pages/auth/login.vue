@@ -20,6 +20,10 @@
       </button>
     </form>
 
+    <p data-testid="password-reset-result">
+      {{ pwResetResult }}
+    </p>
+
     <button @click="handleRequestPasswordReset">
       Forgot password
     </button>
@@ -37,11 +41,19 @@ const { login, requestPasswordReset, loginWithProvider } = useAuth()
 const email = ref()
 const password = ref()
 
+const pwResetResult = ref()
+
 async function handleLogin() {
   await login({ email: email.value, password: password.value })
 }
 
 async function handleRequestPasswordReset() {
   await requestPasswordReset(email.value)
+    .then(() => {
+      pwResetResult.value = 'ok'
+    })
+    .catch((err) => {
+      pwResetResult.value = err.data.message
+    })
 }
 </script>

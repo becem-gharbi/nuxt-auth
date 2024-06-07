@@ -1,30 +1,29 @@
+import { $fetch } from 'ofetch'
 import type { NitroApp } from 'nitropack'
-import type { MailMessage } from '../../types'
+import type { MailMessage } from '../../types/common'
 import { getConfig } from './config'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+
+// @ts-expect-error importing an internal module
 import { useNitroApp } from '#imports'
 
 export async function sendMail(msg: MailMessage) {
   const config = getConfig()
 
-  if (!config.private.email?.provider) {
-    throw new Error('Please make sure to configure email provider')
+  if (!config.private.email?.from) {
+    throw new Error('[nuxt-auth] Email `from` address is not set')
   }
 
   const settings = config.private.email
 
-  switch (settings.provider.name) {
+  switch (settings.provider?.name) {
     case 'hook':
       return await withHook()
-    case 'custom':
-      return await withCustom(settings.provider.url, settings.provider.authorization)
     case 'sendgrid':
       return await withSendgrid(settings.provider.apiKey)
     case 'resend':
       return await withResend(settings.provider.apiKey)
     default:
-      throw new Error('invalid-email-provider')
+      throw new Error('[nuxt-auth] invalid email `provider`')
   }
 
   function withSendgrid(apiKey: string) {
@@ -59,19 +58,6 @@ export async function sendMail(msg: MailMessage) {
         to: msg.to,
         subject: msg.subject,
         html: msg.html,
-      },
-    })
-  }
-
-  function withCustom(url: string, authorization: string) {
-    return $fetch(url, {
-      method: 'POST',
-      headers: {
-        authorization,
-      },
-      body: {
-        ...msg,
-        from: settings.from,
       },
     })
   }

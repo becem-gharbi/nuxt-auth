@@ -1,4 +1,230 @@
 # Changelog
+
+## vv3.0.0-beta.5
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/70e293339fa43dcedde5dd235cd1b5dbea80fc22...vv3.0.0-beta.5)
+
+### 🩹 Fixes
+
+- Allow overwriting adapter Source ([#47](https://github.com/becem-gharbi/nuxt-auth/pull/47))
+
+### 💅 Refactors
+
+- Rename adapter Options to Source ([5780b45](https://github.com/becem-gharbi/nuxt-auth/commit/5780b45))
+- ⚠️  Change event.context definition ([#45](https://github.com/becem-gharbi/nuxt-auth/pull/45))
+- ⚠️  Rename `#auth` to `#auth_utils` ([d9d1bcc](https://github.com/becem-gharbi/nuxt-auth/commit/d9d1bcc))
+- ⚠️  Change path of session endpoints ([#48](https://github.com/becem-gharbi/nuxt-auth/pull/48))
+- Add max length validation for email & name ([ff5b4ad](https://github.com/becem-gharbi/nuxt-auth/commit/ff5b4ad))
+
+### 🌊 Types
+
+- Fix utils types & refactor ([b8412df](https://github.com/becem-gharbi/nuxt-auth/commit/b8412df))
+- Rename `#build/types/auth_adapter` to `#auth_adapter` ([#46](https://github.com/becem-gharbi/nuxt-auth/pull/46))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Change event.context definition ([#45](https://github.com/becem-gharbi/nuxt-auth/pull/45))
+- ⚠️  Rename `#auth` to `#auth_utils` ([d9d1bcc](https://github.com/becem-gharbi/nuxt-auth/commit/d9d1bcc))
+- ⚠️  Change path of session endpoints ([#48](https://github.com/becem-gharbi/nuxt-auth/pull/48))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
+## v3.0.0-beta.4
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/d3967fe2aa32156e3dfd2dad21414fecd835ac8d...vv3.0.0-beta.4)
+
+### 🚀 Enhancements
+
+- Add Email action timeout ([#43](https://github.com/becem-gharbi/nuxt-auth/pull/43))
+
+### 🔥 Performance
+
+- Skip refresh token verification when undefined ([5bf7521](https://github.com/becem-gharbi/nuxt-auth/commit/5bf7521))
+
+### 🩹 Fixes
+
+- Reset `requestedPasswordReset` to false on login ([1deca27](https://github.com/becem-gharbi/nuxt-auth/commit/1deca27))
+- Allow overwriting ID type ([#44](https://github.com/becem-gharbi/nuxt-auth/pull/44))
+
+### 💅 Refactors
+
+- Code review ([b5739ad](https://github.com/becem-gharbi/nuxt-auth/commit/b5739ad))
+- Rename filename of `#auth` type definition ([8b636a3](https://github.com/becem-gharbi/nuxt-auth/commit/8b636a3))
+
+### 📖 Documentation
+
+- Update JSDOC of composables ([#42](https://github.com/becem-gharbi/nuxt-auth/pull/42))
+
+### 🏡 Chore
+
+- Change setup files location ([a3c2514](https://github.com/becem-gharbi/nuxt-auth/commit/a3c2514))
+
+### ✅ Tests
+
+- Update basic ([17a8f35](https://github.com/becem-gharbi/nuxt-auth/commit/17a8f35))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+
+## v3.0.0-beta.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/vv3.0.0-beta.2...vv3.0.0-beta.3)
+
+### 🚀 Enhancements
+
+- Add `auth:fetchError` hook ([ab89ac9](https://github.com/becem-gharbi/nuxt-auth/commit/ab89ac9))
+- Feat: add `emailValidationRegex` for email validation on registration ([#37](https://github.com/becem-gharbi/nuxt-auth/pull/37))
+- Add `prisma` adapter ([#38](https://github.com/becem-gharbi/nuxt-auth/pull/38))
+- Add `unstorage` adapter ([#39](https://github.com/becem-gharbi/nuxt-auth/pull/39))
+- Allow augmenting adapter types e.g User ([916ab82](https://github.com/becem-gharbi/nuxt-auth/commit/916ab82))
+
+### 🩹 Fixes
+
+- Disallow token refresh when account not verified ([5672407](https://github.com/becem-gharbi/nuxt-auth/commit/5672407))
+
+### 💅 Refactors
+
+- Ensure auth refresh flow runs at the end ([#36](https://github.com/becem-gharbi/nuxt-auth/pull/36))
+
+### 🌊 Types
+
+- Define types of route middlewares `auth` and `guest` ([#35](https://github.com/becem-gharbi/nuxt-auth/pull/35))
+- Add known oauth options for `google` and `github` ([06b9f82](https://github.com/becem-gharbi/nuxt-auth/commit/06b9f82))
+- Resolve `provider` from `User` ([68a357f](https://github.com/becem-gharbi/nuxt-auth/commit/68a357f))
+
+### 🏡 Chore
+
+- ⚠️  Do not convert `createdAt` `updatedAt` to Date on user state ([82fc63c](https://github.com/becem-gharbi/nuxt-auth/commit/82fc63c))
+- **playground:** Add adapter selection ([580b821](https://github.com/becem-gharbi/nuxt-auth/commit/580b821))
+- **playground:** Avoid editing runtime config ([b48e24c](https://github.com/becem-gharbi/nuxt-auth/commit/b48e24c))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Do not convert `createdAt` `updatedAt` to Date on user state ([82fc63c](https://github.com/becem-gharbi/nuxt-auth/commit/82fc63c))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+
+## v3.0.0-beta.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/ce6e049f69c74db2251dc4040f44c4ab4914bafe...vv3.0.0-beta.2)
+
+### 🚀 Enhancements
+
+- Add `provider` to access token payload ([#34](https://github.com/becem-gharbi/nuxt-auth/pull/34))
+
+### 🔥 Performance
+
+- ⚠️  Avoid registration of server handlers when respective configuration missing ([#33](https://github.com/becem-gharbi/nuxt-auth/pull/33))
+
+### 🩹 Fixes
+
+- Convert param id to number if possible ([9a88165](https://github.com/becem-gharbi/nuxt-auth/commit/9a88165))
+- Assign role `default` on registration with credentials ([65a9813](https://github.com/becem-gharbi/nuxt-auth/commit/65a9813))
+
+### 💅 Refactors
+
+- ⚠️  Change server error messages ([#32](https://github.com/becem-gharbi/nuxt-auth/pull/32))
+
+### 🌊 Types
+
+- Set `accessToken.customClaims` values to `unknown` ([242be21](https://github.com/becem-gharbi/nuxt-auth/commit/242be21))
+
+### 🏡 Chore
+
+- **playground:** Pass prisma client to event context ([56e8604](https://github.com/becem-gharbi/nuxt-auth/commit/56e8604))
+- Sync changelog ([e474411](https://github.com/becem-gharbi/nuxt-auth/commit/e474411))
+
+### ✅ Tests
+
+- Add render user avatar test ([ad503b1](https://github.com/becem-gharbi/nuxt-auth/commit/ad503b1))
+- Add request password reset test ([454ec0e](https://github.com/becem-gharbi/nuxt-auth/commit/454ec0e))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Avoid registration of server handlers when respective configuration missing ([#33](https://github.com/becem-gharbi/nuxt-auth/pull/33))
+- ⚠️  Change server error messages ([#32](https://github.com/becem-gharbi/nuxt-auth/pull/32))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
+## v3.0.0-beta.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0-beta...v3)
+
+### 🚀 Enhancements
+
+- ⚠️  Allow usage of custom data layer ([#30](https://github.com/becem-gharbi/nuxt-auth/pull/30))
+
+### 🩹 Fixes
+
+- Avoid delete of non-existant refresh token ([#31](https://github.com/becem-gharbi/nuxt-auth/pull/31))
+
+### 💅 Refactors
+
+- Change findUser to findUserById and findUserByEmail ([7ce97d6](https://github.com/becem-gharbi/nuxt-auth/commit/7ce97d6))
+
+### 🏡 Chore
+
+- Resolve import of nitro utils ([8f98519](https://github.com/becem-gharbi/nuxt-auth/commit/8f98519))
+- **playground:** Change email provider to hook ([028697f](https://github.com/becem-gharbi/nuxt-auth/commit/028697f))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Allow usage of custom data layer ([#30](https://github.com/becem-gharbi/nuxt-auth/pull/30))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+
+## v3.0.0-beta
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.6.0...v3.0.0-beta)
+
+### 📖 Documentation
+
+- Update 4.email.md ([aecf78f](https://github.com/becem-gharbi/nuxt-auth/commit/aecf78f))
+
+### 🏡 Chore
+
+- **lint:** Migrate to `@nuxt/eslint-config` ([67a2dcb](https://github.com/becem-gharbi/nuxt-auth/commit/67a2dcb))
+- **lint:** Fix issues ([687a7b4](https://github.com/becem-gharbi/nuxt-auth/commit/687a7b4))
+- Hide node deprecation warnings on build ([3c7d27a](https://github.com/becem-gharbi/nuxt-auth/commit/3c7d27a))
+- ⚠️  Remove `useAuthFetch` ([#24](https://github.com/becem-gharbi/nuxt-auth/pull/24))
+- ⚠️  Remove internal prisma instantiation ([#25](https://github.com/becem-gharbi/nuxt-auth/pull/25))
+- ⚠️  Remove Custom email provider ([#26](https://github.com/becem-gharbi/nuxt-auth/pull/26))
+- **playground:** Remove deprecated config options ([38c59b3](https://github.com/becem-gharbi/nuxt-auth/commit/38c59b3))
+- ⚠️  Remove purge of expired sessions ([#27](https://github.com/becem-gharbi/nuxt-auth/pull/27))
+- ⚠️  Rename `registration.enable` to `registration.enabled` ([#28](https://github.com/becem-gharbi/nuxt-auth/pull/28))
+- ⚠️  Only except `.html` custom email templates ([#29](https://github.com/becem-gharbi/nuxt-auth/pull/29))
+- Change password reset and email verification token's secrets ([9125a3f](https://github.com/becem-gharbi/nuxt-auth/commit/9125a3f))
+- Resolve `@typescript-eslint/ban-ts-comment` overrides ([bf0ab12](https://github.com/becem-gharbi/nuxt-auth/commit/bf0ab12))
+
+### ✅ Tests
+
+- Add basic tests ([98c3e3a](https://github.com/becem-gharbi/nuxt-auth/commit/98c3e3a))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Remove `useAuthFetch` ([#24](https://github.com/becem-gharbi/nuxt-auth/pull/24))
+- ⚠️  Remove internal prisma instantiation ([#25](https://github.com/becem-gharbi/nuxt-auth/pull/25))
+- ⚠️  Remove Custom email provider ([#26](https://github.com/becem-gharbi/nuxt-auth/pull/26))
+- ⚠️  Remove purge of expired sessions ([#27](https://github.com/becem-gharbi/nuxt-auth/pull/27))
+- ⚠️  Rename `registration.enable` to `registration.enabled` ([#28](https://github.com/becem-gharbi/nuxt-auth/pull/28))
+- ⚠️  Only except `.html` custom email templates ([#29](https://github.com/becem-gharbi/nuxt-auth/pull/29))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v2.6.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v2.5.1...v2.6.0)

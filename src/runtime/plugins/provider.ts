@@ -1,37 +1,45 @@
 import { defu } from 'defu'
-import type { $Fetch } from 'ofetch'
-import type { PublicConfig } from '../types'
+import type { PublicConfig } from '../types/config'
 import { defineNuxtPlugin, useAuthSession, useRequestHeaders } from '#imports'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  const publicConfig = nuxtApp.$config.public.auth as PublicConfig
-  const reqHeaders = useRequestHeaders(['user-agent'])
+export default defineNuxtPlugin({
+  name: 'auth:provider',
+  enforce: 'post',
 
-  /**
-   * A $fetch instance with auto authorization handler
-   */
-  const fetch = $fetch.create({
-    baseURL: publicConfig.backendBaseUrl,
+  setup: (nuxtApp) => {
+    const publicConfig = nuxtApp.$config.public.auth as PublicConfig
+    const reqHeaders = useRequestHeaders(['user-agent'])
 
-    async onRequest({ options }) {
-      const accessToken = await useAuthSession().getAccessToken()
+    /**
+     * A $fetch instance with auto authorization handler
+     */
+    const fetch = $fetch.create({
+      baseURL: publicConfig.backendBaseUrl,
 
-      if (accessToken) {
-        options.headers = defu(options.headers, reqHeaders, {
-          authorization: 'Bearer ' + accessToken,
-        })
-      }
+      async onRequest({ options }) {
+        const accessToken = await useAuthSession().getAccessToken()
 
-      options.credentials ||= 'omit'
-    },
-  })
+        if (accessToken) {
+          options.headers = defu(options.headers, reqHeaders, {
+            authorization: 'Bearer ' + accessToken,
+          })
+        }
 
-  return {
-    provide: {
-      auth: {
-        fetch: fetch as $Fetch,
-        _refreshPromise: null,
+        options.credentials ||= 'omit'
       },
-    },
-  }
+
+      async onResponseError({ response }) {
+        await nuxtApp.callHook('auth:fetchError', response)
+      },
+    })
+
+    return {
+      provide: {
+        auth: {
+          fetch,
+          _refreshPromise: null,
+        },
+      },
+    }
+  },
 })

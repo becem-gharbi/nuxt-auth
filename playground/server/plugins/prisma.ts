@@ -1,13 +1,19 @@
-import { PrismaClient } from '@prisma/client'
 import type { NitroApp } from 'nitropack'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { PrismaClient } from '@prisma/client'
+import consola from 'consola'
+import { usePrismaAdapter, setEventContext } from '#auth_utils'
+
+// @ts-expect-error importing an internal module
 import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
-  const prisma = new PrismaClient()
+  if (process.env.NUXT_ADAPTER === 'prisma') {
+    consola.success('Running with Prisma adapter')
 
-  nitroApp.hooks.hook('request', (event) => {
-    event.context.prisma = prisma
-  })
+    const prisma = new PrismaClient()
+
+    const adapter = usePrismaAdapter(prisma)
+
+    nitroApp.hooks.hook('request', event => setEventContext(event, adapter))
+  }
 })

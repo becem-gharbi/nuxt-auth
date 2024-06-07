@@ -1,13 +1,17 @@
-import type { ResetPasswordPayload } from '../../../types'
 import { getConfig } from '../config'
 import { encode, decode } from './jwt'
+import type { User } from '#auth_adapter'
+
+type ResetPasswordPayload = {
+  userId: User['id']
+}
 
 export async function createResetPasswordToken(payload: ResetPasswordPayload) {
   const config = getConfig()
   const resetPasswordToken = await encode(
     payload,
-    config.private.accessToken.jwtSecret + 'reset-password',
-    config.private.accessToken.maxAge!,
+    config.private.accessToken.jwtSecret + 'p',
+    config.private.email!.actionTimeout!,
   )
 
   return resetPasswordToken
@@ -18,7 +22,7 @@ export async function verifyResetPasswordToken(resetPasswordToken: string) {
 
   const payload = await decode<ResetPasswordPayload>(
     resetPasswordToken,
-    config.private.accessToken.jwtSecret + 'reset-password',
+    config.private.accessToken.jwtSecret + 'p',
   )
 
   return payload
