@@ -27,6 +27,8 @@ export async function createAccessToken(event: H3Event, user: User, sessionId: S
     userId: user.id,
     userRole: user.role,
     provider: user.provider,
+    verified: user.verified,
+    suspended: user.suspended,
   }
 
   const accessToken = await encode(

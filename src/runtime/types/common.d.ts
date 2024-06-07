@@ -16,6 +16,8 @@ export type AccessTokenPayload = {
   sessionId: RefreshToken['id']
   userRole: User['role']
   provider: User['provider']
+  verified: User['verified']
+  suspended: User['suspended']
 }
 
 declare module 'h3' {
