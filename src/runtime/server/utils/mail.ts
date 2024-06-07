@@ -1,4 +1,5 @@
 import { $fetch } from 'ofetch'
+import type { NitroApp } from 'nitropack'
 import type { MailMessage } from '../../types/common'
 import { getConfig } from './config'
 
@@ -62,7 +63,7 @@ export async function sendMail(msg: MailMessage) {
   }
 
   function withHook() {
-    const nitroApp = useNitroApp()
+    const nitroApp = useNitroApp() as NitroApp
     return nitroApp.hooks.callHook('auth:email', settings.from, msg)
   }
 }

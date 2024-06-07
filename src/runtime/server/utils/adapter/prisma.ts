@@ -28,9 +28,6 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       async create(data) {
         return prisma.user.create({
           data,
-          select: {
-            id: true,
-          },
         })
       },
 
