@@ -1,6 +1,6 @@
 import { defineEventHandler, getValidatedRouterParams } from 'h3'
 import { z } from 'zod'
-import { handleError, createUnauthorizedError, checkUser } from '../../utils'
+import { handleError, createUnauthorizedError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,8 +9,6 @@ export default defineEventHandler(async (event) => {
     if (!authData) {
       throw createUnauthorizedError()
     }
-
-    checkUser(authData)
 
     const schema = z.object({
       id: z.string().min(1),

@@ -1,6 +1,6 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, hashSync, compareSync, handleError, createUnauthorizedError, createCustomError, checkUser } from '../../utils'
+import { getConfig, hashSync, compareSync, handleError, createUnauthorizedError, createCustomError } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -11,8 +11,6 @@ export default defineEventHandler(async (event) => {
     if (authData?.provider !== 'default') {
       throw createUnauthorizedError()
     }
-
-    checkUser(authData)
 
     const schema = z.object({
       currentPassword: z.string().min(1),

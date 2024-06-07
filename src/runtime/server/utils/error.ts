@@ -9,11 +9,7 @@ import type { User } from '#auth_adapter'
 // @ts-expect-error importing an internal module
 import { useNitroApp } from '#imports'
 
-export function checkUser(data?: Pick<User, 'verified' | 'suspended'>) {
-  if (!data) {
-    throw createUnauthorizedError()
-  }
-
+export function checkUser(data: Pick<User, 'verified' | 'suspended'>) {
   const config = getConfig()
 
   if (!data.verified && config.private.registration.requireEmailVerification) {
