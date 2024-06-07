@@ -1,8 +1,12 @@
 import type { H3Event } from 'h3'
+import type { NitroApp } from 'nitropack'
 import { getConfig } from './config'
 import { generateAvatar } from './avatar'
 import { createCustomError } from './error'
 import type { User } from '#auth_adapter'
+
+// @ts-expect-error importing an internal module
+import { useNitroApp } from '#imports'
 
 interface CreateAccountInput {
   name: User['name']
@@ -26,7 +30,7 @@ export async function createAccount(event: H3Event, data: CreateAccountInput) {
     throw createCustomError(403, 'Email not accepted')
   }
 
-  return event.context.auth.adapter.user.create({
+  const user = await event.context.auth.adapter.user.create({
     name: data.name,
     email: data.email,
     password: data.password,
@@ -35,4 +39,9 @@ export async function createAccount(event: H3Event, data: CreateAccountInput) {
     picture: data.picture ?? generateAvatar(data.name),
     role: config.private.registration.defaultRole,
   })
+
+  const nitroApp = useNitroApp() as NitroApp
+  await nitroApp.hooks.callHook('auth:registration', user)
+
+  return user
 }

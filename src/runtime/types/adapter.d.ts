@@ -28,7 +28,7 @@ export interface RefreshToken {
 }
 
 type UserCreateInput = Pick<User, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
-type UserCreateOutput = Pick<User, 'id'>
+type UserCreateOutput = User
 type UserUpdateInput = Omit<Partial<User>, 'id'>
 type RefreshTokenCreateInput = Pick<RefreshToken, 'uid' | 'userAgent' | 'userId'>
 type RefreshTokenCreateOutput = Pick<RefreshToken, 'id'>

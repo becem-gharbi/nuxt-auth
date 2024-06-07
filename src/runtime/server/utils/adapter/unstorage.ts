@@ -23,15 +23,15 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
       },
 
       async create(data) {
-        const id = randomUUID()
-        await storage.setItem(`users:id:${id}:data`, {
+        const user: User = {
           ...data,
-          id,
+          id: randomUUID(),
           createdAt: new Date(),
           updatedAt: new Date(),
-        })
-        await storage.setItem(`users:email:${data.email}`, id)
-        return { id }
+        }
+        await storage.setItem(`users:id:${user.id}:data`, user)
+        await storage.setItem(`users:email:${data.email}`, user.id)
+        return user
       },
 
       async update(id, data) {
