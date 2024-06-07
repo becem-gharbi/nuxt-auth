@@ -31,6 +31,7 @@ declare module 'nitropack' {
   interface NitroRuntimeHooks {
     'auth:email': (from: string, msg: MailMessage) => Promise<void> | void
     'auth:registration': (user: User) => Promise<void> | void
+    'auth:error': (error: unknown) => Promise<void> | void
   }
 }
 

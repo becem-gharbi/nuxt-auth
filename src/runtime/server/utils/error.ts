@@ -1,7 +1,11 @@
 import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
+import type { NitroApp } from 'nitropack'
 import type { KnownErrors } from '../../types/common'
+
+// @ts-expect-error importing an internal module
+import { useNitroApp } from '#imports'
 
 export function createCustomError(statusCode: number, message: KnownErrors) {
   return createError({ message, statusCode })
@@ -22,6 +26,8 @@ export async function handleError(error: unknown, redirect?: { event: H3Event, u
     }
   }
 
-  console.error(error)
+  const nitroApp = useNitroApp() as NitroApp
+  await nitroApp.hooks.callHook('auth:error', error)
+
   throw createCustomError(500, 'Something went wrong')
 }
