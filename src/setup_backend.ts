@@ -59,8 +59,8 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
           `  const handleError: typeof import('${resolve('./runtime/server/utils')}').handleError`,
           `  const setEventContext: typeof import('${resolve('./runtime/server/utils')}').setEventContext`,
           `  const defineAdapter: typeof import('${resolve('./runtime/server/utils')}').defineAdapter`,
-          `  const definePrismaAdapter: typeof import('${resolve('./runtime/server/utils')}').definePrismaAdapter`,
-          `  const defineUnstorageAdapter: typeof import('${resolve('./runtime/server/utils')}').defineUnstorageAdapter`,
+          `  const usePrismaAdapter: typeof import('${resolve('./runtime/server/utils')}').usePrismaAdapter`,
+          `  const useUnstorageAdapter: typeof import('${resolve('./runtime/server/utils')}').useUnstorageAdapter`,
           '}',
       ].join('\n'),
   })

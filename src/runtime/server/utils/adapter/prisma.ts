@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@prisma/client'
 import { defineAdapter } from './utils'
 
-export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
+export const usePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
   if (!prisma) {
     throw new Error('[nuxt-auth] Prisma client not defined')
   }

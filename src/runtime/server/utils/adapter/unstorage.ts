@@ -3,7 +3,7 @@ import { randomUUID } from 'uncrypto'
 import { defineAdapter } from './utils'
 import type { User, Session } from '#auth_adapter'
 
-export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
+export const useUnstorageAdapter = defineAdapter<Storage>((storage) => {
   if (!storage) {
     throw new Error('[nuxt-auth] Unstorage client not defined')
   }
