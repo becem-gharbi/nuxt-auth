@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.0-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0-beta.0...v3.0.0-rc)
+
 ## vv3.0.0-beta.5
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/70e293339fa43dcedde5dd235cd1b5dbea80fc22...vv3.0.0-beta.5)
