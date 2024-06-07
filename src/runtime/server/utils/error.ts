@@ -3,9 +3,27 @@ import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
 import type { NitroApp } from 'nitropack'
 import type { KnownErrors } from '../../types/common'
+import { getConfig } from './config'
+import type { User } from '#auth_adapter'
 
 // @ts-expect-error importing an internal module
 import { useNitroApp } from '#imports'
+
+export function checkUser(data?: Pick<User, 'verified' | 'suspended'>) {
+  if (!data) {
+    throw createUnauthorizedError()
+  }
+
+  const config = getConfig()
+
+  if (!data.verified && config.private.registration.requireEmailVerification) {
+    throw createCustomError(403, 'Account not verified')
+  }
+
+  if (data.suspended) {
+    throw createCustomError(403, 'Account suspended')
+  }
+}
 
 export function createCustomError(statusCode: number, message: KnownErrors) {
   return createError({ message, statusCode })

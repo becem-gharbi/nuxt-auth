@@ -1,10 +1,8 @@
 import { readValidatedBody, defineEventHandler } from 'h3'
 import { z } from 'zod'
-import { getConfig, createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken, createCustomError } from '../../utils'
+import { createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSync, handleError, signRefreshToken, createCustomError, checkUser } from '../../utils'
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig()
-
   try {
     const schema = z.object({
       email: z.string().email().max(40),
@@ -19,13 +17,7 @@ export default defineEventHandler(async (event) => {
       throw createCustomError(401, 'Wrong credentials')
     }
 
-    if (!user.verified && config.private.registration.requireEmailVerification) {
-      throw createCustomError(403, 'Account not verified')
-    }
-
-    if (user.suspended) {
-      throw createCustomError(403, 'Account suspended')
-    }
+    checkUser(user)
 
     if (user.requestedPasswordReset) {
       await event.context.auth.adapter.user.update(user.id, { requestedPasswordReset: false })

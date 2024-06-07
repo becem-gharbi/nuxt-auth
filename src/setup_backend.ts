@@ -51,6 +51,7 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     getContents: () =>
       [
         'declare module \'#auth_utils\' {',
+          `  const checkUser: typeof import('${resolve('./runtime/server/utils')}').checkUser`,
           `  const encode: typeof import('${resolve('./runtime/server/utils')}').encode`,
           `  const decode: typeof import('${resolve('./runtime/server/utils')}').decode`,
           `  const compareSync: typeof import('${resolve('./runtime/server/utils')}').compareSync`,
