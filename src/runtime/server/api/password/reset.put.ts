@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       password: hashedPassword,
     })
 
-    await event.context.auth.adapter.refreshToken.deleteManyByUserId(payload.userId)
+    await event.context.auth.adapter.session.deleteManyByUserId(payload.userId)
 
     await event.context.auth.adapter.user.update(payload.userId, { requestedPasswordReset: false })
 

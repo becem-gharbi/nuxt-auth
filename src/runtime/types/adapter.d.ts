@@ -18,8 +18,8 @@ export interface User {
   requestedPasswordReset?: boolean | null
 }
 
-export interface RefreshToken {
-  id: NumberOrString<RefreshTokenId>
+export interface Session {
+  id: NumberOrString<SessionId>
   uid: string
   userAgent: string | null
   createdAt: Date
@@ -30,9 +30,9 @@ export interface RefreshToken {
 type UserCreateInput = Pick<User, 'name' | 'email' | 'password' | 'picture' | 'provider' | 'role' | 'verified'>
 type UserCreateOutput = User
 type UserUpdateInput = Omit<Partial<User>, 'id'>
-type RefreshTokenCreateInput = Pick<RefreshToken, 'uid' | 'userAgent' | 'userId'>
-type RefreshTokenCreateOutput = Pick<RefreshToken, 'id'>
-type RefreshTokenUpdateInput = Pick<RefreshToken, 'uid' | 'userId'>
+type SessionCreateInput = Pick<Session, 'uid' | 'userAgent' | 'userId'>
+type SessionCreateOutput = Pick<Session, 'id'>
+type SessionUpdateInput = Pick<Session, 'uid' | 'userId'>
 
 export interface Adapter<SourceT = Source> {
   name: string
@@ -43,12 +43,12 @@ export interface Adapter<SourceT = Source> {
     create: (input: UserCreateInput) => Promise<UserCreateOutput>
     update: (id: User['id'], input: UserUpdateInput) => Promise<void>
   }
-  refreshToken: {
-    findById: (id: RefreshToken['id'], userId: User['id']) => Promise<RefreshToken | null>
-    findManyByUserId: (id: User['id']) => Promise<RefreshToken[]>
-    create: (input: RefreshTokenCreateInput) => Promise<RefreshTokenCreateOutput>
-    update: (id: RefreshToken['id'], input: RefreshTokenUpdateInput) => Promise<void>
-    delete: (id: RefreshToken['id'], userId: User['id']) => Promise<void>
-    deleteManyByUserId: (userId: User['id'], excludeId?: RefreshToken['id']) => Promise<void>
+  session: {
+    findById: (id: Session['id'], userId: User['id']) => Promise<Session | null>
+    findManyByUserId: (id: User['id']) => Promise<Session[]>
+    create: (input: SessionCreateInput) => Promise<SessionCreateOutput>
+    update: (id: Session['id'], input: SessionUpdateInput) => Promise<void>
+    delete: (id: Session['id'], userId: User['id']) => Promise<void>
+    deleteManyByUserId: (userId: User['id'], excludeId?: Session['id']) => Promise<void>
   }
 }

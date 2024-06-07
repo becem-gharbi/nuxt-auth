@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
       password: hashedPassword,
     })
 
-    await event.context.auth.adapter.refreshToken.deleteManyByUserId(authData.userId, authData.sessionId)
+    await event.context.auth.adapter.session.deleteManyByUserId(authData.userId, authData.sessionId)
 
     return { status: 'ok' }
   }

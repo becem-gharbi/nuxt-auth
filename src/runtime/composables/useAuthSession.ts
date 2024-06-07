@@ -1,6 +1,6 @@
 import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
-import type { ResponseOK, AuthenticationData, Session } from '../types/common'
+import type { ResponseOK, AuthenticationData, SessionOld } from '../types/common'
 import type { PublicConfig, PrivateConfig } from '../types/config'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
@@ -112,10 +112,10 @@ export function useAuthSession() {
   /**
    * Revokes a single stored session of the active user.
    *
-   * @param {Session['id']} id - The ID of the session to revoke.
+   * @param {SessionOld['id']} id - The ID of the session to revoke.
    * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of the session.
    */
-  function revokeSession(id: Session['id']): Promise<ResponseOK> {
+  function revokeSession(id: SessionOld['id']): Promise<ResponseOK> {
     return useNuxtApp().$auth.fetch<ResponseOK>(`/api/auth/sessions/${id}`, {
       method: 'DELETE',
     })
@@ -124,10 +124,10 @@ export function useAuthSession() {
   /**
    * Retrieves information about all active sessions, offering insights into the user's session history.
    *
-   * @return {Promise<Session[]>} A promise that resolves with an array of Session objects representing all active sessions. The current session is moved to the top of the array.
+   * @return {Promise<SessionOld[]>} A promise that resolves with an array of SessionOld objects representing all active sessions. The current session is moved to the top of the array.
    */
-  async function getAllSessions(): Promise<Session[]> {
-    const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/sessions')
+  async function getAllSessions(): Promise<SessionOld[]> {
+    const sessions = await useNuxtApp().$auth.fetch<SessionOld[]>('/api/auth/sessions')
 
     // Move current session on top
     const currentIndex = sessions.findIndex(el => el.current)

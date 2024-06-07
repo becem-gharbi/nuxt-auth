@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       throw createUnauthorizedError()
     }
 
-    await event.context.auth.adapter.refreshToken.deleteManyByUserId(authData.userId, authData.sessionId)
+    await event.context.auth.adapter.session.deleteManyByUserId(authData.userId, authData.sessionId)
 
     return { status: 'ok' }
   }

@@ -1,7 +1,7 @@
 import type { Storage } from 'unstorage'
 import { randomUUID } from 'uncrypto'
 import { defineAdapter } from './utils'
-import type { User, RefreshToken } from '#auth_adapter'
+import type { User, Session } from '#auth_adapter'
 
 export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
   if (!storage) {
@@ -44,14 +44,14 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
       },
     },
 
-    refreshToken: {
+    session: {
       async findById(id, userId) {
-        return storage.getItem<RefreshToken>(`users:id:${userId}:tokens:${id}`)
+        return storage.getItem<Session>(`users:id:${userId}:tokens:${id}`)
       },
 
       async findManyByUserId(userId) {
         const tokens = await storage.getKeys(`users:id:${userId}:tokens`).then((keys) => {
-          return storage.getItems<RefreshToken>(keys)
+          return storage.getItems<Session>(keys)
         })
         return tokens.map(token => token.value)
       },

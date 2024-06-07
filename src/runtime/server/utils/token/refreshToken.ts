@@ -4,20 +4,16 @@ import type { H3Event } from 'h3'
 import { getConfig } from '../config'
 import { createUnauthorizedError } from '../error'
 import { encode, decode } from './jwt'
-import type { User, RefreshToken } from '#auth_adapter'
+import type { User, Session } from '#auth_adapter'
 
-type RefreshTokenPayload = {
-  id: RefreshToken['id']
-  uid: RefreshToken['uid']
-  userId: RefreshToken['userId']
-}
+type RefreshTokenPayload = Pick<Session, 'id' | 'uid' | 'userId'>
 
 export async function createRefreshToken(event: H3Event, userId: User['id']) {
   const userAgent = getHeader(event, 'user-agent')
 
   const uid = randomUUID()
 
-  const refreshTokenEntity = await event.context.auth.adapter.refreshToken.create({
+  const refreshTokenEntity = await event.context.auth.adapter.session.create({
     userId,
     userAgent: userAgent ?? null,
     uid,
@@ -53,15 +49,19 @@ export async function decodeRefreshToken(refreshToken: string) {
   return payload
 }
 
-export async function updateRefreshToken(event: H3Event, id: RefreshToken['id'], userId: User['id']) {
+export async function updateRefreshToken(event: H3Event, sessionId: Session['id'], userId: User['id']) {
   const uid = randomUUID()
 
-  await event.context.auth.adapter.refreshToken.update(id, {
+  await event.context.auth.adapter.session.update(sessionId, {
     uid,
     userId,
   })
 
-  const refreshToken = await signRefreshToken({ id, uid, userId })
+  const refreshToken = await signRefreshToken({
+    id: sessionId,
+    uid,
+    userId,
+  })
 
   return refreshToken
 }
@@ -78,10 +78,7 @@ export function setRefreshTokenCookie(event: H3Event, refreshToken: string) {
 
 export function getRefreshTokenFromCookie(event: H3Event) {
   const config = getConfig()
-  const refreshToken = getCookie(
-    event,
-    config.private.refreshToken.cookieName!,
-  )
+  const refreshToken = getCookie(event, config.private.refreshToken.cookieName!)
   return refreshToken
 }
 
@@ -89,16 +86,16 @@ export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
   // check if the refreshToken is issued by the auth server && if it's not expired
   const payload = await decodeRefreshToken(refreshToken)
 
-  const refreshTokenEntity = await event.context.auth.adapter.refreshToken.findById(payload.id, payload.userId)
+  const session = await event.context.auth.adapter.session.findById(payload.id, payload.userId)
 
-  if (!refreshTokenEntity) {
+  if (!session) {
     throw createUnauthorizedError()
   }
 
   const userAgent = getHeader(event, 'user-agent') ?? null
 
-  if (refreshTokenEntity.uid !== payload.uid || refreshTokenEntity.userAgent !== userAgent) {
-    await event.context.auth.adapter.refreshToken.delete(payload.id, payload.userId)
+  if (session.uid !== payload.uid || session.userAgent !== userAgent) {
+    await event.context.auth.adapter.session.delete(payload.id, payload.userId)
     throw createUnauthorizedError()
   }
 
@@ -106,6 +103,5 @@ export async function verifyRefreshToken(event: H3Event, refreshToken: string) {
 }
 
 export function deleteRefreshTokenCookie(event: H3Event) {
-  const config = getConfig()
-  deleteCookie(event, config.private.refreshToken.cookieName!)
+  deleteCookie(event, getConfig().private.refreshToken.cookieName!)
 }
