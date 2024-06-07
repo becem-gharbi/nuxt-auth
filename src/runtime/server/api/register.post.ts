@@ -25,7 +25,11 @@ export default defineEventHandler(async (event) => {
 
     const hashedPassword = hashSync(password, 12)
 
-    await createAccount(event, { email, name, password: hashedPassword })
+    await createAccount(event, {
+      email,
+      name,
+      password: hashedPassword,
+    })
 
     return { status: 'ok' }
   }

@@ -38,13 +38,12 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   const { resolve } = createResolver(import.meta.url)
 
   // Add server utils
-  nuxt.options.nitro = defu(
+  nuxt.options.nitro = defu(nuxt.options.nitro,
     {
       alias: {
         '#auth_utils': resolve('./runtime/server/utils'),
       },
     },
-    nuxt.options.nitro,
   )
 
   addTemplate({

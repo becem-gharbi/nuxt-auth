@@ -10,12 +10,12 @@ export interface User {
   picture: string
   role: string
   provider: string
-  password: string | null
   verified: boolean
-  suspended: boolean
-  requestedPasswordReset: boolean
   createdAt: Date
   updatedAt: Date
+  suspended?: boolean | null
+  password?: string | null
+  requestedPasswordReset?: boolean | null
 }
 
 export interface RefreshToken {

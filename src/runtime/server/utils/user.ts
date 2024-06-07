@@ -5,12 +5,12 @@ import { createCustomError } from './error'
 import type { User } from '#auth_adapter'
 
 interface CreateAccountInput {
-  name: string
-  email: string
-  password?: string
-  verified?: boolean
+  name: User['name']
+  email: User['email']
+  password?: User['password']
+  verified?: User['verified']
   provider?: User['provider']
-  picture?: string
+  picture?: User['picture']
 }
 
 export async function createAccount(event: H3Event, data: CreateAccountInput) {
@@ -29,7 +29,7 @@ export async function createAccount(event: H3Event, data: CreateAccountInput) {
   return event.context.auth.adapter.user.create({
     name: data.name,
     email: data.email,
-    password: data.password ?? null,
+    password: data.password,
     verified: data.verified ?? false,
     provider: data.provider ?? 'default',
     picture: data.picture ?? generateAvatar(data.name),
