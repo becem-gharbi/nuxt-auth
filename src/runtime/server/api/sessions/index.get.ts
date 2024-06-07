@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { handleError, createUnauthorizedError } from '../../utils'
+import { handleError, createUnauthorizedError, checkUser } from '../../utils'
 import type { Session } from '../../../types/common'
 
 export default defineEventHandler(async (event) => {
@@ -9,6 +9,8 @@ export default defineEventHandler(async (event) => {
     if (!authData) {
       throw createUnauthorizedError()
     }
+
+    checkUser(authData)
 
     const refreshTokens = await event.context.auth.adapter.refreshToken.findManyByUserId(authData.userId)
 

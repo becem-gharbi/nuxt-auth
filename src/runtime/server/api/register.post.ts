@@ -1,11 +1,11 @@
 import { defineEventHandler, readValidatedBody } from 'h3'
 import { z } from 'zod'
-import { getConfig, hashSync, handleError, createCustomError, createAccount } from '../utils'
+import { getConfig, hashSync, handleError, createCustomError, createAccount, checkUser } from '../utils'
 
 export default defineEventHandler(async (event) => {
-  const config = getConfig()
-
   try {
+    const config = getConfig()
+
     const schema = z.object({
       name: z.string().min(1).max(20),
       email: z.string().email().max(40),
@@ -17,9 +17,7 @@ export default defineEventHandler(async (event) => {
     const user = await event.context.auth.adapter.user.findByEmail(email)
 
     if (user) {
-      if (!user.verified && config.private.registration.requireEmailVerification) {
-        throw createCustomError(403, 'Account not verified')
-      }
+      checkUser(user)
       throw createCustomError(403, 'Email already used')
     }
 

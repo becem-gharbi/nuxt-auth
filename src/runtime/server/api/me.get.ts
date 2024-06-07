@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { handleError, createUnauthorizedError } from '../utils'
+import { handleError, createUnauthorizedError, checkUser } from '../utils'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -8,6 +8,8 @@ export default defineEventHandler(async (event) => {
     if (!authData) {
       throw createUnauthorizedError()
     }
+
+    checkUser(authData)
 
     const user = await event.context.auth.adapter.user.findById(authData.userId)
 
