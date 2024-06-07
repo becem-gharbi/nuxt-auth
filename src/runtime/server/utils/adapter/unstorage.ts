@@ -46,19 +46,19 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
 
     session: {
       async findById(id, userId) {
-        return storage.getItem<Session>(`users:id:${userId}:tokens:${id}`)
+        return storage.getItem<Session>(`users:id:${userId}:sessions:${id}`)
       },
 
       async findManyByUserId(userId) {
-        const tokens = await storage.getKeys(`users:id:${userId}:tokens`).then((keys) => {
+        const sessions = await storage.getKeys(`users:id:${userId}:sessions`).then((keys) => {
           return storage.getItems<Session>(keys)
         })
-        return tokens.map(token => token.value)
+        return sessions.map(token => token.value)
       },
 
       async create(data) {
         const id = randomUUID()
-        await storage.setItem(`users:id:${data.userId}:tokens:${id}`,
+        await storage.setItem(`users:id:${data.userId}:sessions:${id}`,
           {
             ...data,
             id,
@@ -70,7 +70,7 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
 
       async update(id, data) {
         const token = await this.findById(id, data.userId)
-        await storage.setItem(`users:id:${data.userId}:tokens:${id}`, {
+        await storage.setItem(`users:id:${data.userId}:sessions:${id}`, {
           ...token,
           ...data,
           updatedAt: new Date(),
@@ -78,14 +78,14 @@ export const defineUnstorageAdapter = defineAdapter<Storage>((storage) => {
       },
 
       async delete(id, userId) {
-        await storage.removeItem(`users:id:${userId}:tokens:${id}`)
+        await storage.removeItem(`users:id:${userId}:sessions:${id}`)
       },
 
       async deleteManyByUserId(userId, excludeId) {
-        const tokens = await this.findManyByUserId(userId)
-        const tokensFiltered = tokens.filter(token => token.id !== excludeId)
+        const sessions = await this.findManyByUserId(userId)
+        const tokensFiltered = sessions.filter(token => token.id !== excludeId)
         await Promise.all(tokensFiltered.map((token) => {
-          return storage.removeItem(`users:id:${userId}:tokens:${token.id}`)
+          return storage.removeItem(`users:id:${userId}:sessions:${token.id}`)
         }))
       },
     },
