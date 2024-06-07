@@ -2,14 +2,6 @@ import type { FetchError } from 'ofetch'
 import type { H3Error } from 'h3'
 import type { Adapter, User, Session } from '#auth_adapter'
 
-export interface SessionOld {
-  current: boolean
-  id: RefreshToken['id']
-  ua: RefreshToken['userAgent']
-  updatedAt: RefreshToken['updatedAt']
-  createdAt: RefreshToken['createdAt']
-}
-
 export type AccessTokenPayload = {
   fingerprint: string | null
   userId: User['id']
