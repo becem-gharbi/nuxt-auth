@@ -19,13 +19,13 @@ export default defineEventHandler(async (event) => {
     // @ts-expect-error id can either be string or number
     params.id = Number.isNaN(Number(params.id)) ? params.id : Number(params.id)
 
-    const refreshTokenEntity = await event.context.auth.adapter.refreshToken.findById(params.id, authData.userId)
+    const session = await event.context.auth.adapter.session.findById(params.id, authData.userId)
 
-    if (refreshTokenEntity?.userId !== authData.userId) {
+    if (session?.userId !== authData.userId) {
       throw createUnauthorizedError()
     }
 
-    await event.context.auth.adapter.refreshToken.delete(params.id, authData.userId)
+    await event.context.auth.adapter.session.delete(params.id, authData.userId)
 
     return { status: 'ok' }
   }

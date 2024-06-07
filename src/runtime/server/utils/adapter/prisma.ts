@@ -44,9 +44,9 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       },
     },
 
-    refreshToken: {
+    session: {
       async findById(id, userId) {
-        return prisma.refreshToken.findUnique({
+        return prisma.session.findUnique({
           where: {
             id,
             userId,
@@ -55,7 +55,7 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       },
 
       async findManyByUserId(userId) {
-        return prisma.refreshToken.findMany({
+        return prisma.session.findMany({
           where: {
             userId,
           },
@@ -63,7 +63,7 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       },
 
       async create(data) {
-        return prisma.refreshToken.create({
+        return prisma.session.create({
           data: {
             ...data,
             userId: data.userId,
@@ -75,7 +75,7 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       },
 
       async update(id, data) {
-        await prisma.refreshToken.update({
+        await prisma.session.update({
           where: {
             id,
           },
@@ -89,7 +89,7 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       },
 
       async delete(id, userId) {
-        await prisma.refreshToken.delete({
+        await prisma.session.delete({
           where: {
             id,
             userId,
@@ -101,7 +101,7 @@ export const definePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
       },
 
       async deleteManyByUserId(userId, excludeId) {
-        await prisma.refreshToken.deleteMany({
+        await prisma.session.deleteMany({
           where: {
             userId,
             id: {

@@ -1,10 +1,10 @@
 import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
-import type { ResponseOK, AuthenticationData, Session } from '../types/common'
+import type { ResponseOK, AuthenticationData } from '../types/common'
 import type { PublicConfig, PrivateConfig } from '../types/config'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
-import type { User } from '#auth_adapter'
+import type { User, Session } from '#auth_adapter'
 
 export function useAuthSession() {
   const event = useRequestEvent()
@@ -124,19 +124,18 @@ export function useAuthSession() {
   /**
    * Retrieves information about all active sessions, offering insights into the user's session history.
    *
-   * @return {Promise<Session[]>} A promise that resolves with an array of Session objects representing all active sessions. The current session is moved to the top of the array.
+   * @return {Promise<Array<Session & { current: boolean }>>} A promise that resolves with an array of Session objects representing all active sessions. The current session is moved to the top of the array.
    */
-  async function getAllSessions(): Promise<Session[]> {
-    const sessions = await useNuxtApp().$auth.fetch<Session[]>('/api/auth/sessions')
+  async function getAllSessions(): Promise<Array<Session & { current: boolean }>> {
+    const res = await useNuxtApp().$auth.fetch<{ active: Session[], current?: Session }>('/api/auth/sessions')
 
-    // Move current session on top
-    const currentIndex = sessions.findIndex(el => el.current)
-    if (currentIndex > 0) {
-      const currentSession = sessions.splice(currentIndex, 1)[0]
-      sessions.unshift(currentSession)
+    const sessions = res.active.filter(session => session.id !== res.current?.id)
+
+    if (res.current) {
+      sessions.unshift(res.current)
     }
 
-    return sessions
+    return sessions.map((session, index) => ({ current: index === 0, ...session }))
   }
 
   return {

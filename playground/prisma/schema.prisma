@@ -11,22 +11,22 @@ datasource db {
 }
 
 model User {
-  id                     String         @id @default(cuid())
+  id                     String    @id @default(cuid())
   name                   String
-  email                  String         @unique
+  email                  String    @unique
   picture                String
   role                   String
   provider               String
   password               String?
   verified               Boolean
   suspended              Boolean?
-  refreshTokens          RefreshToken[]
+  sessions               Session[]
   requestedPasswordReset Boolean?
-  createdAt              DateTime       @default(now())
-  updatedAt              DateTime       @updatedAt
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 }
 
-model RefreshToken {
+model Session {
   id        String   @id @default(cuid())
   uid       String
   userId    String

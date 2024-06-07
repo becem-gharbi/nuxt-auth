@@ -1,6 +1,5 @@
 import { defineEventHandler } from 'h3'
 import { handleError, createUnauthorizedError } from '../../utils'
-import type { Session } from '../../../types/common'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,15 +9,12 @@ export default defineEventHandler(async (event) => {
       throw createUnauthorizedError()
     }
 
-    const refreshTokens = await event.context.auth.adapter.refreshToken.findManyByUserId(authData.userId)
+    const sessions = await event.context.auth.adapter.session.findManyByUserId(authData.userId)
 
-    return refreshTokens.map<Session>(token => ({
-      id: token.id,
-      current: token.id === authData.sessionId,
-      ua: token.userAgent,
-      createdAt: token.createdAt,
-      updatedAt: token.updatedAt,
-    }))
+    return {
+      active: sessions,
+      current: sessions.find(session => session.id === authData.sessionId),
+    }
   }
   catch (error) {
     await handleError(error)
