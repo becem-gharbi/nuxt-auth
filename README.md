@@ -13,7 +13,7 @@ A fairly complete solution to handle authentication for your Nuxt project
 - ✔️ Email verification & password reset flows
 - ✔️ Oauth login (Google, Github ...)
 - ✔️ Route middleware protection
-- ✔️ Database agnostic (Prisma based)
+- ✔️ Database agnostic
 - ✔️ Custom backend option
 - ✔️ Auth operations via `useAuth` composable
 - ✔️ Auto refresh of access token via `useAuthFetch` composable
@@ -28,11 +28,7 @@ A fairly complete solution to handle authentication for your Nuxt project
 Add `@bg-dev/nuxt-auth` dependency to your project
 
 ```bash
-# Using npm
-npm install --save-dev @bg-dev/nuxt-auth
-
-# Using yarn
-yarn add --dev @bg-dev/nuxt-auth
+npx nuxi module add @bg-dev/nuxt-auth
 ```
 
 ## Documentation
