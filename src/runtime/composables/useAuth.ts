@@ -121,7 +121,8 @@ export function useAuth() {
       return
     }
     const returnToPath = useRoute().query.redirect?.toString()
-    const redirectTo = returnToPath ?? publicConfig.redirect.home
+    const decodedReturnToPath = returnToPath && decodeURIComponent(returnToPath)
+    const redirectTo = decodedReturnToPath ?? publicConfig.redirect.home
     await callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
