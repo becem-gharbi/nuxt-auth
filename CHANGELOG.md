@@ -1,5 +1,28 @@
 # Changelog
 
+## v3.0.2-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.1-rc...v3.0.2-rc)
+
+### 🩹 Fixes
+
+- Solve potential infinite redirections on Vercel ([#54](https://github.com/becem-gharbi/nuxt-auth/pull/54))
+- Prioritize `guest` middleware over global `auth` middleware ([bde3091](https://github.com/becem-gharbi/nuxt-auth/commit/bde3091))
+
+### 💅 Refactors
+
+- **unstorage:** Rename `token` to `session` ([9d8f649](https://github.com/becem-gharbi/nuxt-auth/commit/9d8f649))
+- **config:** Make `registration.defaultRole` optional ([fb9013d](https://github.com/becem-gharbi/nuxt-auth/commit/fb9013d))
+
+### 📖 Documentation
+
+- Update README ([5528a33](https://github.com/becem-gharbi/nuxt-auth/commit/5528a33))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.1-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0-beta.0...v3.0.1-rc)
