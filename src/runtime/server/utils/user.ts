@@ -37,7 +37,7 @@ export async function createAccount(event: H3Event, data: CreateAccountInput) {
     verified: data.verified ?? false,
     provider: data.provider ?? 'default',
     picture: data.picture ?? generateAvatar(data.name),
-    role: config.private.registration.defaultRole,
+    role: config.private.registration.defaultRole!,
   })
 
   const nitroApp = useNitroApp() as NitroApp

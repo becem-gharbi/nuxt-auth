@@ -82,7 +82,7 @@ export type PrivateConfigWithBackend = {
     requireEmailVerification?: boolean
     passwordValidationRegex?: string
     emailValidationRegex?: string
-    defaultRole: string
+    defaultRole?: string
   }
 }
 
