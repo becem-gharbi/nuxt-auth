@@ -53,7 +53,7 @@ export const useUnstorageAdapter = defineAdapter<Storage>((storage) => {
         const sessions = await storage.getKeys(`users:id:${userId}:sessions`).then((keys) => {
           return storage.getItems<Session>(keys)
         })
-        return sessions.map(token => token.value)
+        return sessions.map(session => session.value)
       },
 
       async create(data) {
@@ -69,9 +69,9 @@ export const useUnstorageAdapter = defineAdapter<Storage>((storage) => {
       },
 
       async update(id, data) {
-        const token = await this.findById(id, data.userId)
+        const session = await this.findById(id, data.userId)
         await storage.setItem(`users:id:${data.userId}:sessions:${id}`, {
-          ...token,
+          ...session,
           ...data,
           updatedAt: new Date(),
         })
@@ -83,9 +83,9 @@ export const useUnstorageAdapter = defineAdapter<Storage>((storage) => {
 
       async deleteManyByUserId(userId, excludeId) {
         const sessions = await this.findManyByUserId(userId)
-        const tokensFiltered = sessions.filter(token => token.id !== excludeId)
-        await Promise.all(tokensFiltered.map((token) => {
-          return storage.removeItem(`users:id:${userId}:sessions:${token.id}`)
+        const sessionsFiltered = sessions.filter(session => session.id !== excludeId)
+        await Promise.all(sessionsFiltered.map((session) => {
+          return storage.removeItem(`users:id:${userId}:sessions:${session.id}`)
         }))
       },
     },
