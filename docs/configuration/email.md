@@ -2,7 +2,7 @@
 
 The API for sending emails depends on the provider used. The configuration can be set through the `email` property in the `auth` configuration of your `nuxt.config` file.
 
-::: warning
+::: warning Important
 Please note that only **HTML** messages are supported at this time.
 :::
 
@@ -15,8 +15,8 @@ export default defineNuxtConfig({
   // ...
   auth: {
     email: {
-      actionTimeout: 30 * 60, // how long the action (e.g password reset) is valid
-      from: "", // the email address to send from
+      actionTimeout: 30 * 60, // How long the action (e.g password reset) is valid
+      from: "", // The email address to send from
       provider: {
         name: "hook",
       },

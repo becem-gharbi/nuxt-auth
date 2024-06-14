@@ -11,3 +11,11 @@ Nuxt auth is an unofficial module for [Nuxt](https://nuxt.com) that aims to prov
 - Email customization, it provides the needed flows for email verification and password reset with customizable email templates.
 
 - Ready to use starters [nuxt-starter](https://github.com/becem-gharbi/nuxt-starter), [prisma-cloudflare](https://github.com/becem-gharbi/prisma-cloudflare).
+
+## Installation
+
+Add `@bg-dev/nuxt-auth` to your Nuxt modules:
+
+```bash
+npx nuxi module add @bg-dev/nuxt-auth
+```

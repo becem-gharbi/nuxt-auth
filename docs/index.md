@@ -25,7 +25,7 @@ features:
     details: Works with any data source (database, ORM, backend API).
   - title: Edge compatible
     icon: 🚀
-    details: Works on Edge workers (Cloudflare, Vercel Edge...).
+    details: Runs on Edge workers (Cloudflare, Vercel Edge...).
   - title: Email customization
     icon: 📧
     details: Supports email verification and password reset flows with customizable email templates.

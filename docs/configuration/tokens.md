@@ -1,6 +1,6 @@
 # Tokens
 
-Tokens play a crucial role in the authentication process within this module. They serve as secure identifiers that grant access to protected resources and enable seamless user experiences across sessions.
+Tokens play a crucial role in the authorizayion process within the module. They serve as secure identifiers that grant access to protected resources.
 
 **It is important to note:**
 
@@ -33,7 +33,7 @@ export default defineNuxtConfig({
 
 ### **Recommendation**
 
-While you can set the values above directly in the `nuxt.config` file, it is advisable to store sensitive information such as `jwtSecret` in environment variables. This practice ensures that your secrets remain secure and are not exposed to the public. It also allows you to easily manage different configurations across different environments.
+While you can set the values above directly in the `nuxt.config` file, it is mandatory to store sensitive information such as `jwtSecret` in environment variables. This practice ensures that your secrets remain secure and are not exposed to the public.
 
 > You can use the command below to generate a secure secret for your JWT tokens.
 
@@ -43,9 +43,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
 ```bash [.env]
 NUXT_AUTH_ACCESS_TOKEN_JWT_SECRET=your_secret
-NUXT_AUTH_ACCESS_TOKEN_MAX_AGE=900 # 15 minutes
 NUXT_AUTH_REFRESH_TOKEN_JWT_SECRET=your_secret
-NUXT_AUTH_REFRESH_TOKEN_MAX_AGE=604800 # 7 days
 ```
 
 ## Custom claims

@@ -32,15 +32,11 @@ Some specific error messages are thrown by these methods.
 - `resetPassword`
   - Password reset not requested
 
----
-
 ## `useNuxtApp().$auth.fetch`
 
 This function is a wrapper of `$fetch` API, provided by Nuxt, with automatic refresh of access token.
 
 It should be used for fetching data from the server, as it automatically refreshes the access token if it's expired.
-
----
 
 ## `useAuthSession`
 

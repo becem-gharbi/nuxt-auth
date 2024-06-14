@@ -19,7 +19,8 @@ export default defineConfig({
         base: '/getting-started',
         items: [
           { text: 'Introduction', link: '/introduction' },
-          { text: 'Setup', link: '/setup' },
+          { text: 'Data integration', link: '/data-integration' },
+          { text: 'Adapters', link: '/adapters' },
         ],
       },
       {

@@ -1,14 +1,14 @@
-# Social login
+# Oauth login
 
 Besides the local email/password login strategy, the module supports login with oauth2 providers such as Google, Github. Note that the tokens are issued by the module's Backend and **not** by the oauth provider. Thus authorization for the provider's services is not possible.
 
-::: warning
+::: warning Important
 Please note that `email` and `name` informations are required for registration, otherwise not accessible error message will be returned.
 :::
 
 #### Options
 
-The module can accept multipe oauth2 providers via `oauth` config option
+The module can accept multipe oauth2 providers via `oauth` config option:
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({

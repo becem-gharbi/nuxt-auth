@@ -1,12 +1,8 @@
 # Registration
 
-The module facilitates user registration, requiring essential information are:
+In oauth case a new user is automatically registered.
 
-- Name
-- Email
-- Password
-
-Additionally, it automatically generates a default avatar based on the provided `name`. For social login scenarios, the avatar is retrieved from the respective provider whenever accessible.
+In credentials case with email/password, the module provides `register` function that is returned by [`useAuth`](/usage/composables.html#useauth) composable to register a new user requiring essential information are: `name`, `email` and `password`. Additionally, it automatically generates a default avatar based on the provided `name`. For oauth login scenarios, the avatar is retrieved from the respective provider whenever accessible.
 
 ## Configuration
 
@@ -26,33 +22,4 @@ export default defineNuxtConfig({
   },
   // ...
 });
-```
-
-## Composable
-
-The module provides `register` function that is returned by [`useAuth`](/composables#useauth) composable to register a new user.
-
-```vue
-<script lang="ts" setup>
-const { register, requestEmailVerify } = useAuth();
-
-// Function to handle the registration process
-const handleSubmit = async () => {
-  try {
-    await register({
-      email: "john@example.com",
-      name: "Johnathan Green",
-      password: "your_password",
-    });
-
-    // Send email verification
-    // This is only required if `requireEmailVerification` is set to `true`
-    // Remember to have the email configuration set up
-    await requestEmailVerify("john@example.com");
-  } catch (error: any) {
-    console.log(error.data.message);
-    //TODO: show the user a toast message
-  }
-};
-</script>
 ```
