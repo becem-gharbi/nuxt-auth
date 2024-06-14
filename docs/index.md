@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /getting-started/introduction
+      link: /get-started/introduction
     - theme: alt
       text: Demo
       link: https://nuxt-starter.bg.tn

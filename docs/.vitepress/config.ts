@@ -15,8 +15,8 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: 'Getting Started',
-        base: '/getting-started',
+        text: 'Get Started',
+        base: '/get-started',
         items: [
           { text: 'Introduction', link: '/introduction' },
           { text: 'Data integration', link: '/data-integration' },
