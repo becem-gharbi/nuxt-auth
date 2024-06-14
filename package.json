@@ -43,9 +43,9 @@
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
     "prisma:push": "cd playground && prisma db push",
-    "docs:dev": "vitepress dev _docs",
-    "docs:build": "vitepress build _docs",
-    "docs:preview": "vitepress preview _docs"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2",
