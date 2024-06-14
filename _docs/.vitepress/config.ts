@@ -15,10 +15,39 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: 'Examples',
+        text: 'Getting Started',
+        base: '/getting-started',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
+          { text: 'Introduction', link: '/introduction' },
+          { text: 'Setup', link: '/setup' },
+        ],
+      },
+      {
+        text: 'Configuration',
+        base: '/configuration',
+        items: [
+          { text: 'Tokens', link: '/tokens' },
+          { text: 'OAuth', link: '/oauth' },
+          { text: 'Registration', link: '/registration' },
+          { text: 'Email', link: '/email' },
+          { text: 'Redirection', link: '/redirection' },
+        ],
+      },
+      {
+        text: 'Usage',
+        base: '/usage',
+        items: [
+          { text: 'Composables', link: '/composables' },
+          { text: 'Middleware', link: '/middleware' },
+          { text: 'Hooks', link: '/hooks' },
+          { text: 'Utils', link: '/utils' },
+        ],
+      },
+      {
+        text: 'Upgrades',
+        base: '/upgrades',
+        items: [
+          { text: 'V3', link: '/v3' },
         ],
       },
     ],

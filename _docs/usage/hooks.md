@@ -1,0 +1,51 @@
+# Hooks
+
+To enhance the functionality of the module, custom hooks have been implemented.
+
+## Nuxt hooks
+
+### `auth:loggedIn`
+
+This hook triggers on login and logout events, providing the opportunity to incorporate asynchronous logic before executing redirection.
+
+```ts
+export default defineNuxtPlugin({
+  hooks: {
+    "auth:loggedIn": (loggedIn) => {},
+  },
+});
+```
+
+### `auth:fetchError`
+
+This hook triggers on fetch error, can be useful to display API errors.
+
+```ts
+export default defineNuxtPlugin({
+  hooks: {
+    "auth:fetchError": (response) => {},
+  },
+});
+```
+
+## Nitro hooks
+
+### `auth:error`
+
+This hook triggers on server errors, can be useful to log errors.
+
+```ts
+export default defineNitroPlugin((nitroApp) => {
+  nitroApp.hooks.hook("auth:error", (error) => {});
+});
+```
+
+### `auth:registration`
+
+This hook triggers after successful user registration.
+
+```ts
+export default defineNitroPlugin((nitroApp) => {
+  nitroApp.hooks.hook("auth:registration", (user) => {});
+});
+```
