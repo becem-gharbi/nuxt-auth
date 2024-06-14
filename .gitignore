@@ -64,3 +64,6 @@ playground/prisma/migrations
 /playwright/.cache/
 playwright-report/
 test-results/
+
+_docs/.vitepress/dist
+_docs/.vitepress/cache
