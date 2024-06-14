@@ -8,15 +8,15 @@ Please note that only **HTML** messages are supported at this time.
 
 ## Hook
 
-This is the default provider. It allows sending emails via an internal hook.
+This is the default provider. It allows sending emails via a Nitro hook.
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   // ...
   auth: {
     email: {
-      actionTimeout: 30 * 60, // How long the action (e.g password reset) is valid
-      from: "", // The email address to send from
+      actionTimeout: 30 * 60, // How long the action (e.g password reset) is valid.
+      from: "", // The email address to send from.
       provider: {
         name: "hook",
       },
@@ -45,7 +45,7 @@ export default defineNuxtConfig({
   // ...
   auth: {
     email: {
-      from: process.env.NUXT_AUTH_EMAIL_FROM, // The email address to send from
+      from: process.env.NUXT_AUTH_EMAIL_FROM, // The email address to send from.
       provider: {
         name: "sendgrid",
         apiKey: process.env.NUXT_AUTH_EMAIL_PROVIDER_API_KEY,
@@ -65,7 +65,7 @@ export default defineNuxtConfig({
   // ...
   auth: {
     email: {
-      from: process.env.NUXT_AUTH_EMAIL_FROM, // The email address to send from
+      from: process.env.NUXT_AUTH_EMAIL_FROM, // The email address to send from.
       provider: {
         name: "resend",
         apiKey: process.env.NUXT_AUTH_EMAIL_PROVIDER_API_KEY,
@@ -78,15 +78,15 @@ export default defineNuxtConfig({
 
 ## Template Customization
 
-Default templates are provided for email verification and password reset. To customize them, `email.templates` config option is provided. Templates can be added as html file with path relative to the `srcDir`.
+Default [templates](https://github.com/becem-gharbi/nuxt-auth/tree/main/src/runtime/templates) are provided for email verification and password reset. To customize them, `email.templates` config option is provided. Templates can be added as HTML files with paths relative to the `srcDir`.
 
-Exposed variables below can be injected with [mustache](https://github.com/janl/mustache.js) syntax.
+The variables below are injected with [mustache](https://github.com/janl/mustache.js) syntax:
 
-- **name** - The user's name
-- **link** - for redirection
-- **validityInMinutes** - equals to accessToken maxAge.
+- **name** - The user's name.
+- **link** - for redirection.
+- **validityInMinutes** - equals to `email.actionTimeout`.
 
-It's recommended to use [maily.to](https://maily.to/) to build well designed templates.
+It's recommended to use [maily.to](https://maily.to/) to build well-designed templates.
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({

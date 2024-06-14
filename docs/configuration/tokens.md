@@ -1,17 +1,11 @@
 # Tokens
 
-Tokens play a crucial role in the authorizayion process within the module. They serve as secure identifiers that grant access to protected resources.
-
-**It is important to note:**
-
-- The module utilizes JWT-based authorization.
-- Within the module, the term **`session`** specifically denotes the Refresh token.
-- The APIs responsible for signing and verifying tokens are optimized for edge compatibility, courtesy of the [Jose](https://github.com/panva/jose) package
+Tokens play a crucial role in the authorization process within the module. They serve as secure identifiers that grant access to protected resources.
 
 ## Configuration
 
-- The module employs the [`HS256`](https://www.loginradius.com/blog/engineering/jwt-signing-algorithms/#hs256) algorithm, utilizing symmetric encryption for enhanced security.
-- You have the flexibility to customize encryption options through the `auth` configuration in your `nuxt.config` file.
+- The module employs the [`HS256`](https://www.loginradius.com/blog/engineering/jwt-signing-algorithms/#hs256) algorithm, utilizing symmetric encryption.
+- You have the flexibility to customize encryption options via the `auth` configuration in your `nuxt.config` file.
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
@@ -48,7 +42,7 @@ NUXT_AUTH_REFRESH_TOKEN_JWT_SECRET=your_secret
 
 ## Custom claims
 
-Some backend services require JWT claims for authorization such as [Hasura](https://hasura.io). In order to add dynamic custom claims to the access token's payload, `accessToken.customClaims` is provided. For injecting **User** related fields, use the [mustache](https://github.com/janl/mustache.js) syntax.
+Some backend services require JWT claims for authorization such as [Hasura](https://hasura.io). To add dynamic custom claims to the access token's payload, `accessToken.customClaims` is provided. For injecting **User** related fields, use the [mustache](https://github.com/janl/mustache.js) syntax.
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({

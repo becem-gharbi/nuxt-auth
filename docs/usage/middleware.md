@@ -1,6 +1,6 @@
 # Middleware
 
-The module comes equipped with both client-side and server-side middlewares, essential for redirection and authorization functionalities.
+The module comes equipped with both client-side and server-side middleware, essential for redirection and authorization functionalities.
 
 ## Client-side
 
@@ -18,13 +18,13 @@ definePageMeta({ auth: false });
 
 ### Local Configuration
 
-Fine-tune redirection behavior on a per-page basis using the `auth` and `guest` middlewares.
+Fine-tune redirection behavior on a per-page basis using the `auth` and `guest` middleware.
 
 ```vue
 <script setup lang="ts">
-definePageMeta({ middleware: "auth" }); // Redirects to login route when not loggedIn
+definePageMeta({ middleware: "auth" }); // Redirects to login route when not loggedIn.
 
-definePageMeta({ middleware: "guest" }); // Redirects to home route when loggedIn
+definePageMeta({ middleware: "guest" }); // Redirects to home route when loggedIn.
 </script>
 ```
 

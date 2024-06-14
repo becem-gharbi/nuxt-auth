@@ -1,14 +1,14 @@
 # Data integration
 
-The module implements JWT-based session so authorization is stateless. To have control over sessions and provide user related functionalities (e.g registration), data needs to be persisted. For that, the module offers two options either Frontend-only with backend API or Full-stack with data adapter.
+The module implements a JWT-based session so authorization is stateless. Data needs to be persisted to have control over sessions and provide user-related functionalities (e.g. registration). For that, the module offers two options: Frontend-only with backend API or Full-stack with data adapter.
 
 ## Frontend-only
 
-The module provides a frontend-only option that turns off the built-in backend by excluding the server's handlers, utilities and middlewares and permits users to bring their own. The provided backend can be internal, meaning as part of the application, or external.
+The module provides a frontend-only option that turns off the built-in backend by excluding the server's handlers, utilities, and middleware and permits users to bring their own. The provided backend can be internal, meaning as part of the application, or external.
 
-This feature does not effect the frontend implementation meaning same APIs and benefits (auto-redirection, auto-refresh of token) as the full-stack implementation.
+This feature does not affect the frontend implementation meaning the same APIs and benefits (auto-redirection, auto-refresh of token) as the full-stack implementation.
 
-The specification for the backend APIs is provided [here](https://app.swaggerhub.com/apis-docs/becem-gharbi/nuxt-auth).
+The specification for the backend APIs is described [here](https://app.swaggerhub.com/apis-docs/becem-gharbi/nuxt-auth).
 
 To enable this feature, these config options should be set:
 
@@ -17,7 +17,7 @@ To enable this feature, these config options should be set:
 
 ## Full-stack
 
-The full-stack option requires a data source adapter. An adapter is an object with methods for read and write of the required data models. You can use a [built-in adapter](/getting-started/adapters) or create your own.
+The full-stack option requires a data source adapter. An adapter is an object with methods for reading and writing the required data models. You can use a [built-in adapter](/getting-started/adapters) or create your own.
 
 To create a custom adapter two models are required:
 
@@ -50,7 +50,7 @@ interface Session {
 }
 ```
 
-By default the `id` fields are of type `string`. In order to change it to `number`, the `UserId` and `SessionId` types needs to be overwritten:
+By default, the `id` fields are of type `string`. To change it to `number`, the `UserId` and `SessionId` types need to be overwritten:
 
 ```ts
 declare module "#auth_adapter" {
@@ -59,7 +59,7 @@ declare module "#auth_adapter" {
 }
 ```
 
-To define a new adapter, the `defineAdapter` utility is provided. The expected argument is the data source, which is the API you use to interact with your data (e.g Prisma Client).
+To define a new adapter, the `defineAdapter` utility is provided. The expected argument is the data source, the API you use to interact with your data (e.g. Prisma Client).
 
 ```ts
 interface Adapter {
@@ -90,7 +90,7 @@ interface Adapter {
 }
 ```
 
-To integrate your adapter within your application, the `setEventContext` utility is provided. It extends `event.context` with `auth` property that contains the access token's payload on `auth.data` and the adapter instance on `auth.adapter`.
+To integrate your adapter within your application, the `setEventContext` utility is provided. It extends `event.context` with the `auth` property that contains the access token's payload on `auth.data` and the adapter instance on `auth.adapter`.
 
 ```ts
 import { defineAdapter, setEventContext } from "#auth_utils";

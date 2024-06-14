@@ -16,26 +16,31 @@ hero:
 features:
   - title: Login with credentials
     icon: 🔑
-    details: Supports login and registration with email/password.
-  - title: Login with Oauth2
+    details: Supports login and registration with email and password.
+  - title: Login with OAuth
     icon: 🌐
-    details: Supports login via Oauth2 providers (Google, GitHub...).
+    details: Supports login via OAuth2 providers (Google, GitHub...).
   - title: Data layer agnostic
     icon: 💾
     details: Works with any data source (database, ORM, backend API).
   - title: Edge compatible
     icon: 🚀
     details: Runs on Edge workers (Cloudflare, Vercel Edge...).
-  - title: Email customization
-    icon: 📧
-    details: Supports email verification and password reset flows with customizable email templates.
   - title: Auto redirection
     icon: ↩️
-    details: Built-in middlewares to protect page routes.
+    details: Built-in middleware to protect page routes with auto-redirection.
   - title: Extensible
     icon: 🔌
-    details: Provides hooks to add custom logic.
-  - title: Ready-to-use starters
-    icon: ✨
-    details: Offers templates to quickly get started.
+    details: Provides hooks to add custom logic and actions.
 ---
+
+<style>
+  .item {
+    width: calc(100%/3) !important;
+  }
+  @media only screen and (max-width: 768px) {
+    .item {
+      width: 100% !important;
+    }
+  }
+</style>
