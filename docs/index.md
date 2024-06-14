@@ -35,11 +35,11 @@ features:
 ---
 
 <style>
-  .item {
+  .VPFeatures .item {
     width: calc(100%/3) !important;
   }
   @media only screen and (max-width: 768px) {
-    .item {
+    .VPFeatures .item {
       width: 100% !important;
     }
   }
