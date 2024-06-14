@@ -17,7 +17,7 @@ To enable this feature, these config options should be set:
 
 ## Full-stack
 
-The full-stack option requires a data source adapter. An adapter is an object with methods for reading and writing the required data models. You can use a [built-in adapter](/getting-started/adapters) or create your own.
+The full-stack option requires a data source adapter. An adapter is an object with methods for reading and writing the required data models. You can use a [built-in adapter](/get-started/adapters) or create your own.
 
 To create a custom adapter two models are required:
 
