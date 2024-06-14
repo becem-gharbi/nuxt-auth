@@ -42,7 +42,10 @@
     "release": "npm run release:pre && npm run test:prod && changelogen --release --versionSuffix=rc && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
-    "prisma:push": "cd playground && prisma db push"
+    "prisma:push": "cd playground && prisma db push",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2",
@@ -63,7 +66,8 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "nuxt": "^3.11.2",
-    "prisma": "^5.14.0"
+    "prisma": "^5.14.0",
+    "vitepress": "^1.2.3"
   },
   "repository": {
     "url": "git+https://github.com/becem-gharbi/nuxt-auth.git"
