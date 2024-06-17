@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.0.4-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.3-rc...v3.0.4-rc)
+
+### 🏡 Chore
+
+- Refresh lockfile ([8a98cd1](https://github.com/becem-gharbi/nuxt-auth/commit/8a98cd1))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v3.0.3-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.2-rc...v3.0.3-rc)
