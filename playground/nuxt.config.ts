@@ -67,4 +67,12 @@ export default defineNuxtConfig({
       emailVerify: '/auth/email-verify',
     },
   },
+
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        module: 'ESNext',
+      },
+    },
+  },
 })

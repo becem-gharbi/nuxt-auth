@@ -64,10 +64,7 @@ export const usePrismaAdapter = defineAdapter<PrismaClient>((prisma) => {
 
       async create(data) {
         return prisma.session.create({
-          data: {
-            ...data,
-            userId: data.userId,
-          },
+          data,
           select: {
             id: true,
           },

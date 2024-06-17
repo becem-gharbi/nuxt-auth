@@ -36,7 +36,7 @@ export function useAuthSession() {
    *
    * @return {Promise<void>} A promise that resolves when the refresh operation is complete.
    */
-  async function _refresh() {
+  async function _refresh(): Promise<void> {
     async function handler() {
       const token = useAuthToken()
       const reqHeaders = useRequestHeaders(['cookie', 'user-agent'])
