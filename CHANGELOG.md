@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.0.3-rc
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.2-rc...v3.0.3-rc)
+
+### 💅 Refactors
+
+- **useAuthSession:** Avoid access to private runtimeConfig ([1b8a318](https://github.com/becem-gharbi/nuxt-auth/commit/1b8a318))
+- No significant change ([a27d601](https://github.com/becem-gharbi/nuxt-auth/commit/a27d601))
+
+### 📖 Documentation
+
+- Migrate to `vitepress` ([#56](https://github.com/becem-gharbi/nuxt-auth/pull/56))
+- Fix typo ([2180eec](https://github.com/becem-gharbi/nuxt-auth/commit/2180eec))
+- Fix selection of feature item ([06dbe3e](https://github.com/becem-gharbi/nuxt-auth/commit/06dbe3e))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.2-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.1-rc...v3.0.2-rc)
