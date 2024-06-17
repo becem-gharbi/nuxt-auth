@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
     const qSchema = z.object({
       code: z.string().min(1),
-      state: z.string().startsWith('%2F').optional(),
+      state: z.string().startsWith('/').optional(),
     })
 
     const { state: returnToPath, code } = await getValidatedQuery(event, qSchema.parse)

@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   const { provider } = await getValidatedRouterParams(event, pSchema.parse)
 
   const qSchema = z.object({
-    redirect: z.string().startsWith('%2F').optional(),
+    redirect: z.string().startsWith('/').optional(),
   })
 
   // The protected page the user has visited before redirect to login page

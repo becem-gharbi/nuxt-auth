@@ -20,12 +20,9 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   if (!useAuthToken().value) {
-    const returnToPath = to.path
-    const encodedReturnToPath = returnToPath && encodeURIComponent(returnToPath)
-
     return navigateTo({
       path: publicConfig.redirect.login,
-      query: { redirect: encodedReturnToPath },
+      query: { redirect:  to.path },
     })
   }
 })
