@@ -45,9 +45,6 @@ type OauthGitHub = {
 
 export type PrivateConfigWithoutBackend = {
   backendEnabled: false
-  refreshToken: {
-    cookieName?: string
-  }
 }
 
 export type PrivateConfigWithBackend = {
@@ -99,6 +96,9 @@ export type PublicConfig = {
     callback?: string
     passwordReset?: string
     emailVerify?: string
+  }
+  refreshToken: {
+    cookieName?: string
   }
 }
 

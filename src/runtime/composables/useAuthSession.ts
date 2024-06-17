@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, splitCookiesString, appendResponseHeader } from 'h3'
 import type { Ref } from 'vue'
 import type { ResponseOK, AuthenticationData } from '../types/common'
-import type { PublicConfig, PrivateConfig } from '../types/config'
+import type { PublicConfig } from '../types/config'
 import { useAuthToken } from './useAuthToken'
 import { useRequestEvent, useRuntimeConfig, useState, useRequestHeaders, useNuxtApp, useAuth } from '#imports'
 import type { User, Session } from '#auth_adapter'
@@ -9,12 +9,11 @@ import type { User, Session } from '#auth_adapter'
 export function useAuthSession() {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const privateConfig = useRuntimeConfig().auth as PrivateConfig
   const { callHook } = useNuxtApp()
 
   const _refreshToken = {
-    get: () => import.meta.server && getCookie(event!, privateConfig.refreshToken.cookieName!),
-    clear: () => import.meta.server && deleteCookie(event!, privateConfig.refreshToken.cookieName!),
+    get: () => import.meta.server && getCookie(event!, publicConfig.refreshToken.cookieName!),
+    clear: () => import.meta.server && deleteCookie(event!, publicConfig.refreshToken.cookieName!),
   }
 
   const _loggedInFlag = {

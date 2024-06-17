@@ -26,18 +26,15 @@ export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
   }
 
   // Initialize the module options
-  nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
-    app: {},
+  nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, {
     auth: {
-      refreshToken: options.refreshToken,
-    },
-    public: {
-      auth: {
-        backendBaseUrl: options.backendBaseUrl,
-        baseUrl: options.baseUrl,
-        enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
-        loggedInFlagName: options.loggedInFlagName,
-        redirect: options.redirect,
+      backendBaseUrl: options.backendBaseUrl,
+      baseUrl: options.baseUrl,
+      enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
+      loggedInFlagName: options.loggedInFlagName,
+      redirect: options.redirect,
+      refreshToken: {
+        cookieName: options.refreshToken.cookieName,
       },
     },
   })
