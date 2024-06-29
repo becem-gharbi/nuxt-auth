@@ -29,6 +29,7 @@ export default defineEventHandler(async (event) => {
     const authorizationUrl = withQuery(
       oauthProvider.authorizeUrl,
       {
+        ...oauthProvider.customParams,
         response_type: 'code',
         scope: oauthProvider.scopes,
         redirect_uri: redirectUrl,

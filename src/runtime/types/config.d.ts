@@ -19,6 +19,7 @@ type OauthBase = Record<string, {
   authorizeUrl: string
   tokenUrl: string
   userUrl: string
+  customParams?: Record<string, unknown>
 }>
 
 type OauthGoogle = {
@@ -29,6 +30,7 @@ type OauthGoogle = {
     authorizeUrl: 'https://accounts.google.com/o/oauth2/auth'
     tokenUrl: 'https://accounts.google.com/o/oauth2/token'
     userUrl: 'https://www.googleapis.com/oauth2/v3/userinfo'
+    customParams?: Record<string, unknown>
   }
 }
 
@@ -40,6 +42,7 @@ type OauthGitHub = {
     authorizeUrl: 'https://github.com/login/oauth/authorize'
     tokenUrl: 'https://github.com/login/oauth/access_token'
     userUrl: 'https://api.github.com/user'
+    customParams?: Record<string, unknown>
   }
 }
 
