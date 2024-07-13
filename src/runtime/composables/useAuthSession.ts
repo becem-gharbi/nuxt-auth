@@ -9,7 +9,7 @@ import type { User, Session } from '#auth_adapter'
 export function useAuthSession() {
   const event = useRequestEvent()
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
-  const { callHook } = useNuxtApp()
+  const nuxtApp = useNuxtApp()
 
   const _refreshToken = {
     get: () => import.meta.server && getCookie(event!, publicConfig.refreshToken.cookieName!),
@@ -50,7 +50,7 @@ export function useAuthSession() {
           ...(import.meta.client ? { credentials: 'include' } : {}),
           headers: import.meta.server ? reqHeaders : {},
           async  onResponseError({ response }) {
-            await callHook('auth:fetchError', response)
+            await nuxtApp.callHook('auth:fetchError', response)
           },
         })
         .then((res) => {
@@ -75,10 +75,9 @@ export function useAuthSession() {
         })
     }
 
-    const { $auth } = useNuxtApp()
-    $auth._refreshPromise ||= handler()
-    await $auth._refreshPromise.finally(() => {
-      $auth._refreshPromise = null
+    nuxtApp.$auth._refreshPromise ||= handler()
+    await nuxtApp.$auth._refreshPromise.finally(() => {
+      nuxtApp.$auth._refreshPromise = null
     })
   }
 
@@ -103,7 +102,7 @@ export function useAuthSession() {
    * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of all sessions.
    */
   function revokeAllSessions(): Promise<ResponseOK> {
-    return useNuxtApp().$auth.fetch<ResponseOK>('/api/auth/sessions', {
+    return nuxtApp.$auth.fetch<ResponseOK>('/api/auth/sessions', {
       method: 'DELETE',
     })
   }
@@ -115,7 +114,7 @@ export function useAuthSession() {
    * @return {Promise<ResponseOK>} A promise that resolves with a ResponseOK object upon successful revocation of the session.
    */
   function revokeSession(id: Session['id']): Promise<ResponseOK> {
-    return useNuxtApp().$auth.fetch<ResponseOK>(`/api/auth/sessions/${id}`, {
+    return nuxtApp.$auth.fetch<ResponseOK>(`/api/auth/sessions/${id}`, {
       method: 'DELETE',
     })
   }
@@ -126,7 +125,7 @@ export function useAuthSession() {
    * @return {Promise<Array<Session & { current: boolean }>>} A promise that resolves with an array of Session objects representing all active sessions. The current session is moved to the top of the array.
    */
   async function getAllSessions(): Promise<Array<Session & { current: boolean }>> {
-    const res = await useNuxtApp().$auth.fetch<{ active: Session[], current?: Session }>('/api/auth/sessions')
+    const res = await nuxtApp.$auth.fetch<{ active: Session[], current?: Session }>('/api/auth/sessions')
 
     const sessions = res.active.filter(session => session.id !== res.current?.id)
 

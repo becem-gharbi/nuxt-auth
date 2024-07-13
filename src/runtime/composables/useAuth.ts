@@ -24,7 +24,7 @@ interface ChangePasswordInput {
 export function useAuth() {
   const publicConfig = useRuntimeConfig().public.auth as PublicConfig
   const token = useAuthToken()
-  const { callHook } = useNuxtApp()
+  const nuxtApp = useNuxtApp()
 
   /**
    * Asynchronously logs in the user with the provided email and password.
@@ -42,7 +42,7 @@ export function useAuth() {
         password: input.password,
       },
       async  onResponseError({ response }) {
-        await callHook('auth:fetchError', response)
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     })
 
@@ -86,7 +86,7 @@ export function useAuth() {
   async function fetchUser(): Promise<void> {
     const { user } = useAuthSession()
     try {
-      user.value = await useNuxtApp().$auth.fetch<User>('/api/auth/me')
+      user.value = await nuxtApp.$auth.fetch<User>('/api/auth/me')
     }
     catch (err) {
       user.value = null
@@ -104,7 +104,7 @@ export function useAuth() {
       method: 'POST',
       credentials: 'include',
       async  onResponseError({ response }) {
-        await callHook('auth:fetchError', response)
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     }).finally(_onLogout)
   }
@@ -122,7 +122,7 @@ export function useAuth() {
     }
     const returnToPath = useRoute().query.redirect?.toString()
     const redirectTo = returnToPath ?? publicConfig.redirect.home
-    await callHook('auth:loggedIn', true)
+    await nuxtApp.callHook('auth:loggedIn', true)
     await navigateTo(redirectTo)
   }
 
@@ -134,7 +134,7 @@ export function useAuth() {
    * @return {Promise<void>} A promise that resolves when the logout process is complete.
    */
   async function _onLogout(): Promise<void> {
-    await callHook('auth:loggedIn', false)
+    await nuxtApp.callHook('auth:loggedIn', false)
     token.value = null
     if (import.meta.client) {
       await navigateTo(publicConfig.redirect.logout, { external: true })
@@ -158,7 +158,7 @@ export function useAuth() {
       },
       credentials: 'omit',
       async  onResponseError({ response }) {
-        await callHook('auth:fetchError', response)
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     })
   }
@@ -178,7 +178,7 @@ export function useAuth() {
         email,
       },
       async  onResponseError({ response }) {
-        await callHook('auth:fetchError', response)
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     })
   }
@@ -199,7 +199,7 @@ export function useAuth() {
         token: useRoute().query.token,
       },
       async  onResponseError({ response }) {
-        await callHook('auth:fetchError', response)
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     })
   }
@@ -219,7 +219,7 @@ export function useAuth() {
         email,
       },
       async  onResponseError({ response }) {
-        await callHook('auth:fetchError', response)
+        await nuxtApp.callHook('auth:fetchError', response)
       },
     })
   }
@@ -231,7 +231,7 @@ export function useAuth() {
    * @return {Promise<ResponseOK>} - A promise that resolves to a ResponseOK object if the password change is successful.
    */
   function changePassword(input: ChangePasswordInput): Promise<ResponseOK> {
-    return useNuxtApp().$auth.fetch<ResponseOK>('/api/auth/password/change', {
+    return nuxtApp.$auth.fetch<ResponseOK>('/api/auth/password/change', {
       method: 'PUT',
       body: {
         currentPassword: input.currentPassword,
