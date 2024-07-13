@@ -10,10 +10,10 @@ export default defineNuxtModule<ModuleOptions>({
   meta: {
     name,
     version,
-    compatibility: {
-      nuxt: '^3.8.2',
-    },
     configKey: 'auth',
+    compatibility: {
+      nuxt: '>=3.8.2',
+    },
   },
 
   defaults: {

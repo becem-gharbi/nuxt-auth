@@ -3,6 +3,10 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   modules: ['../src/module'],
 
+  future: {
+    compatibilityVersion: 4,
+  },
+
   ssr: process.env.NUXT_SSR !== 'false',
 
   app: {
