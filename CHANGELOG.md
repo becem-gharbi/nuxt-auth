@@ -1,5 +1,31 @@
 # Changelog
 
+## v3.0.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.4-rc...v3.0.0)
+
+### 🚀 Enhancements
+
+- **oauth:** Allow adding custom query params on authorization request ([#60](https://github.com/becem-gharbi/nuxt-auth/pull/60))
+- Allow compatibility with `nuxt` v4 ([8a73aa1](https://github.com/becem-gharbi/nuxt-auth/commit/8a73aa1))
+
+### 🩹 Fixes
+
+- Correctly import from `nitropack` ([eb8965d](https://github.com/becem-gharbi/nuxt-auth/commit/eb8965d))
+
+### 💅 Refactors
+
+- No significant change ([9c93a5b](https://github.com/becem-gharbi/nuxt-auth/commit/9c93a5b))
+
+### 🏡 Chore
+
+- Remove `rc` suffix ([04b6964](https://github.com/becem-gharbi/nuxt-auth/commit/04b6964))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.4-rc
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.3-rc...v3.0.4-rc)
