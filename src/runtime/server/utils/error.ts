@@ -2,12 +2,10 @@ import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
 import type { NitroApp } from 'nitropack'
+import { useNitroApp } from 'nitropack/runtime'
 import type { KnownErrors } from '../../types/common'
 import { getConfig } from './config'
 import type { User } from '#auth_adapter'
-
-// @ts-expect-error importing an internal module
-import { useNitroApp } from '#imports'
 
 export function checkUser(data: Pick<User, 'verified' | 'suspended'>) {
   const config = getConfig()

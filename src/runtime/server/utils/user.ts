@@ -1,12 +1,10 @@
 import type { H3Event } from 'h3'
 import type { NitroApp } from 'nitropack'
+import { useNitroApp } from 'nitropack/runtime'
 import { getConfig } from './config'
 import { generateAvatar } from './avatar'
 import { createCustomError } from './error'
 import type { User } from '#auth_adapter'
-
-// @ts-expect-error importing an internal module
-import { useNitroApp } from '#imports'
 
 interface CreateAccountInput {
   name: User['name']

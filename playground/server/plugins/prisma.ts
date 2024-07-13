@@ -1,10 +1,8 @@
 import type { NitroApp } from 'nitropack'
 import { PrismaClient } from '@prisma/client'
 import consola from 'consola'
+import { defineNitroPlugin } from 'nitropack/runtime'
 import { usePrismaAdapter, setEventContext } from '#auth_utils'
-
-// @ts-expect-error importing an internal module
-import { defineNitroPlugin } from '#imports'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
   if (process.env.NUXT_ADAPTER === 'prisma') {

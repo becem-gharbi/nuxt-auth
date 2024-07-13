@@ -1,10 +1,8 @@
 import { $fetch } from 'ofetch'
 import type { NitroApp } from 'nitropack'
+import { useNitroApp } from 'nitropack/runtime'
 import type { MailMessage } from '../../types/common'
 import { getConfig } from './config'
-
-// @ts-expect-error importing an internal module
-import { useNitroApp } from '#imports'
 
 export async function sendMail(msg: MailMessage) {
   const config = getConfig()

@@ -1,8 +1,6 @@
 import type { NitroApp } from 'nitropack'
 import consola from 'consola'
-
-// @ts-expect-error importing an internal module
-import { defineNitroPlugin } from '#imports'
+import { defineNitroPlugin } from 'nitropack/runtime'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
   nitroApp.hooks.hook('auth:email', (from, message) => {
