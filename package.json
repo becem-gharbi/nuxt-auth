@@ -39,7 +39,7 @@
     "typecheck": "nuxi typecheck",
     "prepack": "nuxt-module-build",
     "release:pre": "npm run typecheck && npm run lint && npm run prepack",
-    "release": "npm run release:pre && npm run test:prod && changelogen --release --versionSuffix=rc && npm publish && git push --follow-tags",
+    "release": "npm run release:pre && npm run test:prod && changelogen --release && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
     "prisma:push": "cd playground && prisma db push",
