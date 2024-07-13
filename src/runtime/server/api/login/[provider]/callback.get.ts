@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
     const { provider } = await getValidatedRouterParams(event, pSchema.parse)
 
-    const oauthProvider = config.private.oauth![provider]
+    const oauthProvider = config.private.oauth![provider]!
 
     const qSchema = z.object({
       code: z.string().min(1),

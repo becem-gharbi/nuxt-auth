@@ -21,7 +21,7 @@ export default defineNuxtPlugin({
      * Makes sure to sync login status between tabs
      */
     nuxtApp.hook('app:mounted', () => {
-      addEventListener('storage', (event) => {
+      window.onstorage = (event) => {
         if (event.key === publicConfig.loggedInFlagName) {
           if (event.oldValue === 'true' && event.newValue === 'false' && token.value) {
             useAuth()._onLogout()
@@ -30,7 +30,7 @@ export default defineNuxtPlugin({
             location.reload()
           }
         }
-      })
+      }
     })
 
     function isFirstTime() {

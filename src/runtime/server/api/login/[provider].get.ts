@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
   const { redirect: returnToPath } = await getValidatedQuery(event, qSchema.parse)
 
   try {
-    const oauthProvider = config.private.oauth![provider]
+    const oauthProvider = config.private.oauth![provider]!
 
     const redirectUrl = resolveURL(config.public.baseUrl, '/api/auth/login', provider, 'callback')
 
