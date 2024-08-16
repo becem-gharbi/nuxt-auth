@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.0.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0...v3.0.1)
+
+### 🩹 Fixes
+
+- Avoid params sanitization on login redirection ([72113e7](https://github.com/becem-gharbi/nuxt-auth/commit/72113e7))
+- Automatically revoke expired sessions ([6be46b1](https://github.com/becem-gharbi/nuxt-auth/commit/6be46b1))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v3.0.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.4-rc...v3.0.0)
