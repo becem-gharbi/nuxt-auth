@@ -1,5 +1,28 @@
 # Changelog
 
+## v3.0.2
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0...v3.0.2)
+
+### 🔥 Performance
+
+- Migrate from `bcryptjs` to `bcrypt-edge` ([8e12b80](https://github.com/becem-gharbi/nuxt-auth/commit/8e12b80))
+
+### 🩹 Fixes
+
+- Avoid params sanitization on login redirection ([72113e7](https://github.com/becem-gharbi/nuxt-auth/commit/72113e7))
+- Automatically revoke expired sessions ([6be46b1](https://github.com/becem-gharbi/nuxt-auth/commit/6be46b1))
+
+### 🏡 Chore
+
+- **release:** V3.0.1 ([5e510e7](https://github.com/becem-gharbi/nuxt-auth/commit/5e510e7))
+- **package.json:** Update packageManager ([c1d164c](https://github.com/becem-gharbi/nuxt-auth/commit/c1d164c))
+- **playground:** Use memory storage with unstorage ([f8458e3](https://github.com/becem-gharbi/nuxt-auth/commit/f8458e3))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v3.0.1
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0...v3.0.1)

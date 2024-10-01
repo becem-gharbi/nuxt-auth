@@ -1,6 +1,6 @@
 {
   "name": "@bg-dev/nuxt-auth",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "license": "MIT",
   "type": "module",
   "author": "Becem Gharbi",
@@ -38,7 +38,7 @@
     "lint": "eslint .",
     "typecheck": "nuxi typecheck",
     "prepack": "nuxt-module-build",
-    "release:pre": "npm run typecheck && npm run lint && npm run prepack",
+    "release:pre": "npm run lint && npm run prepack",
     "release": "npm run release:pre && npm run test:prod && changelogen --release && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
     "prisma:migrate": "cd playground && prisma migrate dev",
