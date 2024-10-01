@@ -32,9 +32,6 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     },
   })
 
-  // Transpile CJS dependencies
-  nuxt.options.build.transpile.push('bcryptjs')
-
   const { resolve } = createResolver(import.meta.url)
 
   // Add server utils
