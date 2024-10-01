@@ -48,17 +48,17 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     getContents: () =>
       [
         'declare module \'#auth_utils\' {',
-          `  const encode: typeof import('${resolve('./runtime/server/utils')}').encode`,
-          `  const decode: typeof import('${resolve('./runtime/server/utils')}').decode`,
-          `  const compareSync: typeof import('${resolve('./runtime/server/utils')}').compareSync`,
-          `  const hashSync: typeof import('${resolve('./runtime/server/utils')}').hashSync`,
-          `  const sendMail: typeof import('${resolve('./runtime/server/utils')}').sendMail`,
-          `  const handleError: typeof import('${resolve('./runtime/server/utils')}').handleError`,
-          `  const setEventContext: typeof import('${resolve('./runtime/server/utils')}').setEventContext`,
-          `  const defineAdapter: typeof import('${resolve('./runtime/server/utils')}').defineAdapter`,
-          `  const usePrismaAdapter: typeof import('${resolve('./runtime/server/utils')}').usePrismaAdapter`,
-          `  const useUnstorageAdapter: typeof import('${resolve('./runtime/server/utils')}').useUnstorageAdapter`,
-          '}',
+        `  const encode: typeof import('${resolve('./runtime/server/utils')}').encode`,
+        `  const decode: typeof import('${resolve('./runtime/server/utils')}').decode`,
+        `  const compareSync: typeof import('${resolve('./runtime/server/utils')}').compareSync`,
+        `  const hashSync: typeof import('${resolve('./runtime/server/utils')}').hashSync`,
+        `  const sendMail: typeof import('${resolve('./runtime/server/utils')}').sendMail`,
+        `  const handleError: typeof import('${resolve('./runtime/server/utils')}').handleError`,
+        `  const setEventContext: typeof import('${resolve('./runtime/server/utils')}').setEventContext`,
+        `  const defineAdapter: typeof import('${resolve('./runtime/server/utils')}').defineAdapter`,
+        `  const usePrismaAdapter: typeof import('${resolve('./runtime/server/utils')}').usePrismaAdapter`,
+        `  const useUnstorageAdapter: typeof import('${resolve('./runtime/server/utils')}').useUnstorageAdapter`,
+        '}',
       ].join('\n'),
   })
 
