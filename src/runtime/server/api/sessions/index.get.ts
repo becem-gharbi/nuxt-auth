@@ -18,7 +18,10 @@ export default defineEventHandler(async (event) => {
 
     sessions.forEach((session) => {
       const isExpired = new Date().getTime() - new Date(session.updatedAt).getTime() > config.private.refreshToken.maxAge! * 1000
-      isExpired ? expired.push(session) : active.push(session)
+      if (isExpired)
+        expired.push(session)
+      else
+        active.push(session)
     })
 
     await Promise.all(expired.map(session => event.context.auth.adapter.session.delete(session.id, authData.userId)))

@@ -3,10 +3,6 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   modules: ['../src/module'],
 
-  future: {
-    compatibilityVersion: 4,
-  },
-
   ssr: process.env.NUXT_SSR !== 'false',
 
   app: {
@@ -14,6 +10,12 @@ export default defineNuxtConfig({
       title: 'Nuxt Auth',
     },
   },
+
+  future: {
+    compatibilityVersion: 4,
+  },
+
+  compatibilityDate: '2025-02-21',
 
   auth: {
     baseUrl: 'http://localhost:3000',

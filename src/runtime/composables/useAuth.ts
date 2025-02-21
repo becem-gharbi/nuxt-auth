@@ -88,6 +88,7 @@ export function useAuth() {
     try {
       user.value = await nuxtApp.$auth.fetch<User>('/api/auth/me')
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     catch (err) {
       user.value = null
     }
