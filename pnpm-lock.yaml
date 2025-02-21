@@ -29,6 +29,9 @@ importers:
       ufo:
         specifier: ^1
         version: 1.5.4
+      unstorage:
+        specifier: ^1
+        version: 1.14.4(db0@0.2.4)(ioredis@5.5.0)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
