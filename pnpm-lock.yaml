@@ -26,6 +26,9 @@ importers:
       ofetch:
         specifier: ^1
         version: 1.4.1
+      ufo:
+        specifier: ^1
+        version: 1.5.4
       zod:
         specifier: ^3.24.2
         version: 3.24.2
