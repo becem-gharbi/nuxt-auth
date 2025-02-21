@@ -48,25 +48,25 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.11.2",
+    "@nuxt/kit": "^3.15.4",
     "bcrypt-edge": "^0.1.0",
     "defu": "^6.1.4",
-    "jose": "^5.3.0",
-    "zod": "^3.23.8"
+    "jose": "^5.10.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^0.3.13",
-    "@nuxt/module-builder": "^0.7.0",
-    "@nuxt/schema": "^3.11.2",
-    "@playwright/test": "^1.44.1",
-    "@prisma/client": "^5.14.0",
-    "@types/node": "^20.12.13",
-    "changelogen": "^0.5.5",
+    "@nuxt/eslint-config": "^1.1.0",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.15.4",
+    "@playwright/test": "^1.50.1",
+    "@prisma/client": "^6.4.1",
+    "@types/node": "^22.13.4",
+    "changelogen": "^0.5.7",
     "cross-env": "^7.0.3",
-    "eslint": "^8.57.0",
-    "nuxt": "^3.13.2",
-    "prisma": "^5.14.0",
-    "vitepress": "^1.2.3"
+    "eslint": "^9.20.1",
+    "nuxt": "^3.15.4",
+    "prisma": "^6.4.1",
+    "vitepress": "^1.6.3"
   },
   "repository": {
     "url": "git+https://github.com/becem-gharbi/nuxt-auth.git"
@@ -75,5 +75,5 @@
     "h3": "^1",
     "ofetch": "^1"
   },
-  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
 }
