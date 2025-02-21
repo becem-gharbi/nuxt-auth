@@ -1,5 +1,28 @@
 # Changelog
 
+## v3.0.3
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.2...v3.0.3)
+
+### 📖 Documentation
+
+- Correct link of the used bcrypt pkg ([48b76a3](https://github.com/becem-gharbi/nuxt-auth/commit/48b76a3))
+
+### 🌊 Types
+
+- Import `NitroApp` from `nitropack/types` ([77d7020](https://github.com/becem-gharbi/nuxt-auth/commit/77d7020))
+
+### 🏡 Chore
+
+- Add `ufo` as peer dependency ([61eb176](https://github.com/becem-gharbi/nuxt-auth/commit/61eb176))
+- Add `unstorage` as peer dependency ([3ec2e3b](https://github.com/becem-gharbi/nuxt-auth/commit/3ec2e3b))
+- **lint:** Fix ([9b7443b](https://github.com/becem-gharbi/nuxt-auth/commit/9b7443b))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+- Becem <becem.gharbi@live.com>
+
 ## v3.0.2
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.0...v3.0.2)
