@@ -1,5 +1,5 @@
 import { $fetch } from 'ofetch'
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitropack/types'
 import { useNitroApp } from 'nitropack/runtime'
 import type { MailMessage } from '../../types/common'
 import { getConfig } from './config'

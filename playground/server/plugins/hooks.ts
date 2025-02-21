@@ -1,4 +1,4 @@
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitropack/types'
 import consola from 'consola'
 import { defineNitroPlugin } from 'nitropack/runtime'
 

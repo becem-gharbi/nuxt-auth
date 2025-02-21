@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitropack/types'
 import { useNitroApp } from 'nitropack/runtime'
 import { getConfig } from './config'
 import { generateAvatar } from './avatar'

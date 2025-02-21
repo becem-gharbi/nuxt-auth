@@ -1,7 +1,7 @@
 import { createError, H3Error, sendRedirect } from 'h3'
 import { withQuery } from 'ufo'
 import type { H3Event } from 'h3'
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitropack/types'
 import { useNitroApp } from 'nitropack/runtime'
 import type { KnownErrors } from '../../types/common'
 import { getConfig } from './config'

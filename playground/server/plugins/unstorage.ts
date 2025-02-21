@@ -1,4 +1,4 @@
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitropack/types'
 import { createStorage } from 'unstorage'
 // import fsDriver from 'unstorage/drivers/fs'
 import consola from 'consola'
