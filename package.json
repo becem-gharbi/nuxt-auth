@@ -17,18 +17,24 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
     }
   },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "dev": "nuxi dev playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "dev": "npm run dev:prepare && nuxt dev playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare playground",
     "dev:build:ssr": "cross-env NUXT_SSR=true NODE_OPTIONS=--no-deprecation nuxi build playground",
     "dev:build:spa": "cross-env NUXT_SSR=false NODE_OPTIONS=--no-deprecation nuxi build playground",
     "dev:preview": "nuxt preview playground",
@@ -38,7 +44,7 @@
     "test:prod": "npm run test:prod:ssr && npm run test:prod:spa",
     "lint": "eslint .",
     "typecheck": "nuxi typecheck",
-    "prepack": "nuxt-module-build",
+    "prepack": "nuxt-module-build build --stub",
     "release:pre": "npm run lint && npm run prepack",
     "release": "npm run release:pre && npm run test:prod && changelogen --release && npm publish && git push --follow-tags",
     "prisma:generate": "cd playground && prisma generate",
@@ -49,14 +55,14 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
+    "@nuxt/kit": "^4.3.1",
     "bcrypt-ts": "^8.0.1",
     "jose": "^6.2.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.1.0",
-    "@nuxt/kit": "^4.3.1",
-    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "^4.3.1",
     "@nuxt/test-utils": "^4.0.0",
     "@playwright/test": "^1.58.2",
@@ -72,9 +78,9 @@
     "url": "git+https://github.com/becem-gharbi/nuxt-auth.git"
   },
   "peerDependencies": {
+    "defu": "latest",
     "ufo": "latest",
-    "unstorage": "latest",
-    "defu": "latest"
+    "unstorage": "latest"
   },
   "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
 }
