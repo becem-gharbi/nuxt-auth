@@ -11,9 +11,9 @@ importers:
       '@nuxt/kit':
         specifier: ^3.15.4
         version: 3.15.4(magicast@0.3.5)
-      bcrypt-edge:
-        specifier: ^0.1.0
-        version: 0.1.0
+      bcrypt-ts:
+        specifier: ^8.0.1
+        version: 8.0.1
       defu:
         specifier: ^6.1.4
         version: 6.1.4
@@ -1686,8 +1686,9 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  bcrypt-edge@0.1.0:
-    resolution: {integrity: sha512-kTmsr8pHBxW6PwTc+jjAXw6eaHnxWaG5m058bYNftGZQEpG3ZwQrRip9f9RSFvUqLs50unwXdr/YrBIc1jbQsA==}
+  bcrypt-ts@8.0.1:
+    resolution: {integrity: sha512-ILrO7U7YieyG+71KVIVVuPCmjN8N9DY3gYs4OiEoJvW8A5HOe4eerRhLD0Rgo2CAyANRKssFGXmLF74zJz094g==}
+    engines: {node: '>=20'}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -6296,7 +6297,7 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  bcrypt-edge@0.1.0: {}
+  bcrypt-ts@8.0.1: {}
 
   binary-extensions@2.3.0: {}
 
