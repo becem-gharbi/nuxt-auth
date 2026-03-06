@@ -95,12 +95,11 @@ To integrate your adapter within your application, the `setEventContext` utility
 ```ts
 import { defineAdapter, setEventContext } from "#auth_utils";
 
-const useAdapter = defineAdapter<SourceType>((source)=> {/* */});
+const useAdapter = defineAdapter<SourceType>((source) => {/* */});
 
 export default defineNitroPlugin((nitroApp) => {
-    const adapter = useAdapter()
-    nitroApp.hooks.hook("request", (event) => setEventContext(event, adapter));
-  }
+  const adapter = useAdapter();
+  nitroApp.hooks.hook("request", (event) => setEventContext(event, adapter));
 });
 ```
 

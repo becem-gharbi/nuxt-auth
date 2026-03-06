@@ -34,10 +34,9 @@ declare module "#auth_adapter" {
 }
 
 export default defineNitroPlugin((nitroApp) => {
-    const storage = useStorage()
-    const adapter = useUnstorageAdapter(storage)
+  const storage = useStorage();
+  const adapter = useUnstorageAdapter(storage);
 
-    nitroApp.hooks.hook("request", (event) => setEventContext(event, adapter));
-  }
+  nitroApp.hooks.hook("request", (event) => setEventContext(event, adapter));
 });
 ```

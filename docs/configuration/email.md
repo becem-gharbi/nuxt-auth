@@ -83,8 +83,8 @@ Default [templates](https://github.com/becem-gharbi/nuxt-auth/tree/main/src/runt
 The variables below are injected with [mustache](https://github.com/janl/mustache.js) syntax:
 
 - **name** - The user's name.
-- **link** - for redirection.
-- **validityInMinutes** - equals to `email.actionTimeout`.
+- **link** - The link for redirection.
+- **validityInMinutes** - Equals to `email.actionTimeout`.
 
 It's recommended to use [maily.to](https://maily.to/) to build well-designed templates.
 

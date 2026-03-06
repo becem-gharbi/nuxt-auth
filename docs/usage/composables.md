@@ -4,7 +4,7 @@ The module provides essential composables, facilitating seamless integration wit
 
 ## `useAuth`
 
-The module provides a `useAuth` composable, which equips you the user with a comprehensive set of functions for managing authentication seamlessly within your project.
+The module provides a `useAuth` composable, which equips you with a comprehensive set of functions for managing authentication seamlessly within your project.
 
 ::: warning Important
 - Please note that `redirect.passwordReset` option is required in order to enable password reset.
@@ -18,7 +18,7 @@ The module provides a `useAuth` composable, which equips you the user with a com
 - `register` - Facilitates user registration with required inputs including email, password, and name, providing seamless integration into the authentication flow.
 - `requestPasswordReset` - Initiates the process for sending a password reset email to the user, allowing them to securely reset their password.
 - `resetPassword` - Allows the user to reset their password securely after initiating a password reset request.
-- `requestEmailVerify` - Triggers the sending of an email verification email, ensuring the validity of the user's email address.
+- `requestEmailVerify` - Triggers the sending of a verification email, ensuring the validity of the user's email address.
 - `changePassword` - Enables users to securely change their current password, providing an additional layer of account security.
 
 ### Error Handling
@@ -30,8 +30,8 @@ Some specific error messages are thrown by these methods.
   - Account not verified
   - Wrong credentials
 - `loginWithProvider`
-  - Oauth name not accessible
-  - Oauth email not accessible
+  - OAuth name not accessible
+  - OAuth email not accessible
   - Email already used
   - Account suspended
   - Registration disabled
