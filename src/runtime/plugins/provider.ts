@@ -1,4 +1,3 @@
-import { defu } from 'defu'
 import type { PublicConfig } from '../types/config'
 import { defineNuxtPlugin, useAuthSession, useRequestHeaders } from '#imports'
 
@@ -20,9 +19,11 @@ export default defineNuxtPlugin({
         const accessToken = await useAuthSession().getAccessToken()
 
         if (accessToken) {
-          options.headers = defu(options.headers, reqHeaders, {
-            authorization: 'Bearer ' + accessToken,
-          })
+          for (const [key, value] of Object.entries(reqHeaders)) {
+            if (value) options.headers.append(key, value)
+          }
+
+          options.headers.append('Authorization', 'Bearer ' + accessToken)
         }
 
         options.credentials ||= 'omit'
