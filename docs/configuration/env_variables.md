@@ -1,0 +1,20 @@
+# Environment variables
+
+| Name | Default | Required
+|---|---|--|
+| `NUXT_PUBLIC_AUTH_BASE_URL` | `""` | Yes
+| `NUXT_AUTH_ACCESS_TOKEN_JWT_SECRET` | `""` | Yes
+| `NUXT_AUTH_REFRESH_TOKEN_JWT_SECRET` | `""` | Yes
+| `NUXT_AUTH_OAUTH_<PROVIDER>_CLIENT_ID` | `""` | Yes if OAuth enabled
+| `NUXT_AUTH_OAUTH_<PROVIDER>_CLIENT_SECRET` | `""` | Yes if OAuth enabled
+| `NUXT_AUTH_EMAIL_FROM` | `""` | Yes if email verification or password reset enabled
+| `NUXT_PUBLIC_AUTH_BACKEND_BASE_URL` | `/` | No
+| `NUXT_AUTH_ACCESS_TOKEN_MAX_AGE` | `900` | No
+| `NUXT_AUTH_REFRESH_TOKEN_MAX_AGE` | `604800` | No
+| `NUXT_AUTH_EMAIL_ACTION_TIMEOUT` | `1800` | No
+| `NUXT_AUTH_EMAIL_PROVIDER_NAME` | `hook` | No
+| `NUXT_AUTH_EMAIL_PROVIDER_API_KEY` | `""` | No
+| `NUXT_AUTH_REGISTRATION_ENABLED` | `true` | No
+| `NUXT_AUTH_REGISTRATION_REQUIRE_EMAIL_VERIFICATION` | `true` | No
+| `NUXT_AUTH_REGISTRATION_PASSWORD_VALIDATION_REGEX` | `^.+$` | No
+| `NUXT_AUTH_REGISTRATION_EMAIL_VALIDATION_REGEX` | `^.+$` | No

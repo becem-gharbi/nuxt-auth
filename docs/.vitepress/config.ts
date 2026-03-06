@@ -27,6 +27,7 @@ export default defineConfig({
         text: 'Configuration',
         base: '/configuration',
         items: [
+          { text: 'Environment variables', link: '/env_variables' },
           { text: 'Tokens', link: '/tokens' },
           { text: 'OAuth', link: '/oauth' },
           { text: 'Registration', link: '/registration' },
