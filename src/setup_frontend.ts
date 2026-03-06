@@ -2,34 +2,14 @@ import { addPlugin, createResolver, addImports, addRouteMiddleware } from '@nuxt
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions } from './runtime/types/config'
-import { warnRequiredOption } from './utils'
 
 export function setupFrontend(options: ModuleOptions, nuxt: Nuxt) {
-  if (!options.redirect.login) {
-    warnRequiredOption('redirect.login')
-  }
-
-  if (!options.redirect.logout) {
-    warnRequiredOption('redirect.logout')
-  }
-
-  if (!options.redirect.home) {
-    warnRequiredOption('redirect.home')
-  }
-
-  if (!options.baseUrl) {
-    warnRequiredOption('baseUrl')
-  }
-
-  if (options.backendEnabled === false && !options.backendBaseUrl) {
-    warnRequiredOption('backendBaseUrl')
-  }
-
   // Initialize the module options
   nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, {
     auth: {
       backendBaseUrl: options.backendBaseUrl,
       baseUrl: options.baseUrl,
+      backendEnabled: options.backendEnabled,
       enableGlobalAuthMiddleware: options.enableGlobalAuthMiddleware,
       loggedInFlagName: options.loggedInFlagName,
       redirect: options.redirect,

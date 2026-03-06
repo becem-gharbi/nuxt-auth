@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     baseUrl: 'http://localhost:3000',
 
     accessToken: {
-      jwtSecret: '*',
+      jwtSecret: '',
       maxAge: 14,
       customClaims: {
         'https://hasura.io/jwt/claims': {
@@ -29,30 +29,26 @@ export default defineNuxtConfig({
     },
 
     refreshToken: {
-      jwtSecret: '*',
+      jwtSecret: '',
     },
 
     oauth: {
       google: {
-        clientId: '*',
-        clientSecret: '*',
+        clientId: '',
+        clientSecret: '',
         scopes: 'email profile',
         authorizeUrl: 'https://accounts.google.com/o/oauth2/auth',
         tokenUrl: 'https://accounts.google.com/o/oauth2/token',
         userUrl: 'https://www.googleapis.com/oauth2/v3/userinfo',
       },
-      github: {
-        clientId: '*',
-        clientSecret: '*',
-        scopes: 'user:email',
-        authorizeUrl: 'https://github.com/login/oauth/authorize',
-        tokenUrl: 'https://github.com/login/oauth/access_token',
-        userUrl: 'https://api.github.com/user',
-      },
-    },
-
-    email: {
-      from: '*',
+      // github: {
+      //   clientId: '',
+      //   clientSecret: '',
+      //   scopes: 'user:email',
+      //   authorizeUrl: 'https://github.com/login/oauth/authorize',
+      //   tokenUrl: 'https://github.com/login/oauth/access_token',
+      //   userUrl: 'https://api.github.com/user',
+      // },
     },
 
     registration: {

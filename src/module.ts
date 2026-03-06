@@ -1,4 +1,4 @@
-import { defineNuxtModule } from '@nuxt/kit'
+import { addServerPlugin, defineNuxtModule, createResolver } from '@nuxt/kit'
 import { name, version } from '../package.json'
 import type { PrivateConfig, PublicConfig } from './runtime/types/config'
 import { setupBackend } from './setup_backend'
@@ -61,5 +61,8 @@ export default defineNuxtModule<ModuleOptions>({
     if (options.backendEnabled) {
       setupBackend(options, nuxt)
     }
+
+    const { resolve } = createResolver(import.meta.url)
+    addServerPlugin(resolve('./runtime/server/plugins/runtime_options_check'))
   },
 })

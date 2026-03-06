@@ -3,20 +3,16 @@ import { resolve as resolveAbsolute } from 'node:path'
 import { createResolver, addServerHandler, addTemplate } from '@nuxt/kit'
 import { defu } from 'defu'
 import type { Nuxt } from '@nuxt/schema'
-import { warnRequiredOption, info } from './utils'
+import { consola } from 'consola'
 import type { ModuleOptions } from './runtime/types/config'
+
+function info(message: string) {
+  consola.info(`[nuxt-auth] ${message}`)
+}
 
 export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
   if (!options.backendEnabled) {
     throw new Error('Backend should be enabled')
-  }
-
-  if (!options.refreshToken.jwtSecret) {
-    warnRequiredOption('refreshToken.jwtSecret')
-  }
-
-  if (!options.accessToken.jwtSecret) {
-    warnRequiredOption('accessToken.jwtSecret')
   }
 
   nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, {
@@ -119,61 +115,52 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
     handler: resolve('./runtime/server/api/avatar.get'),
   })
 
-  if (!options.registration.enabled) {
-    info('Registration is disabled')
-  }
+  if (options.redirect.callback && options.oauth && Object.keys(options.oauth).length) {
+    addServerHandler({
+      route: '/api/auth/login/:provider',
+      handler: resolve('./runtime/server/api/login/[provider].get'),
+    })
 
-  if (options.oauth && Object.keys(options.oauth).length) {
-    if (options.redirect.callback) {
-      addServerHandler({
-        route: '/api/auth/login/:provider',
-        handler: resolve('./runtime/server/api/login/[provider].get'),
-      })
-
-      addServerHandler({
-        route: '/api/auth/login/:provider/callback',
-        handler: resolve('./runtime/server/api/login/[provider]/callback.get'),
-      })
-    }
-    else {
-      warnRequiredOption('redirect.callback')
-    }
+    addServerHandler({
+      route: '/api/auth/login/:provider/callback',
+      handler: resolve('./runtime/server/api/login/[provider]/callback.get'),
+    })
   }
   else {
-    info('Oauth login is disabled')
+    info('OAuth is disabled')
   }
 
-  if (options.email?.from) {
-    if (options.redirect.passwordReset) {
-      addServerHandler({
-        route: '/api/auth/password/request',
-        handler: resolve('./runtime/server/api/password/request.post'),
-      })
+  if (options.redirect.passwordReset) {
+    addServerHandler({
+      route: '/api/auth/password/request',
+      handler: resolve('./runtime/server/api/password/request.post'),
+    })
 
-      addServerHandler({
-        route: '/api/auth/password/reset',
-        handler: resolve('./runtime/server/api/password/reset.put'),
-      })
-    }
-    else {
-      warnRequiredOption('redirect.passwordReset')
-    }
+    addServerHandler({
+      route: '/api/auth/password/reset',
+      handler: resolve('./runtime/server/api/password/reset.put'),
+    })
+  }
+  else {
+    info('Password reset is disabled')
+  }
 
-    if (options.redirect.emailVerify) {
-      addServerHandler({
-        route: '/api/auth/email/request',
-        handler: resolve('./runtime/server/api/email/request.post'),
-      })
+  if (options.redirect.emailVerify) {
+    addServerHandler({
+      route: '/api/auth/email/request',
+      handler: resolve('./runtime/server/api/email/request.post'),
+    })
 
-      addServerHandler({
-        route: '/api/auth/email/verify',
-        handler: resolve('./runtime/server/api/email/verify.get'),
-      })
-    }
-    else {
-      warnRequiredOption('redirect.emailVerify')
-    }
+    addServerHandler({
+      route: '/api/auth/email/verify',
+      handler: resolve('./runtime/server/api/email/verify.get'),
+    })
+  }
+  else {
+    info('Email verification is disabled')
+  }
 
+  if (options.email) {
     options.email.templates ||= {}
 
     if (options.email.templates.emailVerify) {
@@ -193,8 +180,5 @@ export function setupBackend(options: ModuleOptions, nuxt: Nuxt) {
       const passwordResetPath = resolve('./runtime/templates/password_reset.html')
       options.email.templates.passwordReset = readFileSync(passwordResetPath, 'utf-8')
     }
-  }
-  else {
-    info('Email verification and password reset are disabled')
   }
 }
