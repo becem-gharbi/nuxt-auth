@@ -10,6 +10,7 @@ interface MailResendProvider {
 
 interface MailHookProvider {
   name: 'hook'
+  apiKey?: string
 }
 
 type OauthBase = Record<string, {

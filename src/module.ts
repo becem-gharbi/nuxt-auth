@@ -51,6 +51,7 @@ export default defineNuxtModule<ModuleOptions>({
       from: '',
       provider: {
         name: 'hook',
+        apiKey: '',
       },
     },
   },
