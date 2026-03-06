@@ -24,9 +24,19 @@ Some specific error messages are thrown by these methods.
   - Account suspended
   - Account not verified
   - Wrong credentials
+- `loginWithProvider`
+  - Oauth name not accessible
+  - Oauth email not accessible
+  - Email already used
+  - Account suspended
+  - Registration disabled
+  - Email not accepted
 - `register`
   - Email already used
   - Account not verified
+  - Account suspended
+  - Registration disabled
+  - Email not accepted
 - `changePassword`
   - Wrong password
 - `resetPassword`
