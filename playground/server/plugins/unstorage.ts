@@ -1,22 +1,17 @@
 import type { NitroApp } from 'nitropack/types'
 import { createStorage } from 'unstorage'
-// import fsDriver from 'unstorage/drivers/fs'
-import consola from 'consola'
 import { defineNitroPlugin } from 'nitropack/runtime'
 import { useUnstorageAdapter, setEventContext } from '#auth_utils'
+// import fsDriver from 'unstorage/drivers/fs'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
-  if (process.env.NUXT_ADAPTER === 'unstorage') {
-    consola.success('Running with Unstorage adapter')
+  // const storage = createStorage({
+  //   driver: fsDriver({ base: './playground/unstorage_data' }),
+  // })
 
-    // const storage = createStorage({
-    //   driver: fsDriver({ base: './playground/unstorage_data' }),
-    // })
+  const storage = createStorage() // in memory
 
-    const storage = createStorage()
+  const adapter = useUnstorageAdapter(storage)
 
-    const adapter = useUnstorageAdapter(storage)
-
-    nitroApp.hooks.hook('request', event => setEventContext(event, adapter))
-  }
+  nitroApp.hooks.hook('request', event => setEventContext(event, adapter))
 })

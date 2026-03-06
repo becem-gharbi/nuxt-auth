@@ -1,5 +1,5 @@
 import type { NitroApp } from 'nitropack/types'
-import consola from 'consola'
+import { consola } from 'consola'
 import { defineNitroPlugin } from 'nitropack/runtime'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {

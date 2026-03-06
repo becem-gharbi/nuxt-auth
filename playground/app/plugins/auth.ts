@@ -1,4 +1,4 @@
-import consola from 'consola'
+import { consola } from 'consola'
 import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin({

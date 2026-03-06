@@ -11,17 +11,13 @@ export default defineNuxtConfig({
     },
   },
 
-  future: {
-    compatibilityVersion: 4,
-  },
-
   compatibilityDate: '2025-02-21',
 
   auth: {
     baseUrl: 'http://localhost:3000',
 
     accessToken: {
-      jwtSecret: process.env.AUTH_ACCESS_TOKEN_SECRET || '',
+      jwtSecret: '*',
       maxAge: 14,
       customClaims: {
         'https://hasura.io/jwt/claims': {
@@ -33,21 +29,21 @@ export default defineNuxtConfig({
     },
 
     refreshToken: {
-      jwtSecret: process.env.AUTH_REFRESH_TOKEN_SECRET || 'abc',
+      jwtSecret: '*',
     },
 
     oauth: {
       google: {
-        clientId: process.env.AUTH_OAUTH_GOOGLE_CLIENT_ID || '',
-        clientSecret: process.env.AUTH_OAUTH_GOOGLE_CLIENT_SECRET || '',
+        clientId: '*',
+        clientSecret: '*',
         scopes: 'email profile',
         authorizeUrl: 'https://accounts.google.com/o/oauth2/auth',
         tokenUrl: 'https://accounts.google.com/o/oauth2/token',
         userUrl: 'https://www.googleapis.com/oauth2/v3/userinfo',
       },
       github: {
-        clientId: process.env.AUTH_OAUTH_GITHUB_CLIENT_ID || '',
-        clientSecret: process.env.AUTH_OAUTH_GITHUB_CLIENT_SECRET || '',
+        clientId: '*',
+        clientSecret: '*',
         scopes: 'user:email',
         authorizeUrl: 'https://github.com/login/oauth/authorize',
         tokenUrl: 'https://github.com/login/oauth/access_token',
@@ -56,7 +52,7 @@ export default defineNuxtConfig({
     },
 
     email: {
-      from: process.env.AUTH_EMAIL_FROM!,
+      from: '*',
     },
 
     registration: {
