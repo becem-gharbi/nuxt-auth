@@ -48,7 +48,6 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.15.4",
     "bcrypt-ts": "^8.0.1",
     "defu": "^6.1.4",
     "jose": "^6.2.0",
@@ -56,15 +55,16 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.1.0",
+    "@nuxt/kit": "^4.3.1",
     "@nuxt/module-builder": "^0.8.4",
-    "@nuxt/schema": "^3.15.4",
+    "@nuxt/schema": "^4.3.1",
     "@playwright/test": "^1.50.1",
     "@prisma/client": "^6.4.1",
     "@types/node": "^22.13.4",
     "changelogen": "^0.5.7",
     "cross-env": "^7.0.3",
     "eslint": "^9.20.1",
-    "nuxt": "^3.15.4",
+    "nuxt": "^4.3.1",
     "prisma": "^6.4.1",
     "vitepress": "^1.6.3"
   },
