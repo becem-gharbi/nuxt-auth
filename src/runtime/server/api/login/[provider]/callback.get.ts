@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const providers = config.private.oauth ? Object.keys(config.private.oauth) : []
 
     const pSchema = z.object({
-      provider: z.custom<string>(value => providers.includes(value)),
+      provider: z.enum(providers),
     })
 
     const { provider } = await getValidatedRouterParams(event, pSchema.parse)

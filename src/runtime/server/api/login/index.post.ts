@@ -5,7 +5,7 @@ import { createRefreshToken, setRefreshTokenCookie, createAccessToken, compareSy
 export default defineEventHandler(async (event) => {
   try {
     const schema = z.object({
-      email: z.string().email().max(40),
+      email: z.email(),
       password: z.string().min(1),
     })
 

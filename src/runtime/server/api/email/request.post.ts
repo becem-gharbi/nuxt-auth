@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const schema = z.object({
-      email: z.string().email().max(40),
+      email: z.email(),
     })
 
     const { email } = await readValidatedBody(event, schema.parse)
