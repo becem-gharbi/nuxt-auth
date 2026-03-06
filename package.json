@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "bcrypt-ts": "^8.0.1",
-    "defu": "^6.1.4",
     "jose": "^6.2.0",
     "zod": "^4.3.6"
   },
@@ -67,7 +66,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^9.20.1",
     "nuxt": "^4.3.1",
-    "prisma": "^6.4.1",
     "vitepress": "^1.6.3"
   },
   "repository": {
@@ -75,7 +73,8 @@
   },
   "peerDependencies": {
     "ufo": "latest",
-    "unstorage": "latest"
+    "unstorage": "latest",
+    "defu": "latest"
   },
   "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
 }
