@@ -1,5 +1,55 @@
 # Changelog
 
+## v3.1.0
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.3...v3.1.0)
+
+### 🚀 Enhancements
+
+- Migrate from deprecated `bcrypt-edge` to `bcrypt-ts` ([9ad448b](https://github.com/becem-gharbi/nuxt-auth/commit/9ad448b))
+- Migrate `zod` to v4 ([79b039e](https://github.com/becem-gharbi/nuxt-auth/commit/79b039e))
+- Migrate `jose` to v6 ([a67c966](https://github.com/becem-gharbi/nuxt-auth/commit/a67c966))
+- Migrate `nuxt` to v4 ([e9683dc](https://github.com/becem-gharbi/nuxt-auth/commit/e9683dc))
+- Check runtime options at runtime to consider matching env variables ([e3073b6](https://github.com/becem-gharbi/nuxt-auth/commit/e3073b6))
+
+### 💅 Refactors
+
+- Append headers instead of merging ([33deb32](https://github.com/becem-gharbi/nuxt-auth/commit/33deb32))
+- Define a default value for `email.provider.apiKey` ([526a781](https://github.com/becem-gharbi/nuxt-auth/commit/526a781))
+
+### 📖 Documentation
+
+- **configuration:** Mention env variables ([ab7c1af](https://github.com/becem-gharbi/nuxt-auth/commit/ab7c1af))
+- **usage:** Add missing error messages of composables ([6afae86](https://github.com/becem-gharbi/nuxt-auth/commit/6afae86))
+- Add notes on required `redirect` options ([20258f0](https://github.com/becem-gharbi/nuxt-auth/commit/20258f0))
+- Improve syntax and fix typos ([19251a4](https://github.com/becem-gharbi/nuxt-auth/commit/19251a4))
+
+### 📦 Build
+
+- Migrate `@nuxt/module-builder` to v1 ([19a1e54](https://github.com/becem-gharbi/nuxt-auth/commit/19a1e54))
+
+### 🌊 Types
+
+- Import `NitroApp` from `nitropack/types` ([77d7020](https://github.com/becem-gharbi/nuxt-auth/commit/77d7020))
+
+### 🏡 Chore
+
+- Add `ufo` as peer dependency ([61eb176](https://github.com/becem-gharbi/nuxt-auth/commit/61eb176))
+- Add `unstorage` as peer dependency ([3ec2e3b](https://github.com/becem-gharbi/nuxt-auth/commit/3ec2e3b))
+- **lint:** Fix ([9b7443b](https://github.com/becem-gharbi/nuxt-auth/commit/9b7443b))
+- **release:** V3.0.3 ([a74f149](https://github.com/becem-gharbi/nuxt-auth/commit/a74f149))
+- **playground:** Migrate to `nuxt` v4 and remove prisma plugin ([1ccef40](https://github.com/becem-gharbi/nuxt-auth/commit/1ccef40))
+- **changelog:** Remove authors ([6d9d6b6](https://github.com/becem-gharbi/nuxt-auth/commit/6d9d6b6))
+
+### ✅ Tests
+
+- Run playground as playwright fixture instead of dev server ([7b37932](https://github.com/becem-gharbi/nuxt-auth/commit/7b37932))
+
+### ❤️ Contributors
+
+- Becem <becem.gharbi@live.com>
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v3.0.3
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.2...v3.0.3)
