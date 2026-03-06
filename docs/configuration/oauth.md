@@ -3,7 +3,8 @@
 Besides the local email/password login strategy, the module supports login with OAuth2 providers such as Google, and Github.
 
 ::: warning Important
-Please note that `email` and `name` information are required for registration, otherwise not accessible error message will be returned.
+- Please note that `redirect.callback` option is required in order to enable OAuth.
+- Please note that `email` and `name` information are required for registration, otherwise not accessible error message will be returned.
 :::
 
 #### Options

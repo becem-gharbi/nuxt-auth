@@ -6,6 +6,11 @@ The module provides essential composables, facilitating seamless integration wit
 
 The module provides a `useAuth` composable, which equips you the user with a comprehensive set of functions for managing authentication seamlessly within your project.
 
+::: warning Important
+- Please note that `redirect.passwordReset` option is required in order to enable password reset.
+- Please note that `redirect.emailVerify` option is required in order to enable email verification.
+:::
+
 - `login` - Initiates the sign-in process using email and password credentials. Upon successful authentication, redirects to the specified `redirect.home` route.
 - `loginWithProvider` - Enables sign-in functionality using OAuth providers. After authentication, redirects to the designated `redirect.callback` route.
 - `logout` - Logs the user out of the application and redirects to the configured `redirect.logout` route.
