@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.1.1
+
+[compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.1.0...v3.1.1)
+
+### 📦 Build
+
+- Fix ([223b387](https://github.com/becem-gharbi/nuxt-auth/commit/223b387))
+
 ## v3.1.0
 
 [compare changes](https://github.com/becem-gharbi/nuxt-auth/compare/v3.0.3...v3.1.0)
