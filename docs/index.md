@@ -9,9 +9,6 @@ hero:
     - theme: brand
       text: Get Started
       link: /get-started/introduction
-    - theme: alt
-      text: Demo
-      link: https://nuxt-starter.bg.tn
 
 features:
   - title: Login with credentials
